@@ -1,0 +1,77 @@
+\documentclass{sig-alternate-br}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{xcolor,colortbl}
+\usepackage[official]{eurosym}
+\usepackage{hyperref}
+% \url{} als link + fixed-width font
+\usepackage{url}
+
+% interpunctie, citations
+\usepackage[english]{babel}
+\usepackage{csquotes}% Recommended
+\usepackage{natbib}
+
+
+
+% tabel tool
+\usepackage{tabu}
+
+
+\usepackage{graphicx}
+\usepackage{subfig}
+
+\begin{document}
+\CopyrightYear{2013} 
+
+\title{Methods for Large Scale Learning to Rank}
+
+\numberofauthors{1}
+\author{
+\alignauthor Niek Tax\\
+       \affaddr{University of Twente}\\
+       \affaddr{P.O. Box 217, 7500AE Enschede}\\
+       \affaddr{The Netherlands}\\
+}
+
+\maketitle
+\begin{abstract}
+Here comes the abstract
+\end{abstract} 
+
+\keywords{Learning to Rank (LTR), Machine Learned Ranking (MLR), MapReduce, Parallel Computing}
+
+\section{Introduction}
+Several Learning to Rank (LTR) benchmark datasets have been proposed in recent years \cite{Chapelle2011a,Qin2010,Alcantara2010} (Yandex Internet Mathematics competition). Chapelle et al \cite{Chapelle2011b} observed that the top competitors' results in LTR competitions are very close to each other, which raises the presumption that high accuracy LTR is a 'solved problem'.\\
+
+Chappelle et al \cite{Chapelle2011b} identified efficiency and scalability of LTR algorithms to be one of the most important directions of future research in the field of LTR. The rationale behind this observation is that IR datasets are becoming bigger and bigger and that algorithm efficiency and scalability has not played a role in any LTR benchmark so far.
+\section{Problem Statement \& Research Questions}
+Several attempts on parallel or distributed machine learning \cite{Chu2007,Chang2007} has been made. The work on parallel or distributed LTR is still very limited compared to the amount of work that has been done on parallel or distributed regular machine learning. The field of efficient LTR has been getting some attention lately \cite{Asadi2013a,Asadi2013b,Busa-Fekete2012,Sousa2012,Shukla2012} since Chapelle at all \cite{Chapelle2011b} stated its growing importance back in 2011, only few of these studies \cite{Sousa2012,Shukla2012} have explored the possibilities of efficient LTR through the use of parallel programming paradigms. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, like most LTR algorithms, are not amenable to the MapReduce framework. Lin \cite{Lin2013} argued that iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough.\\
+
+\textbf{Research Question:} How can we efficiently run LTR algorithms in a distributed setting using MapReduce? (scope can possibly be extended to other parallel processing paradigms like MPI)
+
+\section{Methodology}
+\begin{enumerate}
+\item Identify well performing LTR algorithms on benchmark datasets (using benchmark overview papers and other literature)
+\item Search for literature on parallelisation of algorithms
+\item Experiment with optimizing LTR algorithms with MapReduce (maybe include MPI to research scope) implementations of algorithms (compared to literature performance when existing, or compared to non-optimized performance otherwise).
+\end{enumerate}
+\section{Results \& Discussion}
+\section{Conclusions}
+\section{Future Work}
+
+\section{Acknowledgement}
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+
+\bibliographystyle{abbrv}
+\bibliography{paper}
+
+\balancecolumns
+
+\onecolumn
+
+\end{document}
