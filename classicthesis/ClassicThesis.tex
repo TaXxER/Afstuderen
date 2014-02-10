@@ -74,7 +74,7 @@
 \cleardoublepage\include{FrontBackmatter/Dedication}
 %\cleardoublepage\include{FrontBackmatter/Foreword}
 \cleardoublepage\include{FrontBackmatter/Abstract}
-\cleardoublepage\include{FrontBackmatter/Publication}
+%\cleardoublepage\include{FrontBackmatter/Publication}
 \cleardoublepage\include{FrontBackmatter/Acknowledgments}
 \pagestyle{scrheadings}
 \cleardoublepage\include{FrontBackmatter/Contents}
@@ -85,8 +85,8 @@
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\part{Some Kind of Manual}
-\include{Chapters/Chapter01}
+\part{Introduction}
+\include{Chapters/Introduction} 
 \cleardoublepage
 \ctparttext{You can put some informational part preamble text here. 
 Illo principalmente su nos. Non message \emph{occidental} angloromanic
@@ -94,11 +94,18 @@ da. Debitas effortio simplificate sia se, auxiliar summarios da que,
 se avantiate publicationes via. Pan in terra summarios, capital
 interlingua se que. Al via multo esser specimen, campo responder que
 da. Le usate medical addresses pro, europa origine sanctificate nos se.}
-\part{The Showcase}
-\include{Chapters/Chapter02}
+\part{Background}
+\include{Chapters/Background}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
-\include{Chapters/Chapter03}
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
+\part{Related Work}
+\include{RelatedWork}
+\part{Implementation}
+\include{Implementation}
+\part{Results}
+\include{Results}
+\part{Conclusions}
+\include{Conclusions}
 % ********************************************************************
 % Backmatter
 %*******************************************************
