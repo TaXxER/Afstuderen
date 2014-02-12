@@ -22,16 +22,18 @@ The research questions raised and answered in this work include:
 \end{itemize}
 
 \chapter{Approach}
-The first research question will be answered by implementing Learning-to-Rank methods in the MapReduce model and measuring the runtime as a factor of the number of cluster nodes used to complete the computation.
+The first research question will be answered by implementing Learning-to-Rank methods in the MapReduce model and measuring the runtime as a factor of the number of cluster nodes used to complete the computation.\\
+
 To implement the Learning-to-Rank algorithms I will use cloud based MapReduce implementation from Microsoft was used that is called HDInsight, which is based on the popular MapReduce open source implementation Hadoop\footnote{http://hadoop.apache.org/}.
 The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge}\cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR\cite{Qin2010} dataset and the LETOR successor MSLR-WEB30k.
 
 \chapter{Thesis Overview}
 
 \begin{description}
-\item[Part II ]{introduces the reader to the basic principles and recent work in the fields of Learning-to-Rank}
-\item[Part III ]{describes a short overview work in the field of parallel machine learning and Learning-to-Rank.}
-\item[Part IV ]{describes implementation details of the Learning-to-Rank algorithms in the Hadoop framework.}
-\item[Part V ]{presents and discusses speed-up results for the implemented Learning-to-Rank methods.}
-\item[Part VI ]{summarizes the results. The limitations of our research as well as future research directions in the field are mentioned here.}
+\item[Part II ]{introduces the reader to the basic principles and recent work in the fields of Learning-to-Rank.}
+\item[Part III ]{sketches the performance of existing Learning-to-Rank methods on several benchmark datasets.}
+\item[Part IV ]{concisely describes existing work in the field of parallel machine learning and parallel Learning-to-Rank.}
+\item[Part V ]{describes implementation details of the Learning-to-Rank algorithms in the Hadoop framework.}
+\item[Part VI ]{presents and discusses speed-up results for the implemented Learning-to-Rank methods.}
+\item[Part VII ]{summarizes the results. The limitations of our research as well as future research directions in the field are mentioned here.}
 \end{description}
