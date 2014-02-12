@@ -11,22 +11,24 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 	\item[Hypothesis Space]{defines the class of functions mapping the input space to the output space. The functions operate on the feature vectors of the input object, and make predictions according to the format of the output space.}
 	\item[Loss Function]{In order to learn the optimal hypothesis, a training set is usually used, which contains a number of objects and their ground truth labels, sampled from the product of the input and output spaces.}
 	\end{description}
+	}
+\end{description}
 \begin{figure}
 \includegraphics[scale=0.4]{gfx/descriminative_training}
 \caption{Machine learning framework for Learning-to-Rank, from Liu\cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}
 Figure \ref{fig:discriminative_training} shows the relationships between input space, output space, hypothesis space and loss function.
-}
 
 Figure \ref{ref:ltr_framework} shows how the learning process in Learning-to-Rank typically happens. A set of queries $q_i$ with $n > i > 1$, the documents associated with these queries which are represented by feature vector $x_i$, and the relevant judgments of those documents $y_i$ are inputted to a learning algorithm that learns a ranking model such that the output of the ranking model can predict relevant judgment labels in this training set as accurately as possible. Later on we can test the accuracy of this ranking model by predicting the relevant judgments new documents given a new query.
 \begin{figure}
 \includegraphics[scale=0.3]{gfx/ltr_framework}
 \caption{The Learning-to-Rank framework, from Liu\cite{Liu2007}}
 \label{ref:ltr_framework}
-\end{figure}
+\end{figure}\\
 
-\end{description}
+Learning-to-Rank algorithms can be classified into three approaches: the pointwise approach, the pairwise approach and the listwise approach, on which we will elaborate in the subsequent chapters.
+
 \chapter{Benchmark Datasets}
 \chapter{Pointwise Approach}
 \chapter{Pairwise Approach}
