@@ -13,17 +13,17 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 	\end{description}
 	}
 \end{description}
-\begin{figure}
-\includegraphics[scale=0.4]{gfx/descriminative_training}
+\begin{figure}[!h]
+\includegraphics[scale=0.26]{gfx/descriminative_training}
 \caption{Machine learning framework for Learning-to-Rank, from Liu\cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}
 Figure \ref{fig:discriminative_training} shows the relationships between input space, output space, hypothesis space and loss function.
 
 Figure \ref{ref:ltr_framework} shows how the learning process in Learning-to-Rank typically happens. A set of queries $q_i$ with $n > i > 1$, the documents associated with these queries which are represented by feature vector $x_i$, and the relevant judgments of those documents $y_i$ are inputted to a learning algorithm that learns a ranking model such that the output of the ranking model can predict relevant judgment labels in this training set as accurately as possible. Later on we can test the accuracy of this ranking model by predicting the relevant judgments new documents given a new query.
-\begin{figure}
-\includegraphics[scale=0.3]{gfx/ltr_framework}
-\caption{The Learning-to-Rank framework, from Liu\cite{Liu2007}}
+\begin{figure}[!h]
+\includegraphics[scale=0.25]{gfx/ltr_framework}
+\caption{A typical Learning-to-Rank setting, from Liu\cite{Liu2007}}
 \label{ref:ltr_framework}
 \end{figure}\\
 
