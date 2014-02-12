@@ -13,20 +13,19 @@ Some research has been done in the area of on parallel or distributed machine le
 The appearance of benchmark datasets gave insight in the performance of different Learning-to-Rank approaches and resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning-to-Rank methods scale well when they are used in a parallel manner using the MapReduce paradigm.\\
 
 \chapter{Research Goals}
-The objective of this thesis is the exploration of execution time speed-up of Learning-to-Rank algorithms through parallelization using Hadoop. 
+The objective of this thesis is the exploration of execution time speed-up of Learning-to-Rank algorithms through parallelization using the MapReduce paradigm. 
 This work focuses on those Learning-to-Rank algorithms that have shown leading performance on relevant benchmark datasets.
 The research questions raised and answered in this work include:
 \begin{itemize}
-\item What is the speed-up of existing Learning-to-Rank algorithms when implemented and executed on Hadoop?
+\item What is the speed-up of existing Learning-to-Rank algorithms when executed using the MapReduce paradigm?
 \item Can we adjust those Learning-to-Rank algorithms such that the parallel execution speed-up increases without decreasing accuracy?
 \end{itemize}
 
 \chapter{Approach}
-Equidem detraxit cu nam, vix eu delenit periculis. Eos ut vero
-constituto, no vidit propriae complectitur sea. Diceret nonummy in
-has, no qui eligendi recteque consetetur. Mel eu dictas suscipiantur,
-et sed placerat oporteat. At ipsum electram mei, ad aeque atomorum
-mea.
+The first research question will be answered by implementing Learning-to-Rank methods in the MapReduce model and measuring the runtime as a factor of the number of cluster nodes used to complete the computation.
+To implement the Learning-to-Rank algorithms I will use cloud based MapReduce implementation from Microsoft was used that is called HDInsight, which is based on the popular MapReduce open source implementation Hadoop\footnote{http://hadoop.apache.org/}.
+The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge}\cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR\cite{Qin2010} dataset and the LETOR successor MSLR-WEB30k.
+
 
 \chapter{Thesis Overview}
 
