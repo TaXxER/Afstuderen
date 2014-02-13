@@ -2,36 +2,38 @@
 Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions, especially in comparison with datasets used in commercial search engines, prompted Yahoo to release two internal datasets from Yahoo! search. The Yahoo! Learning to Rank Challenge\cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
 
 The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two datasets respectively: a standard Learning-to-Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment I will only look at the standard Learning-to-Rank dataset because transfer learning is a separate research area that is not included in this thesis.\\
-
-Model validation on the Learning-to-Rank methods perticipanting in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper\cite{Chapelle2011a}:\\
-\begin{description}
-\item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank\cite{Page1999}}.
-\item[Document statistics]{Basic document statistics such as the number of words and url characteristics.}
-\item[Document classifier]{Results of various classifiers on the documents. These classifiers amongst others include: spam, adult, language, main topic, and quality classifiers.}
-\item[Query]{Basic query statistics, such as the number of terms, query frequency, and click-through rate.}
-\item[Text match]{Textual similarity metrics between query and document. Includes TF-IDF, BM25\cite{Robertson2009} and other metrics for different sections of the document.}
-\item[Topical matching]{}
-\item[Click]{}
-\item[External references]{}
-\item[Time]{}
-\end{description}
-
-The performance on the test-set is measured in terms of nDCG and ERR.
-
-\begin{table}
-\begin{tabular}{llll}
+\begin{table}[!h]
+\begin{tabular}{l|lll}
  & Train & Validation & Test \\ 
+ \hline
 Queries & 19,994 & 2,994 & 6,983 \\ 
 Documents & 473,134 & 71,083 & 165,660 \\ 
 Features & 519 & - & - \\ 
 \end{tabular}
 \caption{Yahoo! Learning to Rank Challende dataset characteristics, as described in the challenge overview paper\cite{Chapelle2011a}}
 \label{tab:yahoo_characteristics}
-\end{table}
+\end{table}\\
+Model validation on the Learning-to-Rank methods perticipanting in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper\cite{Chapelle2011a}:\\
+\begin{description}
+\item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank\cite{Page1999}}.
+\item[Document statistics]{Basic document statistics such as the number of words and url characteristics.}
+\item[Document classifier]{Results of various classifiers on the documents. These classifiers amongst others include: spam, adult, language, main topic, and quality classifiers.}
+\item[Query]{Basic query statistics, such as the number of terms, query frequency, and click-through rate.}
+\item[Text match]{Textual similarity metrics between query and document. Includes \ac{TF-IDF}, BM25\cite{Robertson2009} and other metrics for different sections of the document.}
+\item[Topical matching]{These features go beyond similarity at word level and compute similarity on topic level. For example by classifying both the document and the query in a large topical taxonomy.}
+\item[Click]{Click-based user feedback.}
+\item[External references]{Document meta-information such as Delicious\footnote{https://delicious.com/} tags}
+\item[Time]{Document age and historical in- and outlink data that might help for time sensitive queries.}
+\end{description}
+
+The performance on the test-set is measured in terms of nDCG and ERR.
+
 \section{Results}
+Figure \ref{fig:yahoo_results} shows the top five participants in the Yahoo! Learning to Rank Challenge in terms of ERR score.
 \begin{table}
-\begin{tabular}{lll}
- & Authors & ERR \\ 
+\begin{tabular}{l|p{6.3cm}|l}
+ & Authors & ERR \\
+ \hline 
 1 & Burges et al (Microsoft Research) & 0.46861 \\ 
 2 & Gottschalk (Activision Blizzard) \& Vogel (Data Mining Solutions) & 0.46786 \\ 
 3 & Parakhin (Microsoft) & 0.46695 \\ 
@@ -39,6 +41,7 @@ Features & 519 & - & - \\
 5 & Sorokina (Yandex Labs) & 0.46616 \\ 
 \end{tabular}
 \caption{Final standings of the Yahoo! Learning to Rank Challenge, as presented in the challenge overview paper\cite{Chapelle2011a}}
+\label{fig:yahoo_results}
 \end{table}
 \chapter{Yandex Internet Mathematics competition}
 \section{Benchmark characteristics}

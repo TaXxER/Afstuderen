@@ -3,7 +3,7 @@
 Different definitions of Learning-to-Rank exist. In general, all ranking methods that use machine learning technologies to solve the problem of ranking are called Learning-to-Rank methods. Figure \ref{fig:discriminative_training} describes the general process of machine learning. It shows training elements from an input space that are mapped to an output space using a model such that the difference between the actual labels of the training elements and the labels predicted with with the model are minimal in terms of a loss function.
 \begin{figure}[!h]
 \includegraphics[scale=0.26]{gfx/descriminative_training}
-\caption{Machine learning framework for Learning-to-Rank, from Liu\cite{Liu2007}}
+\caption{Machine learning framework for Learning-to-Rank, obtained from Liu\cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}\\
 Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning-to-Rank method when it is \emph{feature based} and uses \emph{discriminative training}, which are itself defined as follows:
@@ -23,7 +23,7 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 Figure \ref{fig:ltr_framework} shows how the machine learning process as described in Figure \ref{fig:discriminative_training} typically takes place in a ranking scenario. A set of queries $q_i$ with $n > i > 1$, the documents associated with these queries which are represented by feature vector $x_i$, and the relevant judgments of those documents $y_i$ are used together to train a model $h$, that can predict a ranking of the documents $y_i$, such the difference between the document rankings predicted by $h$ and the actual optimal rankings based on $y_i$ is are minimal in terms of a loss function.
 \begin{figure}[!h]
 \includegraphics[scale=0.25]{gfx/ltr_framework}
-\caption{A typical Learning-to-Rank setting, from Liu\cite{Liu2007}}
+\caption{A typical Learning-to-Rank setting, obtained from Liu\cite{Liu2007}}
 \label{fig:ltr_framework}
 \end{figure}\\
 
@@ -43,4 +43,8 @@ These three approaches are in literature respectively called the pointwise appro
 \subsection{Normalized Discounted Cumulative Gain}
 \subsubsection{Cumulative Gain}
 \subsubsection{Discounted Cumulative Gain}
+\ac{DCG}
 \subsubsection{Normalized Discounted Cumulative Gain}
+\ac{nDCG}
+\subsection{Expected Reciprocal Rank}
+\ac{ERR}
