@@ -1,15 +1,34 @@
 \chapter{Yahoo! Learning to Rank Challenge}
 Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions, especially in comparison with datasets used in commercial search engines, prompted Yahoo to release two internal datasets from Yahoo! search. The Yahoo! Learning to Rank Challenge\cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
 
-The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two datasets respectively: a standard Learning-to-Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment I will only look at the standard Learning-to-Rank dataset because transfer learning is a separate research area that is not included in this thesis.
-\section{Benchmark characteristics}
-\begin{description}
-\item 36k queries
-\item 883k documents
-\item 700 features
-\end{description}
+The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two datasets respectively: a standard Learning-to-Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment I will only look at the standard Learning-to-Rank dataset because transfer learning is a separate research area that is not included in this thesis.\\
 
+Model validation on the Learning-to-Rank methods perticipanting in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided.\\
+
+The performance on the test-set is measured in terms of nDCG and ERR.
+
+\begin{table}
+\begin{tabular}{llll}
+ & Train & Validation & Test \\ 
+Queries & 19,994 & 2,994 & 6,983 \\ 
+Documents & 473,134 & 71,083 & 165,660 \\ 
+Features & 519 & - & - \\ 
+\end{tabular}
+\caption{Yahoo! Learning to Rank Challende dataset characteristics, as described in the challenge overview paper\cite{Chapelle2011a}}
+\label{tab:yahoo_characteristics}
+\end{table}
 \section{Results}
+\begin{table}
+\begin{tabular}{lll}
+ & Authors & ERR \\ 
+1 & Burges et al (Microsoft Research) & 0.46861 \\ 
+2 & Gottschalk (Activision Blizzard) \& Vogel (Data Mining Solutions) & 0.46786 \\ 
+3 & Parakhin (Microsoft) & 0.46695 \\ 
+4 & Pavlov \& Brunk (Yandex Labs) & 0.46678 \\ 
+5 & Sorokina (Yandex Labs) & 0.46616 \\ 
+\end{tabular}
+\caption{Final standings of the Yahoo! Learning to Rank Challenge, as presented in the challenge overview paper\cite{Chapelle2011a}}
+\end{table}
 \chapter{Yandex Internet Mathematics competition}
 \section{Benchmark characteristics}
 \section{Results}
@@ -17,5 +36,6 @@ The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two d
 \section{Benchmark characteristics}
 \section{Results}
 \chapter{MSLR-WEB30k}
+Contrary to the Yahoo! Learning to Rank Challenge dataset, the MSLR-WEB30k provides detailed feature descriptions. The MSLR-WEB30k dataset however contains no proprietary features but only features that are commonly used in the research community.
 \section{Benchmark characteristics}
 \section{Results}
