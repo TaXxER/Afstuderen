@@ -3,7 +3,18 @@ Yahoo's observation that all existing benchmark datasets were too small to draw 
 
 The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two datasets respectively: a standard Learning-to-Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment I will only look at the standard Learning-to-Rank dataset because transfer learning is a separate research area that is not included in this thesis.\\
 
-Model validation on the Learning-to-Rank methods perticipanting in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided.\\
+Model validation on the Learning-to-Rank methods perticipanting in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper\cite{Chapelle2011a}:\\
+\begin{description}
+\item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank\cite{Page1999}}.
+\item[Document statistics]{Basic document statistics such as the number of words and url characteristics.}
+\item[Document classifier]{Results of various classifiers on the documents. These classifiers amongst others include: spam, adult, language, main topic, and quality classifiers.}
+\item[Query]{Basic query statistics, such as the number of terms, query frequency, and click-through rate.}
+\item[Text match]{Textual similarity metrics between query and document. Includes TF-IDF, BM25\cite{Robertson2009} and other metrics for different sections of the document.}
+\item[Topical matching]{}
+\item[Click]{}
+\item[External references]{}
+\item[Time]{}
+\end{description}
 
 The performance on the test-set is measured in terms of nDCG and ERR.
 
