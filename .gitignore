@@ -44,6 +44,10 @@
 *.tex~
 *.toc
 
+# Except old versions
+!*/oude_versies/*.pdf
+
+
 
 
 
