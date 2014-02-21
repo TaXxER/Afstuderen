@@ -36,16 +36,20 @@ The predictions and the loss function might either be defined for:
 These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning-to-Rank will be described in more detail further on in this part.
 
 \chapter{Evaluating a ranking}
-Since the 
+Evaluation metrics have long been studied in the field of information retrieval. First in the form of evaluation of unranked retrieval sets and later, when the information retrieval field started focussing more on ranked retrieval, in the form of ranked retrieval evaluation. In the succeeding section several frequently used evaluation metrics for ranked results will be described.
 \section{Normalized Discounted Cumulative Gain}
 Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
 \subsection{Discounted Cumulative Gain}
 The \ac{DCG}\cite{Burges2005} at a position $p$ is defined as\\
+
 $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
+
 with $rel_i$ the graded relevance of the result at position $i$. The idea is that highly relevant documents that appear lower in a search result should be penalized (discounted). This discounting is done by reducing the graded relevance  logarithmically proportional to the position of the result.
 \subsection{Normalized Discounted Cumulative Gain}
 \ac{nDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. We can write the definition of \ac{nDCG} down mathematically as\\
+
 $nDCG_p = \frac{DCG_p}{IDCG_p}$\\
+
 Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG}.
 
 \begin{table}
@@ -68,7 +72,9 @@ $\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 
 \end{table}
 \section{Expected Reciprocal Rank}
 \ac{ERR}\cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
+
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
+
 where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
 An algorithm to compute \ac{ERR} is shown in Listing \ref{lst:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
 \begin{lstlisting}[caption={Algorithm to compute the ERR metric, obtained from \cite{Chapelle2009}}, label={lst:err},language=Ada]
@@ -82,10 +88,13 @@ return ERR
 \end{lstlisting}
 \section{Mean Average Precision}
 \ac{AP}\cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
+
 $AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
+
 With $k$ being the positions in the result set between 1 and $n$. Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant.
 \ac{MAP} is the average \ac{AP} for a set of queries.\\
-$MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$
+
+$MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$\\
 
 \begin{table}
 \begin{tabular}{lllllllllllll}
