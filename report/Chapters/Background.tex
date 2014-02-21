@@ -36,6 +36,7 @@ The predictions and the loss function might either be defined for:
 These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning-to-Rank will be described in more detail further on in this part.
 
 \chapter{Evaluating a ranking}
+Since the 
 \section{Normalized Discounted Cumulative Gain}
 Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
 \subsection{Discounted Cumulative Gain}
@@ -44,7 +45,27 @@ $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 with $rel_i$ the graded relevance of the result at position $i$. The idea is that highly relevant documents that appear lower in a search result should be penalized (discounted). This discounting is done by reducing the graded relevance  logarithmically proportional to the position of the result.
 \subsection{Normalized Discounted Cumulative Gain}
 \ac{nDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. We can write the definition of \ac{nDCG} down mathematically as\\
-$nDCG_p = \frac{DCG_p}{IDCG_p}$
+$nDCG_p = \frac{DCG_p}{IDCG_p}$\\
+Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG}.
+
+\begin{table}
+\begin{tabular}{llllllllllll}
+ & \multicolumn{10}{c}{Rank} &  \\ 
+\cline{2-11}
+ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Sum \\ 
+\hline
+rel(i) & 10 & 7 & 6 & 8 & 9 & 5 & 1 & 3 & 2 & 4 &  \\ 
+$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 40.4 & 16 & 55.1 & 99.0 & 5.7 & 0.3 & 1.3 & 0.6 & 2.3 & 732.7 \\ 
+\hline
+optimal rank & 10 & 9 & 8 & 7 & 6 & 5 & 4 & 3 & 2 & 1 &  \\ 
+$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 1.3 & 0.6 & 0.2 & 788.0 \\ 
+\hline
+ &  &  &  &  &  &  &  &  &  &  &  \\ 
+ & \multicolumn{10}{c}{nDCG = $\frac{732.7}{788.0} = 0.93$} &  \\ 
+\end{tabular}
+\caption{Example calculation for \ac{nDCG}}
+\label{tab:example_calculation_nDCG}
+\end{table}
 \section{Expected Reciprocal Rank}
 \ac{ERR}\cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
@@ -62,9 +83,25 @@ return ERR
 \section{Mean Average Precision}
 \ac{AP}\cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
 $AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
-With $k$ being the positions in the result set between 1 and $n$.
+With $k$ being the positions in the result set between 1 and $n$. Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant.
 \ac{MAP} is the average \ac{AP} for a set of queries.\\
 $MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$
+
+\begin{table}
+\begin{tabular}{lllllllllllll}
+ & \multicolumn{10}{c}{Rank} &  & Sum \\ 
+\cline{2-11}
+ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 &  &  \\ 
+\hline
+$r_i$ & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 &  &  \\ 
+P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\ 
+\hline
+ &  &  &  &  &  &  &  &  &  & /\#Relevant docs & = & 7 \\ 
+ &  &  &  &  &  &  &  &  &  & AP@10 & = & 0.34 \\ 
+\end{tabular}
+\caption{Average Precision example calculation. The number of relevant documents \emph{R} is assumed to be seven.}
+\label{tab:example_calculation_AP}
+\end{table}
 
 \chapter{Approaches to Learning-to-Rank}
 %TODO: Pointwise, pairwise & listwise beter uitwerken
