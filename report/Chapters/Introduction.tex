@@ -21,14 +21,9 @@ This work focuses on those Learning-to-Rank algorithms that have shown leading p
 The research questions raised and answered in this work include:
 \begin{itemize}
 \item What is the speed-up of existing Learning-to-Rank algorithms when executed using the MapReduce framework?\\
-In which Nussbaum and Agarwal's definition of asymptotic speed-up will be used for speed-up $S(s)$\cite{Nussbaum1991}:\\
+Where the definition of \emph{relative speed-up} is used for speed-up\cite{Sun1991}:\\
 
-\begin{math}
-s \equiv \text{problem size}\\
-T_{seq}(s) \equiv \Theta(\text{Serial Running Time})\\
-T_{par}(s) \equiv \Theta(\text{Minimum Parallel Running Time})\\
-S(s) \equiv \frac{T_{seq}(s)}{T_{par}(s)}\\
-\end{math}
+$S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$
 
 \item Can we adjust those Learning-to-Rank algorithms such that the parallel execution speed-up increases without decreasing accuracy?
 \end{itemize}
