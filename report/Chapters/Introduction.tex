@@ -18,15 +18,15 @@ The appearance of benchmark datasets gave insight in the performance of differen
 \label{chap:goals}
 The objective of this thesis is to explore the speed-up in execution time of Learning-to-Rank algorithms through parallelisation using the MapReduce framework. 
 This work focuses on those Learning-to-Rank algorithms that have shown leading performance on relevant benchmark datasets.
-The research questions raised and answered in this work include:
-\begin{itemize}
-\item What is the speed-up of existing Learning-to-Rank algorithms when executed using the MapReduce framework?\\
+This thesis addresses the following research questions:
+\begin{description}
+\item[RQ1] What is the speed-up of existing Learning-to-Rank algorithms when executed using the MapReduce framework?\\
 Where the definition of \emph{relative speed-up} is used for speed-up\cite{Sun1991}:\\
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$
 
-\item Can we adjust those Learning-to-Rank algorithms such that the parallel execution speed-up increases without decreasing accuracy?
-\end{itemize}
+\item[RQ2] Can we adjust those Learning-to-Rank algorithms such that the parallel execution speed-up increases without decreasing accuracy?
+\end{description}
 
 \chapter{Approach}
 A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:
@@ -38,6 +38,8 @@ and the following bibliographic databases:
 \item Scopus
 \item Web of Science
 \end{itemize}
+
+The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing. \emph{large scale} is a term in the search query that is likely to result in a decrease of precision, because this term is also often used in highly efficient sequential approaches. However, the \emph{large scale} term is still included in the query to prevent missing relevant results.\\
 
 To answer the first research question I will implement Learning-to-Rank methods in the MapReduce framework and measuring the runtime as a factor of the number of cluster nodes used to complete the computation.\\
 
