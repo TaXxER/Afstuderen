@@ -33,7 +33,7 @@ $S_N = \frac{\text{execution time using one core}}{\text{execution time using \e
 \chapter{Approach}
 A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:
 \begin{itemize}
-\item ("learning to rank" OR "learning-to-rank" OR "machine learned ranking") AND ("large scale" OR "parallel" OR "distributed")
+\item ("learning to rank" OR "learning-to-rank" OR "machine learned ranking") AND ("parallel" OR "distributed")
 \end{itemize}
 and the following bibliographic databases:
 \begin{itemize}
@@ -41,7 +41,7 @@ and the following bibliographic databases:
 \item Web of Science
 \end{itemize}
 
-The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing. \emph{large scale} is a term in the search query that is likely to result in a decrease of precision, because this term is also often used in highly efficient sequential approaches. However, the \emph{large scale} term is still included in the query to prevent missing relevant results.\\
+The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing.\\
 
 To answer the first research question I will implement Learning-to-Rank methods in the MapReduce framework and measuring the runtime as a factor of the number of cluster nodes used to complete the computation.\\
 

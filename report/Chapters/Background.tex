@@ -113,14 +113,12 @@ P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\
 \end{table}
 
 \chapter{Approaches to Learning-to-Rank}
-%TODO: Pointwise, pairwise & listwise beter uitwerken
 \section{Pointwise Approach}
-Learn from each document in isolation.
-Through:
+The pointwise approach can be seen as the most straightforward way of using machine learning for ranking. Pointwise Learning-to-Rank methods directly apply machine learning methods to the ranking problem by observing each document in isolation. They can be subdivided in the following approaches:
 	\begin{enumerate}
-	\item regression, when relevance is real-valued
-	\item classification, when relevance is categorical
-	\item ordinal regression
+	\item regression-based, which estimate the relevance of a considered document using a regression model.
+	\item classification-based, which classify the relevance category of the document using a classification model.
+	\item ordinal regression-based, which classify the relevance category of the document using a classification model in such a way that the order of relevance categories is taken into account. 
 	\end{enumerate}
 \section{Pairwise Approach}
 Pointwise approach Learning-to-Rank methods optimise real valued expected relevance, while evaluation metrics like \ac{nDCG} and \ac{ERR} are only impacted by a change in expected relevance when that change impacts a pairwise preference. The pairwise approach solves this drawback of the pointwise approach by regarding ranking as pairwise classification. Aggregating a set of predicted pairwise preferences into the corresponding optimal rank is shown to be a NP-Hard problem. 
