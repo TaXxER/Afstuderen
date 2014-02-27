@@ -1,5 +1,5 @@
 \chapter{Yahoo! Learning to Rank Challenge}
-Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions, especially in comparison with datasets used in commercial search engines, prompted Yahoo to release two internal datasets from Yahoo! search. The Yahoo! Learning to Rank Challenge\cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
+Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions, especially in comparison with datasets used in commercial search engines, prompted Yahoo to release two internal datasets from Yahoo! search. The Yahoo! Learning to Rank Challenge \cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
 
 The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two datasets respectively: a standard Learning-to-Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment I will only look at the standard Learning-to-Rank dataset because transfer learning is a separate research area that is not included in this thesis.\\
 \begin{table}[!h]
@@ -10,16 +10,16 @@ Queries & 19,994 & 2,994 & 6,983 \\
 Documents & 473,134 & 71,083 & 165,660 \\ 
 Features & 519 & - & - \\ 
 \end{tabular}
-\caption{Yahoo! Learning to Rank Challenge dataset characteristics, as described in the challenge overview paper\cite{Chapelle2011a}}
+\caption{Yahoo! Learning to Rank Challenge dataset characteristics, as described in the challenge overview paper \cite{Chapelle2011a}}
 \label{tab:yahoo_characteristics}
 \end{table}\\
-Both \ac{nDCG} and \ac{ERR} are measured as performance metrics, but the final standings of the challenge were based on the \ac{ERR} values. Model validation on the Learning-to-Rank methods participating in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. Competitors could train on the training set and get immediate feedback on their performance on the validation set. The test set performance is used to create the final standings and is only measured after the competition has ended to avoid overfitting on the test set. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper\cite{Chapelle2011a}:\\
+Both \ac{nDCG} and \ac{ERR} are measured as performance metrics, but the final standings of the challenge were based on the \ac{ERR} values. Model validation on the Learning-to-Rank methods participating in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. Competitors could train on the training set and get immediate feedback on their performance on the validation set. The test set performance is used to create the final standings and is only measured after the competition has ended to avoid overfitting on the test set. The large number of documents, queries and features compared to other benchmark datasets makes the Yahoo! Learning to Rank Challenge dataset interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper \cite{Chapelle2011a}:\\
 \begin{description}
-\item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank\cite{Page1999}}.
+\item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank \cite{Page1999}}.
 \item[Document statistics]{Basic document statistics such as the number of words and url characteristics.}
 \item[Document classifier]{Results of various classifiers on the documents. These classifiers amongst others include: spam, adult, language, main topic, and quality classifiers.}
 \item[Query]{Basic query statistics, such as the number of terms, query frequency, and click-through rate.}
-\item[Text match]{Textual similarity metrics between query and document. Includes \ac{TF-IDF}, BM25\cite{Robertson2009} and other metrics for different sections of the document.}
+\item[Text match]{Textual similarity metrics between query and document. Includes \ac{TF-IDF}, BM25 \cite{Robertson2009} and other metrics for different sections of the document.}
 \item[Topical matching]{These features go beyond similarity at word level and compute similarity on topic level. For example by classifying both the document and the query in a large topical taxonomy.}
 \item[Click]{Click-based user feedback.}
 \item[External references]{Document meta-information such as Delicious\footnote{https://delicious.com/} tags}
@@ -27,7 +27,7 @@ Both \ac{nDCG} and \ac{ERR} are measured as performance metrics, but the final s
 \end{description}
 
 \section{Results}
-Figure \ref{fig:yahoo_results} shows the top five participants in the Yahoo! Learning to Rank Challenge in terms of ERR score. The top five participants all used decision trees and ensemble methods. Burges et al\cite{Burges2011} created a linear combination ensemble of eight LambdaMART\cite{Burges2010}, two LambdaRank and two Logistic Regression models. Gottschalk and Vogel used a combination of RandomForest models and \ac{GBDT} models. Pavlov and Brunk used a regression based model using the BagBoo\cite{Pavlov2010} ensemble technique, which combines bagging and boosting. Sorokina used a similar combination of bagging and boosting that is called Additive Groves\cite{Sorokina2007}.\\
+Figure \ref{fig:yahoo_results} shows the top five participants in the Yahoo! Learning to Rank Challenge in terms of ERR score. The top five participants all used decision trees and ensemble methods. Burges et al \cite{Burges2011} created a linear combination ensemble of eight LambdaMART \cite{Burges2010}, two LambdaRank and two Logistic Regression models. Gottschalk and Vogel used a combination of RandomForest models and \ac{GBDT} models. Pavlov and Brunk used a regression based model using the BagBoo \cite{Pavlov2010} ensemble technique, which combines bagging and boosting. Sorokina used a similar combination of bagging and boosting that is called Additive Groves \cite{Sorokina2007}.\\
 
 The challenge overview paper states as one of the lessons of the challenge that the simple baseline \ac{GBDT} model performed very well with a small performance gap to the complex ensemble submissions at the top of the table.\\
 
@@ -41,19 +41,19 @@ The challenge overview paper states as one of the lessons of the challenge that 
 4 & Pavlov \& Brunk (Yandex Labs) & 0.46678 \\ 
 5 & Sorokina (Yandex Labs) & 0.46616 \\ 
 \end{tabular}
-\caption{Final standings of the Yahoo! Learning to Rank Challenge, as presented in the challenge overview paper\cite{Chapelle2011a}}
+\caption{Final standings of the Yahoo! Learning to Rank Challenge, as presented in the challenge overview paper \cite{Chapelle2011a}}
 \label{fig:yahoo_results}
 \end{table}
 
-Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo\cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
+Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
 \chapter{Yandex Internet Mathematics competition}
 
 \section{Results}
-The Yandex Internet Mathematics competition was won by 
+The Yandex Internet Mathematics competition was won by Pavlov et al \cite{Pavlov2010} with the BagBoo method.
 
 
 \chapter{LETOR}
-The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009. The LETOR3.0 benchmark collection\cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection.\\
+The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009. The LETOR3.0 benchmark collection \cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection.\\
 
 \section{LETOR3.0}
 The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the TREC web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
@@ -68,16 +68,16 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\end{itemize}}
 \item[pairwise]{\leavevmode
 	\begin{itemize}
-	\item RankingSVM\cite{Herbrich1999,Joachims2002}
-	\item RankBoost\cite{Freund2003}
-	\item FRank\cite{Tsai2007}
+	\item RankingSVM \cite{Herbrich1999,Joachims2002}
+	\item RankBoost \cite{Freund2003}
+	\item FRank \cite{Tsai2007}
 	\end{itemize}}
 \item[listwise]{\leavevmode
 	\begin{itemize}
-	\item ListNet\cite{Cao2007}
-	\item AdaRank-MAP\cite{Xu2007}
-	\item AdaRank-nDCG\cite{Xu2007}
-	\item SVMMAP\cite{Yue2007} 
+	\item ListNet \cite{Cao2007}
+	\item AdaRank-MAP \cite{Xu2007}
+	\item AdaRank-nDCG \cite{Xu2007}
+	\item SVMMAP \cite{Yue2007} 
 	\end{itemize}}
 \end{description} 
 \begin{table}[!h]
@@ -115,7 +115,7 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 24& BM25 of \ac{URL}				& 59& Length of \ac{URL}\\
 25& BM25 of whole document			& 60& Number of child page\\
 
-26& LMIR.ABS\cite{Zhai2001} of body	& 61& BM25 of extracted title\\
+26& LMIR.ABS \cite{Zhai2001} of body	& 61& BM25 of extracted title\\
 27& LMIR.ABS of anchor				& 62& LMIR.ABS of extracted title\\
 28& LMIR.ABS of title				& 63& LMIR.DIR of extracted title\\
 29& LMIR.ABS of \ac{URL}			& 64& LMIR.JM of extracted title\\
@@ -128,7 +128,7 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 35& LMIR.DIR of whole document\\
 \end{tabular}
 }
-\caption{Features of the LETOR .GOV dataset, obtained from Qin et al\cite{Qin2010}}
+\caption{Features of the LETOR .GOV dataset, obtained from Qin et al \cite{Qin2010}}
 \label{tbl:features_gov}
 \end{table}
 
@@ -166,25 +166,25 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 23& $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|} \cdot \frac{|C|}{df(q_i)}+1)$ of abstract					& & \\
 \end{tabular}
 }
-\caption{Features of the LETOR OHSUMED dataset, obtained from Qin et al\cite{Qin2010}}
+\caption{Features of the LETOR OHSUMED dataset, obtained from Qin et al \cite{Qin2010}}
 \label{tbl:features_ohsumed}
 \end{table}
 \subsection{Results}
-The LETOR paper\cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{nDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
+The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{nDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
 
 \begin{figure}[!h]
 \includegraphics[scale=0.30]{gfx/ndcg_winning_number}
-\caption{Comparison across the seven datasets in LETOR by \ac{nDCG}, obtained from Qin et al\cite{Qin2010}}
+\caption{Comparison across the seven datasets in LETOR by \ac{nDCG}, obtained from Qin et al \cite{Qin2010}}
 \label{fig:ndcg_winning_number}
 \end{figure}
 
 \begin{figure}[!h]
 \includegraphics[scale=0.30]{gfx/map_winning_number}
-\caption{Comparison across the seven datasets in LETOR by \ac{MAP}, obtained from Qin et al\cite{Qin2010}}
+\caption{Comparison across the seven datasets in LETOR by \ac{MAP}, obtained from Qin et al \cite{Qin2010}}
 \label{fig:map_winning_number}
 \end{figure}
 
-I will describe the performance of the algorithms that were evaluated on LETOR3.0 after publication of the LETOR paper by Qin et al\cite{Qin2010} as listed on the LETOR website\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
+I will describe the performance of the algorithms that were evaluated on LETOR3.0 after publication of the LETOR paper by Qin et al \cite{Qin2010} as listed on the LETOR website\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
 \begin{table}
 \begin{tabular}{l|ll}
  & \ac{nDCG}@10 & \ac{MAP} \\ 
@@ -219,7 +219,7 @@ OHSUMED & 0.4436 & 0.4504 & 0.4523 & 0.4568 & 0.441 \\
 \end{table}
 \section{LETOR4.0}
 \subsection{Results}
-BoostedTree model\cite{Kocsis2013} showed an \ac{nDCG} of 0.5071 on the MQ2007 dataset and thereby beat all baseline models.
+BoostedTree model \cite{Kocsis2013} showed an \ac{nDCG} of 0.5071 on the MQ2007 dataset and thereby beat all baseline models.
 
 \chapter{MSLR-WEB10k/MSLR-WEB30k}
 Contrary to the Yahoo! Learning to Rank Challenge dataset, the MSLR-WEB30k provides detailed feature descriptions. The MSLR-WEB30k dataset however contains no proprietary features but only features that are commonly used in the research community.
@@ -229,5 +229,5 @@ Contrary to the Yahoo! Learning to Rank Challenge dataset, the MSLR-WEB30k provi
 The Accuracies of the Learning-to-Rank methods described in the preceding chapters must only be compared within the benchmark and not between benchmarks for the following reasons:
 \begin{enumerate}
 \item Differences in feature sets between data sets detract from fair comparison
-\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al\cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
+\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
 \end{enumerate}

@@ -3,7 +3,7 @@
 Different definitions of Learning-to-Rank exist. In general, all ranking methods that use machine learning technologies to solve the problem of ranking are called Learning-to-Rank methods. Figure \ref{fig:discriminative_training} describes the general process of machine learning. It shows training elements from an input space that are mapped to an output space using a model such that the difference between the actual labels of the training elements and the labels predicted with with the model are minimal in terms of a loss function.
 \begin{figure}[!h]
 \includegraphics[scale=0.26]{gfx/descriminative_training}
-\caption{Machine learning framework for Learning-to-Rank, obtained from Liu\cite{Liu2007}}
+\caption{Machine learning framework for Learning-to-Rank, obtained from Liu \cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}\\
 Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning-to-Rank method when it is \emph{feature based} and uses \emph{discriminative training}, which are itself defined as follows:
@@ -23,7 +23,7 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 Figure \ref{fig:ltr_framework} shows how the machine learning process as described in Figure \ref{fig:discriminative_training} typically takes place in a ranking scenario. A set of queries $q_i$ with $n > i > 1$, the documents associated with these queries which are represented by feature vector $x_i$, and the relevant judgements of those documents $y_i$ are used together to train a model $h$, that can predict a ranking of the documents $y_i$, such the difference between the document rankings predicted by $h$ and the actual optimal rankings based on $y_i$ is are minimal in terms of a loss function.
 \begin{figure}[!h]
 \includegraphics[scale=0.25]{gfx/ltr_framework}
-\caption{A typical Learning-to-Rank setting, obtained from Liu\cite{Liu2007}}
+\caption{A typical Learning-to-Rank setting, obtained from Liu \cite{Liu2007}}
 \label{fig:ltr_framework}
 \end{figure}\\
 
@@ -40,7 +40,7 @@ Evaluation metrics have long been studied in the field of information retrieval.
 \section{Normalized Discounted Cumulative Gain}
 Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
 \subsection{Discounted Cumulative Gain}
-The \ac{DCG}\cite{Burges2005} at a position $p$ is defined as\\
+The \ac{DCG} \cite{Burges2005} at a position $p$ is defined as\\
 
 $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
@@ -71,7 +71,7 @@ $\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 
 \label{tab:example_calculation_nDCG}
 \end{table}
 \section{Expected Reciprocal Rank}
-\ac{ERR}\cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
+\ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
 
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
 
@@ -87,7 +87,7 @@ end for
 return ERR
 \end{lstlisting}
 \section{Mean Average Precision}
-\ac{AP}\cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
+\ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
 
 $AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
 
