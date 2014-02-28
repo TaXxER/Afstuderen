@@ -28,4 +28,11 @@ Pavlov et al \cite{Pavlov2010} at Yandex developed a hybrid model that combines 
 \section{BoostingTree}
 Kocsis et al \cite{Kocsis2013} propose way to train multiple weak learners in parallel and extend those models that are likely to yield a good model when combined through boosting. Authors showed through theoretical analysis that the proposed algorithm asymptotically achieve equal performance to regular boosting. Using this parallel BoostingTree algorithm \ac{GBDT} models could be trained in parallel.
 \section{Deep Stacking Networks}
-A \ac{DSN} is a processing architecture developed from the field of \emph{Deep Learning}, that uses the \ac{MSE} loss function that is easily optimisable.\ac{DSN} is based on the stacked generalization ensemble learning method \cite{Wolpert1992}, 
+A \ac{DSN} is a processing architecture developed from the field of \emph{Deep Learning}, that uses the \ac{MSE} loss function that is easily optimisable.\ac{DSN} is based on the stacked generalization ensemble learning method \cite{Wolpert1992}, an approach where several learning models are stacked on top of each other in such a way that the output of a model is used as one of the input features of models higher up in the stack. Each layer in the stack learns has the task of learning the weights of the inputs of that layer. The close-form constraints between input and output weights allow the input weight matrices to be estimated in a parallel manner.
+\section{Alternating Direction Method of Multipliers}
+Duh et al \cite{Duh2011} propose the use of \ac{ADMM} for the Learning-to-Rank task. \ac{ADMM} is a general optimization method that solves problems of the form
+\begin{alignat*}{2}
+\text{minimize }   &  f(x) + g(x) \\
+\text{subject to } &  Ax + Bz = c
+\end{alignat*}
+by updating $x$ and $z$ in an alternating fashion. It holds the nice properties that it can be executed in parallel and that it allows for incremental model updates without full retraining. Duh et al \cite{Duh2011} show how to use \ac{ADMM} to train a RankSVM model in parallel. Experiments showed the \ac{ADMM} implementation to achieve a 13.1x training time speed-up on 72 workers, compared to training on a single worker.
