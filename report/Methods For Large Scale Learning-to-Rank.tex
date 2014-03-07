@@ -88,20 +88,18 @@
 \chapter{Introduction}
 \include*{Chapters/Introduction} 
 \cleardoublepage
-\ctparttext{This part provides a background in the Learning-to-Rank field with the goal of making the subsequential parts of this thesis understandable for non-experts in the field.}
+
 \chapter{Technical Background}
 \include*{Chapters/Background}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
 \chapter{Related Work}
 \include*{Chapters/RelatedWork}
-\ctparttext{This part describes benchmark characteristics like collection size and features and gives an overview of the performance of different Learning-to-Rank methods. Performance differences for a given Learning-to-Rank method are explained in terms of differences in benchmark characteristics. This section is concluded with a selection of Learning-to-Rank methods to include in the experiments.}
+
 \chapter{Benchmark results}
 \include*{Chapters/BenchmarkResults}
-\ctparttext{Algorithms and details of the well-performing Learning-to-Rank methods as selected in the aforegoing part are presented and explained in this part.}
 \chapter{Selected Learning-to-Rank methods}
 \include*{Chapters/LTRMethods}
-\ctparttext{Describes implementation details of the Learning-to-Rank algorithm parallel implementations in HDInsight that are either Hadoop, Microsoft Azure, or HDInsight and are not part of the algorithm specification itself.}
 \chapter{Implementation}
 \include*{Chapters/Implementation}
 \chapter{Results \& Discussion}
@@ -111,10 +109,9 @@
 % ********************************************************************
 % Backmatter
 %*******************************************************
-\appendix
 \cleardoublepage
-\chapter{Appendix}
-\include{Chapters/Chapter0A}
+\appendix
+\include*{Chapters/AppendixA}
 %********************************************************************
 % Other Stuff in the Back
 %*******************************************************

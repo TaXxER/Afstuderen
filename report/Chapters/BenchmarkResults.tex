@@ -1,4 +1,7 @@
 \label{chap:benchmark_results}
+This chapter describes benchmark characteristics like collection size and features and gives an overview of the performance of different Learning-to-Rank methods. Performance differences for a given Learning-to-Rank method are explained in terms of differences in benchmark characteristics. This chapter is concluded with a selection of Learning-to-Rank methods to include in the experiments.\\
+
+Benchmarking datasets enable fair comparisons of ranking models over a fixed set of documents and queries. The approach of using fixed benchmarking datasets to compare the performance of Information Retrieval systems under equal circumstances has been the standard evaluation methodology in the Information Retrieval field since the release of the Cranfield collection \cite{Cleverdon1966}.
 \section{Yahoo! Learning to Rank Challenge}
 Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions prompted Yahoo to release two internal datasets from Yahoo! search. Datasets used at commercial search engines are many times larger than available benchmark datasets. Yahoo! published a subset of their own commercial training data and launched a Learning-to-Rank competition based on this data. The Yahoo! Learning to Rank Challenge \cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
 
@@ -57,7 +60,7 @@ The Yandex Internet Mathematics competition was won by Pavlov et al \cite{Pavlov
 The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009. The LETOR3.0 benchmark collection \cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection.\\
 
 \subsection{LETOR3.0}
-The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the TREC web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
+The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the TREC web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
 
 Different query sets exists for the .gov corpus. Those query sets are categorized in the following categories \cite{Craswell2003}:
 \begin{description}
@@ -87,95 +90,8 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\item SVMMAP \cite{Yue2007} 
 	\end{itemize}}
 \end{description} 
-\begin{table}[!h]
-\scalebox{0.87}{
-\begin{tabular}{p{0.29cm}|p{7.26cm}||p{0.29cm}|p{9.55cm}}
- \textbf{ID} & \textbf{Feature Description} & \textbf{ID} & \textbf{Feature Description}\\ 
- \hline
-1 & \ac{TF} of body					& 36& LMIR.JM of body\\
-2 &	\ac{TF} of anchor				& 37& LMIR.JM of anchor\\
-3 & \ac{TF} of title				& 38& LMIR.JM of title\\
-4 & \ac{TF} of \ac{URL}				& 39& LMIR.JM of \ac{URL}\\
-5 & \ac{TF} of whole document		& 40& LMIR.JM of whole document\\
 
-6 & \ac{IDF} of body 				& 41& Sitemap based term propagation\\
-7 & \ac{IDF} of anchor 				& 42& Sitemap based score propagation\\
-8 & \ac{IDF} of title 				& 43& Hyperlink based score propagation: weighted in-link\\
-9 & \ac{IDF} of \ac{URL} 			& 44& Hyperlink based score propagation: weighted out-link\\
-10& \ac{IDF} of whole document 		& 45& Hyperlink based score propagation: uniform out-link\\
 
-11& \ac{TF-IDF} of body 			& 46& Hyperlink based feature propagation: weighted in-link\\
-12& \ac{TF-IDF} of anchor 			& 47& Hyperlink based feature propagation: weighted out-link\\
-13& \ac{TF-IDF} of title 			& 48& Hyperlink based feature propagation: uniform out-link\\
-14& \ac{TF-IDF} of \ac{URL}			& 49& HITS authority\\
-15& \ac{TF-IDF} of whole document	& 50& HITS hub\\
-
-16& Document length of body			& 51& PageRank\\
-17& Document length of anchor		& 52& HostRank\\
-18& Document length of title		& 53& Topical PageRank\\
-19& Document length of \ac{URL}		& 54& Topical HITS authority\\
-20& Document length of whole document	& 55& Topical HITS hub\\
-
-21& BM25 of body					& 56& In-link number\\
-22& BM25 of anchor					& 57& Out-link number\\
-23& BM25 of title					& 58& Number of slashes in \ac{URL}\\
-24& BM25 of \ac{URL}				& 59& Length of \ac{URL}\\
-25& BM25 of whole document			& 60& Number of child page\\
-
-26& LMIR.ABS \cite{Zhai2001} of body	& 61& BM25 of extracted title\\
-27& LMIR.ABS of anchor				& 62& LMIR.ABS of extracted title\\
-28& LMIR.ABS of title				& 63& LMIR.DIR of extracted title\\
-29& LMIR.ABS of \ac{URL}			& 64& LMIR.JM of extracted title\\
-30& LMIR.ABS of whole document\\
-
-31& LMIR.DIR of body\\
-32& LMIR.DIR of anchor\\
-33& LMIR.DIR of title\\
-34& LMIR.DIR of \ac{URL}\\
-35& LMIR.DIR of whole document\\
-\end{tabular}
-}
-\caption{Features of the LETOR .GOV dataset, obtained from Qin et al \cite{Qin2010}}
-\label{tbl:features_gov}
-\end{table}
-
-\begin{table}[!h]
-\scalebox{0.87}{
-\begin{tabular}{p{0.29cm}|p{6.88cm}||p{0.29cm}|p{6.90cm}}
- \textbf{ID} & \textbf{Feature Description} & \textbf{ID} & \textbf{Feature Description}\\ 
- \hline
-1 & $\sum\nolimits_{q_i \in q \cap d}c(q_i, d)$ of title					& 24&  $\sum\nolimits_{q_i \in q \cap d}c(q_i,d)\cdot log(\frac{|C|}{df(q_i)})$ of abstract\\
-2 &	$\sum\nolimits_{q_i \in q \cap d}log(c(q_i, d)+1)$ of title				& 25& $\sum\nolimits_{q_i \in q \cap d} log(\frac{c(q_i,d)}{|d|}) \cdot \frac{|C|}{c(q_i,C)}+1$ of abstract\\
-3 & $\sum\nolimits_{q_i \in q \cap d}\frac{c(q_i,d)}{|d|}$ of title				& 26& BM25 of abstract\\
-4 & $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|}+1)$ of title				& 27& $log($BM25$)$ of abstract\\
-5 & $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{df(q_i)})$ of title		& 28& LMIR.DIR of abstract\\
-
-6 & $\sum\nolimits_{q_i \in q \cap d}log(log(\frac{|C|}{df(q_i)}))$ of title 				& 29& LMIR.JM of abstract\\
-7 & $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{c(q_i,C)}+1)$ of title 				& 30& LMIR.ABS of abstract\\
-8 & $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|} \cdot \frac{|C|}{df(q_i)}+1)$ of title 				& 31& $\sum\nolimits_{q_i \in q \cap d}c(q_i, d)$ of title + abstract\\
-9 & $\sum\nolimits_{q_i \in q \cap d}c(q_i,d)\cdot log(\frac{|C|}{df(q_i)})$ of title 			& 32&	$\sum\nolimits_{q_i \in q \cap d}log(c(q_i, d)+1)$ of title + abstract\\
-10& $\sum\nolimits_{q_i \in q \cap d} log(\frac{c(q_i,d)}{|d|}) \cdot \frac{|C|}{c(q_i,C)}+1$ of title		& 33& $\sum\nolimits_{q_i \in q \cap d}\frac{c(q_i,d)}{|d|}$ of title + abstract\\
-
-11& BM25 of title 			& 34& $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|}+1)$ of title + abstract\\
-12& $log($BM25$)$ of title 			& 35& $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{df(q_i)})$ of title + abstract\\
-13& LMIR.DIR of title 			& 36& $\sum\nolimits_{q_i \in q \cap d}log(log(\frac{|C|}{df(q_i)}))$ of title + abstract\\
-14& LMIR.JM of title			& 37& $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{c(q_i,C)}+1)$ of title + abstract\\
-15& LMIR.ABS of title	& 38& $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|} \cdot \frac{|C|}{df(q_i)}+1)$ of title + abstract\\
-
-16& $\sum\nolimits_{q_i \in q \cap d}c(q_i, d)$ of abstract		& 39& $\sum\nolimits_{q_i \in q \cap d}c(q_i,d)\cdot log(\frac{|C|}{df(q_i)})$ of title + abstract\\
-17& $\sum\nolimits_{q_i \in q \cap d}log(c(q_i, d)+1)$ of abstract		& 40& $\sum\nolimits_{q_i \in q \cap d} log(\frac{c(q_i,d)}{|d|}) \cdot \frac{|C|}{c(q_i,C)}+1$ of title + abstract\\
-18& $\sum\nolimits_{q_i \in q \cap d}\frac{c(q_i,d)}{|d|}$ of abstract		& 41& BM25 of title + abstract\\
-19& $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|}+1)$ of abstract		& 42& $log($BM25$)$ of title + abstract\\
-20& $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{df(q_i)})$ of abstract	& 43& LMIR.DIR of title + abstract\\
-
-21& $\sum\nolimits_{q_i \in q \cap d}log(log(\frac{|C|}{df(q_i)}))$ of abstract					& 44& LMIR.JM of title + abstract\\
-22&  $\sum\nolimits_{q_i \in q \cap d}log(\frac{|C|}{c(q_i,C)}+1)$ of abstract					& 45& LMIR.ABS of title + abstract\\
-23& $\sum\nolimits_{q_i \in q \cap d}log(\frac{c(q_i,d)}{|d|} \cdot \frac{|C|}{df(q_i)}+1)$ of abstract					& & \\
-\end{tabular}
-}
-\caption{Features of the LETOR OHSUMED dataset, obtained from Qin et al \cite{Qin2010}}
-\label{tbl:features_ohsumed}
-\end{table}
 \subsection{Results}
 The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{nDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
 
