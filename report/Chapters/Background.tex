@@ -8,7 +8,7 @@ Different definitions of Learning-to-Rank exist. In general, all ranking methods
 \end{figure}\\
 Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning-to-Rank method when it is \emph{feature based} and uses \emph{discriminative training}, which are itself defined as follows:
 \begin{description}
-\item[Feature Based]{means that all documents under investigation are represented by feature vectors that reflect the relevance of the documents to the query.}
+\item[Feature Based]{means that all documents under investigation are represented by feature vectors. Those feature vectors reflect the relevance of the documents to the query, or the importance of the document in itself.}
 \item[Discriminative Training]{means that the learning process can be well described by the four components of discriminative learning. That is, a Learning-to-Rank method has its own \emph{input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function}, like the machine learning process described by Figure \ref{fig:discriminative_training}. \emph{Input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function} are hereby defined as follows:
 	\begin{description}
 	\item[Input Space]{contains the objects under investigation. Usually objects are represented by feature vectors, extracted according to different applications.}
@@ -42,32 +42,47 @@ No single evaluation metric that we are going to describe is indisputably better
 \section{Normalized Discounted Cumulative Gain}
 Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
 \subsection{Discounted Cumulative Gain}
-The \ac{DCG} \cite{Burges2005} at a position $p$ is defined as\\
+There are two definitions of \ac{DCG} used in practice. \ac{DCG} at position $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
+
+$DCG_p = \sum\nolimits_{i=1}^p \frac{rel_i-1}{log_2(i+1)}$\\
+
+with $rel_i$ the graded relevance of the result at position $i$. The idea is that highly relevant documents that appear lower in a search result should be penalized (discounted). This discounting is done by reducing the graded relevance  logarithmically proportional to the position of the result.\\
+
+Burges et al. \cite{Burges2005} proposed an alternative definition of \ac{DCG} that puts stronger emphasis on document relevance\\
 
 $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
-with $rel_i$ the graded relevance of the result at position $i$. The idea is that highly relevant documents that appear lower in a search result should be penalized (discounted). This discounting is done by reducing the graded relevance  logarithmically proportional to the position of the result.
+
 \subsection{Normalized Discounted Cumulative Gain}
 \ac{nDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. The definition of \ac{nDCG} can be written down mathematically as\\
 
 $nDCG_p = \frac{DCG_p}{IDCG_p}$\\
 
-Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG}.
+Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG} for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.
 
-\begin{table}
+\begin{table}[!h]
 \begin{tabular}{llllllllllll}
  & \multicolumn{10}{c}{Rank} &  \\ 
 \cline{2-11}
  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Sum \\ 
 \hline
-rel(i) & 10 & 7 & 6 & 8 & 9 & 5 & 1 & 3 & 2 & 4 &  \\ 
-$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 40.4 & 16 & 55.1 & 99.0 & 5.7 & 0.3 & 1.3 & 0.6 & 2.3 & 732.7 \\ 
 \hline
-optimal rank & 10 & 9 & 8 & 7 & 6 & 5 & 4 & 3 & 2 & 1 &  \\ 
-$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 1.3 & 0.6 & 0.2 & 788.0 \\ 
+rel(i) & 10 & 7 & 6 & 8 & 9 & 5 & 1 & 3 & 2 & 4 &  \\
 \hline
- &  &  &  &  &  &  &  &  &  &  &  \\ 
- & \multicolumn{10}{c}{nDCG = $\frac{732.7}{788.0} = 0.93$} &  \\ 
+$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 40.4 & 16 & 55.1 & 99.0 & 5.7 & 0.3 & 1.3 & 0.6 & 2.3 & 732.7 \\
+\hline
+$\frac{rel_i}{log_2(i+1)}$ & 10 & 4.42 & 3 & 3.45 & 3.48 & 1.78 & 0.33 & 0.95 & 0.6 & 1.16 & 29.17 \\  
+\hline
+\hline
+optimal rank & 10 & 9 & 8 & 7 & 6 & 5 & 4 & 3 & 2 & 1 &  \\
+\hline 
+$\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 1.3 & 0.6 & 0.2 & 788.0 \\
+\hline
+$\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 0.6 & 0.29 & 29.96 \\   
+\hline
+ &  &  &  &  &  &  &  &  &  &  &  \\
+ & \multicolumn{10}{c}{J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} \ac{nDCG} = $\frac{29.17}{29.96} = 0.97$} &  \\  
+ & \multicolumn{10}{c}{Burges \cite{Burges2005} et al. \ac{nDCG} = $\frac{732.7}{788.0} = 0.93$} &  \\ 
 \end{tabular}
 \caption{Example calculation for \ac{nDCG}}
 \label{tab:example_calculation_nDCG}
