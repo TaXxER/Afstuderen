@@ -3,7 +3,7 @@
 %*******************************************************
 % If problems with the headers: get headings in appendix etc. right
 %\markboth{\spacedlowsmallcaps{Appendix}}{\spacedlowsmallcaps{Appendix}}
-\chapter{Motivation and Problem Statement}
+\section{Motivation and Problem Statement}
 Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance for a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. One can find useful applications of ranking in many application domains outside web search as well. For example, it plays a vital role in amongst others: automatic document summarisation, machine translation, drug discovery and in determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be more fitting to recommender systems than rating prediction on a continuous scale \cite{Adomavicius2005,McNee2006}.\\
 
 Research in the field of ranking models has for a long time been based on manually designed ranking functions and has been an active area of research. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning-to-Rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
@@ -14,10 +14,10 @@ Some research has been done in the area of parallel or distributed machine learn
 
 MapReduce \cite{Dean2004} is a parallel programming framework that is inspired by the \emph{Map} and \emph{Reduce} functions commonly used in functional programming. Since Google developed the MapReduce parallel programming framework back in 2004 it has grown to be the industry standard model for parallel programming. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, which most Learning-to-Rank algorithms are, are not amenable to the MapReduce framework. Lin argued that as a solution to the non-amenability of iterative algorithms to the MapReduce framework, iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough.\\
 
-The appearance of benchmark datasets gave insight in the performance of different Learning-to-Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning-to-Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning-to-Rank. A more extensive overview of my research goals and questions are described in chapter \ref{chap:goals}.\\
+The appearance of benchmark datasets gave insight in the performance of different Learning-to-Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning-to-Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning-to-Rank. A more extensive overview of my research goals and questions are described in section \ref{sec:goals}.\\
 
-\chapter{Research Goals}
-\label{chap:goals}
+\section{Research Goals}
+\label{sec:goals}
 The objective of this thesis is to explore the speed-up in execution time of Learning-to-Rank algorithms through parallelisation using the MapReduce framework.
 This work focuses on those Learning-to-Rank algorithms that have shown leading performance on relevant benchmark datasets.
 This thesis addresses the following research questions:
@@ -32,7 +32,7 @@ $S_N = \frac{\text{execution time using one core}}{\text{execution time using \e
 \item[RQ3] Can those Learning-to-Rank algorithms be adjusted in such a way that the parallel execution speed-up increases without decreasing accuracy?
 \end{description}
 
-\chapter{Approach}
+\section{Approach}
 A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:
 \begin{itemize}
 \item ("learning to rank" OR "learning-to-rank" OR "machine learned ranking") AND ("parallel" OR "distributed")
@@ -50,14 +50,14 @@ To answer the first research question, I will implement Learning-to-Rank methods
 I will use the HDInsight cloud-based MapReduce implementation from Microsoft to implement the Learning-to-Rank algorithms. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.
 The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge} \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR \cite{Qin2010} dataset and the LETOR successors MSLR-WEB10k and MSLR-WEB30k.
 
-\chapter{Thesis Overview}
+\section{Thesis Overview}
 
 \begin{description}
-\item[Part II: Background]{introduces the reader to the basic principles and recent work in the fields of Learning-to-Rank.}
-\item[Part III: Related Work]{concisely describes existing work in the field of parallel machine learning and parallel Learning-to-Rank.}
-\item[Part IV: Benchmark Results]{sketches the accuracy of existing Learning-to-Rank methods on several benchmark datasets and describes the selection of Learning-to-Rank methods for the parallelisation experiments.}
-\item[Part V: Selected Learning-to-Rank Methods]{describes the algorithms and details of the Learning-to-Rank methods selected in Part IV.}
-\item[Part VI: Implementation]{describes implementation details of the Learning-to-Rank algorithms in the Hadoop framework.}
-\item[Part VII: Results \& Discussion]{presents and discusses speed-up results for the implemented Learning-to-Rank methods.}
-\item[Part VIII: Conclusion]{summarizes the results and answers our research questions based on the results. The limitations of our research as well as future research directions in the field are mentioned here.}
+\item[Chapter II: Background]{introduces the reader to the basic principles and recent work in the fields of Learning-to-Rank.}
+\item[Chapter III: Related Work]{concisely describes existing work in the field of parallel machine learning and parallel Learning-to-Rank.}
+\item[Chapter IV: Benchmark Results]{sketches the accuracy of existing Learning-to-Rank methods on several benchmark datasets and describes the selection of Learning-to-Rank methods for the parallelisation experiments.}
+\item[Chapter V: Selected Learning-to-Rank Methods]{describes the algorithms and details of the Learning-to-Rank methods selected in Chapter IV.}
+\item[Chapter VI: Implementation]{describes implementation details of the Learning-to-Rank algorithms in the Hadoop framework.}
+\item[Chapter VII: Results \& Discussion]{presents and discusses speed-up results for the implemented Learning-to-Rank methods.}
+\item[Chapter VIII: Conclusion]{summarizes the results and answers our research questions based on the results. The limitations of our research as well as future research directions in the field are mentioned here.}
 \end{description}

@@ -85,35 +85,35 @@
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\part{Introduction}
-\include{Chapters/Introduction} 
+\chapter{Introduction}
+\include*{Chapters/Introduction} 
 \cleardoublepage
 \ctparttext{This part provides a background in the Learning-to-Rank field with the goal of making the subsequential parts of this thesis understandable for non-experts in the field.}
-\part{Technical Background}
-\include{Chapters/Background}
+\chapter{Technical Background}
+\include*{Chapters/Background}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
-\part{Related Work}
-\include{RelatedWork}
+\chapter{Related Work}
+\include*{RelatedWork}
 \ctparttext{This part describes benchmark characteristics like collection size and features and gives an overview of the performance of different Learning-to-Rank methods. Performance differences for a given Learning-to-Rank method are explained in terms of differences in benchmark characteristics. This section is concluded with a selection of Learning-to-Rank methods to include in the experiments.}
-\part{Benchmark results}
-\include{BenchmarkResults}
+\chapter{Benchmark results}
+\include*{BenchmarkResults}
 \ctparttext{Algorithms and details of the well-performing Learning-to-Rank methods as selected in the aforegoing part are presented and explained in this part.}
-\part{Selected Learning-to-Rank methods}
-\include{LTRMethods}
+\chapter{Selected Learning-to-Rank methods}
+\include*{LTRMethods}
 \ctparttext{Describes implementation details of the Learning-to-Rank algorithm parallel implementations in HDInsight that are either Hadoop, Microsoft Azure, or HDInsight and are not part of the algorithm specification itself.}
-\part{Implementation}
-\include{Implementation}
-\part{Results \& Discussion}
-\include{Results}
-\part{Conclusions}
-\include{Conclusions}
+\chapter{Implementation}
+\include*{Implementation}
+\chapter{Results \& Discussion}
+\include*{Results}
+\chapter{Conclusions}
+\include*{Conclusions}
 % ********************************************************************
 % Backmatter
 %*******************************************************
 \appendix
 \cleardoublepage
-\part{Appendix}
+\chapter{Appendix}
 \include{Chapters/Chapter0A}
 %********************************************************************
 % Other Stuff in the Back

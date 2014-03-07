@@ -1,5 +1,5 @@
 %************************************************
-\chapter{A basic introduction to Learning-to-Rank}
+\section{A basic introduction to Learning-to-Rank}
 Different definitions of Learning-to-Rank exist. In general, all ranking methods that use machine learning technologies to solve the problem of ranking are called Learning-to-Rank methods. Figure \ref{fig:discriminative_training} describes the general process of machine learning. It shows training elements from an input space that are mapped to an output space using a model such that the difference between the actual labels of the training elements and the labels predicted with with the model are minimal in terms of a loss function.
 \begin{figure}[!h]
 \includegraphics[scale=0.26]{gfx/descriminative_training}
@@ -33,15 +33,15 @@ The predictions and the loss function might either be defined for:
 \item the classification of the most relevant document out of a document-pair
 \item the ranking of documents directly
 \end{enumerate}
-These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning-to-Rank will be described in more detail further on in this part.
+These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning-to-Rank will be described in more detail in section \ref{sec:ltr_approaches}.
 
-\chapter{Evaluating a ranking}
-Evaluation metrics have long been studied in the field of information retrieval. First in the form of evaluation of unranked retrieval sets and later, when the information retrieval field started focussing more on ranked retrieval, in the form of ranked retrieval evaluation. In the succeeding section several frequently used evaluation metrics for ranked results will be described.\\
+\section{Evaluating a ranking}
+Evaluation metrics have long been studied in the field of information retrieval. First in the form of evaluation of unranked retrieval sets and later, when the information retrieval field started focussing more on ranked retrieval, in the form of ranked retrieval evaluation. In this section several frequently used evaluation metrics for ranked results will be described.\\
 
-No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used to express the evaluation results in the Benchmark Results part of this thesis.
-\section{Normalized Discounted Cumulative Gain}
+No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used to express the evaluation results in chapter \ref{chap:benchmark_results} of this thesis.
+\subsection{Normalized Discounted Cumulative Gain}
 Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
-\subsection{Discounted Cumulative Gain}
+\subsubsection{Discounted Cumulative Gain}
 There are two definitions of \ac{DCG} used in practice. \ac{DCG} at position $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
 
 $DCG_p = \sum\nolimits_{i=1}^p \frac{rel_i-1}{log_2(i+1)}$\\
@@ -53,7 +53,7 @@ Burges et al. \cite{Burges2005} proposed an alternative definition of \ac{DCG} t
 $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
 
-\subsection{Normalized Discounted Cumulative Gain}
+\subsubsection{Normalized Discounted Cumulative Gain}
 \ac{nDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. The definition of \ac{nDCG} can be written down mathematically as\\
 
 $nDCG_p = \frac{DCG_p}{IDCG_p}$\\
@@ -87,7 +87,7 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
 \caption{Example calculation for \ac{nDCG}}
 \label{tab:example_calculation_nDCG}
 \end{table}
-\section{Expected Reciprocal Rank}
+\subsection{Expected Reciprocal Rank}
 \ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
 
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
@@ -103,7 +103,7 @@ for r=1 to n do
 end for
 return ERR
 \end{lstlisting}
-\section{Mean Average Precision}
+\subsection{Mean Average Precision}
 \ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
 
 $AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
@@ -129,19 +129,20 @@ P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\
 \label{tab:example_calculation_AP}
 \end{table}
 
-\chapter{Approaches to Learning-to-Rank}
-\section{Pointwise Approach}
+\section{Approaches to Learning-to-Rank}
+\label{sec:ltr_approaches}
+\subsection{Pointwise Approach}
 The pointwise approach can be seen as the most straightforward way of using machine learning for ranking. Pointwise Learning-to-Rank methods directly apply machine learning methods to the ranking problem by observing each document in isolation. They can be subdivided in the following approaches:
 	\begin{enumerate}
 	\item regression-based, which estimate the relevance of a considered document using a regression model.
 	\item classification-based, which classify the relevance category of the document using a classification model.
 	\item ordinal regression-based, which classify the relevance category of the document using a classification model in such a way that the order of relevance categories is taken into account. 
 	\end{enumerate}
-\section{Pairwise Approach}
+\subsection{Pairwise Approach}
 Pointwise Learning-to-Rank methods have the drawback that they optimise real valued expected relevance, while evaluation metrics like \ac{nDCG} and \ac{ERR} are only impacted by a change in expected relevance when that change impacts a pairwise preference. The pairwise approach solves this drawback of the pointwise approach by regarding ranking as pairwise classification.\\
 
 Aggregating a set of predicted pairwise preferences into the corresponding optimal rank is shown to be a NP-Hard problem \cite{Feldman2012}. An often used solution to this problem is to upper bound the number of classification mistakes by an easy to optimise function \cite{Bartlett2006}.
-\section{Listwise Approach}
+\subsection{Listwise Approach}
 Listwise ranking optimises the actual evaluation metric. The learner learns to predict an actual ranking itself without using an intermediate step like in pointwise or pairwise Learning-to-Rank. The main challenge in this approach is that most evaluation metrics are not differentiable. \ac{MAP}, \ac{ERR} and \ac{nDCG} are non-differentiable, non-convex and discontinuous functions, what makes them very hard to optimize.\\
 
 Although the properties of \ac{MAP}, \ac{ERR} and \ac{nDCG} are not ideal for direct optimisation, some listwise approaches do focus on direct metric optimisation \cite{Yue2007, Taylor2008, Chapelle2010}. Most listwise approaches work around optimisation of the non-differentiable, non-convex and discontinuous metrics by optimising surrogate cost functions that mimic the behaviour of \ac{MAP}, \ac{ERR} or \ac{nDCG}, but have nicer properties for optimisation. 
