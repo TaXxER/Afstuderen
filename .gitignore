@@ -47,7 +47,8 @@
 # Except old versions
 !*/oude_versies/*.pdf
 
-
+# Visio temp files
+*.~vdx
 
 
 
