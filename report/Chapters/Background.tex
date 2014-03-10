@@ -139,11 +139,16 @@ The pointwise approach can be seen as the most straightforward way of using mach
 	\item classification-based, which classify the relevance category of the document using a classification model.
 	\item ordinal regression-based, which classify the relevance category of the document using a classification model in such a way that the order of relevance categories is taken into account. 
 	\end{enumerate}
+Well-known algorithms that belong to the pointwise approach include McRank \cite{Li2007} and PRank \cite{Crammer2001}.
 \subsection{Pairwise Approach}
 Pointwise Learning-to-Rank methods have the drawback that they optimise real valued expected relevance, while evaluation metrics like \ac{nDCG} and \ac{ERR} are only impacted by a change in expected relevance when that change impacts a pairwise preference. The pairwise approach solves this drawback of the pointwise approach by regarding ranking as pairwise classification.\\
 
-Aggregating a set of predicted pairwise preferences into the corresponding optimal rank is shown to be a NP-Hard problem \cite{Feldman2012}. An often used solution to this problem is to upper bound the number of classification mistakes by an easy to optimise function \cite{Bartlett2006}.
+Aggregating a set of predicted pairwise preferences into the corresponding optimal rank is shown to be a NP-Hard problem \cite{Feldman2012}. An often used solution to this problem is to upper bound the number of classification mistakes by an easy to optimise function \cite{Bartlett2006}.\\
+
+Well-known pairwise Learning-to-Rank algorithms include FRank \cite{Tsai2007}, GBRank \cite{Zheng2007}, LambdaRank \cite{Burges2006}, RankBoost \cite{Freund2003}, RankNet \cite{Burges2005}, Ranking SVM \cite{Herbrich1999b,Joachims2002}, and SortNet \cite{Rigutini2008}.
 \subsection{Listwise Approach}
 Listwise ranking optimises the actual evaluation metric. The learner learns to predict an actual ranking itself without using an intermediate step like in pointwise or pairwise Learning-to-Rank. The main challenge in this approach is that most evaluation metrics are not differentiable. \ac{MAP}, \ac{ERR} and \ac{nDCG} are non-differentiable, non-convex and discontinuous functions, what makes them very hard to optimize.\\
 
-Although the properties of \ac{MAP}, \ac{ERR} and \ac{nDCG} are not ideal for direct optimisation, some listwise approaches do focus on direct metric optimisation \cite{Yue2007, Taylor2008, Chapelle2010}. Most listwise approaches work around optimisation of the non-differentiable, non-convex and discontinuous metrics by optimising surrogate cost functions that mimic the behaviour of \ac{MAP}, \ac{ERR} or \ac{nDCG}, but have nicer properties for optimisation. 
+Although the properties of \ac{MAP}, \ac{ERR} and \ac{nDCG} are not ideal for direct optimisation, some listwise approaches do focus on direct metric optimisation \cite{Yue2007, Taylor2008, Chapelle2010}. Most listwise approaches work around optimisation of the non-differentiable, non-convex and discontinuous metrics by optimising surrogate cost functions that mimic the behaviour of \ac{MAP}, \ac{ERR} or \ac{nDCG}, but have nicer properties for optimisation.\\
+
+Well-known algorithms that belong to the listwise approach include AdaRank \cite{Xu2007}, BoltzRank \cite{Volkovs2009}, ListMLE \cite{Xia2008}, ListNet \cite{Cao2007}, RankCosine \cite{Qin2008}, SmoothRank \cite{Chapelle2010}, SoftRank \cite{Taylor2008}, SVM$^map$ \cite{Yue2007}.
