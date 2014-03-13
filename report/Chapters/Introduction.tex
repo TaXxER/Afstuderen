@@ -33,17 +33,20 @@ $S_N = \frac{\text{execution time using one core}}{\text{execution time using \e
 \end{description}
 
 \section{Approach}
-A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:
-\begin{itemize}
-\item ("learning to rank" OR "learning-to-rank" OR "machine learned ranking") AND ("parallel" OR "distributed")
-\end{itemize}
+A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:\\
+
+\emph{("learning to rank" \emph{OR} "learning-to-rank" \emph{OR} "machine learned ranking") \emph{AND} ("parallel" \emph{OR} "distributed")}\\
+
 and the following bibliographic databases:
 \begin{itemize}
 \item Scopus
 \item Web of Science
+\item Google Scholar
 \end{itemize}
 
 The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing.\\
+
+A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
 
 To answer the first research question, I will implement Learning-to-Rank methods in the MapReduce framework and measure runtime as a factor of the number of cluster nodes used to complete the computation.\\
 
@@ -54,7 +57,7 @@ The algorithms that we include in the measurements will be determined based on e
 
 \begin{description}
 \item[Chapter II: Background]{introduces the reader to the basic principles and recent work in the fields of Learning-to-Rank.}
-\item[Chapter III: Related Work]{concisely describes existing work in the field of parallel machine learning and parallel Learning-to-Rank.}
+\item[Chapter III: Related Work]{concisely describes existing work in the field of parallel Learning-to-Rank.}
 \item[Chapter IV: Benchmark Results]{sketches the accuracy of existing Learning-to-Rank methods on several benchmark datasets and describes the selection of Learning-to-Rank methods for the parallelisation experiments.}
 \item[Chapter V: Selected Learning-to-Rank Methods]{describes the algorithms and details of the Learning-to-Rank methods selected in Chapter IV.}
 \item[Chapter VI: Implementation]{describes implementation details of the Learning-to-Rank algorithms in the Hadoop framework.}
