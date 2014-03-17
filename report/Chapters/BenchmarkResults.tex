@@ -78,7 +78,7 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\end{itemize}}
 \item[pairwise]{\leavevmode
 	\begin{itemize}
-	\item RankingSVM \cite{Herbrich1999,Joachims2002}
+	\item Rank\ac{SVM} \cite{Herbrich1999,Joachims2002}
 	\item RankBoost \cite{Freund2003}
 	\item FRank \cite{Tsai2007}
 	\end{itemize}}
@@ -87,7 +87,7 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\item ListNet \cite{Cao2007}
 	\item AdaRank-MAP \cite{Xu2007}
 	\item AdaRank-nDCG \cite{Xu2007}
-	\item SVMMAP \cite{Yue2007} 
+	\item \ac{SVM}$^{MAP}$ \cite{Yue2007} 
 	\end{itemize}}
 \end{description} 
 
@@ -126,7 +126,7 @@ OHSUMED & 0.441 & 0.4457 \\
 
 \begin{table}
 \begin{tabular}{l|p{1.2cm}p{1.2cm}p{1.2cm}p{1.4cm}||l}
- & \rotatebox{55}{Regression + L2 regulatisation} & \rotatebox{55}{RankSVM-Primal} &\rotatebox{55}{RankSVM-Struct} & \rotatebox{55}{SmoothRank} & \rotatebox{55}{ListNet} \\
+ & \rotatebox{55}{Regression + L2 regulatisation} & \rotatebox{55}{Rank\ac{SVM}-Primal} &\rotatebox{55}{Rank\ac{SVM}-Struct} & \rotatebox{55}{SmoothRank} & \rotatebox{55}{ListNet} \\
  \hline
 TD2003 & 0.3297 & 0.3571 & 0.3467 & 0.3367 & 0.348 \\ 
 TD2004 & 0.2832 & 0.2913 & 0.3090 & 0.3343 & 0.317 \\ 
@@ -155,13 +155,13 @@ The LETOR 4.0 benchmark collection\footnote{http://http://research.microsoft.com
 \caption{Characteristics of the LETOR 4.0 collection}
 \end{table}
 \subsubsection{Results}
-RankSVM-Struct, ListNet, AdaRank-\ac{nDCG}, AdaRank-\ac{MAP} and RankBoost were used as baseline models on the LETOR 4.0 dataset and were implemented and evaluated by the publishers of LETOR 4.0. Table \ref{tab:letor4_baseline_results} shows the performance of those baseline models on the LETOR 4.0 benchmark collection.\\
+Rank\ac{SVM}-Struct, ListNet, AdaRank-\ac{nDCG}, AdaRank-\ac{MAP} and RankBoost were used as baseline models on the LETOR 4.0 dataset and were implemented and evaluated by the publishers of LETOR 4.0. Table \ref{tab:letor4_baseline_results} shows the performance of those baseline models on the LETOR 4.0 benchmark collection.\\
 
 \begin{table}
 \begin{tabular}{l|lll}
 Model & Dataset & Mean \ac{nDCG} & \ac{nDCG}@10 \\ 
 \hline
-RankSVM-Struct & MQ2007 & 0.4966 & 0.4439 \\ 
+Rank\ac{SVM}-Struct & MQ2007 & 0.4966 & 0.4439 \\ 
  & MQ2008 & 0.4832 & 0.2279 \\ 
 \hline
 ListNet & MQ2007 & 0.4988 & 0.4440 \\ 
