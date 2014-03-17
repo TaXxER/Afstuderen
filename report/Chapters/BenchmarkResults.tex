@@ -10,9 +10,9 @@ The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two d
 \begin{tabular}{l|lll}
  & Train & Validation & Test \\ 
  \hline
-Queries & 19,994 & 2,994 & 6,983 \\ 
-Documents & 473,134 & 71,083 & 165,660 \\ 
-Features & 519 & 519 & 519 \\ 
+\# of queries & 19,994 & 2,994 & 6,983 \\ 
+\# of documents & 473,134 & 71,083 & 165,660 \\ 
+\# of features & 519 & 519 & 519 \\ 
 \end{tabular}
 \caption{Yahoo! Learning to Rank Challenge dataset characteristics, as described in the challenge overview paper \cite{Chapelle2011a}}
 \label{tab:yahoo_characteristics}
@@ -57,10 +57,10 @@ The Yandex Internet Mathematics competition was won by Pavlov et al \cite{Pavlov
 
 
 \section{LETOR}
-The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009. The LETOR3.0 benchmark collection \cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection.\\
+The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.\\
 
-\subsection{LETOR3.0}
-The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the TREC web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
+\subsection{LETOR 3.0}
+The LETOR 3.0 benchmark collection \cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the \ac{TREC} web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
 
 Different query sets exists for the .gov corpus. Those query sets are categorized in the following categories \cite{Craswell2003}:
 \begin{description}
@@ -68,7 +68,7 @@ Different query sets exists for the .gov corpus. Those query sets are categorize
 \item[named page finding (NP)]in these queries the user asks for one specific page by name. E.g., the user queries for 'ADA Enforcement' to find the page $http://www.usdoj.gov/crt/ada/enforce.htm$.
 \item[home page finding (HP)]these queries are similar to NP queries in that the user is looking for one specific page, but now this specific page is a homepage. E.g., the user queries for 'Tennessee Valley Authority' to find the homepage $http://www.tva.gov$.
 \end{description}
-With query sets available from both the TREC 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004.\\
+With query sets available from both the \ac{TREC} 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004.\\
 
 The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number} metric is defined as the number of other algorithms that it can beat over all of the seven datasets (six .gov sets + OHSUMED). The LETOR organisation implemented and evaluated several well-known Learning-to-Rank algorithms themselves and in addition gathers and publications and results of new algorithms evaluated on the LETOR benchmark. The baseline Learning-to-Rank algorithms evaluated by the organisation are:
 \begin{description}
@@ -107,7 +107,7 @@ The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline m
 \label{fig:map_winning_number}
 \end{figure}
 
-I will describe the performance of the algorithms that were evaluated on LETOR3.0 after publication of the LETOR paper by Qin et al \cite{Qin2010} as listed on the LETOR website\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
+I will describe the performance of the algorithms that were evaluated on LETOR 3.0 after publication of the LETOR paper by Qin et al \cite{Qin2010} as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
 \begin{table}
 \begin{tabular}{l|ll}
  & \ac{nDCG}@10 & \ac{MAP} \\ 
@@ -120,7 +120,7 @@ HP2003 & 0.837 & 0.7659 \\
 HP2004 & 0.784 & 0.6899 \\ 
 OHSUMED & 0.441 & 0.4457 \\ 
 \end{tabular}
-\caption{Performance of ListNet on LETOR}
+\caption{Performance of ListNet on LETOR 3.0}
 \label{tbl:LETOR_ListNet}
 \end{table}
 
@@ -137,11 +137,49 @@ HP2004 & 0.7188 & 0.7720 & 0.7666 & 0.8221 & 0.784 \\
 OHSUMED & 0.4436 & 0.4504 & 0.4523 & 0.4568 & 0.441 \\ 
 \# winning datasets & 2 & 2 & 1 & 3 & - \\ 
 \end{tabular}
-\caption{Comparison of algorithms recently evaluated on LETOR3.0 with the ListNet baselines}
+\caption{\ac{nDCG}@10 comparison of algorithms recently evaluated on LETOR 3.0 with the ListNet baselines}
 \label{tbl:LETOR_recently_added}
 \end{table}
-\subsection{LETOR4.0}
+\subsection{LETOR 4.0}
+The LETOR 4.0 benchmark collection\footnote{http://http://research.microsoft.com/en-us/um/beijing/projects/letor/} consists of the Gov-2 document collection and two query datasets from the Million Query Track at \ac{TREC} 2007 (MQ2007) and \ac{TREC} 2008 (MQ2008). LETOR 4.0 consists of a semi-supervised ranking task, a rank aggregation task and a listwise ranking task next to the supervised ranking task. Table \ref{tab:letor4_characteristics} shows the collection characteristics in number of queries, documents and features for LETOR 4.0. Evaluation on this collection is performed using a five-fold cross-validation, where partitioning of the data into folds was performed beforehand by the creators of the MQ2007 and MQ2008 datasets. Documents in the dataset were 
+
+\begin{table}
+\begin{tabular}{l|ll}
+ Dataset & MQ2007 & MQ2008 \\ 
+ \hline
+ Queries & 1692 & 784 \\ 
+ Documents & 69,622 & 15,211 \\
+ Features & 46 & 46 \\
+\end{tabular}
+\label{tab:letor4_characteristics}
+\caption{Characteristics of the LETOR 4.0 collection}
+\end{table}
 \subsubsection{Results}
+RankSVM-Struct, ListNet, AdaRank-\ac{nDCG}, AdaRank-\ac{MAP} and RankBoost were used as baseline models on the LETOR 4.0 dataset and were implemented and evaluated by the publishers of LETOR 4.0. Table \ref{tab:letor4_baseline_results} shows the performance of those baseline models on the LETOR 4.0 benchmark collection.\\
+
+\begin{table}
+\begin{tabular}{l|lll}
+Model & Dataset & Mean \ac{nDCG} & \ac{nDCG}@10 \\ 
+\hline
+RankSVM-Struct & MQ2007 & 0.4966 & 0.4439 \\ 
+ & MQ2008 & 0.4832 & 0.2279 \\ 
+\hline
+ListNet & MQ2007 & 0.4988 & 0.4440 \\ 
+ & MQ2008 & 0.4914 & 0.2303 \\ 
+\hline
+AdaRank-\ac{nDCG} & MQ2007 & 0.4914 & 0.4369 \\ 
+ & MQ2008 & 0.4950 & 0.2307 \\ 
+\hline
+AdaRank-\ac{MAP} & MQ2007 & 0.4891 & 0.4335 \\ 
+ & MQ2008 & 0.4915 & 0.2288 \\ 
+\hline
+RankBoost & MQ2007 & 0.5003 & 0.4464 \\ 
+ & MQ2008 & 0.4850 & 0.2255 \\ 
+\end{tabular}
+\caption{Comparison of LETOR 4.0 baseline models}
+\label{tab:letor4_baseline_results}
+\end{table}
+
 BoostedTree model \cite{Kocsis2013} showed an \ac{nDCG} of 0.5071 on the MQ2007 dataset and thereby beat all baseline models.
 
 \section{MSLR-WEB10k/MSLR-WEB30k}
