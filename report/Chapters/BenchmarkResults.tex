@@ -31,15 +31,15 @@ Both \ac{nDCG} and \ac{ERR} are measured as performance metrics, but the final s
 \end{description}
 
 \subsection{Results}
-1055 teams send in at least one submission to the Yahoo! Learning to Rank challenge. The top eight participants of the Yahoo! Learning to Rank challenge all used decision trees combined with ensemble methods. The mainly used ensemble method within these top performers is boosting. The combination of boosting with decision tree learners is often called \acf{GBDT}. Figure \ref{fig:yahoo_results} shows the top five participants in the Yahoo! Learning to Rank Challenge in terms of ERR score.  Burges et al \cite{Burges2011} created a linear combination ensemble of eight LambdaMART \cite{Burges2010}, two LambdaRank and two Logistic Regression models. Gottschalk and Vogel used a combination of RandomForest models and \ac{GBDT} models. Pavlov and Brunk used a regression based model using the BagBoo \cite{Pavlov2010} ensemble technique, which combines bagging and boosting. Sorokina used a similar combination of bagging and boosting that is called Additive Groves \cite{Sorokina2007}.\\
+1055 teams send in at least one submission to the Yahoo! Learning to Rank challenge. The top eight participants of the Yahoo! Learning to Rank challenge all used decision trees combined with ensemble methods. The mainly used ensemble method within these top performers is boosting. The combination of boosting with decision tree learners is often called \acf{GBDT}. Figure \ref{fig:yahoo_results} shows the top five participants in the Yahoo! Learning to Rank Challenge in terms of ERR score.  Burges  \cite{Burges2011} created a linear combination ensemble of eight LambdaMART \cite{Burges2010}, two LambdaRank and two Logistic Regression models. Gottschalk and Vogel used a combination of RandomForest models and \ac{GBDT} models. Pavlov and Brunk used a regression based model using the BagBoo \cite{Pavlov2010} ensemble technique, which combines bagging and boosting. Sorokina used a similar combination of bagging and boosting that is called Additive Groves \cite{Sorokina2007}.\\
 
-The challenge overview paper states as one of the lessons of the challenge that the simple baseline \ac{GBDT} model performed very well with a small performance gap to the complex ensemble submissions at the top of the table.\\
+The challenge overview paper \cite{Chapelle2011a} states as one of the lessons of the challenge that the simple baseline \ac{GBDT} model performed very well with a small performance gap to the complex ensemble submissions at the top of the table.\\
 
 \begin{table}
 \begin{tabular}{l|p{6.3cm}|l}
  & Authors & ERR \\
  \hline 
-1 & Burges et al (Microsoft Research) & 0.46861 \\ 
+1 & Burges et al. (Microsoft Research) & 0.46861 \\ 
 2 & Gottschalk (Activision Blizzard) \& Vogel (Data Mining Solutions) & 0.46786 \\ 
 3 & Parakhin (Microsoft) & 0.46695 \\ 
 4 & Pavlov \& Brunk (Yandex Labs) & 0.46678 \\ 
@@ -49,18 +49,18 @@ The challenge overview paper states as one of the lessons of the challenge that 
 \label{fig:yahoo_results}
 \end{table}
 
-Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
+Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
 \section{Yandex Internet Mathematics competition}
 
 \subsection{Results}
-The Yandex Internet Mathematics competition was won by Pavlov et al \cite{Pavlov2010} with the BagBoo method.
+The Yandex Internet Mathematics competition was won by Pavlov et al. \cite{Pavlov2010} with the BagBoo method.
 
 
 \section{LETOR}
-The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.\\
+The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 \cite{Liu2007b} to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.\\
 
 \subsection{LETOR 3.0}
-The LETOR 3.0 benchmark collection \cite{Liu2007b} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the \ac{TREC} web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
+The LETOR 3.0 benchmark collection \cite{Qin2010} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the \ac{TREC} web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
 
 Different query sets exists for the .gov corpus. Those query sets are categorized in the following categories \cite{Craswell2003}:
 \begin{description}
@@ -97,17 +97,17 @@ The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline m
 
 \begin{figure}[!h]
 \includegraphics[scale=0.30]{gfx/ndcg_winning_number}
-\caption{Comparison across the seven datasets in LETOR by \ac{nDCG}, obtained from Qin et al \cite{Qin2010}}
+\caption{Comparison across the seven datasets in LETOR by \ac{nDCG}, obtained from Qin et al. \cite{Qin2010}}
 \label{fig:ndcg_winning_number}
 \end{figure}
 
 \begin{figure}[!h]
 \includegraphics[scale=0.30]{gfx/map_winning_number}
-\caption{Comparison across the seven datasets in LETOR by \ac{MAP}, obtained from Qin et al \cite{Qin2010}}
+\caption{Comparison across the seven datasets in LETOR by \ac{MAP}, obtained from Qin et al. \cite{Qin2010}}
 \label{fig:map_winning_number}
 \end{figure}
 
-I will describe the performance of the algorithms that were evaluated on LETOR 3.0 after publication of the LETOR paper by Qin et al \cite{Qin2010} as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
+I will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
 \begin{table}
 \begin{tabular}{l|ll}
  & \ac{nDCG}@10 & \ac{MAP} \\ 
@@ -123,6 +123,8 @@ OHSUMED & 0.441 & 0.4457 \\
 \caption{Performance of ListNet on LETOR 3.0}
 \label{tbl:LETOR_ListNet}
 \end{table}
+
+Since LETOR is arguably the most well-known benchmark collection in the field, it is conceivable that creators of new Learning-to-Rank methods evaluate their new method on the LETOR collection to show how well their new method works. To create an overview of the performance of newer Learning-to-Rank methods on LETOR 3.0 we perform a forward reference search on the LETOR 3.0 paper \cite{Qin2010}. It should be noted that results of evaluations individually performed by the creator of the evaluated Learning-to-Rank method can not be regarded as equally reliable as the evaluations performed by the LETOR team. TODO: 307 citations, x evaluated a new Learning-to-Rank method on LETOR 3.0, x were usable. The unusable studies did test a new Learning-to-Rank method on one or more datasets of the LETOR collection, but 1 ) did not use a ranking metric used in LETOR (\ac{nDCG} or \ac{MAP}) or 2) did not list evaluation results at all.\\
 
 \begin{table}
 \begin{tabular}{l|p{1.2cm}p{1.2cm}p{1.2cm}p{1.4cm}||l}
@@ -140,6 +142,7 @@ OHSUMED & 0.4436 & 0.4504 & 0.4523 & 0.4568 & 0.441 \\
 \caption{\ac{nDCG}@10 comparison of algorithms recently evaluated on LETOR 3.0 with the ListNet baselines}
 \label{tbl:LETOR_recently_added}
 \end{table}
+
 \subsection{LETOR 4.0}
 The LETOR 4.0 benchmark collection\footnote{http://http://research.microsoft.com/en-us/um/beijing/projects/letor/} consists of the Gov-2 document collection and two query datasets from the Million Query Track at \ac{TREC} 2007 (MQ2007) and \ac{TREC} 2008 (MQ2008). LETOR 4.0 consists of a semi-supervised ranking task, a rank aggregation task and a listwise ranking task next to the supervised ranking task. Table \ref{tab:letor4_characteristics} shows the collection characteristics in number of queries, documents and features for LETOR 4.0. Evaluation on this collection is performed using a five-fold cross-validation, where partitioning of the data into folds was performed beforehand by the creators of the MQ2007 and MQ2008 datasets. Documents in the dataset were 
 
@@ -190,5 +193,5 @@ Contrary to the Yahoo! Learning to Rank Challenge dataset, the MSLR-WEB30k provi
 The accuracies of the Learning-to-Rank methods described in the preceding sections must only be compared within the benchmark and not between benchmarks for the following reasons:
 \begin{enumerate}
 \item Differences in feature sets between data sets detract from fair comparison
-\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
+\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
 \end{enumerate}
