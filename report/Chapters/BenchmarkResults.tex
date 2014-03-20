@@ -198,4 +198,19 @@ The accuracies of the Learning-to-Rank methods described in the preceding sectio
 
 \section{Other datasets}
 \subsection{WCL2R}
-The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two datasets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both datasets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}.
+The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two datasets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both datasets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
+
+\begin{table}
+\begin{tabular}{l|lll|lll}
+ &  & FS &  &  & NC &  \\ 
+\hline
+Algorithm & @1 & @3 & @10 & @1 & @3 & @10 \\ 
+\hline
+RankSVM & 0.314 & 0.353 & 0.395 & 0.265 & 0.301 & 0.339 \\ 
+LAC & 0.296 & 0.360 & 0.403 & 0.244 & 0.266 & 0.315 \\ 
+GP & 0.288 & 0.344 & 0.396 & 0.221 & 0.262 & 0.318 \\ 
+RankBoost & 0.295 & 0.328 & 0.375 & 0.247 & 0.264 & 0.305 \\ 
+\end{tabular}
+\caption{\ac{nDCG} results of baseline methods on the WCL2R collection, obtained from \cite{Alcantara2010}}
+\label{tab:results_WCL2R}
+\end{table}
