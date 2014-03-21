@@ -26,3 +26,5 @@ Coordinate Ascent,,,,,,,,,,,0.457,,,,MSLR-WEB30k measurments in DirectRank
 consistent-RankCosine,,,,,,,,,,,0.437,,,,MSLR-WEB30k measurments in DirectRank
 EnergyNDCG,0.444,,,,,,,,,,,,0.713,,
 SortNet,,,,,,,,,,,,,0.712,,AOL measurements in EnergyNSCG
+GroupCE,0.4583,0.365,0.3377,,,,,,,,,,,,
+GroupMLE,0.4572,0.3568,0.3175,,,,,,,,,,,,
