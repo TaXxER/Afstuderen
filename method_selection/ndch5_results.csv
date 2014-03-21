@@ -1,0 +1,13 @@
+,OHSUMED,TD2003,TD2004,NP2003,NP2004,HP2003,HP2004,MQ2007,MQ2008,MSLR-WEB10k,MSLR-WEB30k,Yandex IMC,AOL
+ListNet,,,,,,,,,,,,,
+L2 Regression,,,,,,,,,,,,,
+RankSVM-Primal,,,,,,,,,,,,,
+RankSVM-Struct,,,,,,,,,,,,,
+SmoothRank,,,,,,,,,,,,,
+AdaRank-NDCG,,,,,,,,,,,,,
+AdaRank-MAP,,,,,,,,,,,,,
+RankBoost,,,,,,,,,,,,,
+Regression,,,,,,,,,,,,,
+RankSVM,,,,,,,,,,,,,
+SVMMAP,,,,,,,,,,,,,
+FRank,,,,,,,,,,,,,
