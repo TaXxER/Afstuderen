@@ -37,3 +37,4 @@ GPR,0.458,0.338,0.397,,,,,,,,,,,,measurements in LARF
 LRUF,0.569,0.441,0.503,,,,,0.483,,,,,,,
 PERF-MAP,0.427,0.249,0.39,,,,,0.418,,,,,,,measurements in LRUF
 NewLoss,0.4399,0.3208,0.4006,,,,,,,,,,,,
+Best Feature,,0.2637,0.3748,0.6907,0.6125,0.791,0.7511,0.4221,0.223,,,,,,measurements in RandomForest
