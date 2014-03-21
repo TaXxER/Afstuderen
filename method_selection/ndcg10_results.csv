@@ -34,3 +34,5 @@ ListMLE,0.419,0.2362,0.2171,,,,,,,,,,,,Measurements in Group-Group
 LARF,0.556,0.511,0.542,,,,,,,,,,,,
 IPR,0.464,0.346,0.455,,,,,,,,,,,,measurements in LARF
 GPR,0.458,0.338,0.397,,,,,,,,,,,,measurements in LARF
+LRUF,0.569,0.441,0.503,,,,,0.483,,,,,,,
+PERF-MAP,0.427,0.249,0.39,,,,,0.418,,,,,,,measurements in LRUF
