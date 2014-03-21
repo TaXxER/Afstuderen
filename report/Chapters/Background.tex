@@ -85,7 +85,7 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
  & \multicolumn{10}{c}{J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} \ac{nDCG} = $\frac{29.17}{29.96} = 0.97$} &  \\  
  & \multicolumn{10}{c}{Burges \cite{Burges2005} et al. \ac{nDCG} = $\frac{732.7}{788.0} = 0.93$} &  \\ 
 \end{tabular}
-\caption{Example calculation for \ac{nDCG}}
+\caption{Example calculation of \acs{nDCG}}
 \label{tab:example_calculation_nDCG}
 \end{table}
 \subsection{Expected Reciprocal Rank}
@@ -95,7 +95,7 @@ $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
 
 where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
 An algorithm to compute \ac{ERR} is shown in Listing \ref{lst:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
-\begin{lstlisting}[caption={Algorithm to compute the ERR metric, obtained from \cite{Chapelle2009}}, label={lst:err},language=Ada]
+\begin{lstlisting}[caption={Algorithm to compute the \acs{ERR} metric, obtained from \cite{Chapelle2009}}, label={lst:err},language=Ada]
 p <- 1, ERR <- 0
 for r=1 to n do
 	R <- R(g[r])
