@@ -37,3 +37,5 @@ NewLoss,0.4594,0.3153,0.394,,,,,,,,,,,,
 Pointwise RankELM,0.4782,,,,,,,,,,,,,,
 pairwise RankELM,0.4755,,,,,,,,,,,,,,
 Ranking Committee Perceptron,0.464,0.371,0.403,,,,,,,,,,,,Com 30 B is aangehouden
+REG-SHF-SDCG,0.4634,,,,,,,,,,,,,,
+SmoothRank,0.475,,,,,,,,,,,,,,
