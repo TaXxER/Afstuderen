@@ -35,7 +35,7 @@ LRUF,0.6,0.481,0.543,,,,,0.489,,,,,,,
 PERF-MAP,0.442,0.26,0.405,,,,,0.415,,,,,,,measurements in LRUF
 NewLoss,0.4594,0.3153,0.394,,,,,,,,,,,,
 Pointwise RankELM,0.4782,,,,,,,,,,,,,,
-pairwise RankELM,0.4755,,,,,,,,,,,,,,
+Pairwise RankELM,0.4755,,,,,,,,,,,,,,
 Ranking Committee Perceptron,0.464,0.371,0.403,,,,,,,,,,,,Com 30 B is aangehouden
 REG-SHF-SDCG,0.4634,,,,,,,,,,,,,,
 SmoothRank,0.475,,0.3555,,,,,,,,,,,,TD2004 measurement in BL-MART
