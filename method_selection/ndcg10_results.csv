@@ -1,50 +1,44 @@
-,OHSUMED,TD2003,TD2004,NP2003,NP2004,HP2003,HP2004,MQ2007,MQ2008,MSLR-WEB10k,MSLR-WEB30k,Yandex IMC,AOL,,Comments
-ListNet,0.441,0.348,0.317,0.801,0.812,0.837,0.784,0.444,0.2303,,,,,,
-L2 Regression,0.4436,0.3297,0.2832,0.8025,0.804,0.8216,0.7188,,,,,,,,
-RankSVM-Primal,0.4504,0.3571,0.2913,0.7894,0.795,0.818,0.772,,,,,,,,
-RankSVM-Struct,0.4523,0.3467,0.309,0.7955,0.7977,0.8162,0.7666,0.4439,0.2279,,,,,,
-SmoothRank,0.4568,0.3367,0.3343,0.7986,0.8075,0.8325,0.8221,,,,,,,,
-AdaRank-NDCG,0.4496,0.3036,0.3163,0.7672,0.7384,0.806,0.8057,0.4369,0.2307,,0.365,,,,MSLR-WEB30k measurments in DirectRank
-AdaRank-MAP,0.4429,0.3069,0.3285,0.7641,0.7497,0.8384,0.8328,0.4335,0.2288,,,,,,
-RankBoost,0.4302,0.3122,0.3504,0.8068,0.6914,0.8171,0.7428,0.4464,0.2255,,,,,,
-Regression,0.411,0.3263,0.3031,0.6659,0.6536,0.5943,0.6468,,,,,,,,
-RankSVM,0.414,0.3461,0.3078,0.8003,0.8062,0.8077,0.7687,,,,,,0.705,,AOL measurements in EnergyNSCG
-SVMMAP,0.4319,0.3282,0.2907,0.7975,0.8079,0.7994,0.8062,,,,,,,,
-FRank,0.4433,0.269,0.3331,0.7763,0.7296,0.797,0.7615,,,,,,,,
-FocusedSVM,,0.3886,,,,,,0.44,,,,,,,
-FocusedBoost,,0.398,,,,,,0.4422,,,,,,,
-FocusedNet,,0.4058,,,,,,0.4459,,,,,,,
-RankRLS,,,,,,,,0.4435,0.2268,,,,,,
-GRankRLS,,,,,,,,0.4431,0.2251,,,,,,
-RandomForest,,0.354,0.35,0.795,0.708,0.83,0.716,0.44,0.228,,,,,,
-ApproxNDCG,0.462,,,,,,,,,,,,,,
-SoftRank,0.4539,,,,,,,,,,,,,,OHSUMED measurements in ApproxNDCG
-DCMP,0.434,0.327,0.314,0.819,0.825,0.831,0.812,0.446,0.232,,,,,,
-DirectRank,,,,,,,,,,,0.459,,,,
-SmoothGrad,,,,,,,,,,,0.45,,,,MSLR-WEB30k measurments in DirectRank
-Coordinate Ascent,,,,,,,,,,,0.457,,,,MSLR-WEB30k measurments in DirectRank
-consistent-RankCosine,,,,,,,,,,,0.437,,,,MSLR-WEB30k measurments in DirectRank
-EnergyNDCG,0.444,,,,,,,,,,,,0.713,,
-SortNet,,0.34,0.55,,,,,,,,,,0.712,,AOL measurements in EnergyNDCG
-GroupCE,0.4583,0.365,0.3377,,,,,,,,,,,,
-GroupMLE,0.4572,0.3568,0.3175,,,,,,,,,,,,
-One-Group,0.4219,0.3179,0.3152,,,,,,,,,,,,
-Group-Group,0.4572,0.3568,0.3001,,,,,,,,,,,,
-ListMLE,0.419,0.2362,0.2171,,,,,,,,,,,,Measurements in Group-Group
-LARF,0.556,0.511,0.542,,,,,,,,,,,,
-IPR,0.464,0.346,0.455,,,,,,,,,,,,measurements in LARF
-GPR,0.458,0.338,0.397,,,,,,,,,,,,measurements in LARF
-LRUF,0.569,0.441,0.503,,,,,0.483,,,,,,,
-PERF-MAP,0.427,0.249,0.39,,,,,0.418,,,,,,,measurements in LRUF
-NewLoss,0.4399,0.3208,0.4006,,,,,,,,,,,,
-Best Feature,,0.2637,0.3748,0.6907,0.6125,0.791,0.7511,0.4221,0.223,,,,,,measurements in RandomForest
-Pointwise RankELM,0.4607,,,,,,,,,,,,,,
-pairwise RankELM,0.4574,,,,,,,,,,,,,,
-Ranking Committee Perceptron,0.447,0.351,0.434,,,,,,,,,,,,
-SmoothNDCG,0.457,0.336,0.335,0.784,0.807,0.833,0.824,,,,,,,,
-SparseRank,0.4623,0.3538,,,0.8244,,0.8103,,,,,,,,
-FenchelRank,0.4637,0.3401,,,0.8157,,0.8274,,,,,,,,measurements in SparseRank
-SVD,0.4435,0.2798,0.4392,,,,,,,,,,,,
-LambdaNeuralRank,,,,,,,,,,,,,0.716,,
-LambdaRank,,,,,,,,,,,,,0.7,,AOL measurement in LambdaNeuralRank
-RankNet,,,,,,,,,,,,,0.507,,AOL measurement in LambdaNeuralRank
+,OHSUMED,TD2003,TD2004,NP2003,NP2004,HP2003,HP2004,MQ2007,MQ2008,MSLR-WEB10k,MSLR-WEB30k,Yandex IMC,AOL,Comments
+ListNet,0.441,0.348,0.317,0.801,0.812,0.837,0.784,0.444,0.2303,,,,,
+L2 Regression,0.4436,0.3297,0.2832,0.8025,0.804,0.8216,0.7188,,,,,,,
+RankSVM-Primal,0.4504,0.3571,0.2913,0.7894,0.795,0.818,0.772,,,,,,,
+RankSVM-Struct,0.4523,0.3467,0.309,0.7955,0.7977,0.8162,0.7666,0.4439,0.2279,,,,,
+SmoothRank,0.4568,0.3367,0.3343,0.7986,0.8075,0.8325,0.8221,,,,,,,
+AdaRank-NDCG,0.4496,0.3036,0.3163,0.7672,0.7384,0.806,0.8057,0.4369,0.2307,,0.365,,,MSLR-WEB30k measurments in DirectRank
+AdaRank-MAP,0.4429,0.3069,0.3285,0.7641,0.7497,0.8384,0.8328,0.4335,0.2288,,,,,
+RankBoost,0.4302,0.3122,0.3504,0.8068,0.6914,0.8171,0.7428,0.4464,0.2255,,,,,
+Regression,0.411,0.3263,0.3031,0.6659,0.6536,0.5943,0.6468,,,,,,,
+RankSVM,0.414,0.3461,0.3078,0.8003,0.8062,0.8077,0.7687,,,,,,0.705,AOL measurements in EnergyNSCG
+SVMMAP,0.4319,0.3282,0.2907,0.7975,0.8079,0.7994,0.8062,,,,,,,
+FRank,0.4433,0.269,0.3331,0.7763,0.7296,0.797,0.7615,,,,,,,
+FocusedSVM,,0.3886,,,,,,0.44,,,,,,
+FocusedBoost,,0.398,,,,,,0.4422,,,,,,
+FocusedNet,,0.4058,,,,,,0.4459,,,,,,
+RankRLS,,,,,,,,0.4435,0.2268,,,,,
+GRankRLS,,,,,,,,0.4431,0.2251,,,,,
+RandomForest,,0.354,0.35,0.795,0.708,0.83,0.716,0.44,0.228,,,,,
+ApproxNDCG,0.462,,,,,,,,,,,,,
+SoftRank,0.4539,,,,,,,,,,,,,OHSUMED measurements in ApproxNDCG
+DCMP,0.434,0.327,0.314,0.819,0.825,0.831,0.812,0.446,0.232,,,,,
+EnergyNDCG,0.444,,,,,,,,,,,,0.713,
+SortNet,,0.34,0.55,,,,,,,,,,0.712,AOL measurements in EnergyNDCG
+GroupCE,0.4583,0.365,0.3377,,,,,,,,,,,
+GroupMLE,0.4572,0.3568,0.3175,,,,,,,,,,,
+ListMLE,0.419,0.2362,0.2171,,,,,,,,,,,Measurements in Group-Group
+LARF,0.556,0.511,0.542,,,,,,,,,,,
+IPR,0.464,0.346,0.455,,,,,,,,,,,measurements in LARF
+GPR,0.458,0.338,0.397,,,,,,,,,,,measurements in LARF
+LRUF,0.569,0.441,0.503,,,,,0.483,,,,,,
+PERF-MAP,0.427,0.249,0.39,,,,,0.418,,,,,,measurements in LRUF
+NewLoss,0.4399,0.3208,0.4006,,,,,,,,,,,
+Best Feature,,0.2637,0.3748,0.6907,0.6125,0.791,0.7511,0.4221,0.223,,,,,measurements in RandomForest
+Pointwise RankELM,0.4607,,,,,,,,,,,,,
+pairwise RankELM,0.4574,,,,,,,,,,,,,
+Ranking Committee Perceptron,0.447,0.351,0.434,,,,,,,,,,,
+SmoothNDCG,0.457,0.336,0.335,0.784,0.807,0.833,0.824,,,,,,,
+SparseRank,0.4623,0.3538,,,0.8244,,0.8103,,,,,,,
+FenchelRank,0.4637,0.3401,,,0.8157,,0.8274,,,,,,,measurements in SparseRank
+SVD,0.4435,0.2798,0.4392,,,,,,,,,,,
+LambdaNeuralRank,,,,,,,,,,,,,0.716,
+LambdaRank,,,,,,,,,,,,,0.7,AOL measurement in LambdaNeuralRank
+RankNet,,,,,,,,,,,,,0.507,AOL measurement in LambdaNeuralRank
