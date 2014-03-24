@@ -42,3 +42,6 @@ SmoothRank,0.475,,,,,,,,,,,,,,
 SparseRank,0.4782,0.3678,,,0.7967,,0.8036,,,,,,,,
 FenchelRank,0.4826,0.3548,,,0.7808,,0.8181,,,,,,,,measurements in SparseRank
 SVD,0.4529,0.2761,0.4368,,,,,,,,,,,,
+LambdaNeuralRank,,,,,,,,,,,,,0.662,,
+RankNet,,,,,,,,,,,,,0.452,,AOL measurement in LambdaNeuralRank
+LambdaRank,,,,,,,,,,,,,0.644,,AOL measurement in LambdaNeuralRank
