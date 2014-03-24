@@ -38,10 +38,11 @@ Pointwise RankELM,0.4782,,,,,,,,,,,,,,
 pairwise RankELM,0.4755,,,,,,,,,,,,,,
 Ranking Committee Perceptron,0.464,0.371,0.403,,,,,,,,,,,,Com 30 B is aangehouden
 REG-SHF-SDCG,0.4634,,,,,,,,,,,,,,
-SmoothRank,0.475,,,,,,,,,,,,,,
+SmoothRank,0.475,,0.3555,,,,,,,,,,,,TD2004 measurement in BL-MART
 SparseRank,0.4782,0.3678,,,0.7967,,0.8036,,,,,,,,
 FenchelRank,0.4826,0.3548,,,0.7808,,0.8181,,,,,,,,measurements in SparseRank
 SVD,0.4529,0.2761,0.4368,,,,,,,,,,,,
 LambdaNeuralRank,,,,,,,,,,,,,0.662,,
 RankNet,,,,,,,,,,,,,0.452,,AOL measurement in LambdaNeuralRank
 LambdaRank,,,,,,,,,,,,,0.644,,AOL measurement in LambdaNeuralRank
+BagBoo,,,0.408,,,,,,,,,,,,TD2004 measurement in BL-MART
