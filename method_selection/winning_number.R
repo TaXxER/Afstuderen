@@ -15,4 +15,15 @@ nr_measurements <- apply(temp,1,function(x) sum(!is.na(x)))
 
 output <- data.frame("Method" = ltr_data[,1], "Normalised_winning_number" = norm_winnum, "Nr_measurements"=nr_measurements)
 
-ggplot(output, aes(Nr_measurements,Normalised_winning_number)) + geom_point() + geom_text(aes(label=Method))
+# add ID's to output
+output$id <- seq_len(nrow(output))
+nc <- ncol(output)
+output <- output[, c(nc, 1:(nc-1))]
+
+# plot graph
+ggplot(output, aes(Nr_measurements,Normalised_winning_number)) + geom_point(size=2) + 
+  geom_text(aes(label=id), hjust=-0.5, vjust=-0.5) + 
+  theme_grey(base_size=12, base_family="") + 
+  scale_x_continuous("# of datasets evaluated on", expand = c(0,0), breaks=c(0,2,4,6,8,10)) +
+  scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
+  expand_limits(x = c(0,9.2), y = c(0,1.01))
