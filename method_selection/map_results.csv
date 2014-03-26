@@ -46,3 +46,6 @@ BT,0.4537,,0.2601,,0.3852,,,,,,,,,,,,,
 TM,0.4543,,0.2562,,0.3772,,,,,,,,,,,,,
 PermuRank,0.4456,,0.2554,,0.3804,,,,,,,,,,,,,
 ApproxAP,,,,0.2834,,0.2224,,,,,,,,,,,,measurements in ApproxNDCG
+RankDE,,,0.339,,,,,,,,,,,,,,,measurements in Rank-PMBGP
+Rank-PMBGP,,,0.291,,,,,,,,,,,,,,,
+SwarmRank,,,0.209,,,,,,,,,,,,,,,measurements in Rank-PMBGP
