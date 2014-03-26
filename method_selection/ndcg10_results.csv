@@ -25,9 +25,9 @@ SortNet,,,,0.34,,0.55,,,,,,,,,,0.712,,AOL measurements in EnergyNDCG
 GroupCE,,0.4583,,0.365,,0.3377,,,,,,,,,,,,
 GroupMLE,,0.4572,,0.3568,,0.3175,,,,,,,,,,,,
 ListMLE,,0.419,,0.2362,,0.2171,,,,,,,,,,,,Measurements in Group-Group
-LARF,,0.556,,0.511,,0.542,,,,,,,,,,,,
-IPRank,,0.464,,0.346,,0.455,,,,,,,,,,,,measurements in LARF
-GPRank,,0.458,,0.338,,0.397,,,,,,,,,,,,measurements in LARF
+LARF,0.556,,0.511,,0.542,,,,,,,,,,,,,
+IPRank,0.464,,0.346,,0.455,,,,,,,,,,,,,measurements in LARF
+GPRank,0.458,,0.338,,0.397,,,,,,,,,,,,,measurements in LARF
 LRUF,,0.569,,0.441,,0.503,,,,,0.483,,,,,,,
 PERF-MAP,,0.427,,0.249,,0.39,,,,,0.418,,,,,,,measurements in LRUF
 NewLoss,,0.4399,,0.3208,,0.4006,,,,,,,,,,,,
