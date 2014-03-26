@@ -1,4 +1,4 @@
-,LETOR 2.0 OHSUMED,LETOR 3.0 OHSUMED,LETOR 2.0 TD2003,LETOR 2.0 TD2003,LETOR 2.0 TD2004,LETOR 3.0 TD2004,NP2003,NP2004,HP2003,HP2004,MQ2007,MQ2008,MSLR-WEB10k,MSLR-WEB30k,Yandex IMC,AOL,,Comments
+,LETOR 2.0 OHSUMED,LETOR 3.0 OHSUMED,LETOR 2.0 TD2003,LETOR 3.0 TD2003,LETOR 2.0 TD2004,LETOR 3.0 TD2004,NP2003,NP2004,HP2003,HP2004,MQ2007,MQ2008,MSLR-WEB10k,MSLR-WEB30k,Yandex IMC,AOL,,Comments
 ListNet,0.448895,0.441,0.374317,0.348,0.4578738,0.317,0.801,0.812,0.837,0.784,0.444,0.2303,,,,,,
 L2 Regression,,0.4436,,0.3297,,0.2832,0.8025,0.804,0.8216,0.7188,,,,,,,,
 RankSVM-Primal,,0.4504,,0.3571,,0.2913,0.7894,0.795,0.818,0.772,,,,,,,,
@@ -21,7 +21,7 @@ ApproxNDCG,,0.462,,,,,,,,,,,,,,,,
 SoftRank,,0.4539,,,,,,,,,,,,,,,,OHSUMED measurements in ApproxNDCG
 DCMP,,0.434,,0.327,,0.314,0.819,0.825,0.831,0.812,0.446,0.232,,,,,,
 EnergyNDCG,,0.444,,,,,,,,,,,,,,0.713,,
-SortNet,,,,0.34,,0.55,,,,,,,,,,0.712,,AOL measurements in EnergyNDCG
+SortNet,,,0.34,,0.55,,,,,,,,,,,0.712,,AOL measurements in EnergyNDCG
 GroupCE,,0.4583,,0.365,,0.3377,,,,,,,,,,,,
 GroupMLE,,0.4572,,0.3568,,0.3175,,,,,,,,,,,,
 ListMLE,,0.419,,0.2362,,0.2171,,,,,,,,,,,,Measurements in Group-Group
@@ -34,11 +34,11 @@ NewLoss,,0.4399,,0.3208,,0.4006,,,,,,,,,,,,
 Best Feature,,,,0.2637,,0.3748,0.6907,0.6125,0.791,0.7511,0.4221,0.223,,,,,,measurements in RandomForest
 Pointwise RankELM,,0.4607,,,,,,,,,,,,,,,,
 Pairwise RankELM,,0.4574,,,,,,,,,,,,,,,,
-Ranking Committee Perceptron,,0.447,,0.351,,0.434,,,,,,,,,,,,
+Ranking Committee Perceptron,0.447,,0.351,,0.434,,,,,,,,,,,,,
 SmoothNDCG,,0.457,,0.336,,0.335,0.784,0.807,0.833,0.824,,,,,,,,
 SparseRank,,0.4623,,0.3538,,,,0.8244,,0.8103,,,,,,,,
 FenchelRank,,0.4637,,0.3401,,,,0.8157,,0.8274,,,,,,,,measurements in SparseRank
-SVD-RankBoost,,0.4435,,0.2798,,0.4392,,,,,,,,,,,,
+SVD-RankBoost,0.4435,,0.2798,,0.4392,,,,,,,,,,,,,
 LambdaNeuralRank,,,,,,,,,,,,,,,,0.716,,
 LambdaRank,,,,,,,,,,,,,,,,0.7,,AOL measurement in LambdaNeuralRank
 RankNet,,,,,,,,,,,,,,,,0.507,,AOL measurement in LambdaNeuralRank
