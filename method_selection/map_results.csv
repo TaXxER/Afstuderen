@@ -60,3 +60,5 @@ TGRank,,0.4479,,,,,,0.6799,,0.6972,,0.4709,,,,,,,,measurements in FenchelRank
 RSRank,,0.4486,,,,,,0.6922,,0.7171,,0.4781,,,,,,,,measurements in FenchelRank
 GAS-E,,0.4475,,,,,,0.6736,,0.6925,,0.4767,,,,,,,,measurements in FSMRank
 FSMSVM,,0.4441,,,,,,0.6748,,0.7014,,0.4744,,,,,,,,measurements in FSMRank
+RankAggNDCG,,0.4506,,,,,,,,,0.4881,0.4916,,,,,,,,
+Q.D.KNN,,0.4463,,,,,,,,,0.4715,0.4863,,,,,,,,
