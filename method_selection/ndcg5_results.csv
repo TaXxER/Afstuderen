@@ -39,7 +39,7 @@ Pairwise RankELM,,0.4755,,,,,,,,,,,,,,,,,,
 Ranking Committee Perceptron,0.464,,0.371,,0.403,,,,,,,,,,,,,,,Com 30 B is aangehouden
 REG-SHF-SDCG,,0.4634,,,,,,,,,,,,,,,,,,
 SparseRank,,0.4782,,0.3678,,,,0.7967,,0.8036,,,,,,,,,,
-FenchelRank,,0.4826,,0.3548,,,,0.7808,,0.8181,,,,,,,,,,measurements in SparseRank
+FenchelRank,,0.4826,,0.3548,,,,0.7808,,0.8181,,0.479,,,,,,,,LETOR 3.0 TD2003 measurement in SparseRank
 SVD-RankBoost,0.4529,,0.2761,,0.4368,,,,,,,,,,,,,,,
 LambdaNeuralRank,,,,,,,,,,,,,,,,0.662,,,,
 RankNet,,,,,,,,,,,,,,,,0.452,,,,AOL measurement in LambdaNeuralRank
@@ -53,3 +53,8 @@ SwarmRank,,,0.278,,,,,,,,,,,,,,,,,
 RankDE,,,0.336,,,,,,,,,,,,,,,,,
 Rank-PMBGP,,,0.353,,,,,,,,,,,,,,,,,
 CoList,,,,,,,,,,,,,,,,,,0.665,,
+TGRank,,0.4813,,,,,,0.7878,,0.7762,,0.4712,,,,,,,,measurements in FenchelRank
+RSRank,,0.4684,,,,,,0.7905,,0.7915,,0.4734,,,,,,,,measurements in FenchelRank
+FSMRank,,0.4824,,,,,,0.8,,0.8187,,0.4791,,,,,,,,
+GAS-E,,0.472,,,,,,0.7617,,0.7679,,0.4772,,,,,,,,measurements in FSMRank
+FSMSVM,,0.464,,,,,,0.783,,0.7635,,0.4701,,,,,,,,measurements in FSMRank
