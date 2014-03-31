@@ -1,7 +1,7 @@
 setwd("C:/Git-data/Afstuderen/method_selection")
 require(ggplot2)
 
-ltr_data = read.csv("ndcg10_results.csv")
+ltr_data = read.csv("map_results.csv")
 temp <- ltr_data[,c(2:(length(ltr_data)-2))]
 winnum <- apply(temp, 2, function(x) sapply(x, function(y) if(is.na(y)){NA}else{sum(x[!is.na(x)]<y)}))
 winnum <- data.frame(winnum)
