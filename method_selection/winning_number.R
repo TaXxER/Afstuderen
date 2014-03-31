@@ -76,22 +76,34 @@ ndcg10_output$id <- seq_len(nrow(ndcg10_output))
 ndcg10_output <- ndcg10_output[, c(ncol(ndcg10_output), 1:(ncol(ndcg10_output)-1))]
 
 ### COMBINED ###
-combined_data <- data.frame(Method=character(), Summed_winnum=numeric(), Summed_ideal_winnum=numeric())
-combined_data <- rbind.data.frame(combined_data, unname(cbind(as.character(map_data[,1]),as.integer(map_summed_winnum),as.integer(map_summed_ideal_winnum))))
-combined_data <- rbind.data.frame(combined_data, unname(cbind(as.character(ndcg5_data[,1]),as.integer(ndcg5_summed_winnum),as.integer(ndcg5_summed_ideal_winnum))))
-combined_data <- rbind.data.frame(combined_data, unname(cbind(as.character(ndcg10_data[,1]),as.integer(ndcg10_summed_winnum),as.integer(ndcg10_summed_ideal_winnum))))
-#combined_data$V2 <- as.numeric(combined_data$V2)
-#combined_data$V3 <- as.numeric(combined_data$V3)
-#combined_aggregate_winnum <- aggregate(V2~V1,combined_data,sum)
-#combined_aggregate_ideal_winnum <- aggregate(V3~V1,combined_data,sum)
-#combined_norm_winnum <- combined_aggregate_winnum/combined_aggregate_ideal_winnum
+combined_methods <- NULL
+combined_methods <- c(combined_methods, as.character(map_data[,1]))
+combined_methods <- c(combined_methods, as.character(ndcg5_data[,1]))
+combined_methods <- c(combined_methods, as.character(ndcg10_data[,1]))
+
+combined_data <- NULL
+combined_data <- cbind(map_summed_winnum,map_summed_ideal_winnum)
+combined_data <- rbind(combined_data, cbind(ndcg5_summed_winnum, ndcg5_summed_ideal_winnum))
+combined_data <- rbind(combined_data, cbind(ndcg10_summed_winnum, ndcg10_summed_ideal_winnum))
+
+combined <- cbind.data.frame(combined_methods,combined_data)
+colnames(combined) <- c("Method", "Summed_winnum", "Summed_ideal_winnum")
+combined_aggregate <- aggregate(cbind(Summed_winnum, Summed_ideal_winnum)~Method,combined,sum)
+combined_aggregate$Norm_winnum <- combined_aggregate$Summed_winnum/combined_aggregate$Summed_ideal_winnum
+combined_output <- cbind(combined_aggregate$Summed_ideal_winnum, combined_aggregate$Norm_winnum)
+
+# add ID's to output
+combined_output$id <- seq_len(nrow(combined_output))
+combined_output <- combined_output[, c(ncol(combined_output), 1:(ncol(combined_output)-1))]
 
 ### PLOT ###
 ### ADJUST HERE ###
 # plot graph
-ggplot(ndcg5_output, aes(Nr_measurements,Normalised_winning_number)) + geom_point(size=2) + 
-  geom_text(aes(label=id), hjust=-0.5, vjust=-0.5) + 
-  theme_grey(base_size=12, base_family="") + 
-  scale_x_continuous("# of datasets evaluated on", expand = c(0,0), breaks=c(0,2,4,6,8,10,12,14, 16)) +
-  scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
-  expand_limits(x = c(0,16.35), y = c(0,1.03))
+#ggplot(ndcg5_output, aes(Nr_measurements,Normalised_winning_number)) + geom_point(size=2) + 
+#  geom_text(aes(label=id), hjust=-0.5, vjust=-0.5) + 
+#  theme_grey(base_size=12, base_family="") + 
+#  scale_x_continuous("# of datasets evaluated on", expand = c(0,0), breaks=c(0,2,4,6,8,10,12,14, 16)) +
+#  scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
+#  expand_limits(x = c(0,16.35), y = c(0,1.03))
+
+ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) + geom_text(aes(label=Method))
