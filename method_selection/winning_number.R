@@ -27,6 +27,27 @@ map_output$id <- seq_len(nrow(map_output))
 map_output <- map_output[, c(ncol(map_output), 1:(ncol(map_output)-1))]
 
 
+### NDCG@3 ###
+# read data
+ndcg3_data = read.csv("ndcg3_results.csv")
+
+# data transformations
+ndcg3_temp <- ndcg3_data[,c(2:(length(ndcg3_data)-2))]
+ndcg3_temp <- apply(ndcg3_temp, 2, function(x) if(sum(!is.na(x))>1) {x}else{"ILLEGAL"} )
+ndcg3_temp <- ndcg3_temp[ndcg3_temp!="ILLEGAL"]
+ndcg3_temp <- data.frame(ndcg3_temp)
+
+# summation and normalization operations
+ndcg3_winnum <- apply(ndcg3_temp, 2, function(x) sapply(x, function(y) if(is.na(y)){NA}else{sum(x[!is.na(x)]<y)}))
+ndcg3_winnum <- data.frame(ndcg3_winnum)
+ndcg3_ideal_winnum <- apply(ndcg3_winnum, 2, function(x) sapply(x, function(y) if(is.na(y)){0}else{if(length(x[!is.na(x)]) == 0){0}else{max(x[!is.na(x)])}}))
+ndcg3_summed_winnum <- apply(ndcg3_winnum, 1, function(x) sum(x,na.rm=TRUE))
+ndcg3_summed_ideal_winnum <- apply(ndcg3_ideal_winnum, 1, function(x) sum(x,na.rm=TRUE))
+ndcg3_norm_winnum <- ndcg3_summed_winnum/ndcg3_summed_ideal_winnum
+ndcg3_nr_measurements <- apply(ndcg3_temp,1,function(x) sum(!is.na(x)))
+ndcg3_output <- data.frame("Method" = ndcg3_data[,1], "Normalised_winning_number" = ndcg3_norm_winnum, "Nr_measurements"= ndcg3_nr_measurements)
+
+
 ### NDCG@5 ###
 # read data
 ndcg5_data = read.csv("ndcg5_results.csv")
@@ -78,11 +99,13 @@ ndcg10_output <- ndcg10_output[, c(ncol(ndcg10_output), 1:(ncol(ndcg10_output)-1
 ### COMBINED ###
 combined_methods <- NULL
 combined_methods <- c(combined_methods, as.character(map_data[,1]))
+combined_methods <- c(combined_methods, as.character(ndcg3_data[,1]))
 combined_methods <- c(combined_methods, as.character(ndcg5_data[,1]))
 combined_methods <- c(combined_methods, as.character(ndcg10_data[,1]))
 
 combined_data <- NULL
 combined_data <- cbind(map_summed_winnum,map_summed_ideal_winnum)
+combined_data <- rbind(combined_data, cbind(ndcg3_summed_winnum, ndcg3_summed_ideal_winnum))
 combined_data <- rbind(combined_data, cbind(ndcg5_summed_winnum, ndcg5_summed_ideal_winnum))
 combined_data <- rbind(combined_data, cbind(ndcg10_summed_winnum, ndcg10_summed_ideal_winnum))
 
@@ -106,8 +129,8 @@ combined_output <- combined_output[, c(ncol(combined_output), 1:(ncol(combined_o
 #  scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
 #  expand_limits(x = c(0,16.35), y = c(0,1.03))
 
-ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +
+ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +  
   geom_text(aes(label=Method)) +
   scale_x_continuous("Summed Ideal Winning Number", expand = c(0,0)) + 
   scale_y_continuous("Normalized Winnin Number", expand=c(0,0)) +
-  expand_limits(x = c(0,800), y = c(0,1.03))
+  expand_limits(x = c(0,1000), y = c(0,1.01))
