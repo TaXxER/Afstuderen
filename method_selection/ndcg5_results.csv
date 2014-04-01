@@ -60,3 +60,4 @@ GAS-E,,0.472,,,,,,0.7617,,0.7679,,0.4772,,,,,,,,,,measurements in FSMRank
 FSMSVM,,0.464,,,,,,0.783,,0.7635,,0.4701,,,,,,,,,,measurements in FSMRank
 RankAggNDCG,,0.4291,,,,,,,,,0.4291,0.485,,,,,,,,,,
 Q.D.KNN,,0.4528,,,,,,,,,0.4265,0.4625,,,,,,,,,,measurements in RankAggNDCG
+LambdaMART,,,,,,,,,,,,,0.461,,,,,,,,,
