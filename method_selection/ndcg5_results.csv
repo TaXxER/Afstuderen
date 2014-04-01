@@ -24,8 +24,8 @@ ApproxNDCG,,0.4794,,,,,,,,,,,,,,,,,,,,
 SoftRank,,0.458,,,,,,,,,,,,,,,,,,,,OHSUMED measurements in ApproxNDCG
 DCMP,,0.451,,0.33,,0.339,0.803,0.793,0.823,0.794,0.42,0.478,,,,,,,,,,
 EnergyNDCG,,0.459,,,,,,,,,,,,,,0.66,,,,,,
-SortNet,,,0.33,,0.55,,,,,,,,,,,0.658,,,,,,AOL measurement uit EnergyNDCG
-IntervalRank,,0.4609,,,,,,,,,,,,,,,,,,,,
+SortNet,,0.462,0.33,,0.55,,,,,,,,,,,0.658,,,,,,AOL measurement uit EnergyNDCG
+IntervalRank,,0.4609,,,,,,,,,,,,,,,,,,,,LETOR 3.0 OHSUMED measurement in EnergyNDCG
 Kernel-PCA,,0.442,,0.3226,,0.3703,,,,,,,,,,,,,,,,
 LARF,,0.592,,0.542,,0.582,,,,,,,,,,,,,,,,
 IPRank,,0.481,,0.361,,0.467,,,,,,,,,,,,,,,,measurements in LARF
