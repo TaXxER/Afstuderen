@@ -51,7 +51,7 @@ The challenge overview paper \cite{Chapelle2011a} states as one of the lessons o
 
 Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
 \section{Yandex Internet Mathematics competition}
-
+Yandex Internet Mathematics Competition
 \subsection{Results}
 The Yandex Internet Mathematics competition was won by Pavlov et al. \cite{Pavlov2010} with the BagBoo method.
 
@@ -218,8 +218,25 @@ RankBoost & 0.295 & 0.328 & 0.375 & 0.247 & 0.264 & 0.305 \\
 \subsection{AOL}
 TODO: AOL dataset beschrijven \cite{Pass2006}.
 
-\section{comparing Learning-to-Rank models across datasets}
-LETOR 2.0 baseline results from LETOR website \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor2.0/baseline.aspx}
+\section{Comparing Learning-to-Rank models across datasets}
+As we have seen in the foregoing sections, evaluation of Learning-to-Rank methods is spread out over the several benchmark datasets. However, as the evaluated Learning-to-Rank methods differ from benchmark to benchmark, no single benchmark comparison can be regarded as a conclusive argument on which Learning-to-Rank method is most accurate. Several studies make a small start in considering Learning-to-Rank method performance over multiple benchmark datasets. Gomes et al. \cite{Gomes2013} analysed ranking accuracy of a set of models over both LETOR 3.0 and LETOR 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both Yahoo! Learning to Rank Challenge datasets and the OHSUMED dataset from LETOR 3.0. To my knowledge, no large-scale accuracy meta-analysis has been conducted where published evaluation results on several benchmark datasets are taken into account.\\
+
+With a meta-analysis I will compare the performance of Learning-to-Rank methods across the Learning-to-Rank benchmark datasets described in foregoing sections. With a literature review I will collect evaluation results on the datasets/collections. The following list presents an overview of the benchmark collections taken into account in the meta-analysis:
+\begin{itemize}
+\item LETOR 2.0
+\item LETOR 3.0
+\item LETOR 4.0
+\item Yahoo! Learning to Rank Challenge
+\item Yandex Internet Mathematics Competition 2009
+\item MSLR-web10/30k
+\item WCL2R
+\item AOL
+\end{itemize}
+
+For the LETOR collections, the evaluation results of the baseline models will be used from LETOR 2.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor2.0/baseline.aspx}, LETOR 3.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and LETOR 4.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} as listed on the LETOR website.\\
+
+LETOR 1.0, LETOR 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have an accompanying paper that was published together with the benchmark collection. Users of those benchmark collections are encouraged to cite these papers. A forward literature search on these studies is performed to collect studies that present measurements of evaluations of Learning-to-Rank methods on these benchmark collections. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search.
+
 \begin{table}[!h]
 \begin{tabular}{l|l|l}
 Benchmark & Paper & \# of forward references \\
@@ -233,7 +250,9 @@ WCL2R & Alc{\^a}ntara et al. \cite{Alcantara2010} & 2\\
 \caption{Forward references of Learning-to-Rank benchmark papers}
 \label{tbl:ltr_benchmark_forref}
 \end{table}
-Google scholar search results for benchmark data sets without a release/overview paper.
+
+The LETOR 4.0, MSLR-web10/30k and Yandex Internet Mathematics Competition 2009 benchmark collections were not accompanied with a describing study. To collect measurements of Learning-to-Rank methods evaluated on these benchmarks, a Google Scholar search is performed on the name of the benchmark. Table~\ref{chap:benchmark_results} shows the results of this literature search.
+
 \begin{table}
 \begin{tabular}{l|l}
 Benchmark & Google scholar search results \\
