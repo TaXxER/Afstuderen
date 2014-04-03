@@ -2,7 +2,7 @@ As we have seen in chapter~\ref{chap:benchmark_results}, evaluation of Learning-
 
 Several studies make a small start in considering Learning-to-Rank method performance over multiple benchmark datasets. Gomes et al. \cite{Gomes2013} analysed ranking accuracy of a set of models over both LETOR 3.0 and LETOR 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both Yahoo! Learning to Rank Challenge datasets and the OHSUMED dataset from LETOR 3.0. To my knowledge, no large-scale accuracy meta-analysis has been conducted where published evaluation results on several benchmark datasets are taken into account. With a meta-analysis I will compare the performance of Learning-to-Rank methods across the Learning-to-Rank benchmark datasets described in foregoing sections.
 
-\section{Collecting evaluation measurements}
+\section{Collecting Evaluation Results}
 With a literature review I will collect evaluation results on the datasets/collections. The following list presents an overview of the benchmark collections taken into account in the meta-analysis:
 \begin{itemize}
 \item LETOR 2.0
@@ -48,7 +48,7 @@ Yandex Internet Mathematics Competition & 1 result \\
 \label{tbl:ltr_benchmark_searchres}
 \end{table}
 
-\section{Comparison methodology}
+\section{Comparison Methodology}
 The LETOR 3.0 paper \cite{Qin2010} states that it may differ between datasets what the most accurate ranking methods are. To evaluate the overall performance of Learning-to-Rank methods over the multiple datasets in the LETOR 3.0 collections, Qin et al. \cite{Qin2010} proposed a measure called \emph{winning number} as the number of other algorithms that an algorithm can beat over the set of datasets. Formally the winning number measure is defined as\\
 
 $\text{Winning Number}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
@@ -83,7 +83,19 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
+\section{Evaluation Results Found in Literature}
+
+
 \section{Results \& Discussion}
+\subsection{MAP}
+
+\subsection{NDCG@3}
+
+\subsection{NDCG@5}
+
+\subsection{NDCG@10}
+
+\subsection{All metrics}
 \begin{figure}[!h]
 \includegraphics[scale=0.40]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
