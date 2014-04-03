@@ -84,7 +84,30 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 \end{cases}$\\
 
 \section{Evaluation Results Found in Literature}
-
+\begin{tabular}{llll}
+AdaRank-\ac{MAP} & FenchelRank & LambdaRank & RankDE \\ 
+AdaRank-\ac{nDCG} & FocusedBoost & LARF & Ranking Committee Perceptron \\ 
+ADMM & FocusedNet & ListMLE & RankMGP \\ 
+Approx\ac{AP} & FocusedSVM & ListNet & RankNet \\ 
+Approx\ac{nDCG} & FPRank & ListReg & RankRLS \\ 
+BagBoo & FRank & LRUF & RankSVM \\ 
+Best Single Feature & FSMRank & MBP & RankSVM-Primal \\ 
+BL-MART & FSM$^{MAP}$ & MHR & RankSVM-Struct \\ 
+BoltzRank-Single & GAS-E & MultiStageBoost & RE-QR \\ 
+BoltzRank-Pair & GPRank & NewLoss & REG-SHF-SDCG \\ 
+BT & GRankRLS & OWPC & Regression \\ 
+C-CRF & GroupCE & RankELM (pointwise) & RSRank \\ 
+CA & GroupMLE & RankELM (pairwise) & SmoothGrad \\ 
+ &  & TM & VFLR \\ 
+CCRank & IntervalRank & PERF-MAP & SmoothRank \\ 
+CoList & KeepRank & PermuRank & SoftRank \\ 
+Consistent-RankCosine & Kernel-PCA & Q.D.KNN & SortNet \\ 
+CRR & KL-CRF & RandomForest & SparseRank \\ 
+DCMP & Regression with L2-regularisation & Rank-PMBGP & SVD-RankBoost \\ 
+DirectRank & LAC-MR-OR & RankAgg\ac{nDCG} & SVM$^{MAP}$ \\ 
+Energy\ac{nDCG} & LambdaMART & RankBoost & SwarmRank \\ 
+FBPCRank & LambdaNeuralRank & RankCSA & TGRank \\ 
+\end{tabular}
 
 \section{Results \& Discussion}
 \subsection{MAP}
@@ -101,7 +124,7 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_all}
 \end{figure}
-%TODO: waarom ndcg@3,5,10 en MAP?$
-%TODO: limitations van deze vergelijkingsmethodologie$
+%TODO: waarom ndcg@3,5,10 en MAP?
+%TODO: limitations van deze vergelijkingsmethodologie
 
 \section{Limitations}
