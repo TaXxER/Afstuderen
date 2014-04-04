@@ -84,30 +84,41 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 \end{cases}$\\
 
 \section{Evaluation Results Found in Literature}
-\begin{tabular}{llll}
-AdaRank-\ac{MAP} & FenchelRank & LambdaRank & RankDE \\ 
-AdaRank-\ac{nDCG} & FocusedBoost & LARF & Ranking Committee Perceptron \\ 
-ADMM & FocusedNet & ListMLE & RankMGP \\ 
-Approx\ac{AP} & FocusedSVM & ListNet & RankNet \\ 
-Approx\ac{nDCG} & FPRank & ListReg & RankRLS \\ 
-BagBoo & FRank & LRUF & RankSVM \\ 
-Best Single Feature & FSMRank & MBP & RankSVM-Primal \\ 
-BL-MART & FSM$^{MAP}$ & MHR & RankSVM-Struct \\ 
-BoltzRank-Single & GAS-E & MultiStageBoost & RE-QR \\ 
-BoltzRank-Pair & GPRank & NewLoss & REG-SHF-SDCG \\ 
-BT & GRankRLS & OWPC & Regression \\ 
-C-CRF & GroupCE & RankELM (pointwise) & RSRank \\ 
-CA & GroupMLE & RankELM (pairwise) & SmoothGrad \\ 
- &  & TM & VFLR \\ 
-CCRank & IntervalRank & PERF-MAP & SmoothRank \\ 
-CoList & KeepRank & PermuRank & SoftRank \\ 
-Consistent-RankCosine & Kernel-PCA & Q.D.KNN & SortNet \\ 
-CRR & KL-CRF & RandomForest & SparseRank \\ 
-DCMP & Regression with L2-regularisation & Rank-PMBGP & SVD-RankBoost \\ 
-DirectRank & LAC-MR-OR & RankAgg\ac{nDCG} & SVM$^{MAP}$ \\ 
-Energy\ac{nDCG} & LambdaMART & RankBoost & SwarmRank \\ 
-FBPCRank & LambdaNeuralRank & RankCSA & TGRank \\ 
+\begin{table}[!h]
+\begin{tabular}{l|l|l}
+AdaRank-\acs{MAP} & \acs{GP}Rank & RankAgg\ac{nDCG} \\ 
+AdaRank-\acs{nDCG} & GRank\acs{RLS} & RankBoost \\ 
+ADMM & GroupCE & RankCSA \\ 
+Approx\acs{AP} & Group\acs{MLE} & RankDE \\ 
+Approx\acs{nDCG} & IntervalRank & RankELM (pairwise) \\ 
+BagBoo & \acs{IP}Rank & RankELM (pointwise) \\ 
+Best Single Feature & KeepRank & Ranking Committee Perceptron \\ 
+BL-MART & Kernel-\acs{PCA} & RankMGP \\ 
+BoltzRank-Single & KL-\acs{CRF} & RankNet \\ 
+BoltzRank-Pair & LAC-MR-OR & Rank\ac{RLS} \\ 
+BT & LambdaMART & Rank\ac{SVM} \\ 
+C-\acs{CRF} & LambdaNeuralRank & Rank\ac{SVM}-Primal \\ 
+\acs{CA} & LambdaRank & Rank\acs{SVM}-Struct \\ 
+\ac{CC}Rank & LARF & RE-QR \\ 
+CoList & Linear Regression & REG-SHF-SDCG \\ 
+Consistent-RankCosine & List\acs{MLE} & Regression \\ 
+DCMP & ListNet & Ridge Regression \\ 
+DirectRank & ListReg & RSRank \\ 
+Energy\ac{nDCG} & LRUF & SmoothGrad \\ 
+FBPCRank & MBP & SmoothRank \\ 
+FenchelRank & MHR & SoftRank \\ 
+FocusedBoost & MultiStageBoost & SortNet \\ 
+FocusedNet & NewLoss & SparseRank \\ 
+Focused\ac{SVM} & OWPC & \acs{SVD}-RankBoost \\ 
+FPRank & PERF-\ac{MAP} & \ac{SVM}$^{\ac{MAP}}$ \\ 
+FRank & PermuRank & SwarmRank \\ 
+FSMRank & Q.D.\acs{KNN} & TGRank \\ 
+FSM$^{\acs{MAP}}$ & RandomForest & TM \\ 
+GAS-E & Rank-PMBGP & VFLR \\ 
 \end{tabular}
+\caption{Learning-to-Rank algorithms with measurements on benchmark datasets}
+\label{ltr_methods_used}
+\end{table}
 
 \section{Results \& Discussion}
 \subsection{MAP}

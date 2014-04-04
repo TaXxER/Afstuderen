@@ -19,7 +19,6 @@ BoltzRank-Single,,0.4522,,0.2236,,,,,,,,,,,,,,,,,,
 BoltzRank-Pair,,0.4604,,0.239,,0.239,,,,,,,,,,,,,,,,measurements in BL-MART
 BagBoo,,,,,,0.2499,,,,,0.4676,,,,,,,,,,,measurements in BL-MART
 LambdaMART,,,,,,0.2513,,,,,0.4684,,0.3684,,,,,,,,,measurements in BL-MART
-CRR,,,,,,,,,,,0.466,0.479,,,,,,,,,,
 BL-MART,,,,,,0.2649,,,,,0.4726,,0.3696,,,,,,,,,
 GroupCE,,0.4564,,0.2818,,0.2485,,,,,,,,,,,,,,,,
 GroupMLE,,0.4517,,0.2811,,0.2386,,,,,,,,,,,,,,,,measurements in GroupCE
