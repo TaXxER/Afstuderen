@@ -88,33 +88,33 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 \begin{tabular}{l|l|l}
 AdaRank-\acs{MAP} & \acs{GP}Rank & RankAgg\ac{nDCG} \\ 
 AdaRank-\acs{nDCG} & GRank\acs{RLS} & RankBoost \\ 
-ADMM & GroupCE & RankCSA \\ 
-Approx\acs{AP} & Group\acs{MLE} & RankDE \\ 
-Approx\acs{nDCG} & IntervalRank & RankELM (pairwise) \\ 
+ADMM & Group\acs{CE} \cite{Lin2011} & RankCSA \cite{He2010} \\ 
+Approx\acs{AP} \cite{Qin2010b} & Group\acs{MLE} & RankDE \\ 
+Approx\acs{nDCG} \cite{Qin2010b} & IntervalRank \cite{Moon2010} & RankELM (pairwise) \\ 
 BagBoo & \acs{IP}Rank & RankELM (pointwise) \\ 
-Best Single Feature & KeepRank & Ranking Committee Perceptron \\ 
-BL-MART & Kernel-\acs{PCA} & RankMGP \\ 
-BoltzRank-Single & KL-\acs{CRF} & RankNet \\ 
-BoltzRank-Pair & LAC-MR-OR & Rank\ac{RLS} \\ 
-BT & LambdaMART & Rank\ac{SVM} \\ 
-C-\acs{CRF} & LambdaNeuralRank & Rank\ac{SVM}-Primal \\ 
+Best Single Feature & KeepRank & Ranking Committee Perceptron \cite{Elsas2008} \\ 
+BL-MART \cite{Ganjisaffar2011c} & Kernel-\acs{PCA} & RankMGP \\ 
+BoltzRank-Single \cite{Volkovs2009} & KL-\acs{CRF} & RankNet \\ 
+BoltzRank-Pair \cite{Volkovs2009} & LAC-MR-OR \cite{Veloso2008} & Rank\ac{RLS} \\ 
+BT \cite{Zhou2008} & LambdaMART & Rank\ac{SVM} \\ 
+C-\acs{CRF} \cite{Qin2008b} & LambdaNeuralRank \cite{Papini2012} & Rank\ac{SVM}-Primal \\ 
 \acs{CA} & LambdaRank & Rank\acs{SVM}-Struct \\ 
 \ac{CC}Rank & LARF & RE-QR \\ 
 CoList & Linear Regression & REG-SHF-SDCG \\ 
 Consistent-RankCosine & List\acs{MLE} & Regression \\ 
-DCMP & ListNet & Ridge Regression \\ 
+DCMP \cite{Renjifo2012} & ListNet & Ridge Regression \\ 
 DirectRank & ListReg & RSRank \\ 
-Energy\ac{nDCG} & LRUF & SmoothGrad \\ 
-FBPCRank & MBP & SmoothRank \\ 
-FenchelRank & MHR & SoftRank \\ 
-FocusedBoost & MultiStageBoost & SortNet \\ 
-FocusedNet & NewLoss & SparseRank \\ 
-Focused\ac{SVM} & OWPC & \acs{SVD}-RankBoost \\ 
+Energy\ac{nDCG} \cite{Freno2011} & LRUF & SmoothGrad \\ 
+FBPCRank \cite{Lai2011} & MBP & SmoothRank \\ 
+FenchelRank \cite{Lai2013} & MHR & SoftRank \\ 
+FocusedBoost \cite{Niu2012} & MultiStageBoost & SortNet \cite{Rigutini2008} \\ 
+FocusedNet \cite{Niu2012} & NewLoss & SparseRank \\ 
+Focused\ac{SVM} \cite{Niu2012} & OWPC & \acs{SVD}-RankBoost \cite{Lin2009} \\ 
 FPRank & PERF-\ac{MAP} & \ac{SVM}$^{\ac{MAP}}$ \\ 
-FRank & PermuRank & SwarmRank \\ 
+FRank & PermuRank \cite{Xu2008} & SwarmRank \\ 
 FSMRank & Q.D.\acs{KNN} & TGRank \\ 
-FSM$^{\acs{MAP}}$ & RandomForest & TM \\ 
-GAS-E & Rank-PMBGP & VFLR \\ 
+FSM$^{\acs{MAP}}$ & RandomForest & TM \cite{Zhou2008} \\ 
+GAS-E & Rank-PMBGP \cite{Sato2013} & VFLR \\ 
 \end{tabular}
 \caption{Learning-to-Rank algorithms with measurements on benchmark datasets}
 \label{ltr_methods_used}
