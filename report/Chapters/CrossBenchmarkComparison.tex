@@ -85,37 +85,53 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 
 \section{Evaluation Results Found in Literature}
 \begin{table}[!h]
-\begin{tabular}{l|l|l}
-AdaRank-\acs{MAP} & \acs{GP}Rank & RankAgg\ac{nDCG} \\ 
-AdaRank-\acs{nDCG} & GRank\acs{RLS} & RankBoost \\ 
-ADMM & Group\acs{CE} \cite{Lin2011} & RankCSA \cite{He2010} \\ 
-Approx\acs{AP} \cite{Qin2010b} & Group\acs{MLE} & RankDE \\ 
-Approx\acs{nDCG} \cite{Qin2010b} & IntervalRank \cite{Moon2010} & RankELM (pairwise) \\ 
-BagBoo & \acs{IP}Rank & RankELM (pointwise) \\ 
-Best Single Feature & KeepRank & Ranking Committee Perceptron \cite{Elsas2008} \\ 
-BL-MART \cite{Ganjisaffar2011c} & Kernel-\acs{PCA} & RankMGP \\ 
-BoltzRank-Single \cite{Volkovs2009} & KL-\acs{CRF} & RankNet \\ 
-BoltzRank-Pair \cite{Volkovs2009} & LAC-MR-OR \cite{Veloso2008} & Rank\ac{RLS} \\ 
-BT \cite{Zhou2008} & LambdaMART & Rank\ac{SVM} \\ 
-C-\acs{CRF} \cite{Qin2008b} & LambdaNeuralRank \cite{Papini2012} & Rank\ac{SVM}-Primal \\ 
-\acs{CA} & LambdaRank & Rank\acs{SVM}-Struct \\ 
-\ac{CC}Rank & LARF & RE-QR \\ 
-CoList & Linear Regression & REG-SHF-SDCG \\ 
-Consistent-RankCosine & List\acs{MLE} & Regression \\ 
-DCMP \cite{Renjifo2012} & ListNet & Ridge Regression \\ 
-DirectRank & ListReg & RSRank \\ 
-Energy\ac{nDCG} \cite{Freno2011} & LRUF & SmoothGrad \\ 
-FBPCRank \cite{Lai2011} & MBP & SmoothRank \\ 
-FenchelRank \cite{Lai2013} & MHR & SoftRank \\ 
-FocusedBoost \cite{Niu2012} & MultiStageBoost & SortNet \cite{Rigutini2008} \\ 
-FocusedNet \cite{Niu2012} & NewLoss & SparseRank \\ 
-Focused\ac{SVM} \cite{Niu2012} & OWPC & \acs{SVD}-RankBoost \cite{Lin2009} \\ 
-FPRank & PERF-\ac{MAP} & \ac{SVM}$^{\ac{MAP}}$ \\ 
-FRank & PermuRank \cite{Xu2008} & SwarmRank \\ 
-FSMRank & Q.D.\acs{KNN} & TGRank \\ 
-FSM$^{\acs{MAP}}$ & RandomForest & TM \cite{Zhou2008} \\ 
-GAS-E & Rank-PMBGP \cite{Sato2013} & VFLR \\ 
-\end{tabular}
+\scalebox{0.85}{
+\begin{tabular}{|l|l|l||l|l|l|}
+Method & Described & Evaluated & Method & Described & Evaluated \\ 
+AdaRank-\acs{MAP} &  &  & Linear Regression &  &  \\ 
+AdaRank-\acs{nDCG} &  &  & List\acs{MLE} &  &  \\ 
+ADMM &  &  & ListNet &  &  \\ 
+Approx\acs{AP} & \cite{Qin2010b} & \cite{Qin2010b} & ListReg & \cite{Wu2011} & \cite{Wu2011} \\ 
+Approx\acs{nDCG} & \cite{Qin2010b} & \cite{Qin2010b} & LRUF & \cite{Torkestani2012b} & \cite{Torkestani2012b} \\ 
+BagBoo &  &  & MCP & \cite{Laporte2013} & \cite{Laporte2013} \\ 
+Best Single Feature &  &  & MHR &  &  \\ 
+BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} & MultiStageBoost & \cite{Kao2013} & \cite{Kao2013} \\ 
+BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009} & NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
+BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
+BT & \cite{Zhou2008} & \cite{Zhou2008} & PERF-\acs{MAP} &  &  \\ 
+C-\acs{CRF} & \cite{Qin2008b} & \cite{Qin2008b} & PermuRank & \cite{Xu2008} & \cite{Xu2008} \\ 
+CA &  &  & Q.D.\acs{KNN} &  &  \\ 
+CCRank &  &  & RandomForest & \cite{Gomes2013} & \cite{Gomes2013} \\ 
+CoList &  &  & Rank-PMBGP &  &  \\ 
+Consistent-RankCosine &  &  & RankAgg\acs{nDCG} &  &  \\ 
+DCMP & \cite{Renjifo2012}  & \cite{Renjifo2012}  & RankBoost &  &  \\ 
+DirectRank & \cite{Tan2013} & \cite{Tan2013} & RankCSA & \cite{He2010} & \cite{He2010} \\ 
+Energy\acs{nDCG} & \cite{Freno2011} & \cite{Freno2011} & RankDE &  &  \\ 
+FBPCRank & \cite{Lai2011} & \cite{Lai2011} & RankELM (pairwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
+FenchelRank & \cite{Lai2013} & \cite{Lai2013} & RankELM (pointwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
+FocusedBoost & \cite{Niu2012} & \cite{Niu2012} & Ranking Committee Perceptron & \cite{Elsas2008} & \cite{Elsas2008} \\ 
+FocusedNet & \cite{Niu2012} & \cite{Niu2012} & RankMGP &  &  \\ 
+Focused\acs{SVM} & \cite{Niu2012} & \cite{Niu2012} & RankNet &  &  \\ 
+FP-Rank & \cite{Song2013} & \cite{Song2013} & Rank\acs{RLS} &  &  \\ 
+FRank &  &  & Rank\acs{SVM} &  &  \\ 
+FSMRank & \cite{Lai2013c} & \cite{Lai2013c} & Rank\acs{SVM}-Primal &  &  \\ 
+FSM$^{\acs{MAP}}$ &  &  & Rank\acs{SVM}-Struct &  &  \\ 
+GAS-E &  &  & RE-QR & \cite{Veloso2010} & \cite{Veloso2010} \\ 
+\acs{GP}Rank &  &  & REG-SHF-SDCG & \cite{Wu2009} & \cite{Wu2009} \\ 
+GRank\acs{RLS} & \cite{Pahikkala2010} & \cite{Pahikkala2010} & Ridge Regression &  &  \\ 
+Group\acs{CE} & \cite{Lin2011} & \cite{Lin2011} & RSRank &  &  \\ 
+Group\acs{MLE} &  &  & SmoothGrad &  &  \\ 
+IntervalRank & \cite{Moon2010} & \cite{Moon2010} & SmoothRank & \cite{Chapelle2010} & \cite{Chapelle2010} \\ 
+\acs{IP}Rank &  &  & SoftRank &  &  \\ 
+KeepRank & \cite{Chen2009} & \cite{Chen2009} & SoftNet & \cite{Rigutini2008} & \cite{Rigutini2008} \\ 
+Kernel-\acs{PCA} &  &  & SparseRank & \cite{Lai2013b} & \cite{Lai2013b} \\ 
+KL-\acs{CRF} &  &  & \acs{SVD}-RankBoost & \cite{Lin2009} & \cite{Lin2009} \\ 
+LAC-MR-OR & \cite{Veloso2008} & \cite{Veloso2008} & \acs{SVM}$^{\acs{MAP}}$ &  &  \\ 
+LambdaMART &  &  & SwarmRank &  &  \\ 
+LambdaNeuralRank & \cite{Papini2012} & \cite{Papini2012} & TGRank &  &  \\ 
+LambdaRank &  &  & TM & \cite{Zhou2008} & \cite{Zhou2008} \\ 
+LARF & \cite{Torkestani2012} & \cite{Torkestani2012} & VFLR &  &  \\ 
+\end{tabular}}
 \caption{Learning-to-Rank algorithms with measurements on benchmark datasets}
 \label{ltr_methods_used}
 \end{table}
