@@ -50,6 +50,9 @@
 # Visio temp files
 *.~vdx
 
+# Excel temp files
+~$*.xlsx
+
 # R temp files
 .Rdata
 .Rhistory
