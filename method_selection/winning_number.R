@@ -122,12 +122,12 @@ combined_output <- combined_output[, c(ncol(combined_output), 1:(ncol(combined_o
 ### PLOT ###
 ### ADJUST HERE ###
 # plot graph
-ggplot(ndcg10_output, aes(Nr_measurements,Normalised_winning_number)) + geom_point(size=2) + 
+ggplot(map_output, aes(Nr_measurements,Normalised_winning_number)) + geom_point(size=2) + 
   geom_text(aes(label=Method), hjust=-0.1, vjust=-0.1) + 
   theme_grey(base_size=12, base_family="") + 
   scale_x_continuous("# of datasets evaluated on", expand = c(0,0), breaks=c(0,2,4,6,8,10,12,14, 16)) +
   scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
-  expand_limits(x = c(0,18.03), y = c(0,1.03))
+  expand_limits(x = c(0,15.03), y = c(0,1.03))
 
 #ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +  
 #  geom_text(aes(label=Method)) +
