@@ -130,7 +130,7 @@ combined_output <- combined_output[, c(ncol(combined_output), 1:(ncol(combined_o
 #  expand_limits(x = c(0,16.35), y = c(0,1.03))
 
 ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +  
-#  geom_text(aes(label=Method)) +
+  geom_text(aes(label=Method)) +
   scale_x_continuous("Ideal Winning Number", expand = c(0,0)) + 
   scale_y_continuous("Normalized Winning Number", expand=c(0,0)) +
   expand_limits(x = c(0,1000), y = c(0,1.01)) +
