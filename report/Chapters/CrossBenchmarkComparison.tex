@@ -3,6 +3,7 @@ As we have seen in chapter~\ref{chap:benchmark_results}, evaluation of Learning-
 Several studies make a small start in considering Learning-to-Rank method performance over multiple benchmark datasets. Gomes et al. \cite{Gomes2013} analysed ranking accuracy of a set of models over both LETOR 3.0 and LETOR 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both Yahoo! Learning to Rank Challenge datasets and the OHSUMED dataset from LETOR 3.0. To my knowledge, no large-scale accuracy meta-analysis has been conducted where published evaluation results on several benchmark datasets are taken into account. With a meta-analysis I will compare the performance of Learning-to-Rank methods across the Learning-to-Rank benchmark datasets described in foregoing sections.
 
 \section{Collecting Evaluation Results}
+\label{sec:collecting_evaluation_results}
 With a literature review I will collect evaluation results on the datasets/collections. The following list presents an overview of the benchmark collections taken into account in the meta-analysis:
 \begin{itemize}
 \item LETOR 2.0
@@ -84,8 +85,11 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 \end{cases}$\\
 
 \section{Evaluation Results Found in Literature}
-\begin{table}[!h]
-\scalebox{0.85}{
+Table~\ref{tab:ltr_methods_used} gives an overview of the Learning-to-Rank methods for which evaluation results were found for one of the benchmark datasets listed in section~\ref{sec:collecting_evaluation_results} through the literature review process also described in section~\ref{sec:collecting_evaluation_results}.\\
+
+Some studies with evaluation results found through in literature review were not usable for the meta-analysis because they 1) used a different evaluation methodology than other studies using the same benchmark \cite{Geng2011, Lin2012}, 2) provided results for different tasks (e.g. rank aggregation or transfer ranking) \cite{De2011, De2010, Derhami2013, Pan2011b, De2012, Chen2010, Ah-Pine2008, Wang2009c, De2013, Miao2013, Hoi2008, De2012b, Duh2011b, Argentini2012, Qin2010c, Volkovs2013, Desarkar2011, Pan2013, Lin2011b, Volkovs2012, Dammak2011}, 3) added additional features to a benchmark dataset \cite{Bidoki2009, Ding2010}, 4) did not provide exact data for evaluation results (often only in graph form) (), 5) reported evaluation results in a different metric than the metrics chosen for this meta-analysis (), 6) reported a higher performance on baseline methods than official runs (), or 7) did not report any baseline performance that allowed us to check validity of the results \cite{Chakrabarti2008, Wang2012b, Buffoni2011}.
+\begin{table}[!h!p]
+\scalebox{0.80}{
 \begin{tabular}{|l|l|l||l|l|l|}
 Method & Described & Evaluated & Method & Described & Evaluated \\
 \hline 
@@ -135,7 +139,7 @@ LambdaRank & \cite{Burges2006} &  & VFLR & \cite{Cai2012} & \cite{Cai2012} \\
 LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\ 
 \end{tabular}}
 \caption{Learning-to-Rank algorithms with measurements on benchmark datasets}
-\label{ltr_methods_used}
+\label{tab:ltr_methods_used}
 \end{table}
 
 \section{Results \& Discussion}
