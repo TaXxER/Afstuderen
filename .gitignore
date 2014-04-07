@@ -43,6 +43,7 @@
 *.tps
 *.tex~
 *.toc
+*.glsdefs
 
 # Except old versions
 !*/oude_versies/*.pdf
