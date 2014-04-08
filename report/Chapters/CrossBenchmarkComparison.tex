@@ -197,3 +197,5 @@ Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Numb
 \label{fig:normalised_winning_number_all}
 \end{figure}
 
+\section{Limitations}
+In the Normalised Winning Number calculation the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the Learning-to-Rank methods are (approximately) distributed uniformly over the benchmarks, such that the average Learning-to-Rank method tested are approximately equally hard for each data set. It could be the case however that this assumption is false and that one some datasets significantly better Learning-to-Rank methods are evaluated than on some other datasets.

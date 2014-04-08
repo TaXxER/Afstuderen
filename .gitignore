@@ -39,6 +39,7 @@
 *.sav
 *.snm
 *.synctex.gz
+*.synctex.gz(busy)
 *.tcp
 *.tps
 *.tex~
