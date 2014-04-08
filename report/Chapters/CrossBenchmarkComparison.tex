@@ -61,19 +61,19 @@ $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
-In contrast to the winning number comparison on LETOR 3.0, there will not be accuracy measurements for each algorithm on each dataset in our meta-analysis. To compare algorithms based on a sparse set of evaluation measurements, a normalised version of the winning number metric will be used which we calculate by only taking those datasets into account that an algorithm is evaluated on and then dividing this by the ideal winning number that an algorithm could have had if it would have been the best algorithm on all datasets on which it has been evaluated. I will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as \\
+In contrast to the winning number comparison on LETOR 3.0, there will not be accuracy measurements for each algorithm on each dataset in our meta-analysis. To compare algorithms based on a sparse set of evaluation measurements, a normalised version of the Winning Number metric will be used which we calculate by only taking those datasets into account that an algorithm is evaluated on and then dividing this by the ideal Winning Number that an algorithm could have had if it would have been the best algorithm on all datasets on which it has been evaluated. I will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as \\
 
 $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 1 & \text{if } M_i(j) \text{ and } M_k(j) \text{ are both defined and } M_i(j) > M_k(j), \\
 0 & \text{otherwise}
 \end{cases}$\\
 
-From now on this adjusted version of winning number will be references to as \emph{normalised winning number}. The mathematical definition of normalised winning number is\\
+From now on this adjusted version of Winning Number will be references to as \emph{Normalised Winning Number}. The mathematical definition of Normalised Winning Number is\\
 
 $\text{Normalised Winning Number}_i(M) = \frac{\text{Winning Number}_i(M)}{\text{Ideal Winning Number}_i(M)}$\\
 
 \noindent
-where ideal winning number is defined as\\
+where Ideal Winning Number is defined as\\
 
 $\text{Ideal Winning Number}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m D_{\{M_i(j),M_k(j)\}}$\\
 
@@ -84,12 +84,12 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
-\acs{nDCG}@3, \acs{nDCG}@5, \acs{nDCG}@10 and \acs{MAP} are chosen as metrics on which the meta-analysis will be performed. These metrics seem to be the most frequently used evaluation metrics in most of the benchmark datasets used. An exception are the Yahoo! Learning to Rank Challenge datasets on which mainly \ac{ERR} is used as main evaluation metric. The lack of use of \ac{ERR} in other benchmarks makes it unsuitable for a cross-benchmark comparison.
+\acs{nDCG}@3, \acs{nDCG}@5, \acs{nDCG}@10 and \acs{MAP} are chosen as metrics on which the meta-analysis will be performed. These metrics seem to be the most frequently used evaluation metrics in most of the benchmark datasets used. An exception are the Yahoo! Learning to Rank Challenge datasets on which mainly \ac{ERR} is used as main evaluation metric. The lack of use of the \ac{ERR}-metric in other benchmarks makes it unsuitable for a cross-benchmark comparison.
 
 \section{Evaluation Results Found in Literature}
 Table~\ref{tab:ltr_methods_used} gives an overview of the Learning-to-Rank methods for which evaluation results were found for one of the benchmark datasets listed in section~\ref{sec:collecting_evaluation_results} through the literature review process also described in section~\ref{sec:collecting_evaluation_results}.\\
 
-Some studies with evaluation results found through in literature review were not usable for the meta-analysis because one of the following properties made them unsuited for the meta-analysis:
+Some studies with evaluation results found through in literature review were not usable for the meta-analysis. The following enumeration lists the properties that made those studies unusable for the meta-analysis, with between brackets the studies that these properties apply to.
 
 \begin{enumerate}
 \item A different evaluation methodology was used in the study compared to what was used in other studies using the same benchmark \cite{Geng2011, Lin2012}
@@ -114,8 +114,8 @@ Approx\acs{nDCG} & \cite{Qin2010b} & \cite{Qin2010b} & LRUF & \cite{Torkestani20
 BagBoo & \cite{Pavlov2010} & \cite{Ganjisaffar2011c} & MCP & \cite{Laporte2013} & \cite{Laporte2013} \\ 
 Best Single Feature &  & \cite{Gomes2013} & MHR & \cite{Qin2007} &  \\ 
 BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} & MultiStageBoost & \cite{Kao2013} & \cite{Kao2013} \\ 
-BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009} & NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
-BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
+BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009, Volkovs2013} & NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
+BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c, Volkovs2013} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
 BT & \cite{Zhou2008} & \cite{Zhou2008} & PERF-\acs{MAP} & \cite{Pan2011} & \cite{Torkestani2012b} \\ 
 C-\acs{CRF} & \cite{Qin2008b} & \cite{Qin2008b} & PermuRank & \cite{Xu2008} & \cite{Xu2008} \\ 
 CA & \cite{Metzler2007} & \cite{Busa-Fekete2013,Tan2013} & Q.D.\acs{KNN} & \cite{Geng2008} & \cite{Wang2013} \\ 
@@ -156,21 +156,17 @@ LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\
 \end{table}
 
 \section{Results \& Discussion}
-\subsection{MAP}
-\begin{figure}[!h]
-\includegraphics[scale=0.35]{gfx/map_winnum}
-\caption{\acs{MAP} comparison of Learning-to-Rank methods}
-\label{fig:normalised_winning_number_map}
-\end{figure}
-
+The following subsections provide the performance of Learning-to-Rank methods in terms of Normalised Winning Number for \ac{nDCG}@3, \ac{nDCG}@5, \ac{nDCG}@10 and \ac{MAP}. Performance of the Learning-to-Rank methods is plotted with Normalised Winning Number on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. The further to the right, the more certain we can be about the performance of the Learning-to-Rank method. The methods for which it holds that there is no other method that has 1) a higher Normalised Winning Number and 2) a higher number datasets evaluated, are identified as the best performing methods and are labelled with the name of the method.
 \subsection{NDCG@3}
+Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@3 metric.
 \begin{figure}[!h]
-\includegraphics[scale=0.35]{gfx/ndcg3_winnum}
+\includegraphics[scale=0.40]{gfx/ndcg3_winnum}
 \caption{\acs{nDCG}@3 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg3}
 \end{figure}
 
 \subsection{NDCG@5}
+Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@5 metric. Raw data for the comparison
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/ndcg5_winnum}
 \caption{\acs{nDCG}@5 comparison of Learning-to-Rank methods}
@@ -178,15 +174,23 @@ LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\
 \end{figure}
 
 \subsection{NDCG@10}
+Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@10 metric.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/ndcg10_winnum}
 \caption{\acs{nDCG}@10 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg10}
 \end{figure}
 
+\subsection{MAP}
+Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the \ac{MAP} metric.
+\begin{figure}[!h]
+\includegraphics[scale=0.35]{gfx/map_winnum}
+\caption{\acs{MAP} comparison of Learning-to-Rank methods}
+\label{fig:normalised_winning_number_map}
+\end{figure}
 
-\subsection{All metrics}
-Figure \ref{fig:normalised_winning_number_all} shows the normalised winning number as function of ideal winning number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum} and Table \ref{tab:raw_data_norm_winnum_cntd} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
+\subsection{Cross-metric}
+Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum} and Table \ref{tab:raw_data_norm_winnum_cntd} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
