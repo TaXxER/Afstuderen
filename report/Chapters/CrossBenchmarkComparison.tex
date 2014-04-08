@@ -158,44 +158,49 @@ LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\
 \section{Results \& Discussion}
 The following subsections provide the performance of Learning-to-Rank methods in terms of Normalised Winning Number for \ac{nDCG}@3, \ac{nDCG}@5, \ac{nDCG}@10 and \ac{MAP}. Performance of the Learning-to-Rank methods is plotted with Normalised Winning Number on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. The further to the right, the more certain we can be about the performance of the Learning-to-Rank method. The methods for which it holds that there is no other method that has 1) a higher Normalised Winning Number and 2) a higher number datasets evaluated, are identified as the best performing methods and are labelled with the name of the method.
 \subsection{NDCG@3}
-Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@3 metric.
+Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@3 metric. Table \ref{tab:raw_data_norm_winnum_ndcg3} in Appendix \ref{app:norm_winnum_ndcg3} provides the raw Normalised Winning Number data for the Learning-to-Rank methods for which \ac{nDCG}@3 evaluation results were available.
 \begin{figure}[!h]
 \includegraphics[scale=0.40]{gfx/ndcg3_winnum}
 \caption{\acs{nDCG}@3 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg3}
 \end{figure}
+%TODO: Wat valt er te zeggen over de NDCG@3 resultaten? %
 
 \subsection{NDCG@5}
-Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@5 metric. Raw data for the comparison
+Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg5} in Appendix \ref{app:norm_winnum_ndcg5} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/ndcg5_winnum}
 \caption{\acs{nDCG}@5 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg5}
 \end{figure}
+%TODO: Wat valt er te zeggen over de NDCG@5 resultaten? %
 
 \subsection{NDCG@10}
-Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@10 metric.
+Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10} in Appendix \ref{app:norm_winnum_ndcg10} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/ndcg10_winnum}
 \caption{\acs{nDCG}@10 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg10}
 \end{figure}
+%TODO: Wat valt er te zeggen over de NDCG@10 resultaten? %
 
 \subsection{MAP}
-Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the \ac{MAP} metric.
+Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the \ac{MAP} metric. Table \ref{tab:raw_data_norm_winnum_map} in Appendix \ref{app:norm_winnum_map} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/map_winnum}
 \caption{\acs{MAP} comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_map}
 \end{figure}
+%TODO: Wat valt er te zeggen over de MAP resultaten? %
 
 \subsection{Cross-metric}
-Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum} and Table \ref{tab:raw_data_norm_winnum_cntd} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
+Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
 \begin{figure}[!h]
 \includegraphics[scale=0.35]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_all}
 \end{figure}
+%TODO: Wat valt er te zeggen over de cross-metric resultaten? %
 
 \section{Limitations}
 In the Normalised Winning Number calculation the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the Learning-to-Rank methods are (approximately) distributed uniformly over the benchmarks, such that the average Learning-to-Rank method tested are approximately equally hard for each data set. It could be the case however that this assumption is false and that one some datasets significantly better Learning-to-Rank methods are evaluated than on some other datasets.
