@@ -162,7 +162,7 @@ The following subsections provide the performance of Learning-to-Rank methods in
 Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@3 metric. Table \ref{tab:raw_data_norm_winnum_ndcg3} in Appendix \ref{app:norm_winnum_ndcg3} provides the raw Normalised Winning Number data for the Learning-to-Rank methods for which \ac{nDCG}@3 evaluation results were available.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.30]{gfx/ndcg3_winnum}
+\includegraphics[scale=0.285]{gfx/ndcg3_winnum}
 \caption{\acs{nDCG}@3 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg3}
 \end{figure}
@@ -175,18 +175,20 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg5} in Appendix \ref{app:norm_winnum_ndcg5} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.26]{gfx/ndcg5_winnum}
+\includegraphics[scale=0.285]{gfx/ndcg5_winnum}
 \caption{\acs{nDCG}@5 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg5}
 \end{figure}
 
-LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a Normalised Winning Number of 1.0. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of Normalised Winning Number. These results are highly in agreement with the \ac{nDCG}@3 comparison, with the only modification being that OWPC showed to be a method with no better method performing better on both axes in the \ac{nDCG}@3 comparison, but not in the \ac{nDCG}@5 comparison. Also in this comparison SmoothRank and ListNet can be regarded as most reliable results, as the evaluation measurements for these methods are based on LETOR official baselines.
+LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a Normalised Winning Number of 1.0. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of Normalised Winning Number. These results are highly in agreement with the \ac{nDCG}@3 comparison. The only modification compared to the \ac{nDCG}@3 comparison being that OWPC did show to be a method for which there were no methods performing better on both axes in the \ac{nDCG}@5 comparison, but not in the \ac{nDCG}@3 comparison. Like in the \ac{nDCG}@3 comparison, SmoothRank and ListNet can be regarded as most reliable results because the evaluation measurements for these methods are based on LETOR official baselines.
 
 \subsection{NDCG@10}
 Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10} in Appendix \ref{app:norm_winnum_ndcg10} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
+LambdaMART and LambdaNeuralRank score a Normalised Winning Number of 1.0 on the \ac{nDCG}@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest \ac{nDCG}@10 performance for the MSLR-WEB10k dataset. The set of algorithms for which there is no other algorithm with both a higher Normalised Winning Number and number of datasets evaluated on is partly in agreement with those for the \ac{nDCG}@3 and \ac{nDCG}@5 comparisons: {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. SmoothRank and FSMRank were not present in this set for the \ac{nDCG}@3 and \ac{nDCG}@5 comparison, but were close by, as can be seen in Tables \ref{tab:raw_data_norm_winnum_ndcg3} and \ref{tab:raw_data_norm_winnum_ndcg5} in the Appendices. DCMP is not in the set in contrast with the \ac{nDCG}@3 and \ac{nDCG}@5 comparison.
+
 \begin{figure}[!h]
-\includegraphics[scale=0.26]{gfx/ndcg10_winnum}
+\includegraphics[scale=0.285]{gfx/ndcg10_winnum}
 \caption{\acs{nDCG}@10 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg10}
 \end{figure}
@@ -197,7 +199,7 @@ Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learn
 Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the \ac{MAP} metric. Table \ref{tab:raw_data_norm_winnum_map} in Appendix \ref{app:norm_winnum_map} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.26]{gfx/map_winnum}
+\includegraphics[scale=0.285]{gfx/map_winnum}
 \caption{\acs{MAP} comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_map}
 \end{figure}
@@ -207,7 +209,7 @@ Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning
 \subsection{Cross-metric}
 Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
 \begin{figure}[!h]
-\includegraphics[scale=0.35]{gfx/combined_normalized_winnum}
+\includegraphics[scale=0.33]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_all}
 \end{figure}
