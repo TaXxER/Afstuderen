@@ -185,15 +185,13 @@ LambdaNeuralRank again beat all other methods solely with results on the AOL dat
 \subsection{NDCG@10}
 Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10} in Appendix \ref{app:norm_winnum_ndcg10} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
-LambdaMART and LambdaNeuralRank score a Normalised Winning Number of 1.0 on the \ac{nDCG}@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest \ac{nDCG}@10 performance for the MSLR-WEB10k dataset. The set of algorithms for which there is no other algorithm with both a higher Normalised Winning Number and number of datasets evaluated on is partly in agreement with those for the \ac{nDCG}@3 and \ac{nDCG}@5 comparisons: {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. SmoothRank and FSMRank were not present in this set for the \ac{nDCG}@3 and \ac{nDCG}@5 comparison, but were close by, as can be seen in Tables \ref{tab:raw_data_norm_winnum_ndcg3} and \ref{tab:raw_data_norm_winnum_ndcg5} in the Appendices. DCMP is not in the set in contrast with the \ac{nDCG}@3 and \ac{nDCG}@5 comparison.
-
 \begin{figure}[!h]
 \includegraphics[scale=0.285]{gfx/ndcg10_winnum}
 \caption{\acs{nDCG}@10 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg10}
 \end{figure}
 
-%TODO: Wat valt er te zeggen over de NDCG@10 resultaten? %
+LambdaMART and LambdaNeuralRank score a Normalised Winning Number of 1.0 on the \ac{nDCG}@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest \ac{nDCG}@10 performance for the MSLR-WEB10k dataset. The set of algorithms for which there is no other algorithm with both a higher Normalised Winning Number and number of datasets evaluated on is partly in agreement with those for the \ac{nDCG}@3 and \ac{nDCG}@5 comparisons: {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. SmoothRank and FSMRank were not present in this set for the \ac{nDCG}@3 and \ac{nDCG}@5 comparison, but were close by, as can be seen in Tables \ref{tab:raw_data_norm_winnum_ndcg3} and \ref{tab:raw_data_norm_winnum_ndcg5} in the Appendices. DCMP is not in the set in contrast with the \ac{nDCG}@3 and \ac{nDCG}@5 comparison.
 
 \subsection{MAP}
 Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the \ac{MAP} metric. Table \ref{tab:raw_data_norm_winnum_map} in Appendix \ref{app:norm_winnum_map} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
@@ -204,7 +202,9 @@ Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning
 \label{fig:normalised_winning_number_map}
 \end{figure}
 
-%TODO: Wat valt er te zeggen over de MAP resultaten? %
+Where comparisons on the \ac{nDCG}-metric at different cut-off points where highly in agreement in terms of the best performing algorithms, the comparison in terms of \ac{MAP} shows different results. RankDE scores a Normalised Winning Number of 1.0 on one dataset, like LambdaNeuralRank did on for all \ac{nDCG}-comparisons. In contrast to LambdaNeuralRank, RankDE achieved this highest score on the LETOR 2.0 TD2003, a dataset on which many methods are evaluated.\\
+
+LARF and LRUF score very high Normalised Winning Number scores, but based on only relatively few datasets, just as in the \ac{nDCG}-comparisons. Notable is that SmoothRank and ListNet, which showed both high accuracy and high certainty on all \ac{nDCG}-comparisons, are not within the best performing methods in the \ac{MAP}-comparison. A deeper look in the raw data Tables \ref{tab:raw_data_norm_winnum_ndcg3} to \ref{tab:raw_data_norm_winnum_map} in Appendices \ref{app:norm_winnum_ndcg3} to \ref{app:norm_winnum_map} shows that LAC-MR-OR is evaluated on many more datasets for \ac{MAP} compared to \ac{nDCG}, which resulted in LAC-MR-OR obtaining equal certainty to ListNet with a higher Normalised Winning Number. SmoothRank performed a Normalised Winning Number of around 0.53 over 7 datasets, which is still good in both certainty and accuracy, but not among the top methods. RE-QR is one of the best performers in the \ac{MAP}-comparison with a reasonable amount of benchmark evaluations. No reported \ac{nDCG} performance was found in the literature study for RE-QR. There is a lot of certainty on the accuracy of RankBoost and Rank\ac{SVM} as both models are evaluated on the majority of datasets included in the comparison for the \ac{MAP}-metric, but given their Normalised Winning Number it can said that both methods are not within the top performing Learning-to-Rank methods.
 
 \subsection{Cross-metric}
 Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.
