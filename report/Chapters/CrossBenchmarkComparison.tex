@@ -164,7 +164,7 @@ Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learni
 \caption{\acs{nDCG}@3 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg3}
 \end{figure}
-%TODO: Wat valt er te zeggen over de NDCG@3 resultaten? %
+LambdaNeuralRank and CoList both acquired a perfect Normalised Winning Number score of 1.0 by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF both scored very high scores of near 1.0 on three of the LETOR 3.0 datasets, which can be said to have a higher degree of certainty on the methods' performance because they are validated on three datasets which in addition are more relevant datasets than AOL and Yahoo Set 2 because there are more evaluation results available for the LETOR 3.0 datasets. FenchelRank, OWPC, SmoothRank, DCMP and ListNet are in that order increasingly lower in Normalised Winning Number, but increasingly higher in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.
 
 \subsection{NDCG@5}
 Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the \ac{nDCG}@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg5} in Appendix \ref{app:norm_winnum_ndcg5} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.
@@ -208,3 +208,5 @@ In the Normalised Winning Number calculation the weight of each benchmark on the
 A second limitation is that the datasets on which Learning-to-Rank methods have been evaluated can not always be regarded a random choice. It might be the case that some researchers chose to publish results for exactly those benchmark datasets that showed the most positive results for their Learning-to-Rank method.\\
 
 Another limitation lies in the meta-analysis methodology. Using evaluation results published by other researchers relies on the honesty of those researchers. Overly optimistic evaluation results published by other researchers do affect our Normalised Winning Number results. Only including studies in the meta-analysis that comparable results on one of the baseline methods of a benchmark reduces this limitation but does not solve it. By taking the Ideal Winning Number into account in Figure \ref{fig:normalised_winning_number_all} we further mitigate this limitation, as the Ideal Winning Number is loosely related with the number of studies that reported evaluation results for an algorithm.
+
+\section{Conclusions}
