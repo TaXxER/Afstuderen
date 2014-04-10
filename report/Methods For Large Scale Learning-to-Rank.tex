@@ -86,20 +86,20 @@
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
 \chapter{Introduction}
-\include{Chapters/Introduction} 
+\include*{Chapters/Introduction} 
 \cleardoublepage
 
 \chapter{Technical Background}
-\include{Chapters/Background}
+\include*{Chapters/Background}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
 \chapter{Related Work}
 \include*{Chapters/RelatedWork}
 
 \chapter{Benchmark results}
-\include{Chapters/BenchmarkResults}
+\include*{Chapters/BenchmarkResults}
 \chapter{Cross Benchmark Comparison}
-\include{Chapters/CrossBenchmarkComparison}
+\include*{Chapters/CrossBenchmarkComparison}
 \chapter{Selected Learning-to-Rank methods}
 \include*{Chapters/LTRMethods}
 \chapter{Implementation}
@@ -113,16 +113,16 @@
 %*******************************************************
 \cleardoublepage
 \appendix
-\include{Chapters/AppendixA}
-\include{Chapters/AppendixB}
-\include{Chapters/AppendixC}
-\include{Chapters/AppendixD}
-\include{Chapters/AppendixE}
-\include{Chapters/AppendixF}
+\include*{Chapters/AppendixA}
+\include*{Chapters/AppendixB}
+\include*{Chapters/AppendixC}
+\include*{Chapters/AppendixD}
+\include*{Chapters/AppendixE}
+\include*{Chapters/AppendixF}
 %********0************************************************************
 % Other Stuff in the Back
 %*******************************************************
-\include{FrontBackmatter/Bibliography}
+\include*{FrontBackmatter/Bibliography}
 \cleardoublepage\include{FrontBackmatter/Colophon}
 \cleardoublepage\include{FrontBackmatter/Declaration}
 % ********************************************************************
