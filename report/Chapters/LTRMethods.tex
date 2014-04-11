@@ -1,7 +1,26 @@
 Algorithms and details of the well-performing Learning-to-Rank methods as selected in the afore-going part are presented and explained in this part.
 
 \section{ListNet}
+\begin{algorithm}[H]
+ \KwData{training data \{$(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})$\}}
+ Parameter: number of iterations $T$ and learning rate $\eta$\\
+ Initialize parameter $\omega$\\
+ \For{$t\leftarrow 1$ \KwTo $T$}{
+ 	\For{$i\leftarrow 1$ \KwTo $m$}{
+ 		Input $x^{(i)}$ of query $q^{(i)}$ to Neural Network and compute score list $z^{(i)}(f_\omega)$ with current $\omega$.\\
+ 		Compute gradient $\Delta\omega$ using Eq. (\ref{eq:gradient_descent}).\\
+ 		Update $\omega = \omega - \eta \times \Delta\omega$.
+ 	}
+ }
+ Output Neural Network model $\omega$.
+ \caption{Learning algorithm of ListNet, obtained from \cite{Cao2007}}
+ \label{alg:listnet}
+\end{algorithm}
 
+\begin{equation}
+\Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum_{\forall g \in \mathscr{G}_k}\limits\frac{\partial P_{z^{(i)}(f_\omega)}(g)}{\partial \omega}\frac{P_{y^{(i)}}(g)}{P_{z^{(i)}(f_\omega)}(g)}
+\label{eq:gradient_descent}
+\end{equation}
 \section{SmoothRank}
 
 \section{FenchelRank}
