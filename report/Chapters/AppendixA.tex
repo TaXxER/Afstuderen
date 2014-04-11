@@ -1,8 +1,4 @@
 \chapter{Appendix A: LETOR Feature set}
-\ac{TF}
-\ac{IDF}
-\ac{TF-IDF}
-\ac{URL}
 \label{chap:appendix_a}
 \begin{table}[!htp]
 \scalebox{0.87}{
@@ -47,46 +43,46 @@
 \begin{tabular}{p{0.29cm}|p{7.26cm}||p{0.29cm}|p{9.55cm}}
  \textbf{ID} & \textbf{Feature Description} & \textbf{ID} & \textbf{Feature Description}\\ 
  \hline
-1 & \ac{TF} of body					& 36& LMIR.JM of body\\
-2 &	\ac{TF} of anchor				& 37& LMIR.JM of anchor\\
-3 & \ac{TF} of title				& 38& LMIR.JM of title\\
-4 & \ac{TF} of \ac{URL}				& 39& LMIR.JM of \ac{URL}\\
-5 & \ac{TF} of whole document		& 40& LMIR.JM of whole document\\
+1 & \acs{TF} of body					& 36& LMIR.JM of body\\
+2 &	\acs{TF} of anchor				& 37& LMIR.JM of anchor\\
+3 & \acs{TF} of title				& 38& LMIR.JM of title\\
+4 & \acs{TF} of \acs{URL}				& 39& LMIR.JM of \acs{URL}\\
+5 & \acs{TF} of whole document		& 40& LMIR.JM of whole document\\
 
-6 & \ac{IDF} of body 				& 41& Sitemap based term propagation\\
-7 & \ac{IDF} of anchor 				& 42& Sitemap based score propagation\\
-8 & \ac{IDF} of title 				& 43& Hyperlink based score propagation: weighted in-link\\
-9 & \ac{IDF} of \ac{URL} 			& 44& Hyperlink based score propagation: weighted out-link\\
-10& \ac{IDF} of whole document 		& 45& Hyperlink based score propagation: uniform out-link\\
+6 & \acs{IDF} of body 				& 41& Sitemap based term propagation\\
+7 & \acs{IDF} of anchor 				& 42& Sitemap based score propagation\\
+8 & \acs{IDF} of title 				& 43& Hyperlink based score propagation: weighted in-link\\
+9 & \acs{IDF} of \acs{URL} 			& 44& Hyperlink based score propagation: weighted out-link\\
+10& \acs{IDF} of whole document 		& 45& Hyperlink based score propagation: uniform out-link\\
 
-11& \ac{TF-IDF} of body 			& 46& Hyperlink based feature propagation: weighted in-link\\
-12& \ac{TF-IDF} of anchor 			& 47& Hyperlink based feature propagation: weighted out-link\\
-13& \ac{TF-IDF} of title 			& 48& Hyperlink based feature propagation: uniform out-link\\
-14& \ac{TF-IDF} of \ac{URL}			& 49& HITS authority\\
-15& \ac{TF-IDF} of whole document	& 50& HITS hub\\
+11& \acs{TF-IDF} of body 			& 46& Hyperlink based feature propagation: weighted in-link\\
+12& \acs{TF-IDF} of anchor 			& 47& Hyperlink based feature propagation: weighted out-link\\
+13& \acs{TF-IDF} of title 			& 48& Hyperlink based feature propagation: uniform out-link\\
+14& \acs{TF-IDF} of \acs{URL}			& 49& HITS authority\\
+15& \acs{TF-IDF} of whole document	& 50& HITS hub\\
 
 16& Document length of body			& 51& PageRank\\
 17& Document length of anchor		& 52& HostRank\\
 18& Document length of title		& 53& Topical PageRank\\
-19& Document length of \ac{URL}		& 54& Topical HITS authority\\
+19& Document length of \acs{URL}		& 54& Topical HITS authority\\
 20& Document length of whole document	& 55& Topical HITS hub\\
 
 21& BM25 of body					& 56& In-link number\\
 22& BM25 of anchor					& 57& Out-link number\\
-23& BM25 of title					& 58& Number of slashes in \ac{URL}\\
-24& BM25 of \ac{URL}				& 59& Length of \ac{URL}\\
+23& BM25 of title					& 58& Number of slashes in \acs{URL}\\
+24& BM25 of \acs{URL}				& 59& Length of \acs{URL}\\
 25& BM25 of whole document			& 60& Number of child page\\
 
 26& LMIR.ABS \cite{Zhai2001} of body	& 61& BM25 of extracted title\\
 27& LMIR.ABS of anchor				& 62& LMIR.ABS of extracted title\\
 28& LMIR.ABS of title				& 63& LMIR.DIR of extracted title\\
-29& LMIR.ABS of \ac{URL}			& 64& LMIR.JM of extracted title\\
+29& LMIR.ABS of \acs{URL}			& 64& LMIR.JM of extracted title\\
 30& LMIR.ABS of whole document\\
 
 31& LMIR.DIR of body\\
 32& LMIR.DIR of anchor\\
 33& LMIR.DIR of title\\
-34& LMIR.DIR of \ac{URL}\\
+34& LMIR.DIR of \acs{URL}\\
 35& LMIR.DIR of whole document\\
 \end{tabular}
 }
