@@ -45,6 +45,7 @@
 *.tex~
 *.toc
 *.glsdefs
+*.loa
 
 # Except old versions
 !*/oude_versies/*.pdf
