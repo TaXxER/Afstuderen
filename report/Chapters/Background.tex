@@ -94,16 +94,20 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
 
 where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
-An algorithm to compute \ac{ERR} is shown in Listing \ref{lst:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
-\begin{lstlisting}[caption={Algorithm to compute the \acs{ERR} metric, obtained from \cite{Chapelle2009}}, label={lst:err},language=Ada]
-p <- 1, ERR <- 0
-for r=1 to n do
-	R <- R(g[r])
-	ERR <- ERR + p * R/r
-	p <- p * (1-R)
-end for
-return ERR
-\end{lstlisting}
+An algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
+
+\begin{algorithm}[H]
+ $p \leftarrow 1, ERR \leftarrow 0$\\
+ \For{$r\leftarrow 1$ \KwTo $n$}{
+	$R \leftarrow R(g[r])$\\
+	$ERR \leftarrow ERR + p * \frac{R}{r}$\\
+	$p \leftarrow p * (1-R)$
+ }
+ Output $ERR$
+ \caption{Algorithm to compute the \acs{ERR} metric, obtained from \cite{Chapelle2009}}
+ \label{alg:err}
+\end{algorithm}
+
 \subsection{Mean Average Precision}
 \ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
 

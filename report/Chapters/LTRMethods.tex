@@ -17,6 +17,7 @@ Algorithms and details of the well-performing Learning-to-Rank methods as select
  \label{alg:listnet}
 \end{algorithm}
 
+ListNet uses Gradient Descent to optimise the Cross Entropy or K-L divergence loss function. Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$. 
 \begin{equation}
 \Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum_{\forall g \in \mathscr{G}_k}\limits\frac{\partial P_{z^{(i)}(f_\omega)}(g)}{\partial \omega}\frac{P_{y^{(i)}}(g)}{P_{z^{(i)}(f_\omega)}(g)}
 \label{eq:gradient_descent}
