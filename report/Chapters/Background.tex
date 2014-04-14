@@ -59,7 +59,7 @@ $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
 $nDCG_p = \frac{DCG_p}{IDCG_p}$\\
 
-Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG} for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.
+Table \ref{tab:example_calculation_nDCG} shows an example calculation for \ac{nDCG} for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.\\
 
 \begin{table}[!h]
 \begin{tabular}{llllllllllll}
@@ -88,6 +88,9 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
 \caption{Example calculation of \acs{nDCG}}
 \label{tab:example_calculation_nDCG}
 \end{table}
+
+One limitation of \ac{nDCG} that it does not penalise for missing documents in the result set. \acl{nDCG} is often used with a fixed set size for the result set to mitigate the missing document problem. \ac{nDCG} with a fixed set size is often called \ac{nDCG}@k, where $k$ represents the set size.
+
 \subsection{Expected Reciprocal Rank}
 \ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{nDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
 
@@ -134,9 +137,8 @@ P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\
 \label{tab:example_calculation_AP}
 \end{table}
 
-\subsection{Concluding notes on evaluation measures}
-TODO: Ingaan op verbanden/correlaties tussen metrics.
-TODO: Explain motivation for cutoff points in ranking evaluation measures.
+%\subsection{Concluding notes on evaluation measures}
+%TODO: Ingaan op verbanden/correlaties tussen metrics.
 
 \section{Approaches to Learning-to-Rank}
 \label{sec:ltr_approaches}
