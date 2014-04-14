@@ -3,6 +3,12 @@ Benchmark datasets enable fair comparisons of ranking models over a fixed set of
 
 This chapter describes benchmark characteristics, e.g. collection size and features, of Learning-to-Rank benchmark collections and datasets and gives an overview of the performance of baseline algorithms on these collections and datasets.\\
 
+The accuracies of the Learning-to-Rank methods described in the following sections can only be compared within the benchmark and not between benchmarks for the following reasons:
+\begin{enumerate}
+\item Differences in feature sets between data sets detract from fair comparison
+\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
+\end{enumerate}
+
 \section{Yahoo! Learning to Rank Challenge}
 Yahoo's observation that all existing benchmark datasets were too small to draw reliable conclusions prompted Yahoo to release two internal datasets from Yahoo! search. Datasets used at commercial search engines are many times larger than available benchmark datasets. Yahoo! published a subset of their own commercial training data and launched a Learning-to-Rank competition based on this data. The Yahoo! Learning to Rank Challenge \cite{Chapelle2011a} is a public Learning-to-Rank competition which took place from March to May 2010, with the goal to promote the datasets and encourage the research community to develop new Learning-to-Rank algorithms.\\
 
@@ -218,19 +224,12 @@ RankBoost & MQ2007 & 0.5003 & 0.4464 \\
 
 BoostedTree model \cite{Kocsis2013} showed an \ac{nDCG} of 0.5071 on the MQ2007 dataset and thereby beat all baseline models.
 
-\section{MSLR-WEB10k/MSLR-WEB30k}
-Contrary to the Yahoo! Learning to Rank Challenge dataset, the MSLR-WEB30k provides detailed feature descriptions. The MSLR-WEB30k dataset however contains no proprietary features but only features that are commonly used in the research community.
-\subsection{Results}
-
-\section{Selecting Learning-to-Rank methods}
-The accuracies of the Learning-to-Rank methods described in the preceding sections must only be compared within the benchmark and not between benchmarks for the following reasons:
-\begin{enumerate}
-\item Differences in feature sets between data sets detract from fair comparison
-\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
-\end{enumerate}
-
 \section{Other datasets}
 LETOR and the Yahoo! Learning to Rank Challenge datasets are the most used benchmark collections in the field. Several other benchmark collections for the Learning-to-Rank task have been proposed.
+
+\subsection{MSLR-WEB10/30k}
+MSLR-WEB30k and the smaller subset MSLR WEB10k are two large datasets with 30,000 and 10,000 queries respectively. The data was obtained from the Microsoft Bing\footnote{http://www.bing.com/} commercial web search engine. A feature list and feature descriptions are available. The dataset only includes features that are commonly used in the research community, as proprietary features were excluded from the dataset. Microsoft published these datasets as unofficial successor to LETOR in June 2010, but no baseline evaluations were described by the MSLR-WEB10/30k team. The Microsoft Research website from which the dataset is obtainable\footnote{http://research.microsoft.com/en-us/projects/mslr/download.aspx} also offers an evaluation script for \ac{nDCG} and \ac{MAP}. The presence of an official evaluation script enables fair comparison of evaluation results from other researchers comparable.
+
 \subsection{WCL2R}
 The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two datasets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both datasets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
 
