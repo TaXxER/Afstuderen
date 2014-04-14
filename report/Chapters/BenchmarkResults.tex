@@ -141,7 +141,7 @@ The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline m
 \end{figure}
 
 I will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven datasets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR datasets in terms of \ac{nDCG}@10 and \ac{MAP}.
-\begin{table}
+\begin{table}[!h]
 \begin{tabular}{l|ll}
  & \ac{nDCG}@10 & \ac{MAP} \\ 
  \hline
@@ -159,7 +159,7 @@ OHSUMED & 0.441 & 0.4457 \\
 
 Since LETOR is arguably the most well-known benchmark collection in the field, it is conceivable that creators of new Learning-to-Rank methods evaluate their new method on the LETOR collection to show how well their new method works.
 
-\begin{table}
+\begin{table}[!h]
 \begin{tabular}{l|p{1.2cm}p{1.2cm}p{1.2cm}p{1.4cm}||l}
  & \rotatebox{55}{Regression + L2 regulatisation} & \rotatebox{55}{Rank\ac{SVM}-Primal} &\rotatebox{55}{Rank\ac{SVM}-Struct} & \rotatebox{55}{SmoothRank} & \rotatebox{55}{ListNet} \\
  \hline
