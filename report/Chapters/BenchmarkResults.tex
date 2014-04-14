@@ -83,8 +83,7 @@ LETOR 2.0 only uses the topic distillation queries. Baseline Learning-to-Rank al
 \end{description} 
 
 \subsubsection{Results}
-Table \ref{tab:letor2.0_results} shows the performance of the baseline methods on the datasets in the LETOR 2.0 collection.
-\begin{table}
+\begin{table}[!h]
 \begin{tabular}{l|lll}
  & OHSUMED & TD2003 & TD2004 \\
  \hline 
@@ -99,6 +98,7 @@ AdaRank-\acs{nDCG} & 0.4369 & 0.2702 & 0.3878 \\
 \caption{\acs{nDCG}@10 results of baseline methods on LETOR 2.0}
 \label{tab:letor2.0_results}
 \end{table}
+Table \ref{tab:letor2.0_results} shows the performance of the baseline methods on the datasets in the LETOR 2.0 collection. ListNet can be regarded as the winner of the comparison as it outperformed the other methods on two of the three datasets and ranked third on the third dataset. \acs{MHR} was only evaluated on the OHSUMED dataset, on which it performed second best, after ListNet.
 
 
 \subsection{LETOR 3.0}
