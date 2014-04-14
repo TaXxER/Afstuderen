@@ -83,6 +83,23 @@ LETOR 2.0 only uses the topic distillation queries. Baseline Learning-to-Rank al
 \end{description} 
 
 \subsubsection{Results}
+Table \ref{tab:letor2.0_results} shows the performance of the baseline methods on the datasets in the LETOR 2.0 collection.
+\begin{table}
+\begin{tabular}{l|lll}
+ & OHSUMED & TD2003 & TD2004 \\
+ \hline 
+RankBoost & 0.4356 & 0.2851 & 0.4716 \\ 
+Rank\acs{SVM} & 0.4411 & 0.3410 & 0.4201 \\ 
+FRank & 0.4423 & 0.3357 & 0.4708 \\ 
+ListNet & 0.4489 & 0.3743 & 0.4579 \\ 
+AdaRank-\acs{MAP} & 0.4385 & 0.1940 & 0.4063 \\ 
+AdaRank-\acs{nDCG} & 0.4369 & 0.2702 & 0.3878 \\ 
+\acs{MHR} & 0.4423 &  &  \\ 
+\end{tabular}
+\caption{\acs{nDCG}@10 results of baseline methods on LETOR 2.0}
+\label{tab:letor2.0_results}
+\end{table}
+
 
 \subsection{LETOR 3.0}
 The LETOR 3.0 benchmark collection \cite{Qin2010} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections for LETOR 3.0 respectively. Where LETOR 2.0 only used topic distillation (TD) queries on the .gov corpus, LETOR 3.0 also uses named page finding (NP) and home page finding (HP) queries. With query sets available from both the \ac{TREC} 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004. It is noteworthy that the OHSUMED, TD2003 and TD2004 datasets of LETOR 2.0 and LETOR 3.0 are not identical and therefore not comparable due to differences in sampling method.\\
