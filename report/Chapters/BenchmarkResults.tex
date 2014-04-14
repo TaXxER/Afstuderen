@@ -53,10 +53,10 @@ The challenge overview paper \cite{Chapelle2011a} states as one of the lessons o
 Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
 
 \section{LETOR}
-The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 \cite{Liu2007b} to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.\\
+The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 \cite{Liu2007b} to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.
 
-\subsection{LETOR 3.0}
-The LETOR 3.0 benchmark collection \cite{Qin2010} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the \ac{TREC} web track in 2003 and 2004. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections respectively.\\
+\subsection{LETOR 2.0}
+LETOR 2.0 consists of three datasets: the OHSUMED dataset and two datasets of the on the .gov collection. The OHSUMED collection is a subset of the medical publication database MEDLINE and contains medical publications from 270 journals that were published between 1987 and 1991. The .gov collection is a web crawl obtained in January 2002, which was used for the \ac{TREC} web track in 2003 and 2004.\\
 
 Different query sets exists for the .gov corpus. Those query sets are categorized in the following categories \cite{Craswell2003}:
 \begin{description}
@@ -64,9 +64,30 @@ Different query sets exists for the .gov corpus. Those query sets are categorize
 \item[named page finding (NP)]in these queries the user asks for one specific page by name. E.g., the user queries for 'ADA Enforcement' to find the page $http://www.usdoj.gov/crt/ada/enforce.htm$.
 \item[home page finding (HP)]these queries are similar to NP queries in that the user is looking for one specific page, but now this specific page is a homepage. E.g., the user queries for 'Tennessee Valley Authority' to find the homepage $http://www.tva.gov$.
 \end{description}
-With query sets available from both the \ac{TREC} 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004.\\
 
-The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number} metric is defined as the number of other algorithms that it can beat over all of the seven datasets (six .gov sets + OHSUMED). The LETOR organisation implemented and evaluated several well-known Learning-to-Rank algorithms themselves and in addition gathers and publications and results of new algorithms evaluated on the LETOR benchmark. The baseline Learning-to-Rank algorithms evaluated by the organisation are:
+LETOR 2.0 only uses the topic distillation queries. Baseline Learning-to-Rank algorithms evaluated on LETOR 2.0 by the organisation are:
+\begin{description}
+\item[pairwise]{\leavevmode
+	\begin{itemize}
+	\item Rank\ac{SVM} \cite{Herbrich1999,Joachims2002}
+	\item RankBoost \cite{Freund2003}
+	\item \ac{MHR} \cite{Qin2007}
+	\item FRank \cite{Tsai2007}
+	\end{itemize}}
+\item[listwise]{\leavevmode
+	\begin{itemize}
+	\item ListNet \cite{Cao2007}
+	\item AdaRank-MAP \cite{Xu2007}
+	\item AdaRank-nDCG \cite{Xu2007}
+	\end{itemize}}
+\end{description} 
+
+\subsubsection{Results}
+
+\subsection{LETOR 3.0}
+The LETOR 3.0 benchmark collection \cite{Qin2010} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. Tables \ref{tbl:features_gov} and \ref{tbl:features_ohsumed} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the .gov and the OHSUMED collections for LETOR 3.0 respectively. Where LETOR 2.0 only used topic distillation (TD) queries on the .gov corpus, LETOR 3.0 also uses named page finding (NP) and home page finding (HP) queries. With query sets available from both the \ac{TREC} 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004. It is noteworthy that the OHSUMED, TD2003 and TD2004 datasets of LETOR 2.0 and LETOR 3.0 are not identical and therefore not comparable due to differences in sampling method.\\
+
+The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number} metric is defined as the number of other algorithms that it can beat over all of the seven datasets (six .gov sets + OHSUMED). The LETOR organisation implemented and evaluated several well-known Learning-to-Rank algorithms themselves and in addition gathers and publications and results of new algorithms evaluated on the LETOR benchmark. The baseline Learning-to-Rank algorithms evaluated by the LETOR team are:
 \begin{description}
 \item[pointwise]{\leavevmode
 	\begin{itemize}
@@ -87,8 +108,7 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\end{itemize}}
 \end{description} 
 
-
-\subsection{Results}
+\subsubsection{Results}
 The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{nDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
 
 \begin{figure}[!h]
