@@ -51,11 +51,6 @@ The challenge overview paper \cite{Chapelle2011a} states as one of the lessons o
 \end{table}
 
 Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
-\section{Yandex Internet Mathematics competition}
-Yandex Internet Mathematics Competition
-\subsection{Results}
-The Yandex Internet Mathematics competition was won by Pavlov et al. \cite{Pavlov2010} with the BagBoo method.
-
 
 \section{LETOR}
 The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 \cite{Liu2007b} to solve the absence of a experimental platform for Learning-to-Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 in December 2008 and LETOR 4.0 in July 2009.\\
@@ -198,6 +193,7 @@ The accuracies of the Learning-to-Rank methods described in the preceding sectio
 \end{enumerate}
 
 \section{Other datasets}
+LETOR and the Yahoo! Learning to Rank Challenge datasets are the most used benchmark collections in the field. Several other benchmark collections for the Learning-to-Rank task have been proposed.
 \subsection{WCL2R}
 The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two datasets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both datasets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
 
@@ -217,4 +213,8 @@ RankBoost & 0.295 & 0.328 & 0.375 & 0.247 & 0.264 & 0.305 \\
 \end{table}
 
 \subsection{AOL}
-TODO: AOL dataset beschrijven \cite{Pass2006}.
+%TODO: AOL dataset beschrijven \cite{Pass2006}.
+
+\subsection{Yandex Internet Mathematics competition}
+%TODO: YIMC beschrijven
+The Yandex Internet Mathematics competition was won by Pavlov et al. \cite{Pavlov2010} with the BagBoo method.
