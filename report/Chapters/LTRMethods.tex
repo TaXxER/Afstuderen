@@ -39,6 +39,12 @@ where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the Kullback-Leibler di
 
 \section{SmoothRank}
 SmoothRank \cite{Chapelle2010} is a listwise ranking method that directly optimises an information retrieval evaluation measure by smoothing, that is, approximating the rank position. In this section I will use \ac{nDCG} for illustration of SmoothRank, but the same procedure can also be applied to \ac{MAP} or any other information retrieval measure.\\
+\begin{equation}
+p_i = \frac{exp(f_i/\sigma)}{\sum\nolimits_{j=1}^{m}exp(f_j/\sigma)}
+\label{eq:smoothing_framework}
+\end{equation}
+
+% TODO: 1) Smoothing framework uitleggen en toepassen op nDCG 2) sigma trade-off behandelen 3)Nonlinear conjugate gradient descent uitleggen 4) startin point en regularization uitleggen 5) Annealing process uitleggen %
 
 \LinesNumbered
 \begin{algorithm}[H]
