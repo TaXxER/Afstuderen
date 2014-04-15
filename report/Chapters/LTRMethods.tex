@@ -1,7 +1,7 @@
 Algorithms and details of the well-performing Learning-to-Rank methods as selected in the afore-going part are presented and explained in this part.
 
 \section{ListNet}
-ListNet is a listwise ranking function whose loss function is not directly related to information retrieval evaluation metrics. ListNet's loss function is defined using a probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory and has been extensively researched. One of the most well-known permutation probability distributions in the field, the Plackett-Luce model \cite{Plackett1975,Luce1959}, is used in ListNet. The Plackett-Luce model defines the probability of all possible permutations $\pi$, given all document ranking scores $S$, as shown in Equation \ref{eq:plackett_luce}.
+ListNet \cite{Cao2007} is a listwise ranking function whose loss function is not directly related to information retrieval evaluation metrics. ListNet's loss function is defined using a probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory and has been extensively researched. One of the most well-known permutation probability distributions in the field, the Plackett-Luce model \cite{Plackett1975,Luce1959}, is used in ListNet. The Plackett-Luce model defines the probability of all possible permutations $\pi$, given all document ranking scores $S$, as shown in Equation \ref{eq:plackett_luce}.
 \begin{equation}
 P(\pi|S) = \prod\limits_{j=1}^{m}\frac{\phi(s_{\pi^{-1}(j)})}{\sum\nolimits_{u=1}^{m}\phi(s_{\pi^{-1}(u)})}
 \label{eq:plackett_luce}
@@ -36,7 +36,9 @@ where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the Kullback-Leibler di
  \caption{Learning algorithm of ListNet, obtained from \cite{Cao2007}}
  \label{alg:listnet}
 \end{algorithm}
+
 \section{SmoothRank}
+SmoothRank \cite{Chapelle2010} is a listwise ranking method that directly optimises an information retrieval evaluation measure by smoothing, that is, approximating the rank position. In this section I will use \ac{nDCG} for illustration of SmoothRank, but the same procedure can also be applied to \ac{MAP} or any other information retrieval measure. 
 
 \section{FenchelRank}
 
