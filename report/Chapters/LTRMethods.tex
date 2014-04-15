@@ -1,6 +1,26 @@
 Algorithms and details of the well-performing Learning-to-Rank methods as selected in the afore-going part are presented and explained in this part.
 
 \section{ListNet}
+ListNet is a listwise ranking function whose loss function is not directly related to information retrieval evaluation metrics. ListNet's loss function is defined using the probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory and has been extensively researched. One of the most well-known permutation probability distributions in the field, the Plackett-Luce model \cite{Plackett1975,Luce1959}, is used in ListNet. The Plackett-Luce model defines the probability of all possible permutations $\pi$, given all document ranking scores $S$, as shown in Equation \ref{eq:plackett_luce}.
+\begin{equation}
+P(\pi|S) = \prod\limits_{j=1}^{m}\frac{\phi(s_{\pi^{-1}(j)})}{\sum\nolimits_{u=1}^{m}\phi(s_{\pi^{-1}(u)})}
+\label{eq:plackett_luce}
+\end{equation}
+ListNet uses Gradient Descent to optimise neural network such that its Cross Entropy loss compared to the Plackett-Luce distribution over the ground truth is minimal. Note that some sources, including Liu \cite{Liu2007}, describe ListNet as using KL divergence as loss function. KL divergence and Cross-entropy are however identical up to an additive constant when comparing distribution $q$ against a fixed reference distribution $p$, since the cross-entropy definition can be formulated as in Equation \ref{eq:cross_entropy}.
+\begin{equation}
+H(p,q) = H(p) + D_{KL}(p||q)
+\label{eq:cross_entropy}
+\end{equation}
+where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the Kullback-Leibler divergence of $q$ from $p$.\\
+
+\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$. 
+\begin{equation}
+\Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum_{\forall g \in \mathscr{G}_k}\limits\frac{\partial P_{z^{(i)}(f_\omega)}(g)}{\partial \omega}\frac{P_{y^{(i)}}(g)}{P_{z^{(i)}(f_\omega)}(g)}
+\label{eq:gradient_descent}
+\end{equation}
+
+\noindent Algorithm \ref{alg:listnet} shows the pseudo-code of the ListNet training phase.\\
+
 \begin{algorithm}[H]
  \KwData{training data \{$(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})$\}}
  Parameter: number of iterations $T$ and learning rate $\eta$\\
@@ -16,12 +36,6 @@ Algorithms and details of the well-performing Learning-to-Rank methods as select
  \caption{Learning algorithm of ListNet, obtained from \cite{Cao2007}}
  \label{alg:listnet}
 \end{algorithm}
-
-ListNet uses Gradient Descent to optimise the Cross Entropy or K-L divergence loss function. Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$. 
-\begin{equation}
-\Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum_{\forall g \in \mathscr{G}_k}\limits\frac{\partial P_{z^{(i)}(f_\omega)}(g)}{\partial \omega}\frac{P_{y^{(i)}}(g)}{P_{z^{(i)}(f_\omega)}(g)}
-\label{eq:gradient_descent}
-\end{equation}
 \section{SmoothRank}
 
 \section{FenchelRank}
