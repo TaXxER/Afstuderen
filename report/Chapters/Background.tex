@@ -99,6 +99,7 @@ $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
 where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
 An algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
 
+\LinesNumbered
 \begin{algorithm}[H]
  $p \leftarrow 1, ERR \leftarrow 0$\\
  \For{$r\leftarrow 1$ \KwTo $n$}{

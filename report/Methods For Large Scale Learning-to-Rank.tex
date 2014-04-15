@@ -86,11 +86,11 @@
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
 \chapter{Introduction}
-\include{Chapters/Introduction} 
+\include*{Chapters/Introduction} 
 \cleardoublepage
 
 \chapter{Technical Background}
-\include*{Chapters/Background}
+\include{Chapters/Background}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
 \chapter{Related Work}
@@ -99,7 +99,7 @@
 \chapter{Benchmark results}
 \include*{Chapters/BenchmarkResults}
 \chapter{Cross Benchmark Comparison}
-\include{Chapters/CrossBenchmarkComparison}
+\include*{Chapters/CrossBenchmarkComparison}
 \chapter{Selected Learning-to-Rank methods}
 \include{Chapters/LTRMethods}
 \chapter{Implementation}
