@@ -55,8 +55,7 @@ It can be shown that the derivative of the smoothed \ac{nDCG} version shown in E
 
 The starting point in SmoothRank is set to either the solution of a simple linear regression, or alternatively to the solution of Rank\acs{SVM}. Since this starting point is expected to already be a good solution, a regulariser term is added to the SmoothRank objective function to prevent the solution from deviating to much from the starting point. The regularised smooth objective function is formulated as $\lambda||w-w_0||^2$ where $\lambda$ is a hyperparameter tuned on the validation set, and $w_0$ is the starting point solution.\\
 
-The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function that substantially differs from the optimal rankings. SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by 2 at each step. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.
-
+The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function that substantially differs from the optimal rankings. SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by 2 at each step. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
 \LinesNumbered
 \begin{algorithm}[H]
  Find an initial solution $w_0$ (by regression of Rank\acs{SVM}).\\
@@ -71,7 +70,47 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
+FenchelRank \cite{Lai2013} learning method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}.
 
+FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} that is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
+
+\begin{equation}
+\min_w G(w) = \min_w I_{||w||_{1} \le 1}(w) + \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
+\label{eq:pairwise_l1_loss}
+\end{equation}
+
+The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.
+
+Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_loss} can be rewritten as shown in Equation \ref{eq:fenchel_dual}.
+\begin{equation}
+\max_w D(w) = \max_w I_{||w||_{1} \le 1}(w) - \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
+\label{eq:fenchel_dual}
+\end{equation}
+
+
+\LinesNumbered
+\begin{algorithm}[H]
+ \KwData{pairwise training data matrix $K$}
+ \KwIn{desired accuracy $\epsilon$, maximum number of iterations $T$ and the radius $r$ of the $\ell1$ ball.}
+ Initialize: $w_1$ = $0_m$\\
+ \For{$t\leftarrow 1$ \KwTo $T$}{
+ 	//check if the early stopping criterion is satisfied\\
+ 	\If{$||g_{t}||_{\infty} + \langle d_{t}, -Kw_{t} \rangle \le \epsilon$}{
+ 	// Here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$ and $g_{t} = d_{t}^{T}K$\\
+ 	return $w_{t}$ as ranking predictor $w$
+ 	}
+ //greedily choose a feature to update\\
+ Choose $j_{t} = \argmax_{j}|(g_t)_j)|$\\
+ //compute an appropriate step size\\
+ Let $\mu_t = \argmax_{0 \le \mu_{t} \le 1} D((1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})_{j_{t}})e^{j_{t}})$\\
+ //update the model with the chosen feature and step size\\
+ Update $w_{t+1}=(1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})j_{t})e^{j_{t}}$
+ }
+ return $w_{T}$ as ranking predictor for $w$
+ \caption{Learning algorithm of FenchelRank, obtained from \cite{Lai2013}}
+ \label{alg:fenchelrank}
+\end{algorithm}
 \section{FSMRank}
 
 \section{LRUF}
+Learning automaton.
