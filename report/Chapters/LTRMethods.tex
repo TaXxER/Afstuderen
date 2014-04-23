@@ -70,7 +70,7 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
-FenchelRank \cite{Lai2013} learning method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}.
+FenchelRank \cite{Lai2013} learning method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}.\\
 
 FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} that is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
 
@@ -79,7 +79,7 @@ FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_
 \label{eq:pairwise_l1_loss}
 \end{equation}
 
-The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.
+\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of pairs in set $P$, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.\\
 
 Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_loss} can be rewritten as shown in Equation \ref{eq:fenchel_dual}.
 \begin{equation}
