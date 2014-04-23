@@ -79,7 +79,7 @@ FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_
 \label{eq:pairwise_l1_loss}
 \end{equation}
 
-\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of pairs in set $P$, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.\\
+\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.\\
 
 Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_loss} can be rewritten as shown in Equation \ref{eq:fenchel_dual}.
 \begin{equation}
@@ -96,7 +96,9 @@ Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_lo
  \For{$t\leftarrow 1$ \KwTo $T$}{
  	//check if the early stopping criterion is satisfied\\
  	\If{$||g_{t}||_{\infty} + \langle d_{t}, -Kw_{t} \rangle \le \epsilon$}{
- 	// Here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$ and $g_{t} = d_{t}^{T}K$\\
+ 	// Here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$, \\
+ 	// $\langle x,y \rangle$ represents the inner products of vectors $x$ and $y$, and\\
+ 	// $g_{t} = d_{t}^{T}K$\\
  	return $w_{t}$ as ranking predictor $w$
  	}
  //greedily choose a feature to update\\
