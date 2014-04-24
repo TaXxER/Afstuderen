@@ -58,7 +58,7 @@ The starting point in SmoothRank is set to either the solution of a simple linea
 The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function that substantially differs from the optimal rankings. SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by 2 at each step. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
 \LinesNumbered
 \begin{algorithm}[H]
- Find an initial solution $w_0$ (by regression of Rank\acs{SVM}).\\
+ Find an initial solution $w_0$ (by regression or Rank\acs{SVM}).\\
  Set $w = w_0$ and $\sigma$ to a large value.\\
  \While{Stopping condition not satisfied}{
  	 Starting from $w$, minimize by non-linear conjugate gradient descent:
@@ -70,16 +70,20 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
-FenchelRank \cite{Lai2013} learning method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}.\\
-
-FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} that is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
-
+FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
 \begin{equation}
 \min_w G(w) = \min_w I_{||w||_{1} \le 1}(w) + \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:pairwise_l1_loss}
 \end{equation}
 
 \noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.\\
+
+Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate an optimisation problem by instead solving the Fenchel dual of the optimisation problem.
+\begin{equation}
+\min_x(f(x)-g(x)) = \max_p(f_*(p)-f^*(p))
+\label{eq:fenchel_duality_theorem}
+\end{equation}
+\noindent where $f^*$ is the convex conjugate of $f$ and $g_*$ is the concave conjugate of $g$.
 
 Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_loss} can be rewritten as shown in Equation \ref{eq:fenchel_dual}.
 \begin{equation}
