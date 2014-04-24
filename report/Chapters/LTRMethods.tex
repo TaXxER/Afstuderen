@@ -70,15 +70,13 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
-FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses the genetic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
+FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses a generic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
 \begin{equation}
 \min_w G(w) = \min_w I_{||w||_{1} \le 1}(w) + \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:pairwise_l1_loss}
 \end{equation}
 
-\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term.\\
-
-Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate an optimisation problem by instead solving the Fenchel dual of the optimisation problem.
+\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term. Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate the optimal value of this non-differentiable optimisation problem by instead solving the Fenchel dual of the optimisation problem.
 \begin{equation}
 \min_x(f(x)-g(x)) = \max_p(f_*(p)-f^*(p))
 \label{eq:fenchel_duality_theorem}
@@ -90,6 +88,8 @@ Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel
 \max_w D(w) = \max_w I_{||w||_{1} \le 1}(w) - \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:fenchel_dual}
 \end{equation}
+
+Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to optimise the Fenchel dual of the pairwise loss function.\\
 
 \LinesNumbered
 \begin{algorithm}[H]
