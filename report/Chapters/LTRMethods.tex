@@ -85,12 +85,11 @@ Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel
 \end{equation}
 \noindent where $f^*$ is the convex conjugate of $f$ and $g_*$ is the concave conjugate of $g$.
 
-Let $D(w) = -G(w)$, then the objective function stated in \ref{eq:pairwise_l1_loss} can be rewritten as shown in Equation \ref{eq:fenchel_dual}.
+\noindent Let $D(w) = -G(w)$. This allows the FenchelRank objective function (Equation \ref{eq:pairwise_l1_loss}) to be rewritten using Fenchel's duality theorem (Equation \ref{eq:fenchel_duality_theorem}) to the form shown in Equation \ref{eq:fenchel_dual}.
 \begin{equation}
 \max_w D(w) = \max_w I_{||w||_{1} \le 1}(w) - \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:fenchel_dual}
 \end{equation}
-
 
 \LinesNumbered
 \begin{algorithm}[H]
