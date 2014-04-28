@@ -176,6 +176,52 @@ TODO:
 \end{enumerate}
 
 \begin{equation}
+p_j(k+1)=	\begin{cases}	p_j(k)+a[1-p_j(k)] 	&\mbox{if } j=i \\ 
+							(1-a)p_j(k) 		&\mbox{otherwise} 
+			\end{cases} 
+\label{eq:lruf_reward_update}
+\end{equation}
+
+\begin{equation}
 g_i=\frac{1}{N_i}\sum\nolimits_{d_{i}^{j}\in \underline{f}_{i}} a(r_{i}^{j})^{-1}
 \label{eq:lruf_average_relevance}
 \end{equation}
+
+\begin{algorithm}
+ \KwData{Query $q_i$, Number of results $n_i$}
+ Assume:
+ 	Let $A_i$ be the learning automaton corresponding to query $q_i$ with action-set $\alpha_i$\\
+ 	Action $\alpha_i^j \in \alpha_i$ is associated with document $d_i^j \in \underline{d_i}$\\
+ 	Let $k$ denote the stage number\\
+ 	Let $G$ be the total relevance score\\
+ Initialise: $k\leftarrow 1$, $T_i\leftarrow 0$\\
+ \While{$k \le n_i$}{
+ 	$A_i$ chooses one of its actions (e.g. $a_i^k$) at random\\
+ 	Document $d_i^j$ corresponding to selected action $\alpha_i^j$ is ranked at $K^{th}$ position of $\underline{R_i}$\\
+ 	Configuration of $A_i$ is updated by disabling action $\alpha_i^j$\\
+ 	$k\leftarrow k+1$
+ }
+ Ranking $\underline{R_i}$ is shown to the user\\
+ $N_i\leftarrow 0,\underline{f_i}\leftarrow \emptyset,G\leftarrow 0$\\
+ \Repeat{query session is expired}{
+ 	\For{every document $d_i^j$ visited by user}{
+ 		$\underline{f_i}\leftarrow \underline{f_i}+{d_i^j}$\\
+ 		$G\leftarrow G+a*(r_i^j)^{-1}$
+ 	}
+ 	$N_i\leftarrow N_i +1$
+ }
+ $g_i \leftarrow \frac{G}{N_i}$\\
+ Configuration of $A_i$ is updated by re-enabling all disabled actions\\
+ \If{$g_i\ge T_i$}{
+ 	Reward the actions corresponding to all visited documents by Equation \ref{eq:lruf_reward_update}\\
+ 	$T_i\leftarrow g_i$
+ }
+ \For{$\forall \alpha_i^j \in \underline{\alpha_i}$}{
+ 	\If{$p_i^j < T_{\epsilon}$}{
+ 		$d_i^j$ is replaced by another document of the searched results
+ 	}
+ }
+ Output $\underline{R_i}$
+ \caption{Learning algorithm of LRUF, obtained from \cite{Torkestani2012b}}
+ \label{alg:lruf}
+\end{algorithm}
