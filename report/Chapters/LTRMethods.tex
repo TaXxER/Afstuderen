@@ -70,7 +70,7 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
-FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses a generic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard $\ell_1$-norm regularised pairwise loss function.
+FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses a generic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard $\ell_1$-norm regularised pairwise loss function. The $\ell_1$-norm regularisation function in this equation is represented by $||x||_1$ and is defined as $||x||_1=\sum\nolimits_i|x_i|$.
 \begin{equation}
 \min_w G(w) = \min_w I_{||w||_{1} \le 1}(w) + \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:pairwise_l1_loss}
@@ -89,7 +89,7 @@ FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learnin
 \label{eq:fenchel_dual}
 \end{equation}
 
-Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to optimise the Fenchel dual of the pairwise loss function.\\
+Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to optimise the Fenchel dual of the pairwise loss function. The $||x||_infty$ term in this algorithm represents an $\ell_\infty$-norm regularisation term and is defined as $||x||_\infty=\max_{i}|x_i|$.\\
 
 \LinesNumbered
 \begin{algorithm}[H]
@@ -121,11 +121,22 @@ Lai et al. \cite{Lai2013c} observed that existing feature selection methods in L
 FSMRank uses an extended version of gradient descent optimisation, proposed by Yuri Nesterov, that enables faster convergence for convex problems \cite{Nesterov2004}. Nesterov's accelerated gradient descent can guarantee an $\epsilon$-accurate solution in at most $T$ iterations where $\epsilon=\mathcal{O}(1/T^2)$.\\
 
 Let $S = {(q_k, \hat{X}^{(q_k), Y^{(q_k)}})}_{k=1}^n$ be a training set with queries $q_k$, corresponding retrieval objects $\hat{X}^{(q_k)}$, and corresponding relevance labels $Y^{(q_k)}$. Let $||x||_1$ be the $l_1$-norm regularisation function that is defined as $||x||_1 = \sum\nolimits_i |x_i|$. Let $\oslash$ be the element-wise division operator. The convex joint optimisation function in FSMRank is defined as shown in Equation \ref{eq:fsmrank_optimisation_function}.
-
 \begin{equation}
 \min_{\hat{w}} \frac{\lambda_1}{2} \hat{w}^T \hat{A}\hat{w} + \lambda_2 ||\hat{w}\oslash\hat{s}||_1 + f(\hat{w}, (\hat{X}^{(q_k)}, Y^{(q_k)})_{k=1}^n)
 \label{eq:fsmrank_optimisation_function}
 \end{equation}
+\noindent $\hat{A}$ is a $d \times d$ similarity matrix that contains similarity scores between features. The first term in Equation \ref{eq:fsmrank_optimisation_function} applies a penalty on redundancy of large weighted features by using the $\hat{A}$ matrix. The well-known Pearson correlation coefficient is used to calculate similarity matrix $\hat{A}$ based on the values for the features in the training data. $\lambda_1$ is a hyper-parameter of the model and can be used to set the weight of the similarity penalty term.\\
+
+The second term of Equation \ref{eq:fsmrank_optimisation_function} uses a $\ell_1$-norm regularisation term to select the effective features from the feature set. $\lambda_2$ is a hyper-parameter of the model and can be used to set the weight of the regularisation term.\\
+
+The last term represents the loss function in terms of ranking errors. The loss function $f$ can in theory be any convex loss function, but Lai et al. \cite{Lai2013c} used a squared hinge loss function for their evaluation measurements. 
+
+Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank algorithm. In this algorithm an extended version of Nesterov's accelerated gradient method is used that can handle optimisation problems in the form of $\min_w \l(w) + r(w)$ where $l(w)$ is a convex function with Lipschitz gradient and $r(w)$ is convex, but non-smooth. The optimization function of Equation \ref{eq:fsmrank_optimisation_function} is reformulated to match this form as presented in Equation \ref{eq:fsmrank_optimisation_reformulated}.
+\begin{equation}
+\argmin_{w_t:w_t\in \mathbb{R}} Q(w_t,z_t) = \lambda_2 \sum\nolimits_{i=1}^{2d}\frac{w_i}{s_i}+\langle l^{'}(z_t),w_t-z_t \rangle+\frac{L}{2}||w_t-z_t||^2
+\label{eq:fsmrank_optimisation_reformulated}
+\end{equation}
+\noindent where $Q(w_t,z_t)$ is a combination of the non-smooth part $r(w_t)$ and a quadratic approximation of the smooth part $l(w_t)$. $lambda_1$, $lambda_2$ and Lipschitz constant $L_0$ are input parameters of the algorithm and can be optimised through cross-validation or on a validation set.\\
 
 \LinesNumbered
 \begin{algorithm}[H]
@@ -136,7 +147,7 @@ Let $S = {(q_k, \hat{X}^{(q_k), Y^{(q_k)}})}_{k=1}^n$ be a training set with que
  	Let $g = l^{'}(z_t)$\\
  	\While{true}{
  		//projection step\\
- 		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$ s\\
+ 		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$\\
  		\If{$l(w_t) \le l(z_t) + \langle l^{'}(z_t),w_t-z_t \rangle +\frac{L}{2}||w_t-z_t||^2$}{
  			break\\
  		}
