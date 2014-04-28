@@ -117,5 +117,22 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
 \end{algorithm}
 \section{FSMRank}
 
+\LinesNumbered
+\begin{algorithm}[H]
+ \KwData{training set $S = {(q_k,\hat{X}^{(q_k)},Y^(q_k)}_{k=1}^{n}$}
+ \KwIn{$\lambda_1, \lambda_2, T \text{ and } L_0$}
+ Initialize: $w_0=z_1=0, \alpha_1=1, \gamma=2, L=L_0/\gamma^{10}$\\
+ \For{$t\leftarrow 1$ \KwTo $T$}{
+ 	Let $g = l^{'}(z_t)$\\
+ 	\While{true}{
+ 		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$ \emph{projection step}\\
+ 		
+ 	}
+ }
+ 
+ \caption{Learning algorithm of FSMRank, obtained from \cite{Lai2013c}}
+ \label{alg:fsmrank}
+\end{algorithm}
+
 \section{LRUF}
 Learning automaton.
