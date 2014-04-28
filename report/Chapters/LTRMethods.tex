@@ -125,9 +125,18 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
  \For{$t\leftarrow 1$ \KwTo $T$}{
  	Let $g = l^{'}(z_t)$\\
  	\While{true}{
- 		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$ \emph{projection step}\\
- 		
+ 		// projection step\\
+ 		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$ s\\
+ 		\If{$l(w_t) \le l(z_t) + \langle l^{'}(z_t),w_t-z_t \rangle +\frac{L}{2}||w_t-z_t||^2$}{
+ 			break\\
+ 		}
+ 		$L = \lambda L$ 		
  	}
+ 	\If{$\frac{|F(w_t)-F(w_{t-1})|}{|F(w_{t-1})|} \le \epsilon_s$}{
+ 		break
+ 	}
+ 	$\alpha_{t+1}=\frac{1+\sqrt{1+4\alpha_t^2}}{2}$\\
+ 	$z_{t+1} = w_t + \frac{\alpha_t-1}{\alpha_t+1}(w_t-w_{t-1})$ 
  }
  
  \caption{Learning algorithm of FSMRank, obtained from \cite{Lai2013c}}
