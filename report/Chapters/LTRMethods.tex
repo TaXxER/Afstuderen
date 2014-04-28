@@ -118,7 +118,14 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
 \section{FSMRank}
 Lai et al. \cite{Lai2013c} observed that existing feature selection methods in Learning-to-Rank all follow a two-stage paradigm: 1) select subset of features from the original features, and 2) learn a ranking model based on the selected features. It is stated as a limitation of this paradigm that the selected features in the first step are not necessarily the optimal features for the second stage where the ranking model is build. FSMRank \cite{Lai2013c} addresses this limitation by using a joint convex optimisation problem that minimises ranking errors while simultaneously selecting a subset of features.\\
 
-FSMRank uses an extended version of gradient descent optimisation, proposed by Yuri Nesterov, that enables faster convergence for convex problems \cite{Nesterov2004}. Nesterov's accelerated gradient descent can guarantee an $\epsilon$-accurate solution in at most $T$ iterations where $\epsilon=\mathcal{O}(1/T^2)$.
+FSMRank uses an extended version of gradient descent optimisation, proposed by Yuri Nesterov, that enables faster convergence for convex problems \cite{Nesterov2004}. Nesterov's accelerated gradient descent can guarantee an $\epsilon$-accurate solution in at most $T$ iterations where $\epsilon=\mathcal{O}(1/T^2)$.\\
+
+Let $S = {(q_k, \hat{X}^{(q_k), Y^{(q_k)}})}_{k=1}^n$ be a training set with queries $q_k$, corresponding retrieval objects $\hat{X}^{(q_k)}$, and corresponding relevance labels $Y^{(q_k)}$. Let $||x||_1$ be the $l_1$-norm regularisation function that is defined as $||x||_1 = \sum\nolimits_i |x_i|$. Let $\oslash$ be the element-wise division operator. The convex joint optimisation function in FSMRank is defined as shown in Equation \ref{eq:fsmrank_optimisation_function}.
+
+\begin{equation}
+\min_{\hat{w}} \frac{\lambda_1}{2} \hat{w}^T \hat{A}\hat{w} + \lambda_2 ||\hat{w}\oslash\hat{s}||_1 + f(\hat{w}, (\hat{X}^{(q_k)}, Y^{(q_k)})_{k=1}^n)
+\label{eq:fsmrank_optimisation_function}
+\end{equation}
 
 \LinesNumbered
 \begin{algorithm}[H]
