@@ -61,8 +61,8 @@
 .Rhistory
 
 # IntelliJ IDEA temp files
-*/.idea/*
-
+implementation/java/.idea
+*.iml
 
 
 
