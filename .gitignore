@@ -61,7 +61,7 @@
 .Rhistory
 
 # IntelliJ IDEA temp files
-/.idea/*
+*/.idea/*
 
 
 
