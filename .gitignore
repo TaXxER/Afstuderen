@@ -60,7 +60,8 @@
 .Rdata
 .Rhistory
 
-
+# IntelliJ IDEA temp files
+/.idea/*
 
 
 
