@@ -62,6 +62,7 @@
 
 # IntelliJ IDEA temp files
 implementation/java/.idea
+implementation/java/out
 *.iml
 *.iws
 

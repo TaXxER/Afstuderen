@@ -1,14 +1,19 @@
 package udf.listnet;
 
 import org.apache.pig.EvalFunc;
+import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
+ * Used Defined Function (UDF) for Pig Latin
+ * Transforms relevance labels into e^(rel)
+ *
  * Created by niek.tax on 5/6/2014.
  */
-public class ExpOurScores extends EvalFunc<Tuple> {
+public class ExpOurScores extends EvalFunc<Tuple>{
     private double[] w;
 
     public ExpOurScores(double[] w){
@@ -16,19 +21,31 @@ public class ExpOurScores extends EvalFunc<Tuple> {
     }
 
     public Tuple exec(Tuple input) throws IOException {
-        if(input==null || input.size()!=1)
+        if(input==null || input.size()!=2)
             return null;
-        // Only process feature columns: skip first two indices and last index
-        for(int i=2;i<input.size()-2;i++){
-            // Obtain relevance label
-            double  rel = Double.parseDouble((String) input.get(i));
-            // Calculate Exp(rel)
-            double  ExpRel = Math.exp(rel*w[i-2]);
-            // Write back to tuple
-            input.set(0, ExpRel);
+
+        // Obtain set of data
+        DataBag bag = (DataBag) input.get(1);
+        Iterator<Tuple> dataIterator = bag.iterator();
+
+        while(dataIterator.hasNext()){
+            Tuple dataItem = dataIterator.next();
+            // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
+            double rel = Double.parseDouble((String) input.get(0));
+            rel = Math.exp(rel);
+            dataItem.set(0,rel);
+
+            // val ourScores = q.docFeatures.map(x => w dot x);
+            for(int i=2;i<dataItem.size()-2;i++){
+                // Obtain relevance label
+                double featureValue = Double.parseDouble((String) input.get(i));
+                featureValue *= w[i-2];
+                featureValue = Math.exp(featureValue);
+                // Write back to tuple
+                input.set(i, featureValue);
+            }
         }
 
         return input;
     }
-
 }
