@@ -17,7 +17,13 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.pig.PigServer;
 
 public class ListNet {
-    private static final int ITERATIONS = 3;
+    // Initialise hyper-parameters
+    private static final double   BETA       = 0.1;
+    private static final double   ALPHA      = 0.1;
+    private static final int      ITERATIONS = 3;
+
+    // Initialise environment settings
+    // TODO: Currently hardcoded, deduce from data
     private static final int DIM        = 45;
     private static final int QUERIES    = 20;
 
@@ -52,10 +58,10 @@ public class ListNet {
         PigServer pigServer = new PigServer("local");
         pigServer.registerQuery("register 'hdfs://localhost:8020/pig/udf/piggybank.jar'");
 
-        // Initialise variables
+        // Initialise model parameters
+        double[] w        = new double[DIM];
         double[] gradient = new double[DIM];
         double   loss     = 0.0;
-        double   beta     = 0.1;
 
         for(int i=0;i<=ITERATIONS;i++){
             for(int q=0;q<=QUERIES;q++){
