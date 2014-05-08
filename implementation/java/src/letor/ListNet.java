@@ -39,6 +39,7 @@ public class ListNet {
 
         for(int i=0;i<=ITERATIONS;i++){
             pigServer.registerQuery("DEFINE CommaSplitter udf.listnet.ExpOurScores('"+w+"');");
+            pigServer.registerQuery("EXP_REL_SCORES = ExpRelScores(BY_QUERY);");
             pigServer.registerQuery("EXP_OUR_SCORES = ExpOurScores(BY_QUERY);");
             /*
             Dit stuk kan bijna 1-op-1 over naar Pig Latin:

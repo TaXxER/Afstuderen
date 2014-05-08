@@ -30,18 +30,14 @@ public class ExpOurScores extends EvalFunc<Tuple>{
 
         while(dataIterator.hasNext()){
             Tuple dataItem = dataIterator.next();
-            // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
-            double rel = Double.parseDouble((String) input.get(0));
-            rel = Math.exp(rel);
-            dataItem.set(0,rel);
 
-            // val ourScores = q.docFeatures.map(x => w dot x);
             for(int i=2;i<dataItem.size()-2;i++){
-                // Obtain relevance label
                 double featureValue = Double.parseDouble((String) input.get(i));
+                // val ourScores = q.docFeatures.map(x => w dot x);
                 featureValue *= w[i-2];
+                // val expOurScores = ourScores.map(z => math.exp(z));
                 featureValue = Math.exp(featureValue);
-                // Write back to tuple
+
                 input.set(i, featureValue);
             }
         }
