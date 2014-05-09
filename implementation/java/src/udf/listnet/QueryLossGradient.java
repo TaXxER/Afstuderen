@@ -9,7 +9,13 @@ import java.io.IOException;
 import java.util.Iterator;
 
 /**
- * Created by niek.tax on 5/9/2014.
+ * Used Defined Function (UDF) for Pig Latin
+ *
+ * Purpose:
+ *  1) Calculates loss for the current query
+ *  2) Calculates feature gradients based on the current query
+ *
+ * Created by niek.tax on 5/6/2014.
  */
 public class QueryLossGradient extends EvalFunc<Tuple> {
     public Tuple exec(Tuple input) throws IOException {
@@ -25,6 +31,10 @@ public class QueryLossGradient extends EvalFunc<Tuple> {
 
         Iterator<Tuple> dataIterator = bag.iterator();
         while(dataIterator.hasNext()) {
+            Tuple dataItem = dataIterator.next();
+            double rel = Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
+            double our = Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
+            lossForAQuery += -rel * Math.log(our);
             // TODO: Calculate Query Loss and Feature Gradients
         }
 
