@@ -19,7 +19,7 @@ public class ListNet {
         PigServer pigServer = new PigServer("local");
 
         // Register UFFs and prepare dataset
-        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/java_jar/listnet-udfs.jar");
+        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
         pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/Fold1/train.txt' USING PigStorage(' ');");
         pigServer.registerQuery("BY_QUERY = GROUP TRAIN BY $1;");
 
@@ -42,10 +42,10 @@ public class ListNet {
             pigServer.registerQuery("DEFINE ExpRelOurScores"+i+" udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
             pigServer.registerQuery("EXP_REL_SCORES = FOREACH BY_QUERY GENERATE ExpRelOurScores"+i+"(TRAIN);");
 
-            Iterator<Tuple> EXP_REL_SCORES = pigServer.openIterator("EXP_REL_SCORES");
-            while(EXP_REL_SCORES.hasNext()){
-                System.out.println(EXP_REL_SCORES.next().getAll());
-            }
+//            Iterator<Tuple> EXP_REL_SCORES = pigServer.openIterator("EXP_REL_SCORES");
+//            while(EXP_REL_SCORES.hasNext()){
+//                System.out.println(EXP_REL_SCORES.next().getAll());
+//            }
 
             // var lossForAQuery = 0.0;
             // var gradientForAQuery = spark.examples.Vector.zeros(dim);
@@ -54,7 +54,12 @@ public class ListNet {
             //  lossForAQuery += -P_y(j) * math.log(P_z(j))
             // }
             // gradient += gradientForAQuery; loss += lossForAQuery
-            pigServer.registerQuery("QUERY_LOSS_GRADIENT = FOREACH EXP_REL_SCORES GENERATE QueryLossGradient");
+            pigServer.registerQuery("QUERY_LOSS_GRADIENT = FOREACH EXP_REL_SCORES GENERATE udf.listnet.QueryLossGradient($0..);");
+
+            Iterator<Tuple> QUERY_LOSS_GRADIENT = pigServer.openIterator("QUERY_LOSS_GRADIENT");
+            while(QUERY_LOSS_GRADIENT.hasNext()){
+                System.out.println(QUERY_LOSS_GRADIENT.next().getAll());
+            }
 
             // w -= gradient.value * stepSize
             // TODO: Read variable gradient from Pig-alias QUERY_LOSS_GRADIENT
@@ -66,7 +71,6 @@ public class ListNet {
 
     private static String toParamString(double[] elems, int iteration){
         String value = "";
-        System.out.println("elems: "+elems.length);
         for(double elem : elems)
             value += elem + ",";
 
