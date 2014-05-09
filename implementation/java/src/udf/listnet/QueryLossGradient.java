@@ -35,7 +35,7 @@ public class QueryLossGradient extends EvalFunc<Tuple> {
             double rel = Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
             double our = Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
             lossForAQuery += -rel * Math.log(our);
-            // TODO: Calculate Query Loss and Feature Gradients
+            // TODO: Feature Gradients
         }
 
         // Fill output tuple
