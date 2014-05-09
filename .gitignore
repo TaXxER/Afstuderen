@@ -67,6 +67,6 @@ implementation/java/out
 *.iws
 
 # IntelliJ project temp files
-implementation/java/scr/META-INF/
+implementation/java/src/META-INF/*
 
 
