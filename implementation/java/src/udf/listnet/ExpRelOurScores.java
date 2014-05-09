@@ -2,10 +2,12 @@ package udf.listnet;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
+import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.Tuple;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.nio.ByteBuffer;
 
 /**
  * Used Defined Function (UDF) for Pig Latin
@@ -21,34 +23,41 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
 
     public ExpRelOurScores(String wAsString){
         String[] wElemsAsString = wAsString.split(",");
-        w = new double[wElemsAsString.length];
+        this.w = new double[wElemsAsString.length];
 
         for(int i = 0; i< wElemsAsString.length; i++){
-            w[i] = Double.parseDouble(wElemsAsString[i]);
+            this.w[i] = Double.parseDouble(wElemsAsString[i]);
         }
     }
 
     public Tuple exec(Tuple input) throws IOException {
-        if(input==null || input.size()!=2)
+        if(input==null || input.size()!=1)
             return null;
 
         // Obtain set of data
-        DataBag bag = (DataBag) input.get(1);
+        DataBag bag = (DataBag) input.get(0);
+
         Iterator<Tuple> dataIterator = bag.iterator();
 
         while(dataIterator.hasNext()){
             Tuple dataItem = dataIterator.next();
 
             // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
-            double rel = Double.parseDouble((String) input.get(0));
+            System.out.println(dataItem.get(0));
+            double rel = Double.parseDouble(dataItem.get(0).toString());
             rel = Math.exp(rel);
-            input.set(0, rel);
+            dataItem.set(0, rel);
 
             double our = 0.0;
-            for(int i=2;i<dataItem.size()-2;i++){
-                double featureValue = 0.0;
+            System.out.println("length w: "+w.length);
+            System.out.println("dataItem size: "+dataItem.size());
+            for(int i=0; i<w.length; i++){
+                System.out.println("w["+(i)+"]: "+w[i]);
+                System.out.println("feature "+(i)+": "+Double.parseDouble(dataItem.get(i+2).toString()));
+
                 // val ourScores = q.docFeatures.map(x => w dot x);
-                featureValue = Double.parseDouble((String) input.get(i)) * w[i-2];
+                double featureValue = Double.parseDouble(dataItem.get(i+2).toString()) * w[i];
+
                 // val expOurScores = ourScores.map(z => math.exp(z));
                 our += Math.exp(featureValue);
 

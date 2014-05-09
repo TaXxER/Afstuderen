@@ -37,19 +37,26 @@ public class ListNet {
         double   loss     = 0.0;
 
         for(int i=0;i<=ITERATIONS;i++){
+            System.out.println("ITERATION "+i);
+            System.out.println("w: "+doubleArrayToParamString(w));
             // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
             // val ourScores = q.docFeatures.map(x => w dot x);
             // val expOurScores = ourScores.map(z => math.exp(z));
             pigServer.registerQuery("DEFINE ExpRelOurScores"+i+" udf.listnet.ExpRelOurScores('" + doubleArrayToParamString(w) + "');");
-            pigServer.registerQuery("EXP_REL_SCORES = ExpRelOurScores"+i+"(BY_QUERY);");
+            pigServer.registerQuery("EXP_REL_SCORES = FOREACH BY_QUERY GENERATE ExpRelOurScores"+i+"(TRAIN);");
+
+            Iterator<Tuple> BY_QUERY = pigServer.openIterator("EXP_REL_SCORES");
+            while(BY_QUERY.hasNext()){
+                System.out.println(BY_QUERY.next().getAll());
+            }
 
             // val sumExpRelScores = expRelScores.reduce(_ + _);
             // val P_y = expRelScores.map(y => y/sumExpRelScores);
-            pigServer.registerQuery("P_YZ = FOREACH EXP_REL_SCORES GENERATE GROUP, AVG($1.$0), AVG($1.$0)");
+            pigServer.registerQuery("P_YZ = FOREACH EXP_REL_SCORES GENERATE GROUP, AVG($1.$0), AVG($1.$0);");
 
             // val sumExpOurScores = expOurScores.reduce(_ + _);
             // val P_z = expOurScores.map(z => z/sumExpOurScores);
-            pigServer.registerQuery("P_Z = FOREACH EXP_OUR_SCORES GENERATE GROUP, ");
+            //pigServer.registerQuery("P_Z = FOREACH EXP_OUR_SCORES GENERATE GROUP, ");
 
 
             //pigServer.registerQuery();
