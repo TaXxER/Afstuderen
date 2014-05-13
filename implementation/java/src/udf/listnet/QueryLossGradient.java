@@ -18,10 +18,23 @@ import java.util.Iterator;
  * Created by niek.tax on 5/6/2014.
  */
 public class QueryLossGradient extends EvalFunc<Tuple> {
+
+    private int      ITERATION;
+
+    public QueryLossGradient(String paramsString){
+        // Read UDF parameters
+        this.ITERATION = Integer.parseInt(paramsString);
+    }
+
     public Tuple exec(Tuple input) throws IOException {
         // Obtain set of data
-        DataBag bag = (DataBag) input.get(0);
+        DataBag bag;
+        if(ITERATION==1)
+            bag = (DataBag) ((Tuple) input.get(0)).get(0);
+        else
+            bag = (DataBag) ((Tuple)((Tuple) input.get(0)).get(0)).get(0);
 
+        // var lossForAQuery = 0.0'
         double   lossForAQuery = 0.0;
         double[] gradientForAQuery = new double[45];
 
@@ -32,10 +45,16 @@ public class QueryLossGradient extends EvalFunc<Tuple> {
         Iterator<Tuple> dataIterator = bag.iterator();
         while(dataIterator.hasNext()) {
             Tuple dataItem = dataIterator.next();
-            double rel = Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
-            double our = Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
+            double rel = Double.parseDouble(dataItem.get(dataItem.size()-2).toString()); // P_y(j)
+            double our = Double.parseDouble(dataItem.get(dataItem.size()-1).toString()); // P_z(j)
+
+            for(int i=0; i<gradientForAQuery.length; i++){
+                // gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)));
+                gradientForAQuery[i] += Double.parseDouble(dataItem.get(i+2).toString()) * (our - rel); // q.docFeatures(j)
+            }
+
+            // lossFotAQuery += -P_y(j) * math.log(P_z(j)));
             lossForAQuery += -rel * Math.log(our);
-            // TODO: Feature Gradients
         }
 
         // Fill output tuple

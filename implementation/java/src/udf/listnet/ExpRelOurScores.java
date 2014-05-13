@@ -38,11 +38,16 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
     }
 
     public Tuple exec(Tuple input) throws IOException{
+        System.out.println("INPUT ExpRelOurScores: "+input);
         if(input==null || input.size()!=1)
             return null;
 
         // Obtain set of data
-        DataBag bag = (DataBag) input.get(0);
+        DataBag bag;
+        if(ITERATION==1)
+            bag = (DataBag) input.get(0);
+        else
+            bag = (DataBag) ((Tuple) input.get(0)).get(0);
 
         Iterator<Tuple> dataIterator = bag.iterator();
 
@@ -86,15 +91,18 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         // val sumExpOurScores = expOurScores.reduce(_ + _);
         // val P_z = expOurScores.map(z => z/sumExpOurScores);
         for(Tuple dataItem : tupleList){
-            double rel =  Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
+            if(ITERATION==1){
+                double rel =  Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
+                double normRel = rel / sumRel;
+                dataItem.set(dataItem.size()-2, normRel);
+            }
+
             double our =  Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
-
-            double normRel = rel / sumRel;
             double normOur = our / sumOur;
-
-            dataItem.set(dataItem.size()-2, normRel);
             dataItem.set(dataItem.size()-1, normOur);
         }
+
+        System.out.println("ExpRelOurScores: "+input.getAll());
 
         return input;
     }
