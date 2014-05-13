@@ -30,9 +30,9 @@ public class QueryLossGradient extends EvalFunc<Tuple> {
         // Obtain set of data
         DataBag bag;
         if(ITERATION==1)
-            bag = (DataBag) ((Tuple) input.get(0)).get(0);
+            bag = (DataBag) (input.get(0));
         else
-            bag = (DataBag) ((Tuple)((Tuple) input.get(0)).get(0)).get(0);
+            bag = (DataBag) (input.get(0));
 
         // var lossForAQuery = 0.0'
         double   lossForAQuery = 0.0;

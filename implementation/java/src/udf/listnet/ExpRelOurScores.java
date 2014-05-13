@@ -38,7 +38,6 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
     }
 
     public Tuple exec(Tuple input) throws IOException{
-        System.out.println("INPUT ExpRelOurScores: "+input);
         if(input==null || input.size()!=1)
             return null;
 
@@ -47,7 +46,7 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         if(ITERATION==1)
             bag = (DataBag) input.get(0);
         else
-            bag = (DataBag) ((Tuple) input.get(0)).get(0);
+            bag = (DataBag) input.get(0);
 
         Iterator<Tuple> dataIterator = bag.iterator();
 
@@ -101,8 +100,6 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
             double normOur = our / sumOur;
             dataItem.set(dataItem.size()-1, normOur);
         }
-
-        System.out.println("ExpRelOurScores: "+input.getAll());
 
         return input;
     }

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final double   STEPSIZE   = 0.01;
+    private static final double   STEPSIZE   = 0.1;
     private static final int      ITERATIONS = 10;
 
     public static void main(String[] args) throws Exception {
@@ -47,9 +47,9 @@ public class ListNet {
             // val P_z = expOurScores.map(z => z/sumExpOurScores);
             pigServer.registerQuery("DEFINE ExpRelOurScores"+i+" udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
             if(i==1)
-                pigServer.registerQuery("EXP_REL_SCORES = FOREACH BY_QUERY GENERATE ExpRelOurScores"+i+"(TRAIN);");
+                pigServer.registerQuery("EXP_REL_SCORES = FOREACH BY_QUERY GENERATE flatten(ExpRelOurScores"+i+"(TRAIN));");
             else
-                pigServer.registerQuery("EXP_REL_SCORES = FOREACH EXP_REL_SCORES GENERATE ExpRelOurScores"+i+"($0..);");
+                pigServer.registerQuery("EXP_REL_SCORES = FOREACH EXP_REL_SCORES GENERATE flatten(ExpRelOurScores"+i+"($0..));");
             // var lossForAQuery = 0.0;
             // var gradientForAQuery = spark.examples.Vector.zeros(dim);
             // for (j <- 0 to q.relScores.length-1) {
@@ -79,11 +79,11 @@ public class ListNet {
                 w[j] -= gradient[j] * STEPSIZE;
             }
 
-//            System.out.println();
-//            System.out.println("Iteration: "+i);
-//            System.out.println("w:         "+toParamString(w));
-//            System.out.println("loss:      "+loss);
-//            System.out.println();
+            System.out.println();
+            System.out.println("Iteration: "+i);
+            System.out.println("w:         "+toParamString(w));
+            System.out.println("loss:      "+loss);
+            System.out.println();
         }
     }
 
