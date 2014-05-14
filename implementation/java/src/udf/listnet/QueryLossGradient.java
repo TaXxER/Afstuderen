@@ -18,21 +18,9 @@ import java.util.Iterator;
  * Created by niek.tax on 5/6/2014.
  */
 public class QueryLossGradient extends EvalFunc<Tuple> {
-
-    private int      ITERATION;
-
-    public QueryLossGradient(String paramsString){
-        // Read UDF parameters
-        this.ITERATION = Integer.parseInt(paramsString);
-    }
-
     public Tuple exec(Tuple input) throws IOException {
         // Obtain set of data
-        DataBag bag;
-        if(ITERATION==1)
-            bag = (DataBag) (input.get(0));
-        else
-            bag = (DataBag) (input.get(0));
+        DataBag bag = (DataBag) (input.get(0));
 
         // var lossForAQuery = 0.0'
         double   lossForAQuery = 0.0;

@@ -21,27 +21,26 @@ import java.util.List;
  */
 public class MultiSum extends EvalFunc<Tuple> {
     public Tuple exec(Tuple input) throws IOException {
-        if(input==null || input.size()!=1)
+        if(input==null || input.size()!=2)
             return null;
 
         List<Double> avgTupleList = new ArrayList<Double>();
 
         // Obtain set of data
-        System.out.println("INPUT: "+input);
-        DataBag bag = (DataBag) input.get(0);
-        System.out.println("BAG: "+bag);
+        DataBag bag = (DataBag) input.get(1);
         Iterator<Tuple> dataIterator = bag.iterator();
         while(dataIterator.hasNext()) {
             Tuple tuple = dataIterator.next();
             for(int i=0; i< tuple.size(); i++){
                 // Sum
-                double current   = avgTupleList.size()>i ? avgTupleList.get(i) : 0.0;
                 double increment = Double.parseDouble(tuple.get(i).toString());
-                avgTupleList.set(i, current+increment);
+                if(avgTupleList.size()>i) {
+                    avgTupleList.set(i, avgTupleList.get(i) + increment);
+                }else {
+                    avgTupleList.add(increment);
+                }
             }
         }
-
-        System.out.println("avgTupleList: "+avgTupleList);
 
         TupleFactory tupleFactory = TupleFactory.getInstance();
         Tuple value = tupleFactory.newTuple();

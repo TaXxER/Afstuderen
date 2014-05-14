@@ -34,10 +34,8 @@ public class ListNet {
         // Initialise internal model parameters
         double[] w        = new double[DIM];
         double[] gradient = new double[DIM];
-        double   loss;
 
         for(int i=1;i<=ITERATIONS;i++){
-            loss = 0.0;
             // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
             // val ourScores = q.docFeatures.map(x => w dot x);
             // val expOurScores = ourScores.map(z => math.exp(z));
@@ -56,27 +54,22 @@ public class ListNet {
             //  gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)))
             //  lossForAQuery += -P_y(j) * math.log(P_z(j))
             // }
-            pigServer.registerQuery("DEFINE QueryLossGradient"+i+" udf.listnet.QueryLossGradient('" + i + "');");
-            pigServer.registerQuery("QUERY_LOSS_GRADIENT = FOREACH EXP_REL_SCORES GENERATE QueryLossGradient"+i+"($0..);");
+            pigServer.registerQuery("QUERY_LOSS_GRADIENT = FOREACH EXP_REL_SCORES GENERATE flatten(udf.listnet.QueryLossGradient($0..));");
 
             // gradient += gradientForAQuery; loss += lossForAQuery
-            // pigServer.registerQuery("LOSS_GRADIENT = FOREACH QUERY_LOSS_GRADIENT GENERATE udf.listnet.MultiSum($0..);");
+            pigServer.registerQuery("QUERY_LOSS_GRADIENT_GRPD = GROUP QUERY_LOSS_GRADIENT ALL;");
+            pigServer.registerQuery("LOSS_GRADIENT = FOREACH QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum($0..));");
 //
-            Iterator<Tuple> QUERY_LOSS_GRADIENT = pigServer.openIterator("QUERY_LOSS_GRADIENT");
-            while(QUERY_LOSS_GRADIENT.hasNext()){
-                // TODO: get(0) is a weird hack to unwrap the inner tuple from the outer tuple (which should not actually be there...?)
-                List queryResults = ((Tuple) QUERY_LOSS_GRADIENT.next().getAll().get(0)).getAll();
-                loss += (Double) queryResults.get(0);
-                for(int j=1; j<queryResults.size(); j++){
-                    gradient[j-1] = (Double) queryResults.get(j);
-                }
+            Iterator<Tuple> LOSS_GRADIENT = pigServer.openIterator("LOSS_GRADIENT");
+            Tuple lossGradientTuple = LOSS_GRADIENT.next();
+            double loss = Double.parseDouble(lossGradientTuple.get(0).toString());
+            for(int j=1; j<lossGradientTuple.size(); j++){
+                gradient[j-1] = Double.parseDouble(lossGradientTuple.get(i).toString());
             }
 
             // w -= gradient.value * stepSize
             for(int j=0; j<w.length; j++){
-//                System.out.println("w["+j+"]:         "+w[j]);
-//                System.out.println("gradient["+j+"]:  "+gradient[j]);
-                w[j] -= gradient[j] * STEPSIZE;
+                w[j] -= (gradient[j] * STEPSIZE);
             }
 
             System.out.println();
