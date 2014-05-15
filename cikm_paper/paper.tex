@@ -46,16 +46,17 @@
 % For tracking purposes - this is V2.0 - May 2012
 
 \documentclass{sig-alternate-2013}
-
+\usepackage{longtable}
+\usepackage{booktabs}
 \begin{document}
 %
 % --- Author Metadata here ---
 \conferenceinfo{ACM International Conference on Information and Knowledge Management}{'14 Shanghai, China}
-%\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
+\CopyrightYear{2014} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{A cross benchmark comparison of Learning to Rank methods}
+\title{A cross-benchmark comparison of Learning to Rank methods}
 %
 % You need the command \numberofauthors to handle the 'placement
 % and alignment' of the authors beneath the title.
@@ -98,7 +99,7 @@
 %
 % 1st. author
 \alignauthor
-Niek Tax\titlenote{affiliated with University of Twente, but written during his time at Avanade Netherlands B.V.}\\
+Niek Tax\titlenote{author is affiliated with the University of Twente, but this paper written during his time at Avanade Netherlands B.V.}\\
        \affaddr{Avanade Netherlands B.V.}\\
        \affaddr{Versterkerstraat 6}\\
        \affaddr{1322 AP Almere}\\
@@ -134,17 +135,14 @@ Sander Bockting\\
 
 \terms{}
 
-\keywords{, }
+\keywords{}
 
 \section{Introduction}
 
 
-\section{The {\secit Body} of The Paper}
-
-
-\subsection{Type Changes and {\subsecit Special} Characters}
+\section{Problem Statement \& Research Question}
 \label{chap:cross_comparison}
-As we have seen in Chapter~\ref{chap:benchmark_results}, the evaluation of Learning-to-Rank methods is spread over several benchmark datasets. However, as the Learning-to-Rank methods evaluated differs between benchmarks, no single benchmark comparison can be regarded as a conclusive argument on which Learning-to-Rank method is most accurate.\\
+Evaluation of Learning-to-Rank methods is spread over several benchmark datasets. However, as the Learning-to-Rank methods evaluated differs between benchmarks, no single benchmark comparison can be regarded as a conclusive argument on which Learning-to-Rank method is most accurate.\\
 
 Several studies make a small start in considering Learning-to-Rank methods performance over multiple benchmark datasets. Gomes et al. \cite{Gomes2013} analysed ranking accuracy of a set of models on both LETOR 3.0 and LETOR 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both Yahoo! Learning to Rank Challenge datasets and the OHSUMED dataset from LETOR 3.0. To my knowledge, no structured meta-analysis on ranking accuracy has been conducted where evaluation results on several benchmark collections are taken into account. With a meta-analysis we will compare the performance of Learning-to-Rank methods across the Learning-to-Rank benchmark datasets described in foregoing sections.
 
@@ -167,7 +165,7 @@ For the LETOR collections, the evaluation results of the baseline models will be
 LETOR 1.0, LETOR 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers which were published together with these benchmark collections. Users of those benchmark collections are encouraged to cite these papers. Therefore, we collect evaluation measurements of Learning-to-Rank methods on these benchmark collections through forward literature search. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search. Google Scholar will be used to perform the forward reference search.
 
 \begin{table}[!h]
-\begin{tabular}{l|l|l}
+\begin{tabular}{p{3.2cm}|l|p{1.8cm}}
 Benchmark & Paper & \# of forward references \\
 \hline
 LETOR 1.0 \& 2.0 & Liu et al. \cite{Liu2007b} & 307\\
@@ -183,7 +181,7 @@ WCL2R & Alc{\^a}ntara et al. \cite{Alcantara2010} & 2\\
 The LETOR 4.0, MSLR-web10/30k and Yandex Internet Mathematics Competition 2009 benchmark collections were not accompanied with a describing study. To collect measurements of Learning-to-Rank methods evaluated on these benchmarks, a Google Scholar search is performed on the name of the benchmark. Table~\ref{chap:benchmark_results} shows the results of this literature search.
 
 \begin{table}[!h]
-\begin{tabular}{l|l}
+\begin{tabular}{p{4.2cm}|p{2.5cm}}
 Benchmark & Google scholar search results \\
 \hline
 LETOR 4.0 & 75 results \\
@@ -247,7 +245,7 @@ Some studies with evaluation results found through in literature review were not
 \item The study did not report any baseline performance that allowed us to check validity of the results \cite{Chakrabarti2008, Wang2012b, Buffoni2011}.
 \end{enumerate}
 
-\begin{table}[!h!p]
+\begin{table*}[!h!p]
 \begin{tabular}{|l|l|l||l|l|l|}
 Method & Described & Evaluated & Method & Described & Evaluated \\
 \hline 
@@ -298,7 +296,7 @@ LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\
 \end{tabular}
 \caption{Learning-to-Rank algorithms with measurements on benchmark datasets}
 \label{tab:ltr_methods_used}
-\end{table}
+\end{table*}
 
 \section{Results \& Discussion}
 The following subsections provide the performance of Learning-to-Rank methods in terms of Normalised Winning Number for NDCG@3, NDCG@5, NDCG@10 and MAP. Performance of the Learning-to-Rank methods is plotted with Normalised Winning Number on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. The further to the right, the more certain we can be about the performance of the Learning-to-Rank method. The methods for which it holds that there is no other method that has 1) a higher Normalised Winning Number and 2) a higher number datasets evaluated, are identified as the best performing methods and are labelled with the name of the method.
@@ -306,11 +304,11 @@ The following subsections provide the performance of Learning-to-Rank methods in
 \subsection{NDCG@3}
 Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of Learning-to-Rank methods for the NDCG@3 metric. Table \ref{tab:raw_data_norm_winnum_ndcg3} in Appendix \ref{app:norm_winnum_ndcg3} provides the raw Normalised Winning Number data for the Learning-to-Rank methods for which NDCG@3 evaluation results were available.\\
 
-\begin{figure}[!h]
+\begin{figure*}[!h]
 \includegraphics[scale=0.285]{gfx/ndcg3_winnum}
 \caption{NDCG@3 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg3}
-\end{figure}
+\end{figure*}
 
 LambdaNeuralRank and CoList both acquired a perfect Normalised Winning Number score of 1.0 by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF both scored very high scores of near 1.0 on three of the LETOR 3.0 datasets, which can be said to have a higher degree of certainty on the methods' performance because they are validated on three datasets which in addition are more relevant datasets than AOL and Yahoo Set 2 because there are more evaluation results available for the LETOR 3.0 datasets (see Table \ref{tab:ltr_methods_used}). FenchelRank, OWPC, SmoothRank, DCMP and ListNet are in that order increasingly lower in Normalised Winning Number, but increasingly higher in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.\\
 
@@ -319,33 +317,33 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 \subsection{NDCG@5}
 Figure \ref{fig:normalised_winning_number_ndcg5} shows the performance of Learning-to-Rank methods for the NDCG@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg5} in Appendix \ref{app:norm_winnum_ndcg5} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
-\begin{figure}[!h]
+\begin{figure*}[!h]
 \includegraphics[scale=0.285]{gfx/ndcg5_winnum}
 \caption{NDCG@5 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg5}
-\end{figure}
+\end{figure*}
 
 LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a Normalised Winning Number of 1.0. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of Normalised Winning Number. These results are highly in agreement with the NDCG@3 comparison. The only modification compared to the NDCG@3 comparison being that OWPC did show to be a method for which there were no methods performing better on both axes in the NDCG@5 comparison, but not in the NDCG@3 comparison. Like in the NDCG@3 comparison, SmoothRank and ListNet can be regarded as most reliable results because the evaluation measurements for these methods are based on LETOR official baselines.
 
 \subsection{NDCG@10}
 Figure \ref{fig:normalised_winning_number_ndcg10} shows the performance of Learning-to-Rank methods for the NDCG@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10} in Appendix \ref{app:norm_winnum_ndcg10} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
-\begin{figure}[!h]
+\begin{figure*}[!h]
 \includegraphics[scale=0.285]{gfx/ndcg10_winnum}
 \caption{NDCG@10 comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_ndcg10}
-\end{figure}
+\end{figure*}
 
 LambdaMART and LambdaNeuralRank score a Normalised Winning Number of 1.0 on the NDCG@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest NDCG@10 performance for the MSLR-WEB10k dataset. The set of algorithms for which there is no other algorithm with both a higher Normalised Winning Number and number of datasets evaluated on is partly in agreement with those for the NDCG@3 and NDCG@5 comparisons: {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. SmoothRank and FSMRank were not present in this set for the NDCG@3 and NDCG@5 comparison, but were close by, as can be seen in Tables \ref{tab:raw_data_norm_winnum_ndcg3} and \ref{tab:raw_data_norm_winnum_ndcg5} in the Appendices. DCMP is not in the set in contrast with the NDCG@3 and NDCG@5 comparison.
 
 \subsection{MAP}
 Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning-to-Rank methods for the MAP metric. Table \ref{tab:raw_data_norm_winnum_map} in Appendix \ref{app:norm_winnum_map} provides the raw Normalised Winning Number data for the Learning-to-Rank methods.\\
 
-\begin{figure}[!h]
+\begin{figure*}[!h]
 \includegraphics[scale=0.285]{gfx/map_winnum}
 \caption{MAP comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_map}
-\end{figure}
+\end{figure*}
 
 Where comparisons on the NDCG metric at different cut-off points where highly in agreement in terms of the best performing algorithms, the comparison in terms of MAP shows different results. RankDE scores a Normalised Winning Number of 1.0 on one dataset, like LambdaNeuralRank did on for all NDCG-comparisons. In contrast to LambdaNeuralRank, RankDE achieved this highest score on the LETOR 2.0 TD2003, a dataset on which many methods are evaluated.\\
 
@@ -354,11 +352,11 @@ LARF and LRUF score very high Normalised Winning Number scores, but based on onl
 \subsection{Cross-metric}
 Figure \ref{fig:normalised_winning_number_all} shows the Normalised Winning Number as function of Ideal Winning Number for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.\\
 
-\begin{figure}[!h]
+\begin{figure*}[!h]
 \includegraphics[scale=0.33]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning-to-Rank methods}
 \label{fig:normalised_winning_number_all}
-\end{figure}
+\end{figure*}
 
 The cross-metric comparison is based on the NDCG@3, NDCG@5, NDCG@10 and MAP comparisons combined, which justifies analysing the comparison more thoroughly. Figure \ref{fig:normalised_winning_number_all} labels the algorithms with no other algorithm having a higher value on both the horizontal axis and vertical axis, but also labels the algorithms with exactly one algorithm having a higher value on both axes with smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labelled as baselines.\\
 
@@ -392,7 +390,7 @@ LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the Learning-to-Rank alg
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+\bibliography{Bibliography}  % sigproc.bib is the name of the Bibliography in this case
 % You must have a proper ".bib" file
 %  and remember to run:
 % latex bibtex latex latex
@@ -406,7 +404,7 @@ LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the Learning-to-Rank alg
 \section{Raw Data for NDCG@3 Comparison}
 \label{app:norm_winnum_NDCG3}
 
-\begin{table}
+\begin{table*}
 \begin{tabular}{l|l|l}
 Method & Normalised Winning Number & \# of datasets \\
 \hline
@@ -469,12 +467,12 @@ TM & 0.59090909 & 3 \\
 \end{tabular}
 \caption{Raw data of Normalised Winning Number comparison on NDCG@3}
 \label{tab:raw_data_norm_winnum_NDCG3}
-\end{table}
+\end{table*}
 
 \section{Raw Data for NDCG@5 Comparison}
 \label{app:norm_winnum_NDCG5}
 
-\begin{table}
+\begin{table*}
 \begin{tabular}{l|l|l}
 Method & Normalised Winning Number & \# of datasets \\
 \hline
@@ -541,12 +539,12 @@ TM & 0.7575758 & 3 \\
 \end{tabular}
 \caption{Raw data of Normalised Winning Number comparison on NDCG@5}
 \label{tab:raw_data_norm_winnum_NDCG5}
-\end{table}
+\end{table*}
 
 \section{Raw Data for NDCG@10 Comparison}
 \label{app:norm_winnum_NDCG10}
 
-\begin{table}
+\begin{table*}
 \begin{tabular}{l|l|l}
 Method & Normalised Winning Number & \# of datasets \\
 \hline
@@ -615,16 +613,15 @@ TGRank & 0.50000000 & 4 \\
 \end{tabular}
 \caption{Raw data of Normalised Winning Number comparison on NDCG@10}
 \label{tab:raw_data_norm_winnum_NDCG10}
-\end{table}
+\end{table*}
 
 \section{Raw Data for MAP Comparison}
 \label{app:norm_winnum_map}
 
-\begin{table}
+\begin{table*}
 \begin{tabular}{l|l|l}
 Method & Normalised Winning Number & \# of datasets \\
 \hline
-Method & Normalised Winning Number & \# of datasets \\ 
 AdaRank-MAP & 0.320610687 & 12 \\ 
 AdaRank-NDCG & 0.286259542 & 12 \\ 
 ApproxAP & 0.500000000 & 2 \\ 
@@ -689,13 +686,27 @@ VFLR & 0.974358974 & 2 \\
 \end{tabular}
 \caption{Raw data of Normalised Winning Number comparison on MAP}
 \label{tab:raw_data_norm_winnum_map}
-\end{table}
+\end{table*}
 
 \section{Raw Data on Normalised Winning Number for cross-comparison}
 \label{app:norm_winnum_all}
+\onecolumn
+\begin{table*}\centering
+\begin{longtable}{@{}rrrrrrrrrrrrrrrrr@{}}\toprule
+& \multicolumn{2}{p{0.5cm}}{NDCG@3} & \phantom{a} 
+& \multicolumn{2}{c}{NDCG@5} & \phantom{a} 
+& \multicolumn{2}{c}{NDG@10} & \phantom{a} 
+& \multicolumn{2}{c}{MAP}    & \phantom{a}
+& \multicolumn{3}{c}{CROSS}\\
+\cmidrule{2-3} \cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-16}
+Method & NWN & \#ds && NWN & \#ds && NWN & \#ds && NWN & \#ds && WM & IWN & NWN \\ \midrule
+AdaRank-MAP & 0.3486 & 12 && 0.3884 & 12 && 0.3648 & 13 && 0.3206 & 12 && 332 & 937 & 0.3543 \\
+\bottomrule
+\end{longtable}
+\caption{Caption}
+\end{table*}
 
-\begin{table}
-\begin{tabular}{l|l|l|l}
+\begin{longtable}{p{3.2cm}|p{1.3cm}|p{1.3cm}|p{1.4cm}}
 Method & Winning Number & Ideal Winning Number & Normalized Winning Number \\
 \hline
 AdaRank-MAP & 332 & 937 & 0.35432231 \\ 
@@ -785,9 +796,9 @@ SwarmRank & 5 & 40 & 0.12500000 \\
 TGRank & 205 & 388 & 0.52835052 \\ 
 TM & 65 & 99 & 0.65656566 \\ 
 VFLR & 38 & 39 & 0.97435897 \\
-\end{tabular}
+\bottomrule
 \caption{Raw data of Normalised Winning Number comparison cross-metric}
 \label{tab:raw_data_norm_winnum_all}
-\end{table}
+\end{longtable}
 
 \end{document}
