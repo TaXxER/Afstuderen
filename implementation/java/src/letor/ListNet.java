@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final double   STEPSIZE   = 0.1;
-    private static final int      ITERATIONS = 10;
+    private static final double   STEPSIZE   = 0.0001;
+    private static final int      ITERATIONS = 100;
 
     public static void main(String[] args) throws Exception {
         // Connect to Pig
@@ -66,6 +66,7 @@ public class ListNet {
             for(int j=1; j<lossGradientTuple.size(); j++){
                 gradient[j-1] = Double.parseDouble(lossGradientTuple.get(i).toString());
             }
+            System.out.println("gradient: "+toParamString(gradient));
 
             // w -= gradient.value * stepSize
             for(int j=0; j<w.length; j++){
