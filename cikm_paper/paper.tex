@@ -691,7 +691,6 @@ VFLR & 0.974358974 & 2 \\
 \section{Raw Data on Normalised Winning Number for cross-comparison}
 \label{app:norm_winnum_all}
 \onecolumn
-\begin{table*}\centering
 \begin{longtable}{@{}rrrrrrrrrrrrrrrrr@{}}\toprule
 & \multicolumn{2}{p{0.5cm}}{NDCG@3} & \phantom{a} 
 & \multicolumn{2}{c}{NDCG@5} & \phantom{a} 
@@ -701,10 +700,97 @@ VFLR & 0.974358974 & 2 \\
 \cmidrule{2-3} \cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-16}
 Method & NWN & \#ds && NWN & \#ds && NWN & \#ds && NWN & \#ds && WM & IWN & NWN \\ \midrule
 AdaRank-MAP & 0.3486 & 12 && 0.3884 & 12 && 0.3648 & 13 && 0.3206 & 12 && 332 & 937 & 0.3543 \\
+AdaRank-NDCG & 0.3073 & 12 && 0.3259 & 12 && 0.3158 & 16 && 0.2863 & 12 && 293 & 951 & 0.3081 \\
+ADMM & & && & && & && & && & & \\
+ApproxAP & & && & && & && & && & & \\
+ApproxNDCG & & && & && & && & && & & \\
+BagBoo & & && & && & && & && & & \\
+Best Single Feature & & && & && & && & && & & \\
+BL-MART & & && & && & && & && & & \\
+BoltzRank-Pair & & && & && & && & && & & \\
+BoltzRank-Single & & && & && & && & && & & \\
+BT & & && & && & && & && & & \\
+C-CRF & & && & && & && & && & & \\
+CA & & && & && & && & && & & \\
+CCRank & & && & && & && & && & & \\
+CoList & & && & && & && & && & & \\
+Consistent-RankCosine & & && & && & && & && & & \\
+DCMP & & && & && & && & && & & \\
+DirectRank & & && & && & && & && & & \\
+EnergyNDCG & & && & && & && & && & & \\
+FBPCRank & & && & && & && & && & & \\
+FenchelRank & & && & && & && & && & & \\
+FocusedBoost & & && & && & && & && & & \\
+FocusedNet & & && & && & && & && & & \\
+FocusedSVM & & && & && & && & && & & \\
+FP-Rank & & && & && & && & && & & \\
+FRank & & && & && & && & && & & \\
+FSMRank & & && & && & && & && & & \\
+FSM$^{SVM}$ & & && & && & && & && & & \\
+GAS-E & & && & && & && & && & & \\
+GP & & && & && & && & && & & \\
+GPRank & & && & && & && & && & & \\
+GRankRLS & & && & && & && & && & & \\
+GroupCE & & && & && & && & && & & \\
+GroupMLE & & && & && & && & && & & \\
+IntervalRank & & && & && & && & && & & \\
+IPRank & & && & && & && & && & & \\
+KeepRank & & && & && & && & && & & \\
+Kernel-PCA RankBoost & & && & && & && & && & & \\
+KL-CRF & & && & && & && & && & & \\
+LAC-MR-OR & & && & && & && & && & & \\
+LambdaMART & & && & && & && & && & & \\
+LambdaNeuralRank & & && & && & && & && & & \\
+LambdaRank & & && & && & && & && & & \\
+LARF & & && & && & && & && & & \\
+Linear Regression & & && & && & && & && & & \\
+ListMLE & & && & && & && & && & & \\
+ListNet & & && & && & && & && & & \\
+ListReg & & && & && & && & && & & \\
+LRUF & & && & && & && & && & & \\
+MCP & & && & && & && & && & & \\
+MHR & & && & && & && & && & & \\
+MultiStageBoost & & && & && & && & && & & \\
+NewLoss & & && & && & && & && & & \\
+OWPC & & && & && & && & && & & \\
+PERF-MAP & & && & && & && & && & & \\
+PermuRank & & && & && & && & && & & \\
+Q.D.KNN & & && & && & && & && & & \\
+RandomForest & & && & && & && & && & & \\
+Rank-PMBGP & & && & && & && & && & & \\
+RankAggNDCG & & && & && & && & && & & \\
+RankBoost & & && & && & && & && & & \\
+RankCSA & & && & && & && & && & & \\
+RankDE & & && & && & && & && & & \\
+RankELM (pairwise) & & && & && & && & && & & \\
+RankELM (pointwise) & & && & && & && & && & & \\
+RankMGP & & && & && & && & && & & \\
+RankNet & & && & && & && & && & & \\
+RankRLS & & && & && & && & && & & \\
+RankSVM & & && & && & && & && & & \\
+RankSVM-Primal & & && & && & && & && & & \\
+RankSVM-Struct & & && & && & && & && & & \\
+RCP & & && & && & && & && & & \\
+RE-QR & & && & && & && & && & & \\
+REG-SHG-SDCG & & && & && & && & && & & \\
+Ridge Regression & & && & && & && & && & & \\
+RSRank & & && & && & && & && & & \\
+SmoothGrad & & && & && & && & && & & \\
+SmoothRank & & && & && & && & && & & \\
+SoftRank & & && & && & && & && & & \\
+SparseRank & & && & && & && & && & & \\
+SVD-RankBoost & & && & && & && & && & & \\
+SVM$^{MAP}$ & & && & && & && & && & & \\
+SwarmRank & & && & && & && & && & & \\
+TGRank & & && & && & && & && & & \\
+TM & & && & && & && & && & & \\
+VFLR & & && & && & && & && & & \\
 \bottomrule
+\caption{Raw data of cross-benchmark comparison}
+\label{tab:raw_data}
 \end{longtable}
-\caption{Caption}
-\end{table*}
+
+
 
 \begin{longtable}{p{3.2cm}|p{1.3cm}|p{1.3cm}|p{1.4cm}}
 Method & Winning Number & Ideal Winning Number & Normalized Winning Number \\
