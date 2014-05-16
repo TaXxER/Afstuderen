@@ -131,9 +131,7 @@ Sander Bockting\\
 % A category with the (minimum) three required fields
 \category{H.3.3}{Information Systems}{Information Storage and Retrieval}[Information Search and Retrieval]
 
-\terms{}
-
-\keywords{}
+\keywords{Learning to rank, Information retrieval, Benchmark datasets}
 
 \section{Introduction}
 
@@ -205,10 +203,13 @@ $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 
 In contrast to the winning number comparison on LETOR 3.0, there will not be accuracy measurements for each algorithm on each dataset in our meta-analysis. To compare algorithms based on a sparse set of evaluation measurements, a normalised version of the Winning Number metric will be used. This Normalised Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as \\
 
-$I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
-1 & \text{if } M_i(j) \text{ and } M_k(j) \text{ are both defined and } M_i(j) > M_k(j), \\
-0 & \text{otherwise}
-\end{cases}$\\
+
+\[
+I_{M_i(j)>M_k(j)} = \begin{cases}
+1 & \parbox[t]{5cm}{if $M_i(j)$ and $M_k(j$ are both defined and $M_i(j) > M_k(j)$,}\\
+0 & \parbox[t]{5cm}{otherwise}
+\end{cases}
+\]
 
 From now on this adjusted version of Winning Number will be references to as \emph{Normalised Winning Number}. The mathematical definition of Normalised Winning Number is\\
 
