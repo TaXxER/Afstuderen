@@ -367,10 +367,6 @@ A second limitation is that the datasets on which learning to rank methods have 
 Another limitation lies in the meta-analysis methodology. Using evaluation results published by other researchers relies on the honesty of those researchers. Overly optimistic evaluation results published by other researchers do affect our Normalized Winning Number results. Limiting the meta-analysis to those studies that report comparable results on one of the baseline methods of a benchmark set reduces this limitation but does not solve it completely. By taking the Ideal Winning Number into account in Figure \ref{fig:normalised_winning_number_all} we further mitigate this limitation, as the Ideal Winning Number is loosely related with the number of studies that reported evaluation results for an algorithm.
 
 \section{Conclusions}
-We will now look back on our first research question using the knowledge gained with the cross-benchmark comparison.
-\begin{description}
-\item[RQ1] What are the best performing learning to rank algorithms in terms of accuracy on relevant benchmark datasets?\\
-\end{description}
 Although no closing arguments can be formulated on which learning to rank methods are most accurate, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others.\\
 
 LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the learning to rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases. For more definite conclusions on the relative performance of these five methods, more evaluation runs on are desirable for the methods on the left side on the list on benchmark datasets that these methods have not yet been evaluated on.\\
@@ -405,7 +401,7 @@ LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the learning to rank alg
 & \multicolumn{2}{c}{MAP}    & \phantom{a}
 & \multicolumn{3}{c}{CROSS}\\
 \cmidrule{2-3} \cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-16}
-Method & NWN & \#ds && NWN & \#ds && NWN & \#ds && NWN & \#ds && WM & IWN & NWN \\ \midrule
+Method & NWN & \#ds && NWN & \#ds && NWN & \#ds && NWN & \#ds && WM & IWN & NWN \\ \midrule\endhead
 AdaRank-MAP & 0.3486 & 12 && 0.3884 & 12 && 0.3648 & 13 && 0.3206 & 12 && 332 & 937 & 0.3543 \\
 AdaRank-NDCG & 0.3073 & 12 && 0.3259 & 12 && 0.3158 & 16 && 0.2863 & 12 && 293 & 951 & 0.3081 \\
 ADMM & - & - && - & - && 0.4444 & 1 && - & - && 4 & 9 & 0.4444 \\
