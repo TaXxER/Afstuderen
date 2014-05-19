@@ -110,23 +110,23 @@ Niek Tax\titlenote{author is affiliated with the University of Twente, but this 
        \affaddr{Versterkerstraat 6}\\
        \affaddr{1322 AP Almere}\\
        \affaddr{The Netherlands}
-       \email{niek.tax@avanade.com}
+       \affaddr{niek.tax@avanade.com}
 % 2nd. author
-\alignauthor
-Djoerd Hiemstra\\
-       \affaddr{University of Twente}\\
-       \affaddr{P.O. Box 217}\\
-       \affaddr{7500 AE Enschede}\\
-       \affaddr{The Netherlands}
-       \email{d.hiemstra@utwente.nl}
-% 3rd. author
 \alignauthor
 Sander Bockting\\
        \affaddr{Avanade Netherlands B.V.}\\
        \affaddr{Versterkerstraat 6}\\
        \affaddr{1322 AP Almere}\\
        \affaddr{The Netherlands}
-       \email{sander.bockting@avanade.com}
+       \affaddr{sander.bockting@avanade.com}
+% 3rd. author
+\alignauthor
+Djoerd Hiemstra\\
+       \affaddr{University of Twente}\\
+       \affaddr{P.O. Box 217}\\
+       \affaddr{7500 AE Enschede}\\
+       \affaddr{The Netherlands}
+       \affaddr{d.hiemstra@utwente.nl}
 }
 
 \maketitle
@@ -290,7 +290,7 @@ Figure \ref{fig:normalized_winning_number_ndcg10} shows the performance of learn
 \end{figure*}
 Figure \ref{fig:normalized_winning_number_map} shows the performance of learning to rank methods for the MAP metric. Where comparisons on the NDCG metric at different cut-off points where highly in agreement in terms of the best performing algorithms, the comparison in terms of MAP shows different results. RankDE scores a Normalized Winning Number of 1.0 on one dataset, like LambdaNeuralRank did on for all NDCG-comparisons. In contrast to LambdaNeuralRank, RankDE achieved this highest score on the LETOR 2.0 TD2003, a dataset on which many methods are evaluated.\\
 
-LARF and LRUF score very high Normalized Winning Number scores, but based on only relatively few datasets, just as in the NDCG comparisons. Notable is that SmoothRank and ListNet, which showed both high accuracy and high certainty on all NDCG comparisons, are not within the best performing methods in the MAP comparison. A deeper look in the raw data Table \ref{tab:raw_data} in the Appendix \ref{app:raw_data} shows that LAC-MR-OR is evaluated on many more datasets for MAP compared to NDCG, which resulted in LAC-MR-OR obtaining equal certainty to ListNet with a higher Normalized Winning Number. SmoothRank performed a Normalized Winning Number of around 0.53 over 7 datasets, which is still good in both certainty and accuracy, but not among the top methods. RE-QR is one of the best performers in the MAP comparison with a reasonable amount of benchmark evaluations. No reported NDCG performance was found in the literature study for RE-QR. There is a lot of certainty on the accuracy of RankBoost and RankSVM as both models are evaluated on the majority of datasets included in the comparison for the MAP metric, but given their Normalized Winning Number it can said that both methods are not within the top performing learning to rank methods.
+LARF and LRUF score very high Normalized Winning Number scores, but based on only relatively few datasets, just as in the NDCG comparisons. Notable is that SmoothRank and ListNet, which showed both high accuracy and high certainty on all NDCG comparisons, are not within the best performing methods in the MAP comparison. A deeper look in the raw data Table \ref{tab:raw_data} in the Appendix \ref{app:raw_data} shows that LAC-MR-OR is evaluated on many more datasets for MAP compared to NDCG, which resulted in LAC-MR-OR obtaining equal certainty to ListNet with a higher Normalized Winning Number. SmoothRank performed a Normalized Winning Number of around 0.53 over 7 datasets, which is still good in both certainty and accuracy, but not among the top methods. RE-QR is one of the best performers in the MAP comparison with a reasonable amount of benchmark evaluations. No reported NDCG performance was found in the literature search for RE-QR. There is a lot of certainty on the accuracy of RankBoost and RankSVM as both models are evaluated on the majority of datasets included in the comparison for the MAP metric, but given their Normalized Winning Number it can said that both methods are not within the top performing learning to rank methods.
 
 \subsection{Cross-Metric}
 \begin{figure*}
