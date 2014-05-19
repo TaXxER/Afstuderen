@@ -212,6 +212,11 @@ Some studies with evaluation results found through in literature review were not
 \item The study did not report any baseline performance that allowed us to check validity of the results \cite{Chakrabarti2008, Wang2012b, Buffoni2011}.
 \end{enumerate}
 
+\begin{figure*}
+\includegraphics[scale=0.371]{gfx/ndcg3_winnum}
+\caption{NDCG@3 comparison of learning to rank methods}
+\label{fig:normalised_winning_number_ndcg3}
+\end{figure*}
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
 The LETOR 3.0 paper \cite{Qin2010} states that it may differ between datasets what the most accurate ranking methods are. To evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collections, Qin et al. \cite{Qin2010} proposed a measure called \emph{winning number} as the number of other algorithms that an algorithm can beat over the set of datasets. Formally the winning number measure is defined as\\
 
@@ -224,11 +229,6 @@ $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
-\begin{figure*}
-\includegraphics[scale=0.371]{gfx/ndcg3_winnum}
-\caption{NDCG@3 comparison of learning to rank methods}
-\label{fig:normalised_winning_number_ndcg3}
-\end{figure*}
 In contrast to the winning number comparison on LETOR 3.0, there will not be accuracy measurements for each algorithm on each dataset in our meta-analysis. To compare algorithms based on a sparse set of evaluation measurements, a normalized version of the Winning Number metric will be used. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as
 
 \[
@@ -255,14 +255,14 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 
 NDCG@3, NDCG@5, NDCG@10 and MAP are chosen as metrics on which the meta-analysis will be performed. These metrics seem to be the most frequently used evaluation metrics in most of the used benchmark datasets. An exception is the Yahoo! Learning to Rank Challenge datasets on which mainly ERR is used as main evaluation metric. The lack of use of the ERR metric in other benchmarks makes it unsuitable for a cross-benchmark comparison. By making the decision to include NDCG at three cut-off points and only a single MAP entry, we implicitly attain a higher weight for NDCG compared to MAP on an analysis that combines all measurements on the four metrics. This implicit weighting is arbitrary and therefore undesirable, but the number of algorithm evaluation results gained by this makes it a pragmatic approach.
 
-\section{Results of Learning to Rank Comparison}
-The following subsections provide the performance of learning to rank methods in terms of Normalized Winning Number for NDCG@3, NDCG@5, NDCG@10 and MAP. Performance of the learning to rank methods is plotted with Normalized Winning Number on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. The further to the right, the more certain we can be about the performance of the learning to rank method. The methods for which it holds that there is no other method that has 1) a higher Normalized Winning Number and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled with the name of the method. Table \ref{tab:raw_data} in Appendix \ref{app:raw_data} provides the raw Normalized Winning Number data for the learning to rank methods at NDCG@3, @5, @10, MAP and their cross-metric weighted average.
-
 \begin{figure*}
 \includegraphics[scale=0.371]{gfx/ndcg5_winnum}
 \caption{NDCG@5 comparison of learning to rank methods}
 \label{fig:normalised_winning_number_ndcg5}
 \end{figure*}
+\section{Results of Learning to Rank Comparison}
+The following subsections provide the performance of learning to rank methods in terms of Normalized Winning Number for NDCG@3, NDCG@5, NDCG@10 and MAP. Performance of the learning to rank methods is plotted with Normalized Winning Number on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. The further to the right, the more certain we can be about the performance of the learning to rank method. The methods for which it holds that there is no other method that has 1) a higher Normalized Winning Number and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled with the name of the method. Table \ref{tab:raw_data} in Appendix \ref{app:raw_data} provides the raw Normalized Winning Number data for the learning to rank methods at NDCG@3, @5, @10, MAP and their cross-metric weighted average.
+
 \subsection{NDCG@3}
 Figure \ref{fig:normalised_winning_number_ndcg3} shows the performance of learning to rank methods for the NDCG@3 metric. LambdaNeuralRank and CoList both acquired a perfect Normalized Winning Number score of 1.0 by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF both scored very high scores of near 1.0 on three of the LETOR 3.0 datasets, which can be said to have a higher degree of certainty on the methods' performance because they are validated on three datasets which in addition are more relevant datasets than AOL and Yahoo Set 2 because there are more evaluation results available for the LETOR 3.0 datasets (see Table \ref{tab:ltr_methods_used} in Appendix \ref{app:ltr_methods_used}). FenchelRank, OWPC, SmoothRank, DCMP and ListNet are in that order increasingly lower in Normalized Winning Number, but increasingly higher in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.\\
 
@@ -323,6 +323,7 @@ Although no closing arguments can be formulated on which learning to rank method
 % The following two commands are all you need in the
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
+\newpage
 \bibliographystyle{abbrv}
 \bibliography{Bibliography}  % sigproc.bib is the name of the Bibliography in this case
 % You must have a proper ".bib" file
