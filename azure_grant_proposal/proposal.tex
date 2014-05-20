@@ -1,0 +1,170 @@
+% This is "sig-alternate.tex" V2.0 May 2012
+% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
+%
+% This example file demonstrates the use of the 'sig-alternate.cls'
+% V2.5 LaTeX2e document class file. It is for those submitting
+% articles to ACM Conference Proceedings WHO DO NOT WISH TO
+% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
+% The 'sig-alternate.cls' file will produce a similar-looking,
+% albeit, 'tighter' paper resulting in, invariably, fewer pages.
+%
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V2.5) produces:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) NO page numbers
+%
+% as against the acm_proc_article-sp.cls file which
+% DOES NOT produce 1) thru' 3) above.
+%
+% Using 'sig-alternate.cls' you have control, however, from within
+% the source .tex file, over both the CopyrightYear
+% (defaulted to 200X) and the ACM Copyright Data
+% (defaulted to X-XXXXX-XX-X/XX/XX).
+% e.g.
+% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
+% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
+%
+% ---------------------------------------------------------------------------------------------------------------
+% This .tex source is an example which *does* use
+% the .bib file (from which the .bbl file % is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission, you *NEED* to 'insert'
+% your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% ================= IF YOU HAVE QUESTIONS =======================
+% Questions regarding the SIGS styles, SIGS policies and
+% procedures, Conferences etc. should be sent to
+% Adrienne Griscti (griscti@acm.org)
+%
+% Technical questions _only_ to
+% Gerald Murray (murray@hq.acm.org)
+% ===============================================================
+%
+% For tracking purposes - this is V2.0 - May 2012
+
+\documentclass{sig-alternate}
+\begin{document}
+
+%
+% --- Author Metadata here ---
+\conferenceinfo{}{}
+\CopyrightYear{2014} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
+%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
+% --- End of Author Metadata ---
+
+\title{Research Proposal: A Scalability Analysis of Learning to Rank Algorithms using Hadoop}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{1} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Niek Tax\\
+       \affaddr{University of Twente}\\
+       \affaddr{P.O. Box 217}\\
+       \affaddr{7500 AE Enschede}\\
+       \affaddr{The Netherlands}
+       \affaddr{d.hiemstra@utwente.nl}
+}
+
+\maketitle
+
+% A category with the (minimum) three required fields
+\category{H.3.3}{Information Systems}{Information Storage and Retrieval}[Information Search and Retrieval]
+%
+\category{D.1.3}{Concurrent Programming}{Distributed Programming}
+
+
+\keywords{Learning to rank, MapReduce}
+\section{Introduction}
+Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance for a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. One can find useful applications of ranking in many application domains outside web search as well. For example, it plays a vital role in amongst others: automatic document summarisation, machine translation, drug discovery and in determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be more fitting to recommender systems than regression-based rating prediction on a continuous scale \cite{Adomavicius2005,McNee2006}.\\
+
+Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning-to-Rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
+
+In recent years several Learning-to-Rank benchmark datasets have been proposed that enable comparison of the performance of different Learning-to-Rank methods. Well-known benchmark datasets include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR dataset \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning-to-Rank field focuses on ranking accuracy, while efficiency and scalability of Learning-to-Rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of Learning-to-Rank methods has so far been an overlooked research area in his influential book on Learning-to-Rank.\\
+
+Some research has been done in the area of parallel or distributed machine learning \cite{Chu2007,Chang2007}. However, almost none of these studies include the Learning-to-Rank sub-field of machine learning. The field of efficient Learning-to-Rank has been getting some attention lately \cite{Asadi2013a,Asadi2013b,Busa-Fekete2012,Sousa2012,Shukla2012}, since Liu \cite{Liu2007} first stated its growing importance back in 2007. Only several of these studies \cite{Sousa2012,Shukla2012} have explored the possibilities of efficient Learning-to-Rank through the use of parallel programming paradigms.\\
+
+MapReduce \cite{Dean2004} is a parallel programming framework that is inspired by the \emph{Map} and \emph{Reduce} functions commonly used in functional programming. Since Google developed the MapReduce parallel programming framework back in 2004 it has grown to be the industry standard model for parallel programming. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, which most Learning-to-Rank algorithms are, are not amenable to the MapReduce framework. Lin argued that as a solution to the non-amenability of iterative algorithms to the MapReduce framework, iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough.\\
+
+The appearance of benchmark datasets gave insight in the performance of different Learning-to-Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning-to-Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning-to-Rank. A more extensive overview of my research goals and questions are described in section \ref{sec:goals}.\\
+
+\section{Research Goals}
+\label{sec:goals}
+The objective of this thesis is to explore the speed-up in execution time of Learning-to-Rank algorithms through parallelisation using the MapReduce framework.
+This work focuses on those Learning-to-Rank algorithms that have shown leading performance on relevant benchmark datasets.
+This thesis addresses the following research questions:
+\begin{description}
+\item[RQ1] What are the best performing Learning-to-Rank algorithms in terms of accuracy on relevant benchmark datasets?\\
+
+\item[RQ2] What is the speed-up of those Learning-to-Rank algorithms when executed using the MapReduce framework?\\
+Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1991}:\\
+
+$S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$
+
+\item[RQ3] Can those Learning-to-Rank algorithms be adjusted in such a way that the parallel execution speed-up increases without decreasing accuracy?
+\end{description}
+
+\section{Approach}
+A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:\\
+
+\emph{("learning to rank" \emph{OR} "learning-to-rank" \emph{OR} "machine learned ranking") \emph{AND} ("parallel" \emph{OR} "distributed")}\\
+
+and the following bibliographic databases:
+\begin{itemize}
+\item Scopus
+\item Web of Science
+\item Google Scholar
+\end{itemize}
+
+The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing.\\
+
+A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
+
+To answer the first research question, I will implement Learning-to-Rank methods in the MapReduce framework and measure runtime as a factor of the number of cluster nodes used to complete the computation.\\
+
+I will use the HDInsight cloud-based MapReduce implementation from Microsoft to implement the Learning-to-Rank algorithms. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.
+The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge} \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR \cite{Qin2010} dataset and the LETOR successors MSLR-WEB10k and MSLR-WEB30k.
+
+\bibliographystyle{abbrv}
+\bibliography{Bibliography}  % sigproc.bib is the name of the
+\end{document}
