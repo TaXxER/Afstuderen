@@ -44,8 +44,10 @@
 % ===============================================================
 %
 % For tracking purposes - this is V2.0 - May 2012
-
 \documentclass{sig-alternate}
+\usepackage{array}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{booktabs}
 \begin{document}
 
 %
@@ -108,62 +110,96 @@ Niek Tax\\
 
 \maketitle
 
+\begin{abstract}
+Learning to rank is an increasingly important scientific field that comprises the use of machine learning for the ranking task. This research proposal proposes a two-stage research project in the learning to rank field. In the first research stage we will conduct a comparison of learning to rank methods over multiple benchmark collections. This is relevant, as a lack of a \emph{de facto} standard benchmark collection for evaluation of new learning to rank methods hinders comparison. The second stage analyses the potential speed-up gain of parallel execution of the most accurate learning to rank methods identified in the first research step through execution on Hadoop MapReduce. Research on scalability of learning to rank methods is widely seen as relevant and often overlooked \cite{Chapelle2011b, Liu2007}.
+\end{abstract}
 % A category with the (minimum) three required fields
 \category{H.3.3}{Information Systems}{Information Storage and Retrieval}[Information Search and Retrieval]
 %
 \category{D.1.3}{Concurrent Programming}{Distributed Programming}
 
 
-\keywords{Learning to rank, MapReduce}
+\keywords{Learning to Rank, MapReduce}
 \section{Introduction}
 Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance for a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. One can find useful applications of ranking in many application domains outside web search as well. For example, it plays a vital role in amongst others: automatic document summarisation, machine translation, drug discovery and in determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be more fitting to recommender systems than regression-based rating prediction on a continuous scale \cite{Adomavicius2005,McNee2006}.\\
 
-Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning-to-Rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
+Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
-In recent years several Learning-to-Rank benchmark datasets have been proposed that enable comparison of the performance of different Learning-to-Rank methods. Well-known benchmark datasets include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR dataset \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning-to-Rank field focuses on ranking accuracy, while efficiency and scalability of Learning-to-Rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of Learning-to-Rank methods has so far been an overlooked research area in his influential book on Learning-to-Rank.\\
+In recent years several learning to rank benchmark datasets have been proposed that enable comparison of the performance of different Learning to rank methods. Well-known benchmark datasets include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR dataset \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning to rank field focuses on ranking accuracy, while efficiency and scalability of learning to rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of learning to rank methods has so far been an overlooked research area in his influential book on learning to rank.\\
 
-Some research has been done in the area of parallel or distributed machine learning \cite{Chu2007,Chang2007}. However, almost none of these studies include the Learning-to-Rank sub-field of machine learning. The field of efficient Learning-to-Rank has been getting some attention lately \cite{Asadi2013a,Asadi2013b,Busa-Fekete2012,Sousa2012,Shukla2012}, since Liu \cite{Liu2007} first stated its growing importance back in 2007. Only several of these studies \cite{Sousa2012,Shukla2012} have explored the possibilities of efficient Learning-to-Rank through the use of parallel programming paradigms.\\
+Some research has been done in the area of parallel or distributed machine learning \cite{Chu2007,Chang2007}. However, almost none of these studies include the learning to rank sub-field of machine learning. The field of efficient learning to rank has been getting some attention lately \cite{Asadi2013a,Asadi2013b,Busa-Fekete2012,Sousa2012,Shukla2012}, since Liu \cite{Liu2007} first stated its growing importance back in 2007. Only several of these studies \cite{Sousa2012,Shukla2012} have explored the possibilities of efficient learning to rank through the use of parallel programming paradigms.\\
 
-MapReduce \cite{Dean2004} is a parallel programming framework that is inspired by the \emph{Map} and \emph{Reduce} functions commonly used in functional programming. Since Google developed the MapReduce parallel programming framework back in 2004 it has grown to be the industry standard model for parallel programming. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, which most Learning-to-Rank algorithms are, are not amenable to the MapReduce framework. Lin argued that as a solution to the non-amenability of iterative algorithms to the MapReduce framework, iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough.\\
+MapReduce \cite{Dean2004} is a parallel programming framework that is inspired by the \emph{Map} and \emph{Reduce} functions commonly used in functional programming. Since Google developed the MapReduce parallel programming framework back in 2004 it has grown to be the industry standard model for parallel programming. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, which most learning to rank algorithms are, are not amenable to the MapReduce framework. Lin argued that as a solution to the non-amenability of iterative algorithms to the MapReduce framework, iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough.\\
 
-The appearance of benchmark datasets gave insight in the performance of different Learning-to-Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning-to-Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning-to-Rank. A more extensive overview of my research goals and questions are described in section \ref{sec:goals}.\\
+The appearance of benchmark datasets gave insight in the performance of different learning to rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing learning to rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel learning to rank.\\
 
 \section{Research Goals}
 \label{sec:goals}
-The objective of this thesis is to explore the speed-up in execution time of Learning-to-Rank algorithms through parallelisation using the MapReduce framework.
-This work focuses on those Learning-to-Rank algorithms that have shown leading performance on relevant benchmark datasets.
-This thesis addresses the following research questions:
+Our research contains two research stages. A first stage is concerned with identifying the best performing learning to rank methods in terms of accuracy. Several benchmark collections for model evaluation exist in the learning to rank field. Well-known benchmark collections include the \emph{Yahoo! Learning to Rank Challenge} collection \cite{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \cite{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on which benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a \emph{de facto} standard way of benchmarking new models. Therefore, our first research question concerns the identification of the most accurate learning to rank methods when compared on their performance on several benchmark collections.
 \begin{description}
-\item[RQ1] What are the best performing Learning-to-Rank algorithms in terms of accuracy on relevant benchmark datasets?\\
-
-\item[RQ2] What is the speed-up of those Learning-to-Rank algorithms when executed using the MapReduce framework?\\
-Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1991}:\\
+\item[RQ1] What are the best performing learning to rank algorithms in terms of accuracy on when compared over multiple benchmark collections?
+\end{description}
+The second stage of our research is concerned with exploration of the speed-up in execution time of learning to rank algorithms through parallelisation using the Hadoop MapReduce framework. This second stages focuses on those learning to rank algorithms that showed to be most accurate in our cross-benchmark comparison of learning to rank methods.
+\begin{description}
+\item[RQ2] What is the speed-up of those learning to rank algorithms when executed using the MapReduce framework?
+\end{description}
+\noindent Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1991}:\\
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$
 
-\item[RQ3] Can those Learning-to-Rank algorithms be adjusted in such a way that the parallel execution speed-up increases without decreasing accuracy?
-\end{description}
 
-\section{Approach}
-A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:\\
-
-\emph{("learning to rank" \emph{OR} "learning-to-rank" \emph{OR} "machine learned ranking") \emph{AND} ("parallel" \emph{OR} "distributed")}\\
-
-and the following bibliographic databases:
-\begin{itemize}
-\item Scopus
-\item Web of Science
-\item Google Scholar
+\section{Methodology}
+The following subsections will describe the research methodology per stage of our two-stage research.
+\subsection{Cross-benchmark learning to rank comparison}
+We collect evaluation results on the datasets of benchmark collections through a structured literature search. The following list presents an overview of the benchmark collections taken into account in the meta-analysis:
+\begin{itemize}\itemsep0em
+\item LETOR 2.0
+\item LETOR 3.0
+\item LETOR 4.0
+\item Yahoo! Learning to Rank Challenge
+\item Yandex Internet Mathematics 2009 contest
+\item MSLR-web10/30k
+\item WCL2R
+\item AOL
 \end{itemize}
 
-The query incorporates different ways of writing of Learning-to-Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing.\\
+For the LETOR collections, the evaluation results of the baseline models will be used from LETOR 2.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor2.0/baseline.aspx}, 3.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and 4.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} as listed on the LETOR website.\\
 
-A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
+LETOR 1.0 and 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers which were published together with these benchmark collections. Authors publishing evaluation results on these benchmark collections are requested to cite these papers. Therefore, we collect evaluation measurements of learning to rank methods on these benchmark collections through forward literature search. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search. Google Scholar will be used to perform the forward reference search.
 
-To answer the first research question, I will implement Learning-to-Rank methods in the MapReduce framework and measure runtime as a factor of the number of cluster nodes used to complete the computation.\\
+\begin{table}[!h]
+\begin{tabular}{p{2.8cm}p{2.64cm}R{1.9cm}}\toprule
+Benchmark & Paper & \# of forward references \\
+\midrule
+LETOR 1.0 \& 2.0 & Liu et al. \cite{Liu2007b} & 307\\
+LETOR 3.0 & Qin et al. \cite{Qin2010} & 105\\
+Yahoo! Learning to Rank Challenge & Chapelle et al. \cite{Chapelle2011a} & 102\\
+AOL dataset & Pass et al. \cite{Pass2006} & 339\\
+WCL2R & Alc{\^a}ntara et al. \cite{Alcantara2010} & 2\\
+\bottomrule
+\end{tabular}
+\caption{Forward references of learning to rank benchmark papers}
+\label{tbl:ltr_benchmark_forref}
+\end{table}
 
-I will use the HDInsight cloud-based MapReduce implementation from Microsoft to implement the Learning-to-Rank algorithms. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.
-The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge} \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR \cite{Qin2010} dataset and the LETOR successors MSLR-WEB10k and MSLR-WEB30k.
+The LETOR 4.0, MSLR-web10/30k and Yandex Internet Mathematics Competition 2009 benchmark collections are not accompanied by a paper. To collect evaluation results for learning to rank methods on these benchmarks, a Google Scholar search is performed on the name of the benchmark. Table~\ref{tbl:ltr_benchmark_searches} shows the results of this literature search.
+
+\begin{table}[!h]
+\begin{tabular}{p{5.2cm}R{2.5cm}}\toprule
+Search Query & Google scholar search results \\
+\midrule
+"LETOR 4.0" & 75 \\
+"MSLR-web10k" & 16 \\
+"MSLR-web30k" & 15 \\
+"Yandex Internet Mathematics" & 3 \\
+\bottomrule
+\end{tabular}
+\caption{Google scholar search results for learning to rank benchmarks}
+\label{tbl:ltr_benchmark_searches}
+\end{table}
+
+\subsection{Analysis of scalability on MapReduce}
+The learning to rank methods identified in the first research stage will be implemented in Pig to run them in parallel on a MapReduce platform. The Microsoft HDInsight cloud-based MapReduce implementation will be used to execute to run the experiments on. Microsoft HDInsight has the benefit of being able to scale to large numbers of MapReduce nodes with guaranteed availability.
 
 \bibliographystyle{abbrv}
 \bibliography{Bibliography}  % sigproc.bib is the name of the
