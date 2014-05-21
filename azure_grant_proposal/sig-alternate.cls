@@ -1,47 +1,3 @@
-% SIG-ALTERNATE.CLS - VERSION 2.5
-% "COMPATIBLE" WITH THE "ACM_PROC_ARTICLE-SP.CLS" V3.2SP
-% Gerald Murray - May 23rd 2012
-%
-% ---- Start of 'updates'  ----
-% Changed $10 fee to $15 -- May 2012  --  Gerry
-% Changed $5 fee to $10 --  April 2009 -- Gerry
-% April 22nd. 2009 - Fixed 'Natbib' incompatibility problem - Gerry
-% April 22nd. 2009 - Fixed 'Babel' incompatibility problem - Gerry
-% April 22nd. 2009 - Inserted various bug-fixes and improvements - Gerry
-%
-% To produce Type 1 fonts in the document plus allow for 'normal LaTeX accenting' in the critical areas;
-% title, author block, section-heads, confname, etc. etc. 
-% i.e. the whole purpose of this version update is to NOT resort to 'inelegant accent patches'.
-% After much research, three extra .sty packages were added to the the tail (ae, aecompl, aeguill) to solve,
-% in particular, the accenting problem(s). We _could_ ask authors (via instructions/sample file) to 'include' these in
-% the source .tex file - in the preamble - but if everything is already provided ('behind the scenes' - embedded IN the .cls)
-% then this is less work for authors and also makes everything appear 'vanilla'.
-% NOTE: all 'patchwork accenting" has been commented out (here) and is no longer 'used' in the sample .tex file (either).
-% Gerry June 2007
-%
-% Patch for accenting in conference name/location. Gerry May 3rd. 2007
-% Rule widths changed to .5, author count (>6) fixed, roll-back for Type 3 problem. Gerry March 20th. 2007
-% Changes made to 'modernize' the fontnames but esp. for MikTeX users V2.4/2.5 - Nov. 30th. 2006
-% Updated the \email definition to allow for its use inside of 'shared affiliations' - Nov. 30th. 2006
-% Fixed the 'section number depth value' - Nov. 30th. 2006
-%
-% Footnotes inside table cells using \minipage (Oct. 2002)
-% Georgia fixed bug in sub-sub-section numbering in paragraphs (July 29th. 2002)
-% JS/GM fix to vertical spacing before Proofs (July 30th. 2002)
-%
-% Made the Permission Statement / Conference Info / Copyright Info
-% 'user definable' in the source .tex file OR automatic if
-% not specified.
-%
-% Allowance made to switch default fonts between those systems using
-% normal/modern font names and those using 'Type 1' or 'Truetype' fonts.
-% See LINE NUMBER 255 for details.
-% Also provided for enumerated/annotated Corollaries 'surrounded' by
-% enumerated Theorems (line 848).
-% Gerry November 11th. 1999
-%
-% ---- End of 'updates' ----
-%
 \def\fileversion{v2.5}          % for ACM's tracking purposes
 \def\filedate{May 23, 2012}    % Gerry Murray's tracking data
 \def\docdate {Wednesday 23rd. May 2012} % Gerry Murray (with deltas to doc}
@@ -49,70 +5,6 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-% Need this for accents in Arial/Helvetica
-%\usepackage[T1]{fontenc}  % Gerry March 12, 2007 - causes Type 3 problems (body text)
-%\usepackage{textcomp}
-%
-% SIG-ALTERNATE DOCUMENT STYLE
-% G.K.M. Tobin August-October 1999
-%    adapted from ARTICLE document style by Ken Traub, Olin Shivers
-%    also using elements of esub2acm.cls
-% HEAVILY MODIFIED, SUBSEQUENTLY, BY GERRY MURRAY 2000
-% ARTICLE DOCUMENT STYLE -- Released 16 March 1988
-%    for LaTeX version 2.09
-% Copyright (C) 1988 by Leslie Lamport
-%
-%
-%%% sig-alternate.cls is an 'ALTERNATE' document style for producing
-%%% two-column camera-ready pages for ACM conferences.
-%%% THIS FILE DOES NOT STRICTLY ADHERE TO THE SIGS (BOARD-ENDORSED)
-%%% PROCEEDINGS STYLE. It has been designed to produce a 'tighter'
-%%% paper in response to concerns over page budgets.
-%%% The main features of this style are:
-%%%
-%%% 1)  Two columns.
-%%% 2)  Side and top margins of 4.5pc, bottom margin of 6pc, column gutter of
-%%%     2pc, hence columns are 20pc wide and 55.5pc tall.  (6pc =3D 1in, approx)
-%%% 3)  First page has title information, and an extra 6pc of space at the
-%%%     bottom of the first column for the ACM copyright notice.
-%%% 4)  Text is 9pt on 10pt baselines; titles (except main) are 9pt bold.
-%%%
-%%%
-%%% There are a few restrictions you must observe:
-%%%
-%%% 1)  You cannot change the font size; ACM wants you to use 9pt.
-%%% 3)  You must start your paper with the \maketitle command.  Prior to the
-%%%     \maketitle you must have \title and \author commands.  If you have a
-%%%     \date command it will be ignored; no date appears on the paper, since
-%%%     the proceedings will have a date on the front cover.
-%%% 4)  Marginal paragraphs, tables of contents, lists of figures and tables,
-%%%     and page headings are all forbidden.
-%%% 5)  The `figure' environment will produce a figure one column wide; if you
-%%%     want one that is two columns wide, use `figure*'.
-%%%
-%
-%%% Copyright Space:
-%%% This style automatically reserves 1" blank space at the bottom of page 1/
-%%% column 1.  This space can optionally be filled with some text using the
-%%% \toappear{...} command.  If used, this command must be BEFORE the \maketitle
-%%% command.  If this command is defined AND [preprint] is on, then the
-%%% space is filled with the {...} text (at the bottom); otherwise, it is
-%%% blank.  If you use \toappearbox{...} instead of \toappear{...} then a
-%%% box will be drawn around the text (if [preprint] is on).
-%%%
-%%% A typical usage looks like this:
-%%%     \toappear{To appear in the Ninth AES Conference on Medievil Lithuanian
-%%%               Embalming Technique, June 1991, Alfaretta, Georgia.}
-%%% This will be included in the preprint, and left out of the conference
-%%% version.
-%%%
-%%% WARNING:
-%%% Some dvi-ps converters heuristically allow chars to drift from their
-%%% true positions a few pixels. This may be noticeable with the 9pt sans-serif
-%%% bold font used for section headers.
-%%% You may turn this hackery off via the -e option:
-%%%     dvips -e 0 foo.dvi >foo.ps
-%%%
 \typeout{Document Class 'sig-alternate' <23rd. May '12>.  Modified by G.K.M. Tobin/Gerry Murray}
 \typeout{Based in part upon document Style `acmconf' <22 May 89>. Hacked 4/91 by}
 \typeout{shivers@cs.cmu.edu, 4/93 by theobald@cs.mcgill.ca}
@@ -598,7 +490,7 @@
  \let\maketitle\relax
  \let\@maketitle\relax
  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\gdef\@subtitle{}\let\thanks\relax
- \@copyrightspace}
+ }
 
 %% CHANGES ON NEXT LINES
 \newif\if@ll % to record which version of LaTeX is in use
@@ -829,24 +721,6 @@
     \endgroup
 }
 %
-
-%%% This section (written by KBT) handles the 1" box in the lower left
-%%% corner of the left column of the first page by creating a picture,
-%%% and inserting the predefined string at the bottom (with a negative
-%%% displacement to offset the space allocated for a non-existent
-%%% caption).
-%%%
-\newtoks\copyrightnotice
-\def\ftype@copyrightbox{8}
-\def\@copyrightspace{
-\@float{copyrightbox}[b]
-\begin{center}
-\setlength{\unitlength}{1pc}
-\begin{picture}(20,6) %Space for copyright notice
-\put(0,-0.95){\crnotice{\@toappear}}
-\end{picture}
-\end{center}
-\end@float}
 
 \def\@toappear{} % Default setting blank - commands below change this.
 \long\def\toappear#1{\def\@toappear{\parbox[b]{20pc}{\baselineskip 9pt#1}}}
@@ -1417,37 +1291,7 @@
 \flushbottom           % Even bottom -- alas, does not balance columns at end of document
 \pagestyle{plain}
 
-% Need Copyright Year and Copyright Data to be user definable (in .tex file).
-% Gerry Nov. 30th. 1999
-\newtoks\copyrtyr
-\newtoks\acmcopyr
-\newtoks\boilerplate
-\global\acmcopyr={X-XXXXX-XX-X/XX/XX}  % Default - 5/11/2001 *** Gerry
-\global\copyrtyr={20XX}                % Default - 3/3/2003 *** Gerry
-\def\CopyrightYear#1{\global\copyrtyr{#1}}
-\def\crdata#1{\global\acmcopyr{#1}}
-\def\permission#1{\global\boilerplate{#1}}
-%
-\global\boilerplate={Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.}
-\newtoks\copyrightetc
-\global\copyrightetc{Copyright \the\copyrtyr\ ACM \the\acmcopyr\ ...\$15.00} % Gerry changed to 15 May 2012
-\toappear{\the\boilerplate\par
-{\confname{\the\conf}} \the\confinfo\par \the\copyrightetc.}
-%\DeclareFixedFont{\altcrnotice}{OT1}{tmr}{m}{n}{8}  % << patch needed for accenting e.g. Montreal - Gerry, May 2007
-%\DeclareFixedFont{\altconfname}{OT1}{tmr}{m}{it}{8}  % << patch needed for accenting in italicized confname - Gerry, May 2007
-%
-%{\altconfname{{\the\conf}}} {\altcrnotice\the\confinfo\par} \the\copyrightetc.}  % << Gerry, May 2007
-%
-% The following section (i.e. 3 .sty inclusions) was added in May 2007 so as to fix the problems that many
-% authors were having with accents. Sometimes accents would occur, but the letter-character would be of a different
-% font. Conversely the letter-character font would be correct but, e.g. a 'bar' would appear superimposed on the
-% character instead of, say, an unlaut/diaresis. Sometimes the letter-character would NOT appear at all.
-% Using [T1]{fontenc} outright was not an option as this caused 99% of the authors to 'produce' a Type-3 (bitmapped)
-% PDF file - useless for production. 
-%
-% For proper (font) accenting we NEED these packages to be part of the .cls file i.e. 'ae', 'aecompl' and 'aeguil' 
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%% This is file `ae.sty' 
+
 \def\fileversion{1.3}
 \def\filedate{2001/02/12}
 \NeedsTeXFormat{LaTeX2e}

@@ -52,8 +52,7 @@
 
 %
 % --- Author Metadata here ---
-\conferenceinfo{}{}
-\CopyrightYear{2014} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
+
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
@@ -111,19 +110,13 @@ Niek Tax\\
 \maketitle
 
 \begin{abstract}
-Learning to rank is an increasingly important scientific field that comprises the use of machine learning for the ranking task. This research proposal proposes a two-stage research project in the learning to rank field. In the first research stage we will conduct a comparison of learning to rank methods over multiple benchmark collections. This is relevant, as a lack of a \emph{de facto} standard benchmark collection for evaluation of new learning to rank methods hinders comparison. The second stage analyses the potential speed-up gain of parallel execution of the most accurate learning to rank methods identified in the first research step through execution on Hadoop MapReduce. Research on scalability of learning to rank methods is widely seen as relevant and often overlooked \cite{Chapelle2011b, Liu2007}.
+Learning to rank is an increasingly important scientific field that comprises the use of machine learning for the ranking task. This research proposal proposes a two-stage research project in the learning to rank field. In the first research stage we will conduct a comparison of learning to rank methods over multiple benchmark collections. This is relevant, as a lack of a \emph{de facto} standard benchmark collection for evaluation of new learning to rank methods hinders comparison. The second stage analyses the potential speed-up through parallel execution of the most accurate learning to rank methods identified in the first research step through execution on Hadoop MapReduce. Research on scalability of learning to rank methods is widely seen as relevant and often overlooked \cite{Chapelle2011b, Liu2007}.
 \end{abstract}
-% A category with the (minimum) three required fields
-\category{H.3.3}{Information Systems}{Information Storage and Retrieval}[Information Search and Retrieval]
-%
-\category{D.1.3}{Concurrent Programming}{Distributed Programming}
 
-
-\keywords{Learning to Rank, MapReduce}
 \section{Introduction}
 Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance for a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. One can find useful applications of ranking in many application domains outside web search as well. For example, it plays a vital role in amongst others: automatic document summarisation, machine translation, drug discovery and in determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be more fitting to recommender systems than regression-based rating prediction on a continuous scale \cite{Adomavicius2005,McNee2006}.\\
 
-Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
+Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
 In recent years several learning to rank benchmark datasets have been proposed that enable comparison of the performance of different Learning to rank methods. Well-known benchmark datasets include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR dataset \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning to rank field focuses on ranking accuracy, while efficiency and scalability of learning to rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of learning to rank methods has so far been an overlooked research area in his influential book on learning to rank.\\
 
@@ -150,8 +143,9 @@ $S_N = \frac{\text{execution time using one core}}{\text{execution time using \e
 
 \section{Methodology}
 The following subsections will describe the research methodology per stage of our two-stage research.
-\subsection{Cross-benchmark learning to rank comparison}
-We collect evaluation results on the datasets of benchmark collections through a structured literature search. The following list presents an overview of the benchmark collections taken into account in the meta-analysis:
+\subsection{Cross-Benchmark Learning to Rank Comparison}
+\subsubsection{Gathering Evaluation Results}
+We will collect evaluation results on the datasets of benchmark collections through a structured literature search. The following list presents an overview of the benchmark collections to be taken into account in the meta-analysis:
 \begin{itemize}\itemsep0em
 \item LETOR 2.0
 \item LETOR 3.0
@@ -165,40 +159,47 @@ We collect evaluation results on the datasets of benchmark collections through a
 
 For the LETOR collections, the evaluation results of the baseline models will be used from LETOR 2.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor2.0/baseline.aspx}, 3.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and 4.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} as listed on the LETOR website.\\
 
-LETOR 1.0 and 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers which were published together with these benchmark collections. Authors publishing evaluation results on these benchmark collections are requested to cite these papers. Therefore, we collect evaluation measurements of learning to rank methods on these benchmark collections through forward literature search. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search. Google Scholar will be used to perform the forward reference search.
+LETOR 1.0 and 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers which were published together with these benchmark collections. Authors publishing evaluation results on these benchmark collections are requested to cite these papers. Therefore, we will collect evaluation measurements of learning to rank methods on these benchmark collections through forward literature search. 
 
-\begin{table}[!h]
-\begin{tabular}{p{2.8cm}p{2.64cm}R{1.9cm}}\toprule
-Benchmark & Paper & \# of forward references \\
-\midrule
-LETOR 1.0 \& 2.0 & Liu et al. \cite{Liu2007b} & 307\\
-LETOR 3.0 & Qin et al. \cite{Qin2010} & 105\\
-Yahoo! Learning to Rank Challenge & Chapelle et al. \cite{Chapelle2011a} & 102\\
-AOL dataset & Pass et al. \cite{Pass2006} & 339\\
-WCL2R & Alc{\^a}ntara et al. \cite{Alcantara2010} & 2\\
-\bottomrule
-\end{tabular}
-\caption{Forward references of learning to rank benchmark papers}
-\label{tbl:ltr_benchmark_forref}
-\end{table}
+The LETOR 4.0, MSLR-web10/30k and Yandex Internet Mathematics Competition 2009 benchmark collections are not accompanied by a paper. To collect evaluation results for learning to rank methods on these benchmarks, a Google Scholar search will be performed on the name of the benchmark.
 
-The LETOR 4.0, MSLR-web10/30k and Yandex Internet Mathematics Competition 2009 benchmark collections are not accompanied by a paper. To collect evaluation results for learning to rank methods on these benchmarks, a Google Scholar search is performed on the name of the benchmark. Table~\ref{tbl:ltr_benchmark_searches} shows the results of this literature search.
+\subsubsection{Methodology for Cross-Benchmark Comparison of Learning to Rank models}
+Qin et al. \cite{Qin2010} state in the LETOR 3.0 paper that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
 
-\begin{table}[!h]
-\begin{tabular}{p{5.2cm}R{2.5cm}}\toprule
-Search Query & Google scholar search results \\
-\midrule
-"LETOR 4.0" & 75 \\
-"MSLR-web10k" & 16 \\
-"MSLR-web30k" & 15 \\
-"Yandex Internet Mathematics" & 3 \\
-\bottomrule
-\end{tabular}
-\caption{Google scholar search results for learning to rank benchmarks}
-\label{tbl:ltr_benchmark_searches}
-\end{table}
+$\text{Winning Number}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
 
-\subsection{Analysis of scalability on MapReduce}
+where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $I_{\{M_i(j)>M_k(j)\}}$ is an indicator function such that\\
+
+$I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
+1 & \text{if } M_i(j) > M_k(j), \\
+0 & \text{otherwise}
+\end{cases}$\\
+
+In contrast to the winning number comparison on LETOR 3.0, there will not be evaluation results for each algorithm on each dataset in our meta-analysis. We propose a normalized version of the Winning Number metric to compare algorithms based on a sparse set of evaluation measurements. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as
+
+\[
+I_{M_i(j)>M_k(j)} = \begin{cases}
+1 & \parbox[t]{5cm}{if $M_i(j)$ and $M_k(j$ are both defined and $M_i(j) > M_k(j)$,}\\
+0 & \parbox[t]{5cm}{otherwise}
+\end{cases}
+\]
+From now on this adjusted version of Winning Number will be references to as \emph{Normalized Winning Number}. The mathematical definition of Normalized Winning Number is\\
+
+$\text{Normalized Winning Number}_i(M) = \frac{\text{Winning Number}_i(M)}{\text{Ideal Winning Number}_i(M)}$\\
+
+\noindent
+where Ideal Winning Number is defined as\\
+
+$\text{Ideal Winning Number}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m D_{\{M_i(j),M_k(j)\}}$\\
+
+where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $D_{\{M_i(j),M_k(j)\}}$ is an evaluation definition function such that\\
+
+$D_{\{M_i(j),M_k(j)\}} = \begin{cases}
+1 & \text{if } M_i(j) \text{ and } M_k(j) \text{ are both defined}, \\
+0 & \text{otherwise}
+\end{cases}$\\
+
+\subsection{Analysis of Scalability on MapReduce}
 The learning to rank methods identified in the first research stage will be implemented in Pig to run them in parallel on a MapReduce platform. The Microsoft HDInsight cloud-based MapReduce implementation will be used to execute to run the experiments on. Microsoft HDInsight has the benefit of being able to scale to large numbers of MapReduce nodes with guaranteed availability.
 
 \bibliographystyle{abbrv}
