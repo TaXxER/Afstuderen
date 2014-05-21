@@ -1,14 +1,9 @@
 package letor;
 
-import com.google.common.collect.Iterables;
 import org.apache.pig.PigServer;
-import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * MapReduce implementation of the ListNet algorithm
@@ -16,7 +11,7 @@ import java.util.List;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final double   STEPSIZE   = 0.0001;
+    private static final double   STEPSIZE   = 0.01;
     private static final int      ITERATIONS = 100;
 
     public static void main(String[] args) throws Exception {
@@ -64,7 +59,7 @@ public class ListNet {
             Tuple lossGradientTuple = LOSS_GRADIENT.next();
             double loss = Double.parseDouble(lossGradientTuple.get(0).toString());
             for(int j=1; j<lossGradientTuple.size(); j++){
-                gradient[j-1] = Double.parseDouble(lossGradientTuple.get(i).toString());
+                gradient[j-1] = Double.parseDouble(lossGradientTuple.get(j).toString());
             }
             System.out.println("gradient: "+toParamString(gradient));
 
