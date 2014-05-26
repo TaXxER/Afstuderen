@@ -144,11 +144,11 @@ Learning to rank is an increasingly important scientific field that comprises th
 \keywords{Learning to rank, Information retrieval, Evaluation metric}
 
 \section{Introduction}
-Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarization, machine translation, drug discovery and determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be a better fit for recommender systems compared to the regression task (concerning predictions on a continuous scale) \cite{McNee2006}.\\
+Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarization, machine translation, drug discovery and determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be a better fit for recommender systems than the regression task \cite{McNee2006} (which concerns predictions on a continuous scale) that is currently frequently used in such systems.\\
 
 Research in the field of ranking models has been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Increased amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective ranking models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
-In recent years, several learning to rank benchmark datasets have been proposed with the aim of enabling comparison of learning to rank methods in terms of ranking accuracy. Well-known benchmark datasets in the learning to rank field include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \cite{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on the benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a standard way of benchmarking.\\
+In recent years, several learning to rank benchmark datasets have been proposed with the aim of enabling comparison of learning to rank methods in terms of ranking accuracy. Well-known benchmark datasets in the learning to rank field include the \emph{Yahoo! Learning to Rank Challenge} datasets \cite{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \cite{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on the benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a standard way of benchmarking.\\
 
 Gomes et al. \cite{Gomes2013} analyzed the ranking accuracy of a set of models on both LETOR 3.0 and 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both the Yahoo! Learning to Rank Challenge datasets and one of the datasets from LETOR 3.0. Both studies did not aim to be complete in benchmark datasets and learning to rank methods included in their comparisons. To our knowledge, no structured meta-analysis on ranking accuracy has been conducted where evaluation results on several benchmark collections are taken into account. In this paper we will perform a meta-analysis with the aim of comparing the ranking accuracy of learning to rank methods. The paper will describe two stages in the meta-analysis process: 1) collection of evaluation results, and 2) comparison of learning to rank methods.
 
@@ -235,27 +235,39 @@ Some studies with evaluation results found through the literature search procedu
 \end{figure}
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
 Qin et al. \cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
+
 $\text{WN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
+
 where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $I_{\{M_i(j)>M_k(j)\}}$ is an indicator function such that\\
+
 $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 1 & \text{if } M_i(j) > M_k(j), \\
 0 & \text{otherwise}
 \end{cases}$\\
+
 The LETOR 3.0 was a comparison on a \emph{dense} set of evaluation results, in the sense that there were evaluation results available for all learning to rank algorithms on all datasets included in their comparison. The Winning Number evaluation metric relies on the denseness of the evaluation results set. In contrast to the LETOR 3.0 comparison, our set of evaluation results will be sparse. We propose a normalized version of the Winning Number metric to enable comparison of a sparse set of evaluation results. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as\\
+
 $I^{'}_{M_i(j)>M_k(j)} = \begin{cases}
 1 & \parbox[t]{5cm}{if $M_i(j)$ and $M_k(j)$ are both defined and $M_i(j) > M_k(j)$,}\\
 0 & \parbox[t]{5cm}{otherwise}
 \end{cases}$\\
+
 From now on this adjusted version of Winning Number will be references to as \emph{Normalized Winning Number (NWN)}. The mathematical definition of Normalized Winning Number is\\
+
 $\text{NWN}_i(M) = \frac{\text{WN}_i(M)}{\text{IWN}_i(M)}$\\
+
 \noindent
 where $IWN$ is the Ideal Winning Number, defined as\\
+
 $\text{IWN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m D_{\{M_i(j),M_k(j)\}}$\\
+
 where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $D_{\{M_i(j),M_k(j)\}}$ is an evaluation definition function such that\\
+
 $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 1 & \text{if } M_i(j) \text{ and } M_k(j) \text{ are both defined}, \\
 0 & \text{otherwise}
 \end{cases}$\\
+
 NDCG@$\{3,5,10\}$ and MAP are the most frequently used evaluation metrics in the used benchmark collections combined, therefore we will limit our meta-analysis to evaluation results reported in one of these four metrics.
 
 \begin{figure}
@@ -351,50 +363,50 @@ More evaluation runs are needed for the methods on the left side of Figure \ref{
 \begin{tabular}{lll|lll}\toprule
 Method & Described in & Evaluated in & Method & Described in & Evaluated in\\
 \midrule
-AdaRank-MAP & \cite{Xu2007} & L2, L3, L4 & Linear Regression & \cite{Cossock2006} & L3, \cite{Wang2012, Volkovs2011} \\ 
-AdaRank-NDCG & \cite{Xu2007} & L2, L3, L4,  \cite{Busa-Fekete2013,Tan2013} & ListMLE & \cite{Xia2008} & \cite{Lin2010, Lin2011, Gao2014} \\ 
-ADMM & \cite{Duh2011} & \cite{Duh2011} & ListNet & \cite{Cao2007} & L2, L3, L4 \\ 
-ApproxAP & \cite{Qin2010b} & \cite{Qin2010b} & ListReg & \cite{Wu2011} & \cite{Wu2011} \\ 
-ApproxNDCG & \cite{Qin2010b} & \cite{Qin2010b} & LRUF & \cite{Torkestani2012b} & \cite{Torkestani2012b} \\ 
-BagBoo & \cite{Pavlov2010} & \cite{Ganjisaffar2011c} & MCP & \cite{Laporte2013} & \cite{Laporte2013} \\ 
-Best Single Feature &  & \cite{Gomes2013} & MHR & \cite{Qin2007} & L2 \\ 
-BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} & MultiStageBoost & \cite{Kao2013} & \cite{Kao2013} \\ 
-BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009, Volkovs2013} & NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
-BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c, Volkovs2013} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
-BT & \cite{Zhou2008} & \cite{Zhou2008} & PERF-MAP & \cite{Pan2011} & \cite{Torkestani2012b} \\ 
-C-CRF & \cite{Qin2008b} & \cite{Qin2008b} & PermuRank & \cite{Xu2008} & \cite{Xu2008} \\ 
-CA & \cite{Metzler2007} & \cite{Busa-Fekete2013,Tan2013} & Q.D.KNN & \cite{Geng2008} & \cite{Wang2013} \\ 
-CCRank & \cite{Wang2011c} & \cite{Wang2011c} & RandomForest &  & \cite{Gomes2013} \\ 
-CoList & \cite{Gao2014} & \cite{Gao2014} & Rank-PMBGP & \cite{Sato2013} & \cite{Sato2013} \\ 
-Consistent-RankCosine & \cite{Ravikumar2011} & \cite{Tan2013} & RankAggNDCG & \cite{Wang2013} & \cite{Wang2013} \\ 
-DCMP & \cite{Renjifo2012}  & \cite{Renjifo2012}  & RankBoost & \cite{Freund2003} & L2, L3, L4, \cite{Busa-Fekete2013, Alcantara2010} \\ 
-DirectRank & \cite{Tan2013} & \cite{Tan2013} & RankCSA & \cite{He2010} & \cite{He2010} \\ 
-EnergyNDCG & \cite{Freno2011} & \cite{Freno2011} & RankDE & \cite{Bollegala2011} & \cite{Sato2013} \\ 
-FBPCRank & \cite{Lai2011} & \cite{Lai2011} & RankELM (pairwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
-FenchelRank & \cite{Lai2013} & \cite{Lai2013, Lai2013b, Laporte2013} & RankELM (pointwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
-FocusedBoost & \cite{Niu2012} & \cite{Niu2012} & RankMGP & \cite{Lin2012} & \cite{Lin2012} \\ 
-FocusedNet & \cite{Niu2012} & \cite{Niu2012} & RankNet & \cite{Burges2005} & \cite{Busa-Fekete2013, Papini2012, Niu2012} \\ 
-FocusedSVM & \cite{Niu2012} & \cite{Niu2012} & RankRLS & \cite{Pahikkala2009} & \cite{Pahikkala2010} \\ 
-FP-Rank & \cite{Song2013} & \cite{Song2013} & RankSVM & \cite{Herbrich1999, Joachims2002} & L2, L3, \cite{Busa-Fekete2013, Freno2011, He2010, Alcantara2010} \\ 
-FRank & \cite{Tsai2007} & L2, L3, \cite{Wang2012} & RankSVM-Primal &  & L3, \cite{Lai2011} \\ 
-FSMRank & \cite{Lai2013c} & \cite{Lai2013c,Laporte2013} & RankSVM-Struct &  & L3, L4 \\
-FSM$^{SVM}$ & \cite{Lai2013c} & \cite{Lai2013c} & RCP & \cite{Elsas2008} & \cite{Elsas2008} \\ 
-GAS-E & \cite{Geng2007} & \cite{Lai2013c} & RE-QR & \cite{Veloso2010} & \cite{Veloso2010} \\
-GP & \cite{DeAlmeida2007} & \cite{Alcantara2010} & REG-SHF-SDCG & \cite{Wu2009} & \cite{Wu2009} \\  
-GPRank & \cite{Silva2009} & \cite{Torkestani2012} & Ridge Regression & \cite{Cossock2006} & L3 \\
-GRankRLS & \cite{Pahikkala2010} & \cite{Pahikkala2010} & RSRank & \cite{Sun2009} & \cite{Lai2013} \\ 
-GroupCE & \cite{Lin2011} & \cite{Lin2011} & SmoothGrad & \cite{Le2007} & \cite{Tan2013} \\ 
-GroupMLE & \cite{Lin2010} & \cite{Lin2011} & SmoothRank & \cite{Chapelle2010} & L3, \cite{Chapelle2010} \\
-IntervalRank & \cite{Moon2010} & \cite{Moon2010, Freno2011} & SoftRank & \cite{Taylor2008, Guiver2008} & \cite{Qin2010b} \\ 
-IPRank & \cite{Wang2009b} & \cite{Wang2009b, Torkestani2012} & SortNet & \cite{Rigutini2008} & \cite{Rigutini2008,Freno2011} \\
-KeepRank & \cite{Chen2009} & \cite{Chen2009} & SparseRank & \cite{Lai2013b} & \cite{Lai2013b} \\ 
-Kernel-PCA RankBoost & \cite{Duh2008} & \cite{Duh2008, Sato2013} & SVD-RankBoost & \cite{Lin2009} & \cite{Lin2009} \\
-KL-CRF & \cite{Volkovs2011} & \cite{Volkovs2011} & SVM$^{MAP}$ & \cite{Yue2007} & L3, \cite{Wang2012, Xu2008, Niu2012} \\ 
-LAC-MR-OR & \cite{Veloso2008} & \cite{Veloso2008} & SwarmRank & \cite{Diaz-Aviles2009} & \cite{Sato2013} \\ 
-LambdaMART & \cite{Burges2010} & \cite{Asadi2013a, Ganjisaffar2011c} & TGRank & \cite{Lai2013} & \cite{Lai2013} \\ 
-LambdaNeuralRank & \cite{Papini2012} & \cite{Papini2012} & TM & \cite{Zhou2008} & \cite{Zhou2008, Papini2012, Tan2013} \\ 
-LambdaRank & \cite{Burges2006} &  & VFLR & \cite{Cai2012} & \cite{Cai2012} \\ 
-LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  &  &  \\
+AdaRank-MAP & \cite{Xu2007} & L2, L3, L4 & ListMLE & \cite{Xia2008} & \cite{Lin2010, Lin2011, Gao2014} \\
+AdaRank-NDCG & \cite{Xu2007} & L2, L3, L4,  \cite{Busa-Fekete2013,Tan2013} & ListNet & \cite{Cao2007} & L2, L3, L4 \\ 
+ADMM & \cite{Duh2011} & \cite{Duh2011} & ListReg & \cite{Wu2011} & \cite{Wu2011} \\ 
+ApproxAP & \cite{Qin2010b} & \cite{Qin2010b} & LRUF & \cite{Torkestani2012b} & \cite{Torkestani2012b} \\ 
+ApproxNDCG & \cite{Qin2010b} & \cite{Qin2010b} & MCP & \cite{Laporte2013} & \cite{Laporte2013} \\ 
+BagBoo & \cite{Pavlov2010} & \cite{Ganjisaffar2011c} & MHR & \cite{Qin2007} & L2 \\ 
+Best Single Feature &  & \cite{Gomes2013} &  MultiStageBoost & \cite{Kao2013} & \cite{Kao2013} \\ 
+BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} &  NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
+BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009, Volkovs2013} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
+BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c, Volkovs2013} & PERF-MAP & \cite{Pan2011} & \cite{Torkestani2012b} \\ 
+BT & \cite{Zhou2008} & \cite{Zhou2008} & PermuRank & \cite{Xu2008} & \cite{Xu2008} \\ 
+C-CRF & \cite{Qin2008b} & \cite{Qin2008b} & Q.D.KNN & \cite{Geng2008} & \cite{Wang2013} \\ 
+CA & \cite{Metzler2007} & \cite{Busa-Fekete2013,Tan2013} & RandomForest &  & \cite{Gomes2013} \\ 
+CCRank & \cite{Wang2011c} & \cite{Wang2011c} & Rank-PMBGP & \cite{Sato2013} & \cite{Sato2013} \\ 
+CoList & \cite{Gao2014} & \cite{Gao2014} & RankAggNDCG & \cite{Wang2013} & \cite{Wang2013} \\
+Consistent-RankCosine & \cite{Ravikumar2011} & \cite{Tan2013} & RankBoost & \cite{Freund2003} & L2, L3, L4, \cite{Busa-Fekete2013, Alcantara2010} \\
+DCMP & \cite{Renjifo2012}  & \cite{Renjifo2012}  & RankBoost (Kernel-PCA) & \cite{Duh2008} & \cite{Duh2008, Sato2013} \\
+DirectRank & \cite{Tan2013} & \cite{Tan2013} & RankBoost (SVD) & \cite{Lin2009} & \cite{Lin2009} \\
+EnergyNDCG & \cite{Freno2011} & \cite{Freno2011} & RankDE & \cite{Bollegala2011} & \cite{Sato2013} \\
+FBPCRank & \cite{Lai2011} & \cite{Lai2011} & RankCSA & \cite{He2010} & \cite{He2010} \\
+FenchelRank & \cite{Lai2013} & \cite{Lai2013, Lai2013b, Laporte2013} & RankELM (pairwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
+FocusedBoost & \cite{Niu2012} & \cite{Niu2012} &  RankELM (pointwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
+FocusedNet & \cite{Niu2012} & \cite{Niu2012} & RankMGP & \cite{Lin2012} & \cite{Lin2012} \\ 
+FocusedSVM & \cite{Niu2012} & \cite{Niu2012} & RankNet & \cite{Burges2005} & \cite{Busa-Fekete2013, Papini2012, Niu2012} \\ 
+FP-Rank & \cite{Song2013} & \cite{Song2013} & RankRLS & \cite{Pahikkala2009} & \cite{Pahikkala2010} \\ 
+FRank & \cite{Tsai2007} & L2, L3, \cite{Wang2012} & RankSVM & \cite{Herbrich1999, Joachims2002} & L2, L3, \cite{Busa-Fekete2013, Freno2011, He2010, Alcantara2010} \\ 
+FSMRank & \cite{Lai2013c} & \cite{Lai2013c,Laporte2013} & RankSVM-Primal &  & L3, \cite{Lai2011} \\ 
+FSM$^{SVM}$ & \cite{Lai2013c} & \cite{Lai2013c} & RankSVM-Struct &  & L3, L4 \\
+GAS-E & \cite{Geng2007} & \cite{Lai2013c} & RCP & \cite{Elsas2008} & \cite{Elsas2008} \\ 
+GP & \cite{DeAlmeida2007} & \cite{Alcantara2010} & RE-QR & \cite{Veloso2010} & \cite{Veloso2010} \\
+GPRank & \cite{Silva2009} & \cite{Torkestani2012} & REG-SHF-SDCG & \cite{Wu2009} & \cite{Wu2009} \\  
+GRankRLS & \cite{Pahikkala2010} & \cite{Pahikkala2010} & Ridge Regression & \cite{Cossock2006} & L3 \\
+GroupCE & \cite{Lin2011} & \cite{Lin2011} & RSRank & \cite{Sun2009} & \cite{Lai2013} \\ 
+GroupMLE & \cite{Lin2010} & \cite{Lin2011} & SmoothGrad & \cite{Le2007} & \cite{Tan2013} \\ 
+IntervalRank & \cite{Moon2010} & \cite{Moon2010, Freno2011} & SmoothRank & \cite{Chapelle2010} & L3, \cite{Chapelle2010} \\
+IPRank & \cite{Wang2009b} & \cite{Wang2009b, Torkestani2012} & SoftRank & \cite{Taylor2008, Guiver2008} & \cite{Qin2010b} \\ 
+KeepRank & \cite{Chen2009} & \cite{Chen2009} & SortNet & \cite{Rigutini2008} & \cite{Rigutini2008,Freno2011} \\
+KL-CRF & \cite{Volkovs2011} & \cite{Volkovs2011} & SparseRank & \cite{Lai2013b} & \cite{Lai2013b} \\ 
+LAC-MR-OR & \cite{Veloso2008} & \cite{Veloso2008} & SVM$^{MAP}$ & \cite{Yue2007} & L3, \cite{Wang2012, Xu2008, Niu2012} \\ 
+LambdaMART & \cite{Burges2010} & \cite{Asadi2013a, Ganjisaffar2011c} &SwarmRank & \cite{Diaz-Aviles2009} & \cite{Sato2013} \\ 
+LambdaNeuralRank & \cite{Papini2012} & \cite{Papini2012} & TGRank & \cite{Lai2013} & \cite{Lai2013} \\ 
+LambdaRank & \cite{Burges2006} &  & TM & \cite{Zhou2008} & \cite{Zhou2008, Papini2012, Tan2013} \\ 
+LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  VFLR & \cite{Cai2012} & \cite{Cai2012} \\
+Linear Regression & \cite{Cossock2006} & L3, \cite{Wang2012, Volkovs2011} & & & \\
 \bottomrule
 \end{tabular}
 \caption{Learning to rank algorithms with measurements on benchmark datasets}}
