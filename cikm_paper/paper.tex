@@ -213,7 +213,7 @@ Search Query & Google scholar search results \\
 \end{table}
 
 \subsection{Literature Selection}
-Table \ref{tab:ltr_methods_used} in the appendix gives an overview of the learning to rank methods for which evaluation results were found through the described procedure. Occurrences of L2, L3 and L4 in Table \ref{tab:ltr_methods_used} imply that these algorithms are evaluated as official LETOR 2.0, 3.0 and 4.0 baselines respectively.\\
+Table 4 in the appendix gives an overview of the learning to rank methods for which evaluation results were found through the described procedure. Occurrences of L2, L3 and L4 in Table 4 imply that these algorithms are evaluated as official LETOR 2.0, 3.0 and 4.0 baselines respectively.\\
 
 Some studies with evaluation results found through the literature search procedure were not usable for the meta-analysis. The following enumeration enumerates those properties that made one or more studies unusable for the meta-analysis. Between brackets are the studies that these properties apply to.
 
@@ -314,7 +314,7 @@ LARF and LRUF score very high NWN scores, but based on only few datasets, just a
 \caption{Cross-benchmark comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_all}
 \end{figure}
-Figure \ref{fig:normalized_winning_number_all} shows the NWN as function of IWN for the methods described in Table \ref{tab:ltr_methods_used}. The cross-metric comparison is based on the NDCG@$\{3,5,10\}$ and MAP comparisons combined, which justifies analyzing the comparison more thoroughly. Figure \ref{fig:normalized_winning_number_all} labels the algorithms with no other algorithm having a higher value on both the horizontal axis and vertical axis, but also labels the algorithms with exactly one algorithm having a higher value on both axes with smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labelled as baselines.\\
+Figure \ref{fig:normalized_winning_number_all} shows the NWN as function of IWN for the methods described in Table 4. The cross-metric comparison is based on the NDCG@$\{3,5,10\}$ and MAP comparisons combined, which justifies analyzing the comparison more thoroughly. Figure \ref{fig:normalized_winning_number_all} labels the algorithms with no other algorithm having a higher value on both the horizontal axis and vertical axis, but also labels the algorithms with exactly one algorithm having a higher value on both axes with smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labelled as baselines.\\
 
 LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both IWN and NWN. LRUF is the only method that achieved this in all NDCG comparisons, the MAP comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being among the top performing methods in all NDCG comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the NDCG performance as opposed to the MAP performance. This was to be expected, because the cross-metric comparison input data of three NDCG entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the MAP comparison.\\
 
@@ -356,8 +356,6 @@ More evaluation runs are needed for the methods on the left side of Figure \ref{
 %APPENDICES are optional
 \appendix
 
-\label{app:ltr_methods_used}
-\label{app:raw_data}
 \begin{table*}[!hpt]
 \scriptsize{
 \begin{tabular}{lll|lll}\toprule

@@ -1,4 +1,4 @@
-package letor;
+package letor.parallel;
 
 import org.apache.pig.PigServer;
 import org.apache.pig.data.Tuple;
