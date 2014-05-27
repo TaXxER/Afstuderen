@@ -227,12 +227,6 @@ Some studies with evaluation results found through the literature search procedu
 \item The study did not report any baseline performance that allowed us to check validity of the results \cite{Chakrabarti2008, Wang2012b, Buffoni2011}.
 \end{enumerate}
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.19]{gfx/ndcg3_winnum}
-\caption{NDCG@3 comparison of 87 learning to rank methods}
-\label{fig:normalized_winning_number_ndcg3}
-\end{figure}
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
 Qin et al. \cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
 
@@ -270,20 +264,26 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 
 NDCG@$\{3,5,10\}$ and MAP are the most frequently used evaluation metrics in the used benchmark collections combined, therefore we will limit our meta-analysis to evaluation results reported in one of these four metrics.
 
-\begin{figure}
-\includegraphics[scale=0.19]{gfx/ndcg5_winnum}
-\caption{NDCG@5 comparison of 87 learning to rank methods}
-\label{fig:normalized_winning_number_ndcg5}
-\end{figure}
 \section{Results of Learning to Rank Comparison}
 The following subsections provide the performance of learning to rank methods in terms of NWN for NDCG@$\{3,5,10\}$ and MAP. Performance of the learning to rank methods is plotted with NWN on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. Moving to the right, certainty on the performance of the method increases. The methods for which it holds that there is no other method that has 1) a higher NWN and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled. Table \ref{tab:raw_data} in the appendix provides raw NWN data for the learning to rank methods at NDCG@$\{3,5,10\}$ and MAP and their cross-metric weighted average.
 
 \subsection{NDCG@3}
+\begin{figure}
+\centering
+\includegraphics[scale=0.19]{gfx/ndcg3_winnum}
+\caption{NDCG@3 comparison of 87 learning to rank methods}
+\label{fig:normalized_winning_number_ndcg3}
+\end{figure}
 Figure \ref{fig:normalized_winning_number_ndcg3} shows the NWN of learning to rank methods based on NDCG@3 results. LambdaNeuralRank and CoList both acquired a NWN score of 1.0 by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF scored very high scores of near 1.0 on three of the LETOR 3.0 datasets, which results in more certainty on these methods' performance because they are validated on three datasets that additionally are more relevant than AOL and Yahoo Set 2 (number of evaluation results for LETOR 3.0 are higher than those for AOL and Yahoo set 2). FenchelRank, OWPC, SmoothRank, DCMP and ListNet are ordered decreasingly by NWN and at the same time increasingly in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.\\
 
 LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all based on one study, therefore are subjected to the risk of one overly optimistic study producing those results. FenchelRank evaluation result are based combined result from two studies, although those studies have overlap in authors. SmoothRank and ListNet have the most reliable evaluation result source, as they were official LETOR baseline runs.  
 
 \subsection{NDCG@5}
+\begin{figure}
+\includegraphics[scale=0.19]{gfx/ndcg5_winnum}
+\caption{NDCG@5 comparison of 87 learning to rank methods}
+\label{fig:normalized_winning_number_ndcg5}
+\end{figure}
 Figure \ref{fig:normalized_winning_number_ndcg5} shows the NWN of learning to rank methods based on NDCG@5 results. LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a NWN of 1.0. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of NWN. These results are highly in agreement with the NDCG@3 comparison. The only modification compared to the NDCG@3 comparison being that OWPC did show to be a method for which there were no methods performing better on both axes in the NDCG@5 comparison, but not in the @3 comparison. Like in the NDCG@3 comparison, SmoothRank and ListNet can be regarded as most reliable results because the evaluation measurements for these methods are based on LETOR official baselines.
 
 \subsection{NDCG@10}
