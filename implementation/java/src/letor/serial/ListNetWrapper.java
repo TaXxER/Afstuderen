@@ -19,7 +19,7 @@ public class ListNetWrapper {
     // java -jar bin/RankLib.jar -train C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\train.txt -ranker 7 -metric2t NDCG@10 -gmax 2 -validate C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\train.txt -test C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\test.txt
     private MetricScorerFactory mFact = new MetricScorerFactory();
 
-    private String path  = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\MQ2007\\";
+    private String path  = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
     private int folds    = 5;
 
     private RANKER_TYPE rType  = RANKER_TYPE.LISTNET;
@@ -29,12 +29,14 @@ public class ListNetWrapper {
     private MetricScorer trainScorer = mFact.createScorer(trainMetric);
     private MetricScorer testScorer  = mFact.createScorer(testMetric);
 
-    public Measurement averageScore() {
+    public Measurement averageScore(String pathPostFix) {
+        path = path + pathPostFix+"\\";
+        System.out.println(path);
         double scoreSum          = 0.0;
 
         Long startTime = System.nanoTime();
         for(int i=0; i<folds; i++){
-            System.out.println("Start Fold "+(i+1)+"evaluation");
+            System.out.println("Start Fold "+(i+1)+" evaluation");
             String trainFiles      = path + "Fold"+(i+1)+"\\train.txt";
             String validationFiles = path + "Fold"+(i+1)+"\\vali.txt";
             String testFiles       = path + "Fold"+(i+1)+"\\test.txt";
@@ -44,7 +46,7 @@ public class ListNetWrapper {
         }
         Long endTime = System.nanoTime();
 
-        return new Measurement(endTime-startTime, scoreSum/folds);
+        return new Measurement((endTime-startTime)/1000, scoreSum/folds);
     }
 
     public double evaluate(String trainFile, String validationFile, String testFile){
