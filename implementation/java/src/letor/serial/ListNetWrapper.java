@@ -46,7 +46,7 @@ public class ListNetWrapper {
         }
         Long endTime = System.nanoTime();
 
-        return new Measurement((endTime-startTime)/1000, scoreSum/folds);
+        return new Measurement((endTime-startTime)/1000000, scoreSum/folds);
     }
 
     public double evaluate(String trainFile, String validationFile, String testFile){
