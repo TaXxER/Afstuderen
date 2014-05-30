@@ -6,74 +6,123 @@ import org.apache.pig.data.Tuple;
 import java.util.Iterator;
 
 /**
- * MapReduce implementation of the ListNet algorithm
+ * MapReduce (Hadoop) implementation of the ListNet algorithm
  */
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final double   STEPSIZE   = 0.01;
-    private static final int      ITERATIONS = 100;
+    private static final double   STEPSIZE   = 0.00001;
+    private static final int      ITERATIONS = 1500;
+    private static final int      FOLDS      = 5;
+    // NDCG@k
+    private static final int      k          = 10;
+    // Set environment parameters
+    // TODO: automatisch afleiden uit datafile
+    private static final int      DIM = 45;
 
     public static void main(String[] args) throws Exception {
-        // Connect to Pig
-        PigServer pigServer = new PigServer("local");
+        double[] foldNdcg = new double[FOLDS];
+        double sumNdcg = 0.0;
+        double averageNdcg = 0.0;
 
-        // Register UFFs and prepare dataset
-        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
-        pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/Fold1/train.txt' USING PigStorage(' ');");
-        pigServer.registerQuery("BY_QUERY = GROUP TRAIN BY $1;");
+        Long startTime = System.nanoTime();
+        for(int f=0; f<FOLDS; f++) {
+            double[] bestW = new double[DIM];
+            double   bestNdcg = 0.0;
 
-        // Set environment parameters
-        int DIM         = 45;
+            int fold = f+1;
+            // Connect to Pig
+            PigServer pigServer = new PigServer("local");
 
-        // Initialise internal model parameters
-        double[] w        = new double[DIM];
-        double[] gradient = new double[DIM];
+            // Register UFFs and prepare dataset
+            pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
+            pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/parallel/Fold"+fold+"/train.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("VALIDATE = LOAD 'input/ohsumed/parallel/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TEST = LOAD 'input/ohsumed/parallel/Fold"+fold+"/test.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN BY $1;");
+            pigServer.registerQuery("VA_BY_QUERY = GROUP VALIDATE BY $1;");
+            pigServer.registerQuery("TE_BY_QUERY = GROUP TEST BY $1;");
 
-        for(int i=1;i<=ITERATIONS;i++){
-            // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
-            // val ourScores = q.docFeatures.map(x => w dot x);
-            // val expOurScores = ourScores.map(z => math.exp(z));
-            // val sumExpRelScores = expRelScores.reduce(_ + _);
-            // val P_y = expRelScores.map(y => y/sumExpRelScores);
-            // val sumExpOurScores = expOurScores.reduce(_ + _);
-            // val P_z = expOurScores.map(z => z/sumExpOurScores);
-            pigServer.registerQuery("DEFINE ExpRelOurScores"+i+" udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
-            if(i==1)
-                pigServer.registerQuery("EXP_REL_SCORES = FOREACH BY_QUERY GENERATE flatten(ExpRelOurScores"+i+"(TRAIN));");
-            else
-                pigServer.registerQuery("EXP_REL_SCORES = FOREACH EXP_REL_SCORES GENERATE flatten(ExpRelOurScores"+i+"($0..));");
-            // var lossForAQuery = 0.0;
-            // var gradientForAQuery = spark.examples.Vector.zeros(dim);
-            // for (j <- 0 to q.relScores.length-1) {
-            //  gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)))
-            //  lossForAQuery += -P_y(j) * math.log(P_z(j))
-            // }
-            pigServer.registerQuery("QUERY_LOSS_GRADIENT = FOREACH EXP_REL_SCORES GENERATE flatten(udf.listnet.QueryLossGradient($0..));");
+            // Initialise internal model parameters
+            double[] w = new double[DIM];
+            double[] gradient = new double[DIM];
 
-            // gradient += gradientForAQuery; loss += lossForAQuery
-            pigServer.registerQuery("QUERY_LOSS_GRADIENT_GRPD = GROUP QUERY_LOSS_GRADIENT ALL;");
-            pigServer.registerQuery("LOSS_GRADIENT = FOREACH QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum($0..));");
+            for (int i = 1; i <= ITERATIONS; i++) {
+                // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
+                // val ourScores = q.docFeatures.map(x => w dot x);
+                // val expOurScores = ourScores.map(z => math.exp(z));
+                // val sumExpRelScores = expRelScores.reduce(_ + _);
+                // val P_y = expRelScores.map(y => y/sumExpRelScores);
+                // val sumExpOurScores = expOurScores.reduce(_ + _);
+                // val P_z = expOurScores.map(z => z/sumExpOurScores);
+                pigServer.registerQuery("DEFINE ExpRelOurScores" + i + " udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
+                if (i == 1) {
+                    pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(TRAIN));");
+                    pigServer.registerQuery("VA_EXP_REL_SCORES = FOREACH VA_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(VALIDATE));");
+                }else {
+                    pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
+                    pigServer.registerQuery("VA_EXP_REL_SCORES = FOREACH VA_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
+                }
+
+                // EVALUATE MODEL ON VALIDATION SET
+                pigServer.registerQuery("NDCG = FOREACH VA_EXP_REL_SCORES GENERATE Ndcg("+toParamString(w, k)+");");
+                pigServer.registerQuery("AVG_NDCG = AVG(NDCG);");
+                Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
+                double currentNdcg = Double.parseDouble(NdcgTuple.next().get(0).toString());
+                if(currentNdcg>bestNdcg){
+                    bestNdcg = currentNdcg;
+                    bestW = w;
+                }
+                // UPDATE MODEL
+                // var lossForAQuery = 0.0;
+                // var gradientForAQuery = spark.examples.Vector.zeros(dim);
+                // for (j <- 0 to q.relScores.length-1) {
+                //  gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)))
+                //  lossForAQuery += -P_y(j) * math.log(P_z(j))
+                // }
+                pigServer.registerQuery("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(udf.listnet.QueryLossGradient($0..));");
+
+                // gradient += gradientForAQuery; loss += lossForAQuery
+                pigServer.registerQuery("TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;");
+                pigServer.registerQuery("TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum($0..));");
 //
-            Iterator<Tuple> LOSS_GRADIENT = pigServer.openIterator("LOSS_GRADIENT");
-            Tuple lossGradientTuple = LOSS_GRADIENT.next();
-            double loss = Double.parseDouble(lossGradientTuple.get(0).toString());
-            for(int j=1; j<lossGradientTuple.size(); j++){
-                gradient[j-1] = Double.parseDouble(lossGradientTuple.get(j).toString());
-            }
-            System.out.println("gradient: "+toParamString(gradient));
+                Iterator<Tuple> LOSS_GRADIENT = pigServer.openIterator("TR_LOSS_GRADIENT");
+                Tuple lossGradientTuple = LOSS_GRADIENT.next();
+                double loss = Double.parseDouble(lossGradientTuple.get(0).toString());
+                for (int j = 1; j < lossGradientTuple.size(); j++) {
+                    gradient[j - 1] = Double.parseDouble(lossGradientTuple.get(j).toString());
+                }
+                System.out.println("gradient: " + toParamString(gradient));
 
-            // w -= gradient.value * stepSize
-            for(int j=0; j<w.length; j++){
-                w[j] -= (gradient[j] * STEPSIZE);
-            }
+                // w -= gradient.value * stepSize
+                for (int j = 0; j < w.length; j++) {
+                    w[j] -= (gradient[j] * STEPSIZE);
+                }
 
-            System.out.println();
-            System.out.println("Iteration: "+i);
-            System.out.println("w:         "+toParamString(w));
-            System.out.println("loss:      "+loss);
-            System.out.println();
+                System.out.println();
+                System.out.println("Iteration: " + i);
+                System.out.println("w:         " + toParamString(w));
+                System.out.println("loss:      " + loss);
+                System.out.println();
+            }
+            // CALCULATE TEST SET PREDICTIONS BASED ON BEST WEIGHTS
+            pigServer.registerQuery("DEFINE ExpRelOurScores" + ITERATIONS+1 + " udf.listnet.ExpRelOurScores('" + toParamString(bestW, ITERATIONS+1) + "');");
+            pigServer.registerQuery("TE_EXP_REL_SCORES = FOREACH TE_BY_QUERY GENERATE flatten(ExpRelOurScores" + 2 + "(TEST));");
+            // CALCULATE NDCG@K FOR TEST SET PREDICTIONS
+            pigServer.registerQuery("NDCG = FOREACH TE_EXP_REL_SCORES GENERATE Ndcg("+k+");");
+            pigServer.registerQuery("AVG_NDCG = AVG(NDCG);");
+            Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
+            foldNdcg[f] = Double.parseDouble(NdcgTuple.next().get(0).toString());
+            sumNdcg += foldNdcg[f];
         }
+        Long endTime = System.nanoTime();
+
+        averageNdcg = sumNdcg / FOLDS;
+        for(int i=0; i<FOLDS; i++){
+            System.out.println("Fold "+(i+1)+": "+foldNdcg[i]);
+        }
+        System.out.println("Average: "+averageNdcg);
+        System.out.println("Time: "+(endTime-startTime)/1000000+" ms");
     }
 
     private static String toParamString(double[] elems, int iteration){
@@ -99,5 +148,4 @@ public class ListNet {
 
         return value;
     }
-
 }

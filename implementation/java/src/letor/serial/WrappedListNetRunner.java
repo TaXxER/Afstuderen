@@ -8,7 +8,7 @@ import letor.serial.util.Measurement;
 public class WrappedListNetRunner {
     public static void main(String[] args){
         ListNetWrapper listNetWrapper = new ListNetWrapper();
-        Measurement measurement = listNetWrapper.averageScore("MQ2008");
+        Measurement measurement = listNetWrapper.averageScore("MSLR-WEB10K");
         System.out.println("Time elapsed: "+measurement.getRunningTime());
         System.out.println("NDCG@10:      "+measurement.getEvaluationResult()+" ms");
     }
