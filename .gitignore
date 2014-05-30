@@ -1,3 +1,6 @@
+# Super large data files
+implementation/java/input/*
+
 # LaTeX temp files
 *.4tc
 *.4ct
