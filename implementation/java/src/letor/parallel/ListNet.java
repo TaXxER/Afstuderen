@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final double   STEPSIZE   = 0.00001;
+    private static final double   STEPSIZE   = 0.05;
     private static final int      ITERATIONS = 1500;
     private static final int      FOLDS      = 5;
     // NDCG@k
@@ -56,23 +56,11 @@ public class ListNet {
                 // val sumExpOurScores = expOurScores.reduce(_ + _);
                 // val P_z = expOurScores.map(z => z/sumExpOurScores);
                 pigServer.registerQuery("DEFINE ExpRelOurScores" + i + " udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
-                if (i == 1) {
+                if (i == 1)
                     pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(TRAIN));");
-                    pigServer.registerQuery("VA_EXP_REL_SCORES = FOREACH VA_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(VALIDATE));");
-                }else {
+                else
                     pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
-                    pigServer.registerQuery("VA_EXP_REL_SCORES = FOREACH VA_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
-                }
 
-                // EVALUATE MODEL ON VALIDATION SET
-                pigServer.registerQuery("NDCG = FOREACH VA_EXP_REL_SCORES GENERATE Ndcg("+toParamString(w, k)+");");
-                pigServer.registerQuery("AVG_NDCG = AVG(NDCG);");
-                Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
-                double currentNdcg = Double.parseDouble(NdcgTuple.next().get(0).toString());
-                if(currentNdcg>bestNdcg){
-                    bestNdcg = currentNdcg;
-                    bestW = w;
-                }
                 // UPDATE MODEL
                 // var lossForAQuery = 0.0;
                 // var gradientForAQuery = spark.examples.Vector.zeros(dim);
@@ -92,17 +80,31 @@ public class ListNet {
                 for (int j = 1; j < lossGradientTuple.size(); j++) {
                     gradient[j - 1] = Double.parseDouble(lossGradientTuple.get(j).toString());
                 }
-                System.out.println("gradient: " + toParamString(gradient));
 
                 // w -= gradient.value * stepSize
                 for (int j = 0; j < w.length; j++) {
                     w[j] -= (gradient[j] * STEPSIZE);
                 }
 
+                // EVALUATE MODEL ON VALIDATION SET
+                pigServer.registerQuery("DEFINE Ndcg" + i + " udf.listnet.Ndcg('" + toParamString(w,k) + "');");
+                pigServer.registerQuery("NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg"+i+"($0..);");
+                pigServer.registerQuery("NDCG_GRPD = GROUP NDCG ALL;");
+                pigServer.registerQuery("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
+                Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
+                double currentNdcg = Double.parseDouble(NdcgTuple.next().get(0).toString());
+                if(currentNdcg>bestNdcg){
+                    bestNdcg = currentNdcg;
+                    bestW = w;
+                }
+
                 System.out.println();
-                System.out.println("Iteration: " + i);
-                System.out.println("w:         " + toParamString(w));
-                System.out.println("loss:      " + loss);
+                System.out.println("Iteration:    " + i);
+                System.out.println("loss:         " + loss);
+                System.out.println("w:            " + toParamString(w));
+                System.out.println("bestw:        " + toParamString(bestW));
+                System.out.println("NDCG@"+k+":      "+currentNdcg);
+                System.out.println("best NDCG@"+k+": "+bestNdcg);
                 System.out.println();
             }
             // CALCULATE TEST SET PREDICTIONS BASED ON BEST WEIGHTS
@@ -125,7 +127,8 @@ public class ListNet {
         System.out.println("Time: "+(endTime-startTime)/1000000+" ms");
     }
 
-    private static String toParamString(double[] elems, int iteration){
+    // intValue used for both loop-counter and NDCG@k k-value
+    private static String toParamString(double[] elems, int intValue){
         String value = "";
         for(double elem : elems)
             value += elem + ",";
@@ -133,12 +136,12 @@ public class ListNet {
         // remove last comma
         value = value.substring(0,value.length()-1);
 
-        value += ";"+iteration;
+        value += ";"+intValue;
 
         return value;
     }
 
-    private static String toParamString(double[] elems){
+    public static String toParamString(double[] elems){
         String value = "";
         for(double elem : elems)
             value += elem + ",";
