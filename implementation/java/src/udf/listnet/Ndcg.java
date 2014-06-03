@@ -2,12 +2,10 @@ package udf.listnet;
 
 import ciir.umass.edu.utilities.SimpleMath;
 import com.google.common.collect.TreeMultiset;
-import org.apache.commons.collections.bag.TreeBag;
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 import udf.listnet.util.Document;
-import letor.parallel.ListNet;
 
 import java.io.IOException;
 import java.util.*;
@@ -65,8 +63,6 @@ public class Ndcg extends EvalFunc<Double> {
         Collections.reverse(docList);
         Collections.sort(docList, Document.getPredictedComparator());
         double DCG = getDCG(docList, k);
-        System.out.println("DCG:  "+DCG);
-        System.out.println("iDCG: "+idealDCG);
         return (idealDCG>0) ? DCG/idealDCG : 0.0;
     }
 
@@ -82,7 +78,6 @@ public class Ndcg extends EvalFunc<Double> {
             dcg += (Math.pow(2.0, iter.next().getRelevance())-1.0)/SimpleMath.logBase2(i+1);
             i++;
         }
-        System.out.println();
         return dcg;
     }
 }

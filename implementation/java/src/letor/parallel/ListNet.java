@@ -16,36 +16,46 @@ public class ListNet {
     private static final int      FOLDS      = 5;
     // NDCG@k
     private static final int      k          = 10;
-    // Set environment parameters
-    // TODO: automatisch afleiden uit datafile
-    private static final int      DIM = 45;
+    ;
 
     public static void main(String[] args) throws Exception {
         double[] foldNdcg = new double[FOLDS];
         double sumNdcg = 0.0;
         double averageNdcg = 0.0;
+        int DIM = 0;
 
         Long startTime = System.nanoTime();
         for(int f=0; f<FOLDS; f++) {
-            double[] bestW = new double[DIM];
-            double   bestNdcg = 0.0;
-
             int fold = f+1;
             // Connect to Pig
             PigServer pigServer = new PigServer("local");
 
-            // Register UFFs and prepare dataset
+            // Register UFFs and load and prepare dataset
             pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
-            pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/parallel/Fold"+fold+"/train.txt' USING PigStorage(' ');");
-            pigServer.registerQuery("VALIDATE = LOAD 'input/ohsumed/parallel/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
-            pigServer.registerQuery("TEST = LOAD 'input/ohsumed/parallel/Fold"+fold+"/test.txt' USING PigStorage(' ');");
-            pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN BY $1;");
-            pigServer.registerQuery("VA_BY_QUERY = GROUP VALIDATE BY $1;");
-            pigServer.registerQuery("TE_BY_QUERY = GROUP TEST BY $1;");
+            pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/serial/Fold"+fold+"/train.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
+            pigServer.registerQuery("VALIDATE = LOAD 'input/ohsumed/serial/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
+            pigServer.registerQuery("TEST = LOAD 'input/ohsumed/serial/Fold"+fold+"/test.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
+
+            // Group data by query
+            pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");
+            pigServer.registerQuery("VA_BY_QUERY = GROUP VALIDATE_STD BY $1;");
+            pigServer.registerQuery("TE_BY_QUERY = GROUP TEST_STD BY $1;");
+
+            // Determine attribute dimension
+            if(fold==1){
+                Iterator<Tuple> TRAIN_STD = pigServer.openIterator("TRAIN_STD");
+                Tuple tup = TRAIN_STD.next();
+                DIM = tup.size()-2;
+            }
 
             // Initialise internal model parameters
             double[] w = new double[DIM];
             double[] gradient = new double[DIM];
+            double[] bestW = new double[DIM];
+            double   bestNdcg = 0.0;
 
             for (int i = 1; i <= ITERATIONS; i++) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
@@ -57,7 +67,7 @@ public class ListNet {
                 // val P_z = expOurScores.map(z => z/sumExpOurScores);
                 pigServer.registerQuery("DEFINE ExpRelOurScores" + i + " udf.listnet.ExpRelOurScores('" + toParamString(w, i) + "');");
                 if (i == 1)
-                    pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(TRAIN));");
+                    pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(TRAIN_STD));");
                 else
                     pigServer.registerQuery("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
 
