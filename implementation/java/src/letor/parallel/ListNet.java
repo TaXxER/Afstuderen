@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 public class ListNet {
     // Initialise hyper-parameters
+    private static final String   DATASET    = "ohsumed";
     private static final double   STEPSIZE   = 0.05;
     private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 5;
@@ -32,11 +33,11 @@ public class ListNet {
 
             // Register UFFs and load and prepare dataset
             pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
-            pigServer.registerQuery("TRAIN = LOAD 'input/ohsumed/serial/Fold"+fold+"/train.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TRAIN = LOAD 'input/"+DATASET+"/Fold"+fold+"/train.txt' USING PigStorage(' ');");
             pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("VALIDATE = LOAD 'input/ohsumed/serial/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("VALIDATE = LOAD 'input/"+DATASET+"/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
             pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("TEST = LOAD 'input/ohsumed/serial/Fold"+fold+"/test.txt' USING PigStorage(' ');");
+            pigServer.registerQuery("TEST = LOAD 'input/"+DATASET+"/Fold"+fold+"/test.txt' USING PigStorage(' ');");
             pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
 
             // Group data by query
