@@ -65,7 +65,9 @@ public class Ndcg extends EvalFunc<Double> {
         Collections.reverse(docList);
         Collections.sort(docList, Document.getPredictedComparator());
         double DCG = getDCG(docList, k);
-        return DCG/idealDCG;
+        System.out.println("DCG:  "+DCG);
+        System.out.println("iDCG: "+idealDCG);
+        return (idealDCG>0) ? DCG/idealDCG : 0.0;
     }
 
     private static double getDCG(LinkedList<Document> rel, int k){
@@ -80,6 +82,7 @@ public class Ndcg extends EvalFunc<Double> {
             dcg += (Math.pow(2.0, iter.next().getRelevance())-1.0)/SimpleMath.logBase2(i+1);
             i++;
         }
+        System.out.println();
         return dcg;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class ListNet {
     // Initialise hyper-parameters
     private static final double   STEPSIZE   = 0.05;
-    private static final int      ITERATIONS = 1500;
+    private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 5;
     // NDCG@k
     private static final int      k          = 10;
@@ -93,12 +93,13 @@ public class ListNet {
                 pigServer.registerQuery("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
                 Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
                 double currentNdcg = Double.parseDouble(NdcgTuple.next().get(0).toString());
-                if(currentNdcg>bestNdcg){
+                if(currentNdcg > bestNdcg){
                     bestNdcg = currentNdcg;
-                    bestW = w;
+                    bestW = w.clone();
                 }
 
                 System.out.println();
+                System.out.println("Fold:         " + fold);
                 System.out.println("Iteration:    " + i);
                 System.out.println("loss:         " + loss);
                 System.out.println("w:            " + toParamString(w));
@@ -108,11 +109,11 @@ public class ListNet {
                 System.out.println();
             }
             // CALCULATE TEST SET PREDICTIONS BASED ON BEST WEIGHTS
-            pigServer.registerQuery("DEFINE ExpRelOurScores" + ITERATIONS+1 + " udf.listnet.ExpRelOurScores('" + toParamString(bestW, ITERATIONS+1) + "');");
-            pigServer.registerQuery("TE_EXP_REL_SCORES = FOREACH TE_BY_QUERY GENERATE flatten(ExpRelOurScores" + 2 + "(TEST));");
+            pigServer.registerQuery("DEFINE Ndcg" + ITERATIONS+1 + " udf.listnet.Ndcg('" + toParamString(bestW,k) + "');");
             // CALCULATE NDCG@K FOR TEST SET PREDICTIONS
-            pigServer.registerQuery("NDCG = FOREACH TE_EXP_REL_SCORES GENERATE Ndcg("+k+");");
-            pigServer.registerQuery("AVG_NDCG = AVG(NDCG);");
+            pigServer.registerQuery("NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg"+ITERATIONS+1+"($0..);");
+            pigServer.registerQuery("NDCG_GRPD = GROUP NDCG ALL;");
+            pigServer.registerQuery("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
             Iterator<Tuple> NdcgTuple = pigServer.openIterator("AVG_NDCG");
             foldNdcg[f] = Double.parseDouble(NdcgTuple.next().get(0).toString());
             sumNdcg += foldNdcg[f];
