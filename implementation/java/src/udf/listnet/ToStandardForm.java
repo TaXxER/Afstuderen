@@ -24,7 +24,10 @@ public class ToStandardForm extends EvalFunc<Tuple> {
 
         // Skip relevance, start at index 2
         for(int i=2; i<input.size(); i++){
-            String[] parts = input.get(i).toString().split(":");
+            Object obj = input.get(i);
+            if(obj==null)
+                continue;
+            String[] parts = obj.toString().split(":");
             // Identify attributes, append to returnTuple
             if(parts.length==2 && StringUtils.isNumeric(parts[0])) {
                 returnTuple.append(parts[1]);

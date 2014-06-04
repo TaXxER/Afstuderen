@@ -1,9 +1,11 @@
 package letor.parallel;
 
+import org.apache.pig.ExecType;
 import org.apache.pig.PigServer;
 import org.apache.pig.data.Tuple;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * MapReduce (Hadoop) implementation of the ListNet algorithm
@@ -12,12 +14,10 @@ import java.util.Iterator;
 public class ListNet {
     // Initialise hyper-parameters
     private static final String   DATASET    = "ohsumed";
-    private static final double   STEPSIZE   = 0.05;
-    private static final int      ITERATIONS = 2;
+    private static final double   STEPSIZE   = 0.0001;
+    private static final int      ITERATIONS = 20;
     private static final int      FOLDS      = 5;
-    // NDCG@k
-    private static final int      k          = 10;
-    ;
+    private static final int      k          = 10; // NDCG@k
 
     public static void main(String[] args) throws Exception {
         double[] foldNdcg = new double[FOLDS];
@@ -25,14 +25,21 @@ public class ListNet {
         double averageNdcg = 0.0;
         int DIM = 0;
 
+        // Start timer
         Long startTime = System.nanoTime();
+
+        // Connect to Pig
+        PigServer pigServer = new PigServer("local");
+//            Properties props = new Properties();
+//            props.setProperty("fs.default.name", "ubercluser.azurehdinsight.net");
+//            props.setProperty("mapred.job.tracker", "ubercluster.azurehdinsight.net");
+//            PigServer pigServer = new PigServer(ExecType.MAPREDUCE, props);
+        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
+
         for(int f=0; f<FOLDS; f++) {
             int fold = f+1;
-            // Connect to Pig
-            PigServer pigServer = new PigServer("local");
 
             // Register UFFs and load and prepare dataset
-            pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/listnet_udfs_jar/java.jar");
             pigServer.registerQuery("TRAIN = LOAD 'input/"+DATASET+"/Fold"+fold+"/train.txt' USING PigStorage(' ');");
             pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
             pigServer.registerQuery("VALIDATE = LOAD 'input/"+DATASET+"/Fold"+fold+"/vali.txt' USING PigStorage(' ');");
@@ -48,8 +55,7 @@ public class ListNet {
             // Determine attribute dimension
             if(fold==1){
                 Iterator<Tuple> TRAIN_STD = pigServer.openIterator("TRAIN_STD");
-                Tuple tup = TRAIN_STD.next();
-                DIM = tup.size()-2;
+                DIM = TRAIN_STD.next().size()-2;
             }
 
             // Initialise internal model parameters
@@ -57,7 +63,7 @@ public class ListNet {
             double[] gradient = new double[DIM];
             double[] bestW = new double[DIM];
             double   bestNdcg = 0.0;
-
+            pigServer.registerQuery("DEFINE QueryLossGradient" + " udf.listnet.QueryLossGradient('" + DIM + "');");
             for (int i = 1; i <= ITERATIONS; i++) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
                 // val ourScores = q.docFeatures.map(x => w dot x);
@@ -79,7 +85,7 @@ public class ListNet {
                 //  gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)))
                 //  lossForAQuery += -P_y(j) * math.log(P_z(j))
                 // }
-                pigServer.registerQuery("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(udf.listnet.QueryLossGradient($0..));");
+                pigServer.registerQuery("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient($0..));");
 
                 // gradient += gradientForAQuery; loss += lossForAQuery
                 pigServer.registerQuery("TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;");
@@ -145,9 +151,7 @@ public class ListNet {
         for(double elem : elems)
             value += elem + ",";
 
-        // remove last comma
-        value = value.substring(0,value.length()-1);
-
+        value = value.substring(0,value.length()-1); // remove last comma
         value += ";"+intValue;
 
         return value;
@@ -158,8 +162,7 @@ public class ListNet {
         for(double elem : elems)
             value += elem + ",";
 
-        // remove last comma
-        value = value.substring(0,value.length()-1);
+        value = value.substring(0,value.length()-1); // remove last comma
 
         return value;
     }

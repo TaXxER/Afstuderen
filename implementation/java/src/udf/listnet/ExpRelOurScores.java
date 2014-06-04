@@ -2,13 +2,11 @@ package udf.listnet;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
-import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.Tuple;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -42,45 +40,39 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
             return null;
 
         // Obtain set of data
-        DataBag bag;
-        if(ITERATION==1)
-            bag = (DataBag) input.get(0);
-        else
-            bag = (DataBag) input.get(0);
-
-        Iterator<Tuple> dataIterator = bag.iterator();
-
-        List<Tuple> tupleList = new ArrayList<Tuple>();
+        DataBag docBag = (DataBag) input.get(0);
+        Iterator<Tuple> docIterator = docBag.iterator();
+        List<Tuple> docTupleList = new ArrayList<Tuple>();
         double sumRel = 0.0;
         double sumOur = 0.0;
 
-        while(dataIterator.hasNext()) {
-            Tuple dataItem = dataIterator.next();
+        while(docIterator.hasNext()) {
+            Tuple docTuple = docIterator.next();
 
             // cache for second iteration
-            tupleList.add(dataItem);
+            docTupleList.add(docTuple);
 
-            // check whether first or non-first iteration
+            // check whether first or non-first ListNet iteration
             if(ITERATION==1) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
-                double rel = Double.parseDouble(dataItem.get(0).toString());
+                double rel = Double.parseDouble(docTuple.get(0).toString());
                 rel = Math.exp(rel);
-                dataItem.append(rel);
+                docTuple.append(rel);
                 sumRel += rel;
             }
 
             double our = 0.0;
             for(int i=0; i<w.length; i++) {
                 // val ourScores = q.docFeatures.map(x => w dot x); (+2 to skip non-feature columns)
-                our += Double.parseDouble(dataItem.get(i+2).toString()) * w[i];
+                our += Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
             }
 
             if(ITERATION==1) {
                 // val expOurScores = ourScores.map(z => math.exp(z));
                 // Append our predicted relevance to query-document pair
-                dataItem.append(Math.exp(our));
+                docTuple.append(Math.exp(our));
             }else{
-                dataItem.set(dataItem.size()-1, Math.exp(our));
+                docTuple.set(docTuple.size()-1, Math.exp(our));
             }
             sumOur += Math.exp(our);
         }
@@ -89,16 +81,15 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         // val P_y = expRelScores.map(y => y/sumExpRelScores);
         // val sumExpOurScores = expOurScores.reduce(_ + _);
         // val P_z = expOurScores.map(z => z/sumExpOurScores);
-        for(Tuple dataItem : tupleList){
+        for(Tuple dataItem : docTupleList){
+            // Exp(relevance) only calculated in first iteration, as it is constant
             if(ITERATION==1){
                 double rel =  Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
-                double normRel = rel / sumRel;
-                dataItem.set(dataItem.size()-2, normRel);
+                dataItem.set(dataItem.size()-2, rel / sumRel);
             }
 
             double our =  Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
-            double normOur = our / sumOur;
-            dataItem.set(dataItem.size()-1, normOur);
+            dataItem.set(dataItem.size()-1, our / sumOur);
         }
 
         return input;

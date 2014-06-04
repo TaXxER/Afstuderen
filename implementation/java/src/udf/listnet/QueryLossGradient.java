@@ -1,5 +1,6 @@
 package udf.listnet;
 
+import ciir.umass.edu.utilities.SimpleMath;
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
@@ -18,36 +19,40 @@ import java.util.Iterator;
  * Created by niek.tax on 5/6/2014.
  */
 public class QueryLossGradient extends EvalFunc<Tuple> {
+    int DIM;
+
+    public QueryLossGradient(String DIMString){
+        this.DIM = Integer.parseInt(DIMString);
+    }
+
     public Tuple exec(Tuple input) throws IOException {
         // Obtain set of data
-        DataBag bag = (DataBag) (input.get(0));
+        DataBag documentBag = (DataBag) (input.get(0));
 
-        // var lossForAQuery = 0.0'
-        double   lossForAQuery = 0.0;
-        double[] gradientForAQuery = new double[45];
+        // var lossForQuery = 0.0'
+        double   lossForQuery = 0.0;
+        double[] gradientForQuery = new double[DIM];
 
-        // Create TupleFactory to generate output Tuple
-        TupleFactory tupleFactory = TupleFactory.getInstance();
-        Tuple value = tupleFactory.newTuple();
+        // Create output Tuple
+        Tuple value = TupleFactory.getInstance().newTuple();
 
-        Iterator<Tuple> dataIterator = bag.iterator();
-        while(dataIterator.hasNext()) {
-            Tuple dataItem = dataIterator.next();
-            double rel = Double.parseDouble(dataItem.get(dataItem.size()-2).toString()); // P_y(j)
-            double our = Double.parseDouble(dataItem.get(dataItem.size()-1).toString()); // P_z(j)
-
-            for(int i=0; i<gradientForAQuery.length; i++){
-                // gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)));
-                gradientForAQuery[i] += Double.parseDouble(dataItem.get(i+2).toString()) * (our - rel); // q.docFeatures(j)
+        Iterator<Tuple> docIterator = documentBag.iterator();
+        while(docIterator.hasNext()) {
+            Tuple docTuple = docIterator.next();
+            double rel = Double.parseDouble(docTuple.get(docTuple.size()-2).toString()); // P_y(j)
+            double our = Double.parseDouble(docTuple.get(docTuple.size()-1).toString()); // P_z(j)
+            for(int i=0; i<DIM; i++){
+                // gradientForQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)));
+                gradientForQuery[i] += Double.parseDouble(docTuple.get(i+2).toString()) * (our - rel); // q.docFeatures(j). +2 to skip relevance label and qid
             }
 
-            // lossFotAQuery += -P_y(j) * math.log(P_z(j)));
-            lossForAQuery += -rel * Math.log(our);
+            // lossForQuery += -P_y(j) * math.log(P_z(j)));
+            lossForQuery += -rel * SimpleMath.logBase2(our);
         }
 
         // Fill output tuple
-        value.append(lossForAQuery);
-        for(double featureGradient : gradientForAQuery)
+        value.append(lossForQuery);
+        for(double featureGradient : gradientForQuery)
             value.append(featureGradient);
 
         return value;

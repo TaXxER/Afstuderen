@@ -78,7 +78,7 @@ public class ListNet2 extends RankNet {
             {
                 double p1 = Math.exp(rl.get(j).getLabel())/sumLabelExp;
                 double p2 = (Math.exp(scores[j])/sumScoreExp);
-                err +=  - p1 * SimpleMath.logBase2(p2) ;
+                err +=  - p1 * SimpleMath.logBase2(p2);
             }
             error += err/rl.size();
         }
