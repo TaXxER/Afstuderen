@@ -1,4 +1,4 @@
-package udf.listnet;
+package udf.smoothrank;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
