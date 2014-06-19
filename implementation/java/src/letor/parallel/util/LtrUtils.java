@@ -1,5 +1,9 @@
 package letor.parallel.util;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
+
 /**
  * Utility class that offer utility methods shared between multiple Learning to Rank methods
  *
@@ -26,5 +30,9 @@ public class LtrUtils {
         value = value.substring(0,value.length()-1); // remove last comma
 
         return value;
+    }
+
+    public static String concatenateStringList(List<String> strings){
+        return StringUtils.join(strings, "");
     }
 }

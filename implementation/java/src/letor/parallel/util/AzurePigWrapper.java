@@ -14,10 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Wrapper class to run pig code on Microsoft Azure
@@ -25,25 +22,42 @@ import java.util.Map;
  * @author Niek Tax
  */
 public class AzurePigWrapper {
-    // CONNECTION PARAMETERS
-    String clusterName             = "ltrmini";
-    String azureClusterURL         = "https://"+clusterName+".azurehdinsight.net:443/templeton/v1";
-    String PostPigURL              = azureClusterURL+"/pig";
-    String retrieveStatusURL       = azureClusterURL+"/queue/";
+    String clusterName;
+    String clusterUser;
+    String clusterPassword;
+    String storageAccount;
+    String storageAccountKey;
+    String containerName;
 
-    final String clusterUser       = "admin";
-    final String clusterPassword   = "Qw!23456789";
-    String storageAccount          = "ltrstorage";
-    String storageAccountKey       = "Ygu4G/VYx8MJLlZosMcF7nIe5WI5kxXdWfvmky+inxTn1W7hKtrRAmeAVEgh30caAoArjQHTLbF/mPRIORqpqw==";
-    String containerName           = "ltrmini-2";
-    String storagePath             = "user/hdp/";
-    String tempLocalStorage        = "/tmp/";
+    String storageConnectionString;
 
-    String encoding                = new String( Base64.encodeBase64((clusterUser + ":" + clusterPassword).getBytes()) );
-    HttpClient clusterConnection   = HttpClientBuilder.create().build();
+    static String storagePath   = "user/hdp/";
+
+    public AzurePigWrapper(String clusterName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey){
+        this.clusterName        = clusterName;
+        this.containerName      = clusterName;
+        this.clusterUser        = clusterUser;
+        this.clusterPassword    = clusterPassword;
+        this.storageAccount     = storageAccount;
+        this.storageAccountKey  = storageAccountKey;
+
+        this.storageConnectionString =
+        "DefaultEndpointsProtocol=http;" +
+        "AccountName="+storageAccount+";"+
+        "AccountKey="+storageAccountKey;
+    }
 
     public String azureRunPig(String pigLine, String tmpDir) throws Exception{
-        storagePath += tmpDir +"/";
+        // Configure connection variables
+        String azureClusterURL         = "https://"+clusterName+".azurehdinsight.net:443/templeton/v1";
+        String PostPigURL              = azureClusterURL+"/pig";
+        String retrieveStatusURL       = azureClusterURL+"/queue/";
+
+
+        String tempLocalStorage        = "/tmp/";
+
+        String encoding                = new String( Base64.encodeBase64((clusterUser + ":" + clusterPassword).getBytes()) );
+        HttpClient clusterConnection   = HttpClientBuilder.create().build();
 
         // STEP 1: Post pig job
         HttpPost postRequest = new HttpPost(PostPigURL);
@@ -98,15 +112,10 @@ public class AzurePigWrapper {
         }
 
         //STEP 3: Retrieve answer
-        final String storageConnectionString =
-            "DefaultEndpointsProtocol=http;" +
-            "AccountName="+storageAccount+";"+
-            "AccountKey="+storageAccountKey;
-
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
 
         CloudBlobContainer container = storageAccount.createCloudBlobClient().getContainerReference(containerName);
-        CloudBlob blob = container.getBlockBlobReference(storagePath + "part-m-00000");
+        CloudBlob blob = container.getBlockBlobReference(storagePath + tmpDir + "/part-r-00000");
         blob.download(new FileOutputStream(tempLocalStorage+blob.hashCode()));
         FileInputStream fis = new FileInputStream(tempLocalStorage+blob.hashCode());
         int content;
@@ -114,5 +123,13 @@ public class AzurePigWrapper {
         while((content = fis.read()) != -1)
             retVal += (char) content;
         return retVal;
+    }
+
+    public void deleteFile(String path) throws Exception{
+        CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+        CloudBlobContainer container = storageAccount.createCloudBlobClient().getContainerReference(containerName);
+
+        container.getBlockBlobReference(storagePath + path).delete();
+        container.getBlockBlobReference(storagePath + path + "/part-r-00000").delete();
     }
 }

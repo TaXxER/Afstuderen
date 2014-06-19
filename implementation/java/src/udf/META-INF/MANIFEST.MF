@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Class-Path: httpcore-4.3.2.jar commons-cli-1.2.jar httpclient-4.3.4.ja
+ r pig-0.9.3-SNAPSHOT.jar quick-json-1.0.2.3.jar RankLib-2.1-patched.j
+ ar jetty-util-6.1.15.rc3.jar jackson-core-asl-1.9.2.jar jackson-mappe
+ r-asl-1.9.2.jar hadoop-core-1.1.0-SNAPSHOT.jar oozie-client-3.2.0-inc
+ ubating.jar microsoft-windowsazure-api-0.4.6.jar
+Main-Class: 
+
