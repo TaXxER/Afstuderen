@@ -19,14 +19,14 @@ import java.util.Properties;
 public class ListNetCluster {
     // Initialise hyper-parameters
     private static final String   DATASET    = "ohsumed";
-    private static final double   STEPSIZE   = 0.00001;
-    private static final int      ITERATIONS = 1500;
+    private static final double   STEPSIZE   = 0.01;
+    private static final int      ITERATIONS = 10;
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltrmini2";
+        String clusterName          = "ltrmini3";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrstorage";
@@ -84,9 +84,7 @@ public class ListNetCluster {
                 if (i == 1)
                     pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores" + i + "(TRAIN_STD));");
                 else {
-                    System.out.println("ITERATIE "+i);
                     pigLines.add("TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores"+(i-1)+"' USING BinStorage();");
-                    // clear tr_exp_rel_scores on blob storage
                     pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores" + i + "($0..));");
                 }
                 pigLines.add("STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores"+i+"' USING BinStorage();");
@@ -109,19 +107,14 @@ public class ListNetCluster {
                 System.out.println("combinedPigLines: "+concatenatedPigLines);
                 String lossGradientString = apw.azureRunPig(concatenatedPigLines, outputDir);
                 pigLines.clear();
-                if(i!=1)
-                    apw.deleteFile("tr_exp_rel_scores"+(i-1));
-                System.out.println("lossGradientTuple: "+lossGradientString);
                 String[] lossGradients = lossGradientString.split("\t");
                 double loss = Double.parseDouble(lossGradients[0]);
-                double[] gradients = new double[DIM];
-                for(int j=1; j<lossGradients.length; j++){
-                    gradients[j-1] = Double.parseDouble(lossGradients[j]);
-                }
+                for(int j=1; j<lossGradients.length; j++)
+                    gradient[j-1] = Double.parseDouble(lossGradients[j]);
+
                 // w -= gradient.value * stepSize
-                for(int j = 0; j < w.length; j++) {
+                for(int j = 0; j < w.length; j++)
                     w[j] -= (gradient[j] * STEPSIZE);
-                }
 
                 // EVALUATE MODEL ON VALIDATION SET
                 pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
@@ -138,6 +131,7 @@ public class ListNetCluster {
                 System.out.println("combinedPigLines: "+concatenatedPigLines);
                 String avg_ndcg = apw.azureRunPig(concatenatedPigLines, outputDir);
                 pigLines.clear();
+                System.out.println("avg_ndcg: "+avg_ndcg);
                 double currentNdcg = Double.parseDouble(avg_ndcg);
 
                 if(currentNdcg > bestNdcg){

@@ -53,7 +53,6 @@ public class AzurePigWrapper {
         String PostPigURL              = azureClusterURL+"/pig";
         String retrieveStatusURL       = azureClusterURL+"/queue/";
 
-
         String tempLocalStorage        = "/tmp/";
 
         String encoding                = new String( Base64.encodeBase64((clusterUser + ":" + clusterPassword).getBytes()) );
@@ -89,7 +88,7 @@ public class AzurePigWrapper {
         // STEP 2: Poll server until finished
         boolean jobComplete = false;
         while(!jobComplete) {
-            HttpGet getRequest = new HttpGet(retrieveStatusURL + jobid);
+            HttpGet getRequest = new HttpGet(retrieveStatusURL + jobid + "?user.name=hdp");
             getRequest.setHeader("Authorization", "Basic " + encoding);
 
             response = clusterConnection.execute(getRequest);
@@ -101,7 +100,6 @@ public class AzurePigWrapper {
             output = null;
             while ((output = br.readLine()) != null)
                 concat += output + "\n\r";
-
             jsonMap = objectMapper.readValue(concat, HashMap.class);
 
             String completed = jsonMap.get("completed");
