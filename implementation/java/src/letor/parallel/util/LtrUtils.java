@@ -47,9 +47,12 @@ public class LtrUtils {
         return configString;
     }
 
-    public static String getPigConfigString(long fileSize, int mappers){
+    public static String getPigConfigString(long fileSize, int mappers, int reducers){
         long splitByBytes = fileSize / mappers;
-        String configString = "SET job.name 'Learning to Rank';"+
+        int usedReducers = reducers > 1 ? reducers - 1 : 1;
+        String configString =
+                "SET default_parallel "+usedReducers+";"+
+                "SET job.name 'Learning to Rank';"+
                 "SET pig.maxCombinedSplitSize "+splitByBytes+";"+
                 "SET pig.noSplitCombination true;"+
                 "SET mapred.min.split.size "+splitByBytes+";"+

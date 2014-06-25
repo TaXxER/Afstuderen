@@ -13,25 +13,26 @@ import java.util.ArrayList;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final String   DATASET    = "ohsumed";
+    private static final String   DATASET    = "MSLR-WEB10K";
     private static final double   STEPSIZE   = 0.01;
     private static final int      ITERATIONS = 10;
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  availableMappers              = 4;
-    private static long max_train_size                = 5151958; // Idialiter dit in code afleiden
-    private static long max_vali_size                 = 1764005; // Idialiter dit in code afleiden
-    private static long max_test_size                 = 1764005; // Idialiter dit in code afleiden
+    private static int  availableMappers              = 16;
+    private static int  availableReducers             = 8;
+    private static long max_train_size                = 838011150; // MSLR-WEB10K: 838011150, ohsumed: 5151958
+    private static long max_vali_size                 = 280714022; // MSLR-WEB10K: 280714022, ohsumed: 1764005
+    private static long max_test_size                 = 280714022; // MSLR-WEB10K: 280714022, ohsumed: 1764005
 
-    private static String trainConfigString = LtrUtils.getPigConfigString(max_train_size, availableMappers);
-    private static String valiConfigString  = LtrUtils.getPigConfigString(max_vali_size, availableMappers);
-    private static String testConfigString  = LtrUtils.getPigConfigString(max_test_size, availableMappers);
+    private static String trainConfigString = LtrUtils.getPigConfigString(max_train_size, availableMappers, availableReducers);
+    private static String valiConfigString  = LtrUtils.getPigConfigString(max_vali_size, availableMappers, availableReducers);
+    private static String testConfigString  = LtrUtils.getPigConfigString(max_test_size, availableMappers, availableReducers);
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltrold2";
+        String clusterName          = "ltrold3";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrstorage";
@@ -66,7 +67,7 @@ public class ListNetCluster {
             if(fold==1){
                 //Iterator<Tuple> TRAIN_STD = pigServer.openIterator("TRAIN_STD");
                 //DIM = TRAIN_STD.next().size()-2;
-                DIM = 45;
+                DIM = 136; // MSLR-WEB10K: 136, ohsumed: 45
             }
 
             // Initialise internal model parameters
