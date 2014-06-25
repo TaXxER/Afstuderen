@@ -41,7 +41,9 @@ public class LtrUtils {
         "SET pig.maxCombinedSplitSize "+pig_maxCombinedSplitSize+";"+
         "SET pig.noSplitCombination true;"+
         "SET mapred.min.split.size "+mapred_min_split_size+";"+
-        "SET mapred.max.split.size "+mapred_max_split_size+";";
+        "SET mapreduce.input.fileinputformat.split.maxsize "+mapred_min_split_size+";"+ // For Hadoop 2.3.0 and up
+        "SET mapred.max.split.size "+mapred_max_split_size+";"+
+        "SET mapreduce.input.fileinputformat.split.minsize "+mapred_max_split_size+";"; // For Hadoop 2.3.0 and up
         return configString;
     }
 
@@ -51,7 +53,9 @@ public class LtrUtils {
                 "SET pig.maxCombinedSplitSize "+splitByBytes+";"+
                 "SET pig.noSplitCombination true;"+
                 "SET mapred.min.split.size "+splitByBytes+";"+
-                "SET mapred.max.split.size "+splitByBytes+";";
+                "SET mapreduce.input.fileinputformat.split.maxsize "+splitByBytes+";"+ // For Hadoop 2.3.0 and up
+                "SET mapred.max.split.size "+splitByBytes+";"+
+                "SET mapreduce.input.fileinputformat.split.minsize "+splitByBytes+";"; // For Hadoop 2.3.0 and up
         return configString;
     }
 }

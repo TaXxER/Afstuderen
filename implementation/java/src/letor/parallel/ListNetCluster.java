@@ -19,7 +19,7 @@ public class ListNetCluster {
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
 
-    // Initialise parallelisation parameters
+    // Initialise paralellisation parameters
     private static int  availableMappers              = 4;
     private static long max_train_size                = 5151958; // Idialiter dit in code afleiden
     private static long max_vali_size                 = 1764005; // Idialiter dit in code afleiden
@@ -39,7 +39,6 @@ public class ListNetCluster {
         AzurePigWrapper apw         = new AzurePigWrapper(clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
-
 
         double[] foldNdcg = new double[FOLDS];
         double sumNdcg = 0.0;
