@@ -23,7 +23,7 @@ public class ListNetCluster {
 
     // Initialise paralellisation parameters
     private static int  availableMappers              = 8;
-    private static int  availableReducers             = 1;
+    private static int  availableReducers             = 4;
 
     private static Metadata metadata                  = DataSets.getMetaData(DATASET);
     private static long MAX_TRAIN_SIZE                = metadata.getMax_train_size(); // ohsumed: 5151958, MQ2007: 25820919, MQ2008: 5927007, MSLR-WEB10K: 838011150, MSLR-WEB30K:
@@ -50,7 +50,6 @@ public class ListNetCluster {
         double[] foldNdcg = new double[FOLDS];
         double sumNdcg = 0.0;
         double averageNdcg = 0.0;
-        int DIM = 0;
         String pathPrefix   = "/user/hdp";
 
         // Start timer
@@ -70,11 +69,6 @@ public class ListNetCluster {
             // Group data by query
             pigLines.add("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");
             // Determine attribute dimension
-            if(fold==1){
-                //Iterator<Tuple> TRAIN_STD = pigServer.openIterator("TRAIN_STD");
-                //DIM = TRAIN_STD.next().size()-2;
-                DIM = 46; // ohsumed: 45, MQ2007: 46, MQ2008: 46, MSLR-WEB10K: 136, MSLR-WEB30K: 136
-            }
 
             // Initialise internal model parameters
             double[] w = new double[DIM];
