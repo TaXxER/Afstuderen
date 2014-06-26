@@ -47,6 +47,20 @@ public class AzurePigWrapper {
         "AccountKey="+storageAccountKey;
     }
 
+    public AzurePigWrapper(String clusterName, String containerName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey){
+        this.clusterName        = clusterName;
+        this.containerName      = containerName;
+        this.clusterUser        = clusterUser;
+        this.clusterPassword    = clusterPassword;
+        this.storageAccount     = storageAccount;
+        this.storageAccountKey  = storageAccountKey;
+
+        this.storageConnectionString =
+                "DefaultEndpointsProtocol=http;" +
+                        "AccountName="+storageAccount+";"+
+                        "AccountKey="+storageAccountKey;
+    }
+
     public String azureRunPig(String pigLine, String tmpDir) throws Exception{
         // Configure connection variables
         String azureClusterURL         = "https://"+clusterName+".azurehdinsight.net:443/templeton/v1";

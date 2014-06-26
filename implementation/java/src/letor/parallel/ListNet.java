@@ -15,14 +15,14 @@ import java.util.Properties;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final String   DATASET    = "ohsumed";
+    private static final String   DATASET    = "MSLR-WEB10K";
     private static final double   STEPSIZE   = 0.00001;
-    private static final int      ITERATIONS = 1500;
+    private static final int      ITERATIONS = 10;
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
 
     // Run mode
-    private static final ExecType runType    = ExecType.MAPREDUCE;
+    private static final ExecType runType    = ExecType.LOCAL;
 
     public static void main(String[] args) throws Exception {
         double[] foldNdcg = new double[FOLDS];
@@ -49,7 +49,7 @@ public class ListNet {
             pigServer = new PigServer(ExecType.LOCAL);
         }
         // Register Jar with UDFs
-        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/udfs_jar/java.jar");
+        pigServer.registerJar("C:/Git-data/Afstuderen/implementation/java/out/artifacts/java_jar/java.jar");
 
         for(int f=0; f<FOLDS; f++) {
             int fold = f+1;
