@@ -121,7 +121,7 @@ public class AzurePigWrapper {
             if(completed!=null && completed.equals("done"))
                 jobComplete = true;
 
-                Thread.sleep(100);
+                Thread.sleep(50);
         }
 
         //STEP 3: Retrieve answer

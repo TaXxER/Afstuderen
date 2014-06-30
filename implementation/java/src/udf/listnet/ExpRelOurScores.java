@@ -5,6 +5,8 @@ import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +46,7 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         Iterator<Tuple> docIterator = docBag.iterator();
         List<Tuple> docTupleList = new ArrayList<Tuple>();
         double sumRel = 0.0;
-        double sumOur = 0.0;
+        BigDecimal sumOur = BigDecimal.ZERO;
 
         while(docIterator.hasNext()) {
             Tuple docTuple = docIterator.next();
@@ -67,14 +69,15 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
                 our += Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
             }
 
-            if(ITERATION==1) {
-                // val expOurScores = ourScores.map(z => math.exp(z));
-                // Append our predicted relevance to query-document pair
-                docTuple.append(Math.exp(our));
-            }else{
-                docTuple.set(docTuple.size()-1, Math.exp(our));
-            }
-            sumOur += Math.exp(our);
+            BigDecimal bdOur = BigDecimal.valueOf(our);
+            BigDecimal bdExpOur = expTaylor(bdOur, 4);
+            // val expOurScores = ourScores.map(z => math.exp(z));
+            if(ITERATION==1)
+                docTuple.append(bdExpOur.toString());
+            else
+                docTuple.set(docTuple.size() - 1, bdExpOur.toString());
+
+            sumOur = sumOur.add(bdExpOur);
         }
 
         // val sumExpRelScores = expRelScores.reduce(_ + _);
@@ -89,9 +92,49 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
             }
 
             double our =  Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
-            dataItem.set(dataItem.size()-1, our / sumOur);
+            dataItem.set(dataItem.size()-1, BigDecimal.valueOf(our).divide(sumOur, sumOur.precision(), RoundingMode.HALF_UP).doubleValue());
         }
-
         return input;
     }
+
+    /**
+     * Compute e^x to a given scale by the Taylor series.
+     * @param x the value of x
+     * @param scale the desired scale of the result
+     * @return the result value
+     */
+    private static BigDecimal expTaylor(BigDecimal x, int scale) {
+        BigDecimal factorial = BigDecimal.valueOf(1);
+        BigDecimal xPower    = x;
+        BigDecimal sumPrev;
+
+        // 1 + x
+        BigDecimal sum  = x.add(BigDecimal.valueOf(1));
+
+        // Loop until the sums converge
+        // (two successive sums are equal after rounding).
+        int i = 2;
+        do {
+            // x^i
+            xPower = xPower.multiply(x)
+                    .setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+
+            // i!
+            factorial = factorial.multiply(BigDecimal.valueOf(i));
+
+            // x^i/i!
+            BigDecimal term = xPower
+                    .divide(factorial, scale,
+                            BigDecimal.ROUND_HALF_EVEN);
+
+            // sum = sum + x^i/i!
+            sumPrev = sum;
+            sum = sum.add(term);
+
+            ++i;
+        } while (sum.compareTo(sumPrev) != 0);
+
+        return sum;
+    }
+
 }
