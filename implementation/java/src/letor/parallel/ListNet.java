@@ -5,7 +5,9 @@ import org.apache.pig.ExecType;
 import org.apache.pig.PigServer;
 import org.apache.pig.data.Tuple;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -15,8 +17,8 @@ import java.util.Properties;
 
 public class ListNet {
     // Initialise hyper-parameters
-    private static final String   DATASET    = "MSLR-WEB10K";
-    private static final double   STEPSIZE   = 0.00001;
+    private static final String   DATASET    = "MSLR-WEB30K";
+    private static final double   STEPSIZE   = 0.000001;
     private static final int      ITERATIONS = 10;
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
@@ -63,11 +65,41 @@ public class ListNet {
             pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
             pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
 
+            // Determine maximum and minimum of features in trainingset
+            pigServer.registerQuery("TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1;");
+            pigServer.registerQuery("MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax($0..));");
+
+            List<Double> minmaxList = new ArrayList<Double>();
+            Iterator<Tuple>MIN_MAX = pigServer.openIterator("MIN_MAX");
+            Tuple firstMinmax = MIN_MAX.next();
+            for(int i=0; i<firstMinmax.size(); i++){
+                minmaxList.add((Double) firstMinmax.get(i));
+            }
+            while(MIN_MAX.hasNext()){
+                Tuple minmax = MIN_MAX.next();
+                for(int i=0; i<minmax.size(); i++){
+                    double ithElem = (Double) minmax.get(i);
+                    if(i%2==0){ // MIN
+                        if (ithElem < minmaxList.get(i))
+                            minmaxList.set(i, ithElem);
+                    }else{ // MAX
+                        if (ithElem > minmaxList.get(i))
+                            minmaxList.set(i, ithElem);
+                    }
+                }
+            }
+
+            // Scale features
+            pigServer.registerQuery("DEFINE ScaleFeatures udf.util.ScaleFeatures('"+LtrUtils.toParamString(minmaxList)+"');");
+            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures($0..));");
+            pigServer.registerQuery("VALIDATE_STD = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures($0..));");
+            pigServer.registerQuery("TEST_STD = FOREACH TEST_STD GENERATE flatten(ScaleFeatures($0..));");
             // Group data by query
             pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");
             pigServer.registerQuery("VA_BY_QUERY = GROUP VALIDATE_STD BY $1;");
             pigServer.registerQuery("TE_BY_QUERY = GROUP TEST_STD BY $1;");
             // Determine attribute dimension
+
             if(fold==1){
                 Iterator<Tuple> TRAIN_STD = pigServer.openIterator("TRAIN_STD");
                 DIM = TRAIN_STD.next().size()-2;
@@ -78,7 +110,7 @@ public class ListNet {
             double[] gradient = new double[DIM];
             double[] bestW = new double[DIM];
             double   bestNdcg = 0.0;
-            pigServer.registerQuery("DEFINE QueryLossGradient" + " udf.listnet.QueryLossGradient('" + DIM + "');");
+            pigServer.registerQuery("DEFINE QueryLossGradient udf.listnet.QueryLossGradient('" + DIM + "');");
             for (int i = 1; i <= ITERATIONS; i++) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
                 // val ourScores = q.docFeatures.map(x => w dot x);

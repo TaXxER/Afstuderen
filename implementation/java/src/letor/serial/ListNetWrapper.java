@@ -57,7 +57,7 @@ public class ListNetWrapper {
         int[] features = getFeatureFromSampleVector(train);
         RankerFactory rFact = new RankerFactory();
         Ranker ranker = rFact.createRanker(rType, train, features);
-        Ranker.verbose = false;
+        Ranker.verbose = true;
         ranker.set(trainScorer);
         ranker.setValidationSet(validation);
         ranker.init();

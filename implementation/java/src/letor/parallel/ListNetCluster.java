@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MQ2007;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB30K;
     private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 10;
     private static final int      FOLDS      = 5;
@@ -80,10 +80,10 @@ public class ListNetCluster {
                     pigLines.add("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");
                     pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores(TRAIN_STD));");
                 }else {
-                    pigLines.add("TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f"+f+"i"+(i-1)+"/*' USING BinStorage();");
+                    pigLines.add("TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f"+f+"/*' USING BinStorage();");
                     pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores($0..));");
                 }
-                String outputDir = "tr_exp_rel_scores-f"+f+"i"+i;
+                String outputDir = "tr_exp_rel_scores-f"+f;
                 pigLines.add("STORE TR_EXP_REL_SCORES INTO '"+outputDir+"' USING BinStorage();");
 
                 // UPDATE MODEL

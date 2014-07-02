@@ -32,12 +32,21 @@ public class LtrUtils {
         return value;
     }
 
+    public static String toParamString(List<Double> elemList){
+        double[] elemArray = new double[elemList.size()];
+        for(int i=0; i<elemArray.length; i++)
+            elemArray[i] = elemList.get(i);
+        return toParamString(elemArray);
+    }
+
     public static String concatenateStringList(List<String> strings){
         return StringUtils.join(strings, "");
     }
 
     public static String getPigConfigString(long pig_maxCombinedSplitSize, long mapred_min_split_size, long mapred_max_split_size){
         String configString = "SET job.name 'Learning to Rank';"+
+        "SET mapred.task.timeout= 1800000;"+
+        "SET mapreduce.task.timeout= 1800000;"+ // For Hadoop 2.3.0 and up
         "SET pig.maxCombinedSplitSize "+pig_maxCombinedSplitSize+";"+
         "SET pig.noSplitCombination true;"+
         "SET mapred.min.split.size "+mapred_min_split_size+";"+
@@ -53,6 +62,8 @@ public class LtrUtils {
         String configString =
                 "SET default_parallel "+usedReducers+";"+
                 "SET job.name 'Learning to Rank';"+
+                "SET mapred.task.timeout= 1800000;"+
+                "SET mapreduce.task.timeout= 1800000;"+ // For Hadoop 2.3.0 and up
                 "SET pig.maxCombinedSplitSize "+splitByBytes+";"+
                 "SET pig.noSplitCombination true;"+
                 "SET mapred.min.split.size "+splitByBytes+";"+

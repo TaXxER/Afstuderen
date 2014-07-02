@@ -40,14 +40,12 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
     public Tuple exec(Tuple input) throws IOException{
         if(input==null || input.size()!=1)
             return null;
-
         // Obtain set of data
         DataBag docBag = (DataBag) input.get(0);
         Iterator<Tuple> docIterator = docBag.iterator();
         List<Tuple> docTupleList = new ArrayList<Tuple>();
         double sumRel = 0.0;
         BigDecimal sumOur = BigDecimal.ZERO;
-
         while(docIterator.hasNext()) {
             Tuple docTuple = docIterator.next();
 
@@ -62,13 +60,14 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
                 docTuple.append(rel);
                 sumRel += rel;
             }
-
             double our = 0.0;
             for(int i=0; i<w.length; i++) {
                 // val ourScores = q.docFeatures.map(x => w dot x); (+2 to skip non-feature columns)
-                our += Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
+                double augend = Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
+                if(ITERATION>1)
+                    System.out.println("augend: "+augend+" value: "+Double.parseDouble(docTuple.get(i+2).toString())+" weight: "+w[i]);
+                our += augend;
             }
-
             BigDecimal bdOur = BigDecimal.valueOf(our);
             BigDecimal bdExpOur = expTaylor(bdOur, 4);
             // val expOurScores = ourScores.map(z => math.exp(z));
@@ -76,10 +75,8 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
                 docTuple.append(bdExpOur.toString());
             else
                 docTuple.set(docTuple.size() - 1, bdExpOur.toString());
-
             sumOur = sumOur.add(bdExpOur);
         }
-
         // val sumExpRelScores = expRelScores.reduce(_ + _);
         // val P_y = expRelScores.map(y => y/sumExpRelScores);
         // val sumExpOurScores = expOurScores.reduce(_ + _);
@@ -90,7 +87,6 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
                 double rel =  Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
                 dataItem.set(dataItem.size()-2, rel / sumRel);
             }
-
             double our =  Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
             dataItem.set(dataItem.size()-1, BigDecimal.valueOf(our).divide(sumOur, sumOur.precision(), RoundingMode.HALF_UP).doubleValue());
         }
