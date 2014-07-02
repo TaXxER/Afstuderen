@@ -61,9 +61,9 @@ public class SmoothRank {
             pigServer.registerQuery("TEST = LOAD '" + pathPrefix + "/input/" + DATASET + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
 
             // Transform data to standard form
-            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
+            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
 
             // Group data by query
             pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");

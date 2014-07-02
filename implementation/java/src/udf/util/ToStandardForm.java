@@ -1,4 +1,4 @@
-package udf.listnet;
+package udf.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.pig.EvalFunc;

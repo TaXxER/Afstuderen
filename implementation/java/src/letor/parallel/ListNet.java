@@ -61,9 +61,9 @@ public class ListNet {
             pigServer.registerQuery("TEST = LOAD '" + pathPrefix + "/input/" + DATASET + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
 
             // Transform data to standard form
-            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
-            pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.listnet.ToStandardForm($0..));");
+            pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigServer.registerQuery("VALIDATE_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigServer.registerQuery("TEST_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
 
             // Determine maximum and minimum of features in trainingset
             pigServer.registerQuery("TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1;");
@@ -94,6 +94,7 @@ public class ListNet {
             pigServer.registerQuery("TRAIN_STD = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures($0..));");
             pigServer.registerQuery("VALIDATE_STD = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures($0..));");
             pigServer.registerQuery("TEST_STD = FOREACH TEST_STD GENERATE flatten(ScaleFeatures($0..));");
+
             // Group data by query
             pigServer.registerQuery("TR_BY_QUERY = GROUP TRAIN_STD BY $1;");
             pigServer.registerQuery("VA_BY_QUERY = GROUP VALIDATE_STD BY $1;");
@@ -151,7 +152,7 @@ public class ListNet {
                 }
 
                 // EVALUATE MODEL ON VALIDATION SET
-                pigServer.registerQuery("DEFINE Ndcg" + i + " udf.listnet.Ndcg('" + LtrUtils.toParamString(w,k) + "');");
+                pigServer.registerQuery("DEFINE Ndcg" + i + " udf.util.Ndcg('" + LtrUtils.toParamString(w,k) + "');");
                 pigServer.registerQuery("NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg"+i+"($0..);");
                 pigServer.registerQuery("NDCG_GRPD = GROUP NDCG ALL;");
                 pigServer.registerQuery("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
@@ -173,7 +174,7 @@ public class ListNet {
                 System.out.println();
             }
             // CALCULATE TEST SET PREDICTIONS BASED ON BEST WEIGHTS
-            pigServer.registerQuery("DEFINE Ndcg" + ITERATIONS+1 + " udf.listnet.Ndcg('" + LtrUtils.toParamString(bestW,k) + "');");
+            pigServer.registerQuery("DEFINE Ndcg" + ITERATIONS+1 + " udf.util.Ndcg('" + LtrUtils.toParamString(bestW,k) + "');");
             // CALCULATE NDCG@K FOR TEST SET PREDICTIONS
             pigServer.registerQuery("NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg"+ITERATIONS+1+"($0..);");
             pigServer.registerQuery("NDCG_GRPD = GROUP NDCG ALL;");

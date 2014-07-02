@@ -65,7 +65,7 @@ public class AzurePigWrapper {
         this(clusterName, clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey);
     }
 
-    public String azureRunPig(String pigLine, String tmpDir) throws Exception{
+    public void azureRunPig(String pigLine) throws Exception{
         // STEP 1: Post pig job
         HttpResponse response = null;
         int          attempt  = 0;
@@ -121,8 +121,13 @@ public class AzurePigWrapper {
             if(completed!=null && completed.equals("done"))
                 jobComplete = true;
 
-                Thread.sleep(50);
+            Thread.sleep(50);
         }
+    }
+
+    public String azureRunPig(String pigLine, String tmpDir) throws Exception{
+        //STEP 1 & 2: Post pig job and poll server until job finished
+        azureRunPig(pigLine);
 
         //STEP 3: Retrieve answer
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);

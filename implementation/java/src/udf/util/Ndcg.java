@@ -1,4 +1,4 @@
-package udf.listnet;
+package udf.util;
 
 import ciir.umass.edu.utilities.SimpleMath;
 import com.google.common.collect.TreeMultiset;
