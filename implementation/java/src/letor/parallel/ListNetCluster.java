@@ -4,10 +4,8 @@ import letor.parallel.util.AzurePigWrapper;
 import letor.parallel.util.DataSets;
 import letor.parallel.util.LtrUtils;
 import letor.parallel.util.Metadata;
-import org.apache.pig.data.Tuple;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,8 +17,8 @@ import java.util.List;
 public class ListNetCluster {
     // Initialise hyper-parameters
     private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB30K;
-    private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
-    private static final int      ITERATIONS = 10;
+    private static final double   STEPSIZE   = 0.00005; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
+    private static final int      ITERATIONS = 20;
     private static final int      FOLDS      = 5;
     private static final int      k          = 10; // NDCG@k
 

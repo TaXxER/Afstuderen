@@ -5,33 +5,35 @@ import ciir.umass.edu.learning.*;
 import ciir.umass.edu.metric.MetricScorer;
 import ciir.umass.edu.metric.MetricScorerFactory;
 import ciir.umass.edu.utilities.SimpleMath;
+import letor.serial.parameterizedRankers.AbstractParameterizedRanker;
 import letor.serial.util.Measurement;
 
 import java.util.List;
 
 /**
- * RankLib evaluation wrapper.
- * Calculates average running time and evaluation results on a prefolded dataset.
- *
- * @author Niek Tax
+ * Handles iteration over folds
+ * Created by niek.tax on 7/15/2014.
  */
-public class ListNetWrapper {
-    // java -jar bin/RankLib.jar -train C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\train.txt -ranker 7 -metric2t NDCG@10 -gmax 2 -validate C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\train.txt -test C:\Git-data\Afstuderen\implementation\java\input\ohsumed\Fold1\test.txt
+public class FoldRunHandler {
     private MetricScorerFactory mFact = new MetricScorerFactory();
 
     private String path  = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
     private int folds    = 5;
 
-    private RANKER_TYPE rType  = RANKER_TYPE.LISTNET;
+    private Ranker ranker;
+
     private String trainMetric = "NDCG@10";
     private String testMetric  = trainMetric;
 
     private MetricScorer trainScorer = mFact.createScorer(trainMetric);
     private MetricScorer testScorer  = mFact.createScorer(testMetric);
 
-    public Measurement averageScore(String pathPostFix) {
-        path = path + pathPostFix+"\\";
-        System.out.println(path);
+    public FoldRunHandler(AbstractParameterizedRanker ranker, String pathPostFix){
+        this.ranker      = ranker.getParameterizedRanker();
+        path = path + pathPostFix +"\\";
+    }
+
+    public Measurement averageScore() {
         double scoreSum          = 0.0;
 
         Long startTime = System.nanoTime();
@@ -55,8 +57,7 @@ public class ListNetWrapper {
         List<RankList> test       = readInput(testFile);
 
         int[] features = getFeatureFromSampleVector(train);
-        RankerFactory rFact = new RankerFactory();
-        Ranker ranker = rFact.createRanker(rType, train, features);
+        ranker.set(train, features);
         Ranker.verbose = true;
         ranker.set(trainScorer);
         ranker.setValidationSet(validation);

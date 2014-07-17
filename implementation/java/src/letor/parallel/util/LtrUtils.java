@@ -57,7 +57,7 @@ public class LtrUtils {
     }
 
     public static String getPigConfigString(long fileSize, int mappers, int reducers){
-        long splitByBytes = fileSize / (mappers-1); // always keep one mapper available for templetonjob
+        long splitByBytes = (long)((fileSize / (mappers-1)) * 1.35); // always keep one mapper available for templetonjob. 0.7 adjusts for standardisation and feature scaling, which shrink data set by +- 30%
         int usedReducers = reducers > 1 ? reducers - 1 : 1; // always keep one reducer available for templetonjob
         String configString =
                 "SET default_parallel "+usedReducers+";"+

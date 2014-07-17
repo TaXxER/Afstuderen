@@ -72,4 +72,5 @@ implementation/java/out
 # IntelliJ project temp files
 implementation/java/src/META-INF/*
 
-
+# RankLib 2.1 code
+implementation/RankLib-2.1/*
