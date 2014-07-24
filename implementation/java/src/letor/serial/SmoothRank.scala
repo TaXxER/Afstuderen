@@ -143,17 +143,28 @@ class SmoothRank extends Ranker{
   def grad(rl:RankList):Array[Float] = {
     return arrayByConst(2/smoothFactor,
       (0 until rl.size).map(j =>
-        arrayByConst(D(j, rl) / Math.pow(E(j, rl), 2).toFloat,
-          /*arrayByConst((0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
-            (0 until rl.size).map(p => arrayByConst(e(p,j,rl)*(f(p,rl)-f(d(j,rl),rl)), X(p,rl))).transpose.toArray.map(_.sum)
-          )*/
-
-          //arrayByConst(E(j,rl), (0 until rl.size).map(p => arrayByConst(e(p,j,rl)*(f(p,rl)-f(d(j,rl),rl))*G(l(p,rl)), X(p,rl))).transpose.toArray.map(_.sum))
-
+        arrayByConst(
+          D(j, rl) / Math.pow(E(j, rl), 2).toFloat,
+          (
+            arrayByConst(
+              (0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
+              (0 until rl.size).map(p => arrayByConst(
+                e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl)),
+                X(p,rl))
+              ).transpose.toArray.map(_.sum)
+            )
+          ,
+            arrayByConst(
+              E(j,rl),
+              (0 until rl.size).map(p => arrayByConst(e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl))*G(l(p,rl)), X(p,rl))).transpose.toArray.map(_.sum)
+            )
+          ).zipped.map((x,y) => x-y)
           //arrayByConst(E(j,rl), (0 until rl.size).map(i => arrayByConst(G(l(i,rl))*e(i,j,rl)*f(i,rl), X(d(j,rl),rl))).transpose.toArray.map(_.sum)) -
 
-          arrayByConst((0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl)).reduceLeft(_+_) *
-          (0 until rl.size).map(i => f(i+1,rl)*e(i,j,rl)).reduceLeft(_+_), X(d(j,rl), rl))
+          /*arrayByConst(
+            (0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl)).reduceLeft(_+_) * (0 until rl.size).map(i => f(i+1,rl)*e(i,j,rl)).reduceLeft(_+_),
+            X(d(j,rl), rl)
+          )*/
         )
       ).transpose.toArray.map(_.sum)
     )
@@ -176,8 +187,12 @@ class SmoothRank extends Ranker{
     D //return value
   }
 
+  /*
+   * Returns feature vector of element p in RankList rl
+   * @requires rl.size >= p > 0
+   */
   def X(p:Int, rl:RankList):Array[Float] = {
-    (1 to features.length).map(x => rl.get(p-1).getFeatureValue(x)).toArray
+    (1 to features.length).map(x => rl.get(p).getFeatureValue(x)).toArray
   }
 
   def G(l:Float):Float = {
@@ -188,29 +203,48 @@ class SmoothRank extends Ranker{
     rl.get(i).getLabel
   }
 
+  /*
+   * Returns, for a given k, the sum of e(i,k) for all documents i in rl
+   * @requires rl.size > k >= 0
+   */
   def E(k:Int, rl:RankList):Float = {
-    (0 until rl.size).map(x => e(k,x,rl)).reduceLeft(_+_)
+    (0 until rl.size).map(j => e(k,j,rl)).reduceLeft(_+_)
   }
 
+  /*
+   * Returns the gradient of indicator variable h, that represents the probability that document i is ranked at the j-th position
+   * @requires rl.size > i >= 0
+   * @requires rl.size >= j > 0
+   * @ensures 1 >= result >= 0
+   */
   def e(i:Int, j:Int, rl:RankList):Float = {
-    val ideal = rl.getCorrectRanking
-    val predicted = (0 until rl.size).map(x => eval(rl.get(x)))
-    val idx = Sorter.sort(predicted.toArray, false)
-    Math.exp(- Math.pow( f(i+1,rl) -
-      f(d(j,rl),rl) ,2) / smoothFactor ).toFloat
+    //val ideal = rl.getCorrectRanking
+    //val predicted = (0 until rl.size).map(x => eval(rl.get(x)))
+    //val idx = Sorter.sort(predicted.toArray, false)
+    Math.exp(- Math.pow( f(i,rl) -
+      f(d(j+1,rl),rl) ,2) / smoothFactor ).toFloat
   }
 
+  /*
+   * Returns the index of the document ranked at position j in RankList rl
+   * @requires j > 0 >= rl.size
+   * @ensures rl.size > i >= 0
+   */
   def d(j:Int, rl:RankList):Int = {
-    val dp = rank(rl).get(j)
-    var i = 1
+    val dp = rank(rl).get(j-1)
+    var i = 0
       while (i < rl.size && !rl.get(i).equals(dp)) {
         i = i+1
       }
     i
   }
 
+  /*
+   * Returns the model prediction for element i in RankList rl
+   * @requires rl.size > i >= 0
+   */
   def f(i:Int, rl:RankList):Float = {
-    eval(rl.get(i-1)).toFloat
+    eval(rl.get(i)).toFloat
   }
 
   def arrayByConst(const:Float, a:Array[Float]):Array[Float] = {
