@@ -146,25 +146,41 @@ class SmoothRank extends Ranker{
         arrayByConst(
           D(j, rl) / Math.pow(E(j, rl), 2).toFloat,
           (
-            arrayByConst(
-              (0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
-              (0 until rl.size).map(p => arrayByConst(
-                e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl)),
-                X(p,rl))
-              ).transpose.toArray.map(_.sum)
-            )
+            (
+              (
+                arrayByConst(
+                  (0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
+                  (0 until rl.size).map(p => arrayByConst(
+                    e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl)),
+                    X(p,rl))
+                  ).transpose.toArray.map(_.sum)
+                )
+              ,
+                arrayByConst(
+                  E(j,rl),
+                  (0 until rl.size).map(p =>
+                    arrayByConst(
+                      e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl))*G(l(p,rl)),
+                      X(p,rl))).transpose.toArray.map(_.sum)
+                )
+              ).zipped.map((x,y) => x-y)
+            ,
+              arrayByConst(
+                E(j,rl),
+                (0 until rl.size).map(i =>
+                  arrayByConst(
+                    G(l(i,rl))*e(i,j,rl)*f(i,rl),
+                    X(d(j+1,rl),rl)
+                  )
+                ).transpose.toArray.map(_.sum)
+              )
+            ).zipped.map((x,y) => x+y)
           ,
             arrayByConst(
-              E(j,rl),
-              (0 until rl.size).map(p => arrayByConst(e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl))*G(l(p,rl)), X(p,rl))).transpose.toArray.map(_.sum)
+              (0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl)).reduceLeft(_+_) * (0 until rl.size).map(i => f(i,rl)*e(i,j,rl)).reduceLeft(_+_),
+              X(d(j+1,rl), rl)
             )
           ).zipped.map((x,y) => x-y)
-          //arrayByConst(E(j,rl), (0 until rl.size).map(i => arrayByConst(G(l(i,rl))*e(i,j,rl)*f(i,rl), X(d(j,rl),rl))).transpose.toArray.map(_.sum)) -
-
-          /*arrayByConst(
-            (0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl)).reduceLeft(_+_) * (0 until rl.size).map(i => f(i+1,rl)*e(i,j,rl)).reduceLeft(_+_),
-            X(d(j,rl), rl)
-          )*/
         )
       ).transpose.toArray.map(_.sum)
     )
