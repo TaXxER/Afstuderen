@@ -14,8 +14,8 @@ import scala.collection.JavaConverters._
  */
 class SmoothRank extends Ranker{
   //Parameters
-  val initialSF                = Math.pow(2,  6)
-  val stoppingSF               = Math.pow(2, -6)
+  val initialSF                = Math.pow(2,  6).toFloat
+  val stoppingSF               = Math.pow(2, -6).toFloat
   val initIterations           = 10
   val initEps                  = 0.01 // step size
   val k                        = 10
@@ -52,11 +52,15 @@ class SmoothRank extends Ranker{
 
     var smoothFactor = initialSF
     // Calculate gradient vector
+    PRINTLN("w: ")
+    w.foreach(x => PRINT(""+x+" "))
     while(smoothFactor >= stoppingSF){
-      val dw = scaledSamples.map(rl => grad(rl)).transpose.toArray.map(_.sum)
+      val dw = scaledSamples.map(rl => grad(rl, smoothFactor)).transpose.toArray.map(_.sum)
       // TODO: Tijdelijk hier gradient descent, vervangen door NonLinearConjugateGradient met Polak-Ribiere update
       // TODO: l_2-norm regularization term hier in verwerken
       w = (w, dw).zipped.map((x, y) => x+y)
+      PRINTLN("w: ")
+      w.foreach(x => PRINT(""+x+" "))
       smoothFactor = smoothFactor / 2
     }
     /*
@@ -153,36 +157,36 @@ class SmoothRank extends Ranker{
     return rls.toArray
   }
 
-  def grad(rl:RankList):Array[Float] = {
-    return arrayByConst(2/initialSF,
+  def grad(rl:RankList, sf:Float):Array[Float] = {
+    return arrayByConst(2/sf,
       (0 until rl.size).map(j =>
         arrayByConst(
-          D(j, rl) / Math.pow(E(j, rl), 2).toFloat,
+          D(j+1, rl) / Math.pow(E(j,rl,sf), 2).toFloat,
           (
             (
               (
                 arrayByConst(
-                  (0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
+                  (0 until rl.size).map(i => (G(l(i,rl))*e(i,j,rl,sf))).reduceLeft(_+_), // Wat doet deze e_i hier! e hoort twee parameters te hebben
                   (0 until rl.size).map(p => arrayByConst(
-                    e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl)),
+                    e(p,j,rl,sf)*(f(p,rl)-f(d(j+1,rl),rl)),
                     X(p,rl))
                   ).transpose.toArray.map(_.sum)
                 )
               ,
                 arrayByConst(
-                  E(j,rl),
+                  E(j,rl,sf),
                   (0 until rl.size).map(p =>
                     arrayByConst(
-                      e(p,j,rl)*(f(p,rl)-f(d(j+1,rl),rl))*G(l(p,rl)),
+                      e(p,j,rl,sf)*(f(p,rl)-f(d(j+1,rl),rl))*G(l(p,rl)),
                       X(p,rl))).transpose.toArray.map(_.sum)
                 )
               ).zipped.map((x,y) => x-y)
             ,
               arrayByConst(
-                E(j,rl),
+                E(j,rl,sf),
                 (0 until rl.size).map(i =>
                   arrayByConst(
-                    G(l(i,rl))*e(i,j,rl)*f(i,rl),
+                    G(l(i,rl))*e(i,j,rl,sf)*f(i,rl),
                     X(d(j+1,rl),rl)
                   )
                 ).transpose.toArray.map(_.sum)
@@ -190,7 +194,7 @@ class SmoothRank extends Ranker{
             ).zipped.map((x,y) => x+y)
           ,
             arrayByConst(
-              (0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl)).reduceLeft(_+_) * (0 until rl.size).map(i => f(i,rl)*e(i,j,rl)).reduceLeft(_+_),
+              (0 until rl.size).map(i => G(l(i,rl))*e(i,j,rl,sf)).reduceLeft(_+_) * (0 until rl.size).map(i => f(i,rl)*e(i,j,rl,sf)).reduceLeft(_+_),
               X(d(j+1,rl), rl)
             )
           ).zipped.map((x,y) => x-y)
@@ -236,8 +240,8 @@ class SmoothRank extends Ranker{
    * Returns, for a given k, the sum of e(i,k) for all documents i in rl
    * @requires rl.size > k >= 0
    */
-  def E(k:Int, rl:RankList):Float = {
-    (0 until rl.size).map(j => e(k,j,rl)).reduceLeft(_+_)
+  def E(k:Int, rl:RankList, SmoothFactor:Float):Float = {
+    (0 until rl.size).map(j => e(k,j,rl,SmoothFactor)).reduceLeft(_+_)
   }
 
   /*
@@ -246,12 +250,12 @@ class SmoothRank extends Ranker{
    * @requires rl.size >= j > 0
    * @ensures 1 >= result >= 0
    */
-  def e(i:Int, j:Int, rl:RankList):Float = {
+  def e(i:Int, j:Int, rl:RankList, smoothFactor:Float):Float = {
     //val ideal = rl.getCorrectRanking
     //val predicted = (0 until rl.size).map(x => eval(rl.get(x)))
     //val idx = Sorter.sort(predicted.toArray, false)
     Math.exp(- Math.pow( f(i,rl) -
-      f(d(j+1,rl),rl) ,2) / initialSF ).toFloat
+      f(d(j+1,rl),rl) ,2) / smoothFactor ).toFloat
   }
 
   /*
