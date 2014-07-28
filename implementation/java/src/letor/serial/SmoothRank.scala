@@ -16,8 +16,8 @@ class SmoothRank extends Ranker{
   //Parameters
   val initialSF                = Math.pow(2,  6).toFloat
   val stoppingSF               = Math.pow(2, -6).toFloat
-  val initIterations           = 10
-  val initEps                  = 0.01 // step size
+  val initIterations           = 100
+  val initEps                  = 0.00001.toFloat // step size
   val k                        = 10
 
   //Local variables
@@ -28,19 +28,25 @@ class SmoothRank extends Ranker{
   override def init() {
     PRINT("Initializing... ")
 
+    // TODO: vervangen door iteratieve variant, die wel schaalt naar veel data
+
     scaledSamples = scaleFeatures(samples, features.length)
-    val spi = new SolvePseudoInverseSvd()
 
-    val numDps = scaledSamples.map(x => x.size).reduceLeft(_+_)
-    var A = new DenseMatrix64F(numDps, features.length)
-    var B = new DenseMatrix64F(numDps, 1)
-    var X = new DenseMatrix64F(features.length, 1)
-    scaledSamples.foreach(x => addToPseudoSolver(x, A, B))
-    spi.setA(A)
-    spi.solve(B,X)
-
-    val w0 = X.getData.map(x => x.toFloat)
-    w = w0
+    w = (0 until features.length).map(i => (1.toFloat/features.length)).toArray // uniform weight vector
+    PRINTLN("")
+    for(i <- 1 to initIterations){
+      val dw = arrayByConst(initEps, scaledSamples.map(rl => (0 until rl.size-1).map(dpi => (1 to features.length).map(f => rl.get(dpi).getFeatureValue(f) * (rl.get(dpi).getLabel - eval(rl.get(dpi)).toFloat))).transpose.toArray.map(_.sum)).transpose.toArray.map(_.sum))
+      w = (w, dw).zipped.map(_+_)
+      PRINT("dw: ")
+      dw.foreach(x => PRINT(""+x+" "))
+      PRINTLN("")
+      PRINT("w:  ")
+      w.foreach(x => PRINT(""+x+" "))
+      PRINTLN("")
+      val cost = scaledSamples.map(rl => (0 until rl.size-1).map(dpi => Math.pow(eval(rl.get(dpi)) - rl.get(dpi).getLabel,2)).reduceLeft(_+_)).reduceLeft(_+_)
+      PRINTLN("Cost: "+cost)
+      PRINTLN("")
+    }
 
     PRINTLN("[DONE]")
   }
@@ -215,7 +221,10 @@ class SmoothRank extends Ranker{
     var D = (0).toFloat
     if (r <= k) {
       D = 1 / (Math.log(1 + r) / Math.log(2)).toFloat
-      D = D / G(rl.getCorrectRanking.get(r).getLabel)
+      D = D / G(rl
+        .getCorrectRanking
+        .get(r)
+        .getLabel)
     }
     D //return value
   }
