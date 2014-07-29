@@ -1,5 +1,6 @@
 package letor.serial;
 
+import letor.serial.parameterizedRankers.ListNetHandler;
 import letor.serial.parameterizedRankers.SmoothRankHandler;
 import letor.serial.util.Measurement;
 
@@ -8,7 +9,7 @@ import letor.serial.util.Measurement;
  */
 public class WrappedRunner {
     public static void main(String[] args){
-        FoldRunHandler listNetWrapper = new FoldRunHandler(new SmoothRankHandler(), "mini");
+        FoldRunHandler listNetWrapper = new FoldRunHandler(new SmoothRankHandler(), "MSLR-WEB30K");
         Measurement measurement = listNetWrapper.averageScore();
         System.out.println("Time elapsed: "+measurement.getRunningTime());
         System.out.println("NDCG@10:      "+measurement.getEvaluationResult()+" ms");

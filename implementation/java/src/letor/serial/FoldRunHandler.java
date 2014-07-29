@@ -18,7 +18,7 @@ public class FoldRunHandler {
     private MetricScorerFactory mFact = new MetricScorerFactory();
 
     private String path  = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
-    private int folds    = 5;
+    private int folds    = 1;
 
     private Ranker ranker;
 
