@@ -2,14 +2,12 @@ package letor.serial;
 
 import ciir.umass.edu.learning.{RankList, Ranker, DataPoint}
 import ciir.umass.edu.utilities.Sorter
-import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer
-import org.ejml.alg.dense.linsol.svd.SolvePseudoInverseSvd
 import org.ejml.data.{DenseMatrix64F, ReshapeMatrix64F}
 import org.ejml.ops.CommonOps
 import scala.collection.JavaConverters._
 
 /*
- * Implements SmoothRank
+ * Implementation of SmoothRank
  * @Author Niek Tax
  */
 class SmoothRank extends Ranker{
@@ -19,16 +17,15 @@ class SmoothRank extends Ranker{
   val initIterations           = 100
   val initEps                  = 0.00001.toFloat // step size
   val k                        = 10
+  val lambda                   = 0.01 // We chose it on the validation set in the set {10E−6, 10E−5, . . . , 10E2, 10E3}
 
   //Local variables
-  var w:Array[Float] = null
+  var w:Array[Float]                = null
+  var w0:Array[Float]               = null
   var scaledSamples:Array[RankList] = null
-  var lambda                   = 1
 
   override def init() {
     PRINT("Initializing... ")
-
-    // TODO: vervangen door iteratieve variant, die wel schaalt naar veel data
 
     scaledSamples = scaleFeatures(samples, features.length)
 
@@ -47,7 +44,7 @@ class SmoothRank extends Ranker{
       PRINTLN("Cost: "+cost)
       PRINTLN("")
     }
-
+    w0 = w
     PRINTLN("[DONE]")
   }
 
@@ -57,61 +54,61 @@ class SmoothRank extends Ranker{
     PRINTLN("---------------------------");
 
     var smoothFactor = initialSF
-    // Calculate gradient vector
-    PRINTLN("w: ")
-    w.foreach(x => PRINT(""+x+" "))
+    var d:Array[Float]  = null
+    var g2:Array[Float] = null
+
+    // Conjugate Gradient step size options
+    val aOptions = Array(1.0,0.5,0.1,0.05,0.01,0.005,0.001).map(x => x.toFloat)
+
+    // Step 1
+    var g = scaledSamples.map(rl => grad(rl, smoothFactor)).transpose.toArray.map(_.sum)
+    d = arrayByConst(-1, g)
+
     while(smoothFactor >= stoppingSF){
-      val dw = scaledSamples.map(rl => grad(rl, smoothFactor)).transpose.toArray.map(_.sum)
-      // TODO: Tijdelijk hier gradient descent, vervangen door NonLinearConjugateGradient met Polak-Ribiere update
-      // TODO: l_2-norm regularization term hier in verwerken
-      w = (w, dw).zipped.map((x, y) => x+y)
-      PRINTLN("w: ")
-      w.foreach(x => PRINT(""+x+" "))
+      // SmoothRank Annealing step
       smoothFactor = smoothFactor / 2
+
+      // Backup w
+      val w_backup = w
+      var bestW    = w
+      var minF     = Float.MaxValue
+
+      // Step 2
+      for(a <- aOptions){
+        w = (w_backup, arrayByConst(a,d)).zipped.map(_+_)
+        val thisF = F(smoothFactor)
+        if(thisF < minF) {
+          minF = thisF
+          bestW = w
+        }
+      }
+
+      // Step 3
+      w = bestW
+      PRINTLN("")
+      PRINT("w:  ")
+      w.foreach(x => PRINT(""+x+" "))
+
+      // Step 4 + 5
+      val g2 = arrayByConst(-1, scaledSamples.map(rl => grad(rl, smoothFactor)).transpose.toArray.map(_.sum))
+      val b = (g2, (g2, g).zipped.map(_-_)).zipped.map(_*_).sum  / g.map(x => 2*x).sum
+      d = (g2, arrayByConst(b, d)).zipped.map(_+_)
+      g = g2
     }
-    /*
-        for(rl:RankList <- scaledSamples) {
-          PRINTLN("grad(rl):")
-          grad(rl).foreach(x => PRINT(""+x))
-
-          val wEvaluated = (1 until rl.size).map(x => eval(rl.get(x)))
-          val idx = Sorter.sort(wEvaluated.toArray, false)
-          val wRanked = new RankList(rl, idx)
-          val idealRanked = rl.getCorrectRanking
-
-          val divisor = (0 until rl.size-1).map(j =>
-            (0 until rl.size-1).map(i =>
-              Math.exp(-(Math.pow(eval(wRanked.get(i)) - eval(idealRanked.get(j)), 2) / smoothFactor))
-            ).reduceLeft(_+_)
-          )
-
-          /*val h = (0 until rl.size-1).map(j =>
-            (0 until rl.size-1).map(i =>
-              Math.exp(-(Math.pow(eval(wRanked.get(i)) - eval(idealRanked.get(j)), 2) / smoothFactor) / divisor(j))
-            )
-          )*/
-          val Aq = (0 until rl.size-1).map(j =>
-            (1/(Math.log(j+2)/Math.log(2))) * (0 until rl.size-1).map(i =>
-              Math.pow(wRanked.get(i).getLabel, 2) * Math.exp(-(Math.pow(eval(wRanked.get(i)) - eval(idealRanked.get(j)), 2) / smoothFactor) / divisor(j))
-            ).reduceLeft(_+_)
-          ).reduceLeft(_+_)
-          totalAq += Aq
-    }*/
-
-    //
-    //)
-    //val optimizer = new NonLinearConjugateGradientOptimizer(NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE, null)
   }
 
   override def eval(p:DataPoint):Double = {
-    val weightedFeatures = (1 to features.length).map(x => p.getFeatureValue(x)*w(x-1) )
-    return weightedFeatures.reduceLeft(_+_)
+    val weightedFeatures = (1 to features.length).map(x =>
+      p.getFeatureValue(x) *
+      w(x-1)
+    )
+    weightedFeatures.reduceLeft(_+_)
   }
 
   override def rank(rl:RankList):RankList = {
     val wEvaluated = (0 until rl.size).map(x => eval(rl.get(x)))
     val idx = Sorter.sort(wEvaluated.toArray, false)
-    return new RankList(rl, idx)
+    new RankList(rl, idx)
   }
 
   def addToPseudoSolver(rl:RankList, a:ReshapeMatrix64F, b:ReshapeMatrix64F) = {
@@ -160,11 +157,37 @@ class SmoothRank extends Ranker{
       }
     }
 
-    return rls.toArray
+    rls.toArray
+  }
+
+  def F(sf:Float):Float = {
+    var totalAq = 0.0.toFloat
+    for(rl:RankList <- scaledSamples) {
+      val wEvaluated = (1 until rl.size).map(x => eval(rl.get(x)))
+      val idx = Sorter.sort(wEvaluated.toArray, false)
+      val wRanked = new RankList(rl, idx)
+      val idealRanked = rl.getCorrectRanking
+
+      val divisor = (0 until rl.size-1).map(j =>
+        (0 until rl.size-1).map(i =>
+          Math.exp(-(Math.pow(eval(wRanked.get(i)) - eval(idealRanked.get(j)), 2) / sf))
+        ).reduceLeft(_+_)
+      )
+
+      val Aq = (0 until rl.size-1).map(j =>
+        (1/(Math.log(j+2)/Math.log(2))) * (0 until rl.size-1).map(i =>
+          Math.pow(wRanked.get(i).getLabel, 2) * Math.exp(-(Math.pow(eval(wRanked.get(i)) - eval(idealRanked.get(j)), 2) / sf) / divisor(j))
+        ).reduceLeft(_+_)
+      ).reduceLeft(_+_).toFloat
+      totalAq += Aq
+    }
+    // l2-norm term
+    val l2 = Math.sqrt((w,w0).zipped.map(_-_).map(Math.pow(_,2)).reduceLeft(_+_))
+    l2.toFloat - totalAq
   }
 
   def grad(rl:RankList, sf:Float):Array[Float] = {
-    return arrayByConst(2/sf,
+    arrayByConst(2/sf,
       (0 until rl.size).map(j =>
         arrayByConst(
           D(j+1, rl) / Math.pow(E(j,rl,sf), 2).toFloat,
@@ -226,7 +249,7 @@ class SmoothRank extends Ranker{
         .get(r)
         .getLabel)
     }
-    D //return value
+    D
   }
 
   /*
