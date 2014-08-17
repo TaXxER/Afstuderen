@@ -16,15 +16,16 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB30K;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM_10;
     private static final double   STEPSIZE   = 0.00005; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
-    private static final int      ITERATIONS = 20;
-    private static final int      FOLDS      = 5;
+    private static final int      ITERATIONS = 1;
+    private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  availableMappers              = 16;
-    private static int  availableReducers             = 8;
+    private static int  dataNodes                     = 4;
+    private static int  availableMappers              = 4*dataNodes;
+    private static int  availableReducers             = 2*dataNodes;
 
     private static Metadata metadata                  = DataSets.getMetaData(DATASET);
     private static long MAX_TRAIN_SIZE                = metadata.getMax_train_size(); // ohsumed: 5151958, MQ2007: 25820919, MQ2008: 5927007, MSLR-WEB10K: 838011150, MSLR-WEB30K:
@@ -38,7 +39,7 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltrold";
+        String clusterName          = "ltr";
         String containerName        = "ltrmini2";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
@@ -55,6 +56,8 @@ public class ListNetCluster {
 
         // Start timer
         Long startTime = System.nanoTime();
+        Long trainTime = null;
+        Long endTime   = null;
 
         for(int f=0; f<FOLDS; f++) {
             int fold = f+1;
@@ -194,6 +197,7 @@ public class ListNetCluster {
                 System.out.println("best NDCG@"+k+": "+bestNdcg);
                 System.out.println();
             }
+            trainTime = System.nanoTime();
 
             pigLines.add(testConfigString);
             pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
@@ -219,13 +223,14 @@ public class ListNetCluster {
             foldNdcg[f] = Double.parseDouble(avg_ndcg);
             sumNdcg += foldNdcg[f];
         }
-        Long endTime = System.nanoTime();
+        endTime = System.nanoTime();
 
         averageNdcg = sumNdcg / FOLDS;
         for(int i=0; i<FOLDS; i++){
             System.out.println("Fold "+(i+1)+": "+foldNdcg[i]);
         }
         System.out.println("Average: "+averageNdcg);
-        System.out.println("Time: "+(endTime-startTime)/1000000+" ms");
+        System.out.println("Training time: "+(trainTime-startTime)/1000000+" ms");
+        System.out.println("Total time: "+(endTime-startTime)/1000000+" ms");
     }
 }
