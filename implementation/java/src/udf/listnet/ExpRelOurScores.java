@@ -64,9 +64,7 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
             for(int i=0; i<w.length; i++) {
                 // val ourScores = q.docFeatures.map(x => w dot x); (+2 to skip non-feature columns)
                 double augend = Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
-                getLogger().info("augend: "+augend);
                 our += augend;
-                getLogger().info("our:    "+our);
             }
             BigDecimal bdOur = BigDecimal.valueOf(our);
             BigDecimal bdExpOur = expTaylor(bdOur, 4);
