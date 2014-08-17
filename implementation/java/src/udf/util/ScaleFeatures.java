@@ -32,9 +32,11 @@ public class ScaleFeatures extends EvalFunc<Tuple>{
         // skip two: relevance label and qid
         for(int i=2; i<input.size(); i++){
             // (x - min(x)) / (max(x)-min(x))
-            double unscaled = Double.parseDouble(input.get(i).toString());
-            double scale    = (unscaled-minValues.get(i-2))/(maxValues.get(i-2)-minValues.get(i-2));
-            input.set(i, scale);
+            if(maxValues.get(i-2)-minValues.get(i-2) > 0) { // prevents possible dividing by 0 scenario
+                double unscaled = Double.parseDouble(input.get(i).toString());
+                double scaled = (unscaled - minValues.get(i - 2)) / (maxValues.get(i - 2) - minValues.get(i - 2));
+                input.set(i, scaled);
+            }
         }
         return input;
     }

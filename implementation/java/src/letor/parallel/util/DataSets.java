@@ -7,7 +7,7 @@ package letor.parallel.util;
 public class DataSets {
     public static enum DataSet {
         OHSUMED, MQ2007, MQ2008, MSLR_WEB10K,
-        MSLR_WEB30K, CUSTOM_2, CUSTOM_10
+        MSLR_WEB30K, CUSTOM_2, CUSTOM_10, MINI
     }
 
     public static Metadata getMetaData(DataSet ds){
@@ -34,8 +34,11 @@ public class DataSets {
             case CUSTOM_10:
                 value = CUSTOM_10;
                 break;
+            case MINI:
+                value = MINI;
+                break;
             default:
-                System.err.print("Dataset unknown!");
+                System.err.println("ERROR: Dataset unknown!");
         }
         return value;
     }
@@ -47,4 +50,5 @@ public class DataSets {
     public static Metadata MSLR_WEB30K = new Metadata("MSLR-WEB30K", 136, 2624103186L,  878653757L, 8788653757L);
     public static Metadata CUSTOM_2    = new Metadata("Custom-2",    136, 4613302631L,  871874450L, 871874450L);
     public static Metadata CUSTOM_10   = new Metadata("Custom-10",   136, 23085163023L, 871874450L, 871874450L);
+    public static Metadata MINI        = new Metadata("mini",        45,  143380L,      195505L,    195505L);
 }

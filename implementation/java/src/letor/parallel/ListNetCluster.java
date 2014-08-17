@@ -17,7 +17,7 @@ import java.util.List;
 public class ListNetCluster {
     // Initialise hyper-parameters
     private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM_10;
-    private static final double   STEPSIZE   = 0.00005; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
+    private static final double   STEPSIZE   = 0.01; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 1;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
@@ -40,11 +40,11 @@ public class ListNetCluster {
     public static void main(String[] args) throws Exception {
         // Cluster configuration
         String clusterName          = "ltr";
-        String containerName        = "ltrmini2";
+        String containerName        = "ltrsmall";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
-        String storageAccount       = "ltrstorage";
-        String storageAccountKey    = "igtZD3Jih9lsvxoIcxCury1GDqS7Z4DQ0Ci7xVphY9p/6rnwaHG5qZFBKXjt0wOgwNwVqno5sitAy/eucuPGMA==";
+        String storageAccount       = "ltrmini";
+        String storageAccountKey    = "BhtOmUzMsrWBmSdyzEGgX5zPbeBQrJNdtOypfskEXLwvkZh5lcrcf2JO023oepUhee67vt9+XrMXoHYw7Yjflg==";
         AzurePigWrapper apw         = new AzurePigWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
@@ -56,7 +56,8 @@ public class ListNetCluster {
 
         // Start timer
         Long startTime = System.nanoTime();
-        Long trainTime = null;
+        Long preproccessedTime = null;
+        Long trainedTime = null;
         Long endTime   = null;
 
         for(int f=0; f<FOLDS; f++) {
@@ -68,7 +69,7 @@ public class ListNetCluster {
 
             // Standardize data and scale features
             pigLines.add(trainConfigString);
-            pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
+            pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
             pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
             pigLines.add("TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1;");
@@ -85,7 +86,7 @@ public class ListNetCluster {
             for(String minmax : minmaxStrings)
                 minmaxList.add(Double.parseDouble(minmax));
             pigLines.add(trainConfigString);
-            pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
+            pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
             pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             pigLines.add("VALIDATE = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/vali.txt' USING PigStorage(' ');");
             pigLines.add("TEST = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
@@ -104,6 +105,8 @@ public class ListNetCluster {
             apw.azureRunPig(combinedPigLines);
             pigLines.clear();
 
+            preproccessedTime = System.nanoTime();
+
             for (int i = 1; i <= ITERATIONS; i++) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
                 // val ourScores = q.docFeatures.map(x => w dot x);
@@ -113,7 +116,7 @@ public class ListNetCluster {
                 // val sumExpOurScores = expOurScores.reduce(_ + _);
                 // val P_z = expOurScores.map(z => z/sumExpOurScores);
                 pigLines.add(trainConfigString);
-                pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
+                pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
                 pigLines.add("DEFINE QueryLossGradient udf.listnet.QueryLossGradient('" + DIM + "');");
                 pigLines.add("DEFINE ExpRelOurScores udf.listnet.ExpRelOurScores('" + LtrUtils.toParamString(w, i) + "');");
                 if (i == 1){
@@ -157,7 +160,7 @@ public class ListNetCluster {
 
                 // EVALUATE MODEL ON VALIDATION SET
                 pigLines.add(valiConfigString);
-                pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
+                pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
                 pigLines.add("DEFINE Ndcg udf.util.Ndcg('" + LtrUtils.toParamString(w,k) + "');");
 
                 if (i == 1){
@@ -197,10 +200,10 @@ public class ListNetCluster {
                 System.out.println("best NDCG@"+k+": "+bestNdcg);
                 System.out.println();
             }
-            trainTime = System.nanoTime();
+            trainedTime = System.nanoTime();
 
             pigLines.add(testConfigString);
-            pigLines.add("REGISTER wasb:///user/hdp/lib/listnet_udfs_jar/*.jar;");
+            pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
             //pigLines.add("TEST = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
             //pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm($0..));");
             pigLines.add("TEST_SCA = LOAD 'test_sca"+f+"/*' USING BinStorage();");
@@ -229,8 +232,10 @@ public class ListNetCluster {
         for(int i=0; i<FOLDS; i++){
             System.out.println("Fold "+(i+1)+": "+foldNdcg[i]);
         }
-        System.out.println("Average: "+averageNdcg);
-        System.out.println("Training time: "+(trainTime-startTime)/1000000+" ms");
-        System.out.println("Total time: "+(endTime-startTime)/1000000+" ms");
+        System.out.println("Average NDCG:       "+averageNdcg);
+        System.out.println("Preprocessing time: "+(preproccessedTime- startTime)/1000000+" ms");
+        System.out.println("Training time:      "+(trainedTime-preproccessedTime)/1000000+" ms");
+        System.out.println("Test Time:          "+(endTime-trainedTime)/1000000+" ms");
+        System.out.println("Total time:         "+(endTime-startTime)/1000000+" ms");
     }
 }
