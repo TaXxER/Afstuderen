@@ -40,7 +40,7 @@ public class LargeDatasetCreator {
         HashSet<Long>   qidSet = new HashSet<Long>();
         BufferedReader  reader = null;
         try {
-            reader = new BufferedReader(new FileReader(inputPath + "/fold1/train.txt"));
+            reader = new BufferedReader(new FileReader(inputPath + "/Fold1/train.txt"));
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -81,12 +81,12 @@ public class LargeDatasetCreator {
         BufferedReader reader = null;
         BufferedWriter writer = null;
         try {
-            reader = new BufferedReader(new FileReader(inputPath + "/fold1/train.txt"));
+            reader = new BufferedReader(new FileReader(inputPath + "/Fold1/train.txt"));
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }
         try{
-            writer = new BufferedWriter(new FileWriter(outputPath + "/fold1/train.txt"));
+            writer = new BufferedWriter(new FileWriter(outputPath + "/Fold1/train.txt"));
         }catch(IOException e){
             e.printStackTrace();
         }

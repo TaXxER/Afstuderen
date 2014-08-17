@@ -48,7 +48,7 @@ public class DataSets {
     public static Metadata MQ2008      = new Metadata("MQ2008",      46,  5927007L,     2237346L,   2237346L);
     public static Metadata MSLR_WEB10K = new Metadata("MSLR-WEB10K", 136, 838011150L,   280714022L, 280714022L);
     public static Metadata MSLR_WEB30K = new Metadata("MSLR-WEB30K", 136, 2624103186L,  878653757L, 8788653757L);
-    public static Metadata CUSTOM_2    = new Metadata("Custom-2",    136, 4613302631L,  871874450L, 871874450L);
-    public static Metadata CUSTOM_10   = new Metadata("Custom-10",   136, 23085163023L, 871874450L, 871874450L);
+    public static Metadata CUSTOM_2    = new Metadata("custom-2",    136, 4613302631L,  871874450L, 871874450L);
+    public static Metadata CUSTOM_10   = new Metadata("custom-10",   136, 23085163023L, 871874450L, 871874450L);
     public static Metadata MINI        = new Metadata("mini",        45,  143380L,      195505L,    195505L);
 }
