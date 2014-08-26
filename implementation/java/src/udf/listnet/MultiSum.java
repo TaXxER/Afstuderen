@@ -18,6 +18,8 @@ import java.util.List;
  *  1) Calculates the elementwise sum of all columns of a multicolumn relation
  *
  * Created by niek.tax on 5/12/2014.
+ *
+ * TODO: Look into using algebraic or accumulator interface for this UDF
  */
 public class MultiSum extends EvalFunc<Tuple> {
     public Tuple exec(Tuple input) throws IOException {

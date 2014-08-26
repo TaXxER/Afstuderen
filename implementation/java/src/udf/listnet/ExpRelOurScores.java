@@ -19,6 +19,8 @@ import java.util.List;
  *  2) Transforms pred_rel to e^(pred_rel)
  *
  * Created by niek.tax on 5/6/2014.
+ *
+ * TODO: Look into using algebraic or accumulator interface for this UDF
  */
 public class ExpRelOurScores extends EvalFunc<Tuple>{
     private double[] w;

@@ -6,16 +6,33 @@ package letor.serial.util;
  * @author Niek Tax
  */
 public class Measurement {
-    private long    runningTime;
+    private static final int timeConversion = 1000000;
+
+    private long    preprocessingTime;
+    private long    trainingTime;
+    private long    testTime;
+    private long    totalTime;
     private double  evaluationResult;
 
-    public Measurement(long runningTime, double evaluationResult){
-        this.runningTime      = runningTime;
-        this.evaluationResult = evaluationResult;
+    public Measurement(long start, long afterPre, long afterTrain, long end, double evaluationResult){
+        this.preprocessingTime = (afterPre-start)/timeConversion;
+        this.trainingTime      = (afterTrain-afterPre)/timeConversion;
+        this.testTime          = (end-afterTrain)/timeConversion;
+        this.totalTime         = (end-start)/timeConversion;
+        this.evaluationResult  = evaluationResult;
     }
 
-    public long getRunningTime(){
-        return runningTime;
+    public long getPreprocessingTime(){
+        return preprocessingTime;
+    }
+    public long getTrainingTime(){
+        return trainingTime;
+    }
+    public long getTestTime(){
+        return testTime;
+    }
+    public long getTotalTime(){
+        return totalTime;
     }
 
     public double getEvaluationResult(){

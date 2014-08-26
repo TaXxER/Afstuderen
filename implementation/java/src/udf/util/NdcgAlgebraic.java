@@ -2,13 +2,16 @@ package udf.util;
 
 import ciir.umass.edu.utilities.SimpleMath;
 import com.google.common.collect.TreeMultiset;
+import org.apache.pig.Algebraic;
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 import udf.listnet.util.Document;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Calculates Ndcg@k
@@ -17,11 +20,11 @@ import java.util.*;
  *
  * TODO: Look into using algebraic or accumulator interface for this UDF
  */
-public class Ndcg extends EvalFunc<Double>{
+public class NdcgAlgebraic extends EvalFunc<Double> implements Algebraic{
     private double[] w;
     private int      k;
 
-    public Ndcg(String paramsString){
+    public NdcgAlgebraic(String paramsString){
         // Read UDF parameters
         String[] params = paramsString.split(";");
         String wAsString = params[0];
@@ -66,6 +69,28 @@ public class Ndcg extends EvalFunc<Double>{
         Collections.sort(docList, Document.getPredictedComparator());
         double DCG = getDCG(docList, k);
         return (idealDCG>0) ? DCG/idealDCG : 0.0;
+    }
+
+    public String getInitial() {return Initial.class.getName();}
+    public String getIntermed() {return  Intermed.class.getName();}
+    public String getFinal() {return Final.class.getName();}
+
+    static public class Initial extends EvalFunc<Tuple> {
+        public Tuple exec(Tuple input) throws IOException {
+            return null; // TODO: implement
+        }
+    }
+
+    static public class Intermed extends EvalFunc<Tuple> {
+        public Tuple exec(Tuple input) throws IOException {
+            return null; //TODO: implement
+        }
+    }
+
+    static public class Final extends EvalFunc<Double> {
+        public Double exec(Tuple input) throws IOException {
+            return null; //TODO: implement
+        }
     }
 
     private static double getDCG(LinkedList<Document> rel, int k){

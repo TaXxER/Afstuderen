@@ -44,22 +44,38 @@ public class LtrUtils {
     }
 
     public static String getPigConfigString(long fileSize, int mappers, int reducers){
-        long splitByBytes = (long)((fileSize / (mappers-1)) * 1.35); // always keep one mapper available for templetonjob. 0.7 adjusts for standardisation and feature scaling, which shrink data set by +- 30%
-        if (splitByBytes > 6125000){
-            splitByBytes = 6125000; // Maximum number of bytes that fits in cluster node memory (512MB physical memory nodes)
-        }
+        int  nodeMemory  = 400000000;
+        long mapSplit    = (long)((fileSize / (mappers-1)) * 1.35); // always keep one mapper available for templetonjob. 1.35 roughly adjusts for data size changes in standardisation and feature scaling
+        long reduceSplit = (long)((fileSize / (reducers-1)) * 1.35);
+
+        String setReduceString = "";
         int usedReducers = reducers > 1 ? reducers - 1 : 1; // always keep one reducer available for templetonjob
+        if(fileSize/usedReducers > nodeMemory){
+            reduceSplit = reduceSplit > nodeMemory ? nodeMemory : reduceSplit;
+            setReduceString = "SET pig.exec.reducers.bytes.per.reducer "+reduceSplit+";";
+        }else{
+            setReduceString = "SET default_parallel "+usedReducers+";";
+        }
+
+        mapSplit = mapSplit > nodeMemory ? nodeMemory : mapSplit;
+
         String configString =
-        "SET default_parallel "+usedReducers+";"+
+        setReduceString +
         "SET job.name 'Learning to Rank';"+
         "SET mapred.task.timeout= 1800000;"+
         "SET mapreduce.task.timeout= 1800000;"+ // For Hadoop 2.3.0 and up
-        "SET pig.maxCombinedSplitSize "+splitByBytes+";"+
+        "SET pig.maxCombinedSplitSize "+mapSplit+";"+
         "SET pig.noSplitCombination true;"+
-        "SET mapred.min.split.size "+splitByBytes+";"+
-        "SET mapreduce.input.fileinputformat.split.maxsize "+splitByBytes+";"+ // For Hadoop 2.3.0 and up
-        "SET mapred.max.split.size "+splitByBytes+";"+
-        "SET mapreduce.input.fileinputformat.split.minsize "+splitByBytes+";"; // For Hadoop 2.3.0 and up
+        "SET mapred.min.split.size "+mapSplit+";"+
+        "SET mapreduce.input.fileinputformat.split.maxsize "+mapSplit+";"+ // For Hadoop 2.3.0 and up
+        "SET mapred.max.split.size "+mapSplit+";"+
+        "SET mapreduce.input.fileinputformat.split.minsize "+mapSplit+";"; // For Hadoop 2.3.0 and up
+        //"SET mapred.job.shuffle.input.buffer.percent 0.2;"+
+        //"SET mapreduce.reduce.shuffle.input.buffer.percent 0.2;";
+        //"SET io.sort.factor 5;"+
+        //"SET mapreduce.task.io.sort.factor 5;";
+        //"SET io.sort.mb 50;"+
+        //"SET mapreduce.task.io.sort.mb 50;";
         return configString;
     }
 }

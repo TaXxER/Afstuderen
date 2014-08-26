@@ -17,6 +17,8 @@ import java.util.Iterator;
  *  2) Calculates feature gradients based on the current query
  *
  * Created by niek.tax on 5/6/2014.
+ *
+ * TODO: Look into using algebraic or accumulator interface for this UDF
  */
 public class QueryLossGradient extends EvalFunc<Tuple> {
     int DIM;

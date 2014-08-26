@@ -97,6 +97,7 @@ public class LargeDatasetCreator {
                 Long qid = Long.parseLong(line.split(" ")[1].substring(4)); // Read qid
                 for(Long newQid : newQids.get(qid)){
                     writer.write(getLine(line, newQid));
+                    writer.newLine();
                 }
             }
             reader.close();
@@ -110,6 +111,6 @@ public class LargeDatasetCreator {
     private static String getLine(String line, Long newQid){
         String[] lineParts = line.split(" ");
         lineParts[1] = lineParts[1].substring(0,4).concat(""+newQid);
-        return StringUtils.join(lineParts);
+        return StringUtils.join(lineParts, " ");
     }
 }

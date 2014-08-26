@@ -10,7 +10,7 @@ import letor.serial.FoldRunHandler;
  */
 public class ListNetHandler implements AbstractParameterizedRanker{
     // PARAMETERS
-    private int nIteration = 20000;
+    private int nIteration = 1;
 
     public Ranker getParameterizedRanker() {
         ListNet ranker = new ListNet();

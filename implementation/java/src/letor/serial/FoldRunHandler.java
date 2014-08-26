@@ -2,10 +2,14 @@ package letor.serial;
 
 import ciir.umass.edu.features.FeatureManager;
 import ciir.umass.edu.learning.*;
+import ciir.umass.edu.learning.neuralnet.ListNet;
 import ciir.umass.edu.metric.MetricScorer;
 import ciir.umass.edu.metric.MetricScorerFactory;
 import ciir.umass.edu.utilities.SimpleMath;
+import letor.parallel.util.DataSets;
 import letor.serial.parameterizedRankers.AbstractParameterizedRanker;
+import letor.serial.parameterizedRankers.ListNetHandler;
+import letor.serial.parameterizedRankers.SmoothRankHandler;
 import letor.serial.util.Measurement;
 
 import java.util.List;
@@ -28,15 +32,24 @@ public class FoldRunHandler {
     private MetricScorer trainScorer = mFact.createScorer(trainMetric);
     private MetricScorer testScorer  = mFact.createScorer(testMetric);
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, String pathPostFix){
+    private Long startTime;
+    private Long preTime;
+    private Long trainTime;
+    private Long endTime;
+
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations){
         this.ranker      = ranker.getParameterizedRanker();
-        path = path + pathPostFix +"\\";
+        if(ranker instanceof ListNetHandler){
+            ((ListNet)this.ranker).nIteration = iterations;
+        }
+        this.path        = path + DataSets.getMetaData(dataSet).getName() +"\\";
+        this.folds       = folds;
     }
 
     public Measurement averageScore() {
         double scoreSum          = 0.0;
 
-        Long startTime = System.nanoTime();
+        startTime = System.nanoTime();
         for(int i=0; i<folds; i++){
             System.out.println("Start Fold "+(i+1)+" evaluation");
             String trainFiles      = path + "Fold"+(i+1)+"\\train.txt";
@@ -46,9 +59,9 @@ public class FoldRunHandler {
             System.out.println("Fold "+(i+1)+" = "+foldScore);
             scoreSum += foldScore;
         }
-        Long endTime = System.nanoTime();
+        endTime = System.nanoTime();
 
-        return new Measurement((endTime-startTime)/1000000, scoreSum/folds);
+        return new Measurement(startTime, preTime, trainTime, endTime, scoreSum/folds);
     }
 
     public double evaluate(String trainFile, String validationFile, String testFile){
@@ -61,8 +74,10 @@ public class FoldRunHandler {
         Ranker.verbose = true;
         ranker.set(trainScorer);
         ranker.setValidationSet(validation);
+        preTime = System.nanoTime();
         ranker.init();
         ranker.learn();
+        trainTime = System.nanoTime();
 
         return SimpleMath.round(testScorer.score(ranker.rank(test)), 4);
     }
