@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class LargeDatasetCreator {
     // Class parameters
-    private static int duplicationFactor = 2;
+    private static int duplicationFactor = 5;
 
     // Global variables
     private static String dataFolderPath = "C:/Git-data/Afstuderen/implementation/java/input";

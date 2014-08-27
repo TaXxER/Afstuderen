@@ -107,6 +107,7 @@ public class AzurePigWrapper {
 
         // STEP 2: Poll server until finished
         boolean jobComplete = false;
+        Map<String, String> lastJsonMap = null;
         while(!jobComplete) {
             final HttpGet getRequest = new HttpGet(retrieveStatusURL + jobId + "?user.name=hdp");
             getRequest.setHeader("Authorization", "Basic " + encoding);
@@ -140,7 +141,9 @@ public class AzurePigWrapper {
                 continue;
             }
 
-            System.out.println("jsonMap: "+jsonMap);
+            if(lastJsonMap==null || !jsonMap.equals(lastJsonMap))
+                System.out.println("jsonMap: "+jsonMap);
+            lastJsonMap = jsonMap;
 
             String completed = jsonMap.get("completed");
             if(completed!=null && completed.equals("done"))
