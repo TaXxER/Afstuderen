@@ -43,16 +43,11 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         if(input==null || input.size()!=1)
             return null;
         // Obtain set of data
-        DataBag docBag = (DataBag) input.get(0);
-        Iterator<Tuple> docIterator = docBag.iterator();
-        List<Tuple> docTupleList = new ArrayList<Tuple>();
+        Iterator<Tuple> docIterator = ((DataBag) input.get(0)).iterator();
         double sumRel = 0.0;
         BigDecimal sumOur = BigDecimal.ZERO;
         while(docIterator.hasNext()) {
             Tuple docTuple = docIterator.next();
-
-            // cache for second iteration
-            docTupleList.add(docTuple);
 
             // check whether first or non-first ListNet iteration
             if(ITERATION==1) {
@@ -81,14 +76,16 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         // val P_y = expRelScores.map(y => y/sumExpRelScores);
         // val sumExpOurScores = expOurScores.reduce(_ + _);
         // val P_z = expOurScores.map(z => z/sumExpOurScores);
-        for(Tuple dataItem : docTupleList){
+        Iterator<Tuple> docIterator2 = ((DataBag) input.get(0)).iterator();
+        while(docIterator2.hasNext()) {
+            Tuple dataItem = docIterator2.next();
             // Exp(relevance) only calculated in first iteration, as it is constant
-            if(ITERATION==1){
-                double rel =  Double.parseDouble(dataItem.get(dataItem.size()-2).toString());
-                dataItem.set(dataItem.size()-2, rel / sumRel);
+            if (ITERATION == 1) {
+                double rel = Double.parseDouble(dataItem.get(dataItem.size() - 2).toString());
+                dataItem.set(dataItem.size() - 2, rel / sumRel);
             }
-            double our =  Double.parseDouble(dataItem.get(dataItem.size()-1).toString());
-            dataItem.set(dataItem.size()-1, BigDecimal.valueOf(our).divide(sumOur, sumOur.precision(), RoundingMode.HALF_UP).doubleValue());
+            double our = Double.parseDouble(dataItem.get(dataItem.size() - 1).toString());
+            dataItem.set(dataItem.size() - 1, BigDecimal.valueOf(our).divide(sumOur, sumOur.precision(), RoundingMode.HALF_UP).doubleValue());
         }
         return input;
     }

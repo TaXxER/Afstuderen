@@ -16,14 +16,14 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MQ2008;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM_2;
     private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 4;
+    private static int  dataNodes                     = 8;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -39,7 +39,7 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "lrt4";
+        String clusterName          = "ltr8";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrstorage";
@@ -72,11 +72,11 @@ public class ListNetCluster {
             pigLines.add(trainConfigString);
             pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
             pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
-            pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1;");
-            pigLines.add("MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax($0..));");
+            pigLines.add("MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax(*));");
             pigLines.add("MIN_MAX_GRPD = GROUP MIN_MAX ALL;");
-            pigLines.add("MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax($0..));");
+            pigLines.add("MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));");
             pigLines.add("STORE MIN_MAX_FIN INTO 'minmax"+f+"';");
             String combinedPigLines = LtrUtils.concatenateStringList(pigLines);
             System.out.println("combinedPigLines: "+combinedPigLines);
@@ -93,13 +93,13 @@ public class ListNetCluster {
             pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             pigLines.add("VALIDATE = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/vali.txt' USING PigStorage(' ');");
             pigLines.add("TEST = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
-            pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm($0..));");
-            pigLines.add("VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm($0..));");
-            pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm($0..));");
+            pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));");
+            pigLines.add("VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));");
+            pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("DEFINE ScaleFeatures udf.util.ScaleFeatures('"+LtrUtils.toParamString(minmaxList)+"');");
-            pigLines.add("TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures($0..));");
-            pigLines.add("VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures($0..));");
-            pigLines.add("TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures($0..));");
+            pigLines.add("TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));");
+            pigLines.add("VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));");
+            pigLines.add("TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));");
             pigLines.add("STORE TRAIN_SCA INTO 'train_sca"+f+"' USING BinStorage();");
             pigLines.add("STORE VALIDATE_SCA INTO 'validate_sca"+f+"' USING BinStorage();");
             pigLines.add("STORE TEST_SCA INTO 'test_sca"+f+"' USING BinStorage();");
@@ -131,7 +131,7 @@ public class ListNetCluster {
                     pigLines.add("STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores-f"+f+"' USING BinStorage();");
                 }else {
                     pigLines.add("TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f"+f+"/*' USING BinStorage();");
-                    pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores($0..));");
+                    pigLines.add("TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores(*));");
                 }
 
                 // UPDATE MODEL
@@ -141,11 +141,11 @@ public class ListNetCluster {
                 //  gradientForAQuery += (q.docFeatures(j) * (P_z(j) - P_y(j)))
                 //  lossForAQuery += -P_y(j) * math.log(P_z(j))
                 // }
-                pigLines.add("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient($0..));");
+                pigLines.add("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient(*));");
 
                 // gradient += gradientForAQuery; loss += lossForAQuery
                 pigLines.add("TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;");
-                pigLines.add("TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum($0..));");
+                pigLines.add("TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));");
                 String outputDir = "tr_loss_gradient-f"+f+"i"+i;
                 pigLines.add("STORE TR_LOSS_GRADIENT INTO '"+outputDir+"';");
                 combinedPigLines = LtrUtils.concatenateStringList(pigLines);
@@ -177,7 +177,7 @@ public class ListNetCluster {
                     pigLines.add("VA_BY_QUERY = LOAD 'va_by_query-f"+f+"/*' USING BinStorage();");
                 }
 
-                pigLines.add("NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg($0..);");
+                pigLines.add("NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg(*);");
                 pigLines.add("NDCG_GRPD = GROUP NDCG ALL;");
                 pigLines.add("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
                 outputDir = "avg_ndcg-f"+f+"i"+i;
@@ -215,14 +215,14 @@ public class ListNetCluster {
             pigLines.add(testConfigString);
             pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
             //pigLines.add("TEST = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
-            //pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm($0..));");
+            //pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("TEST_SCA = LOAD 'test_sca"+f+"/*' USING BinStorage();");
             pigLines.add("TE_BY_QUERY = GROUP TEST_SCA BY $1;");
 
             // CALCULATE TEST SET PREDICTIONS BASED ON BEST WEIGHTS
             pigLines.add("DEFINE Ndcg udf.util.Ndcg('" + LtrUtils.toParamString(bestW,k) + "');");
             // CALCULATE NDCG@K FOR TEST SET PREDICTIONS
-            pigLines.add("NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg($0..);");
+            pigLines.add("NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg(*);");
             pigLines.add("NDCG_GRPD = GROUP NDCG ALL;");
             pigLines.add("AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);");
             pigLines.add("STORE AVG_NDCG INTO 'avg_ndcg';");

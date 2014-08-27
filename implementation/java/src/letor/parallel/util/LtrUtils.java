@@ -62,8 +62,8 @@ public class LtrUtils {
         String configString =
         setReduceString +
         "SET job.name 'Learning to Rank';"+
-        "SET mapred.task.timeout= 1800000;"+
-        "SET mapreduce.task.timeout= 1800000;"+ // For Hadoop 2.3.0 and up
+        "SET mapred.task.timeout= 18000000;"+
+        "SET mapreduce.task.timeout= 18000000;"+ // For Hadoop 2.3.0 and up
         "SET pig.maxCombinedSplitSize "+mapSplit+";"+
         "SET pig.noSplitCombination true;"+
         "SET mapred.min.split.size "+mapSplit+";"+

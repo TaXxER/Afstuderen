@@ -13,19 +13,9 @@ public class Document implements Comparable<Document>{
     private double predicted;
     private double[] weights;
 
-    // Maximum relevance label, deduct from dataset
-    private int max = 2;
-
-    public Document(double[] attributes, double[] weights, int relevance){
-        this.attributes = attributes;
-        this.weights = weights;
+    public Document(int relevance, double predicted){
         this.relevance  = relevance;
-
-        // Calculate predictions
-        this.predicted = 0.0;
-        for(int i=0; i<attributes.length; i++){
-            predicted += attributes[i]*weights[i];
-        }
+        this.predicted  = predicted;
     }
 
     // Default comparator, sorts on relevance

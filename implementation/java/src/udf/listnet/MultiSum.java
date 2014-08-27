@@ -26,32 +26,24 @@ public class MultiSum extends EvalFunc<Tuple> {
         if(input==null || input.size()!=2)
             return null;
 
-        List<Double> avgTupleList = new ArrayList<Double>();
+        List<Double> sumTupleList = new ArrayList<Double>();
 
         // Obtain set of data
         DataBag bag = (DataBag) input.get(1);
         Iterator<Tuple> dataIterator = bag.iterator();
         while(dataIterator.hasNext()) {
             Tuple tuple = dataIterator.next();
-            for(int i=0; i< tuple.size(); i++){
+            for(int i=0; i < tuple.size(); i++){
                 // Sum
                 double increment = Double.parseDouble(tuple.get(i).toString());
-                if(avgTupleList.size()>i) {
-                    avgTupleList.set(i, avgTupleList.get(i) + increment);
+                if(sumTupleList.size()>i) {
+                    sumTupleList.set(i, sumTupleList.get(i) + increment);
                 }else {
-                    avgTupleList.add(increment);
+                    sumTupleList.add(increment);
                 }
             }
         }
 
-        TupleFactory tupleFactory = TupleFactory.getInstance();
-        Tuple value = tupleFactory.newTuple();
-
-        for(int i=0; i<avgTupleList.size(); i++){
-            // Average and write to tuple
-            value.append(avgTupleList.get(i));
-        }
-
-        return value;
+        return TupleFactory.getInstance().newTuple(sumTupleList);
     }
 }

@@ -55,7 +55,7 @@ public class NdcgAlgebraic extends EvalFunc<Double> implements Algebraic{
                 // +1 to skip relevance
                 attrs[i-2] = Double.parseDouble(doc.get(i+1).toString());
             }
-            docBag.add(new Document(attrs, w, rel));
+            //docBag.add(new Document(attrs, w, rel));
             j++;
         }
 
