@@ -21,7 +21,7 @@ public class AzurePigWrapperTest {
         String storageAccount       = "ltrstorage";
         String storageAccountKey    = "igtZD3Jih9lsvxoIcxCury1GDqS7Z4DQ0Ci7xVphY9p/6rnwaHG5qZFBKXjt0wOgwNwVqno5sitAy/eucuPGMA==";
 
-        AzurePigWrapper wrapper = new AzurePigWrapper(clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey);
+        AzurePigWrapper wrapper = new AzurePigWrapper(clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey, 1);
 
         String pigLine = "TRAIN = LOAD '" + pathPrefix + "/input/" + DATASET + "/Fold" + fold + "/train.txt' USING PigStorage(' '); " +
                          "TR = FOREACH TRAIN GENERATE $1; "+

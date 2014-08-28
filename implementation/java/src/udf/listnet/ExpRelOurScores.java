@@ -3,6 +3,7 @@ package udf.listnet;
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
+import org.apache.pig.data.TupleFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -48,13 +49,19 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
         BigDecimal sumOur = BigDecimal.ZERO;
         while(docIterator.hasNext()) {
             Tuple docTuple = docIterator.next();
+            Tuple newTuple = null;
+            if(ITERATION==1) {
+                newTuple = TupleFactory.getInstance().newTuple(docTuple.size() + 2); // create copy of docTuple to prevent two appends
+                for (int i = 0; i < docTuple.size(); i++)
+                    newTuple.set(i, docTuple.get(i));
+            }
 
             // check whether first or non-first ListNet iteration
             if(ITERATION==1) {
                 // val expRelScores = q.relScores.map(y => math.exp(beta*y.toDouble))
                 double rel = Double.parseDouble(docTuple.get(0).toString());
                 rel = Math.exp(rel);
-                docTuple.append(rel);
+                newTuple.set(newTuple.size()-2, rel); // insert in first available newTuple slot
                 sumRel += rel;
             }
             double our = 0.0;
@@ -63,14 +70,17 @@ public class ExpRelOurScores extends EvalFunc<Tuple>{
                 double augend = Double.parseDouble(docTuple.get(i+2).toString()) * w[i];
                 our += augend;
             }
-            BigDecimal bdOur = BigDecimal.valueOf(our);
+            BigDecimal bdOur = BigDecimal.valueOf(our).setScale(4, BigDecimal.ROUND_HALF_UP);
             BigDecimal bdExpOur = expTaylor(bdOur, 4);
             // val expOurScores = ourScores.map(z => math.exp(z));
             if(ITERATION==1)
-                docTuple.append(bdExpOur.toString());
+                newTuple.set(newTuple.size() - 1, bdExpOur.toString()); // insert in first available newTuple slot
             else
                 docTuple.set(docTuple.size() - 1, bdExpOur.toString());
             sumOur = sumOur.add(bdExpOur);
+
+            if(ITERATION==1)
+                docTuple = newTuple; // set docTuple to new version with the two appended fields
         }
         // val sumExpRelScores = expRelScores.reduce(_ + _);
         // val P_y = expRelScores.map(y => y/sumExpRelScores);

@@ -44,13 +44,16 @@ public class AzurePigWrapper {
 
     HttpClient clusterConnection;
 
-    public AzurePigWrapper(String clusterName, String containerName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey){
+    int availableReducers;
+
+    public AzurePigWrapper(String clusterName, String containerName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
         this.clusterName        = clusterName;
         this.containerName      = containerName;
         this.clusterUser        = clusterUser;
         this.clusterPassword    = clusterPassword;
         this.storageAccount     = storageAccount;
         this.storageAccountKey  = storageAccountKey;
+        this.availableReducers  = availableReducers;
 
         this.storageConnectionString =
                 "DefaultEndpointsProtocol=http;" +
@@ -64,8 +67,8 @@ public class AzurePigWrapper {
         this.retrieveStatusURL   = azureClusterURL+"/queue/";
     }
 
-    public AzurePigWrapper(String clusterName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey){
-        this(clusterName, clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey);
+    public AzurePigWrapper(String clusterName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
+        this(clusterName, clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
     }
 
     public void azureRunPig(String pigLine) throws Exception{
@@ -163,14 +166,6 @@ public class AzurePigWrapper {
         return retrieveData(tmpDir);
     }
 
-    public void deleteFile(String path) throws Exception{
-        CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
-        CloudBlobContainer container = storageAccount.createCloudBlobClient().getContainerReference(containerName);
-
-        container.getBlockBlobReference(storagePath + path).delete();
-        container.getBlockBlobReference(storagePath + path + "/part-r-00000").delete();
-    }
-
     private String retrieveData(String tmpDir) throws Exception{
         boolean succeeded = false;
         int     attempts = 0;
@@ -179,14 +174,16 @@ public class AzurePigWrapper {
             try {
                 answer = retrieveDataAttempt(tmpDir);
                 succeeded = true;
-            } catch (StorageException e){
+            } catch (StorageException e) {
                 System.err.println("WARNING: StorageException thrown");
                 attempts++;
                 try {
                     Thread.sleep(1000);
-                }catch (InterruptedException e2){
+                } catch (InterruptedException e2) {
                     e2.printStackTrace();
                 }
+            } catch (NullPointerException e) {
+                System.err.println("WARNING: Tried to read non-existing blob");
             } catch (Exception e){
                 System.err.println("WARNING: An unknown error occurred");
                 e.printStackTrace();
@@ -203,13 +200,24 @@ public class AzurePigWrapper {
     private String retrieveDataAttempt(String tmpDir) throws Exception {
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
         CloudBlobContainer container = storageAccount.createCloudBlobClient().getContainerReference(containerName);
-        CloudBlob blob = container.getBlockBlobReference(storagePath + tmpDir + "/part-r-00000"); // Make sure to only read small answers using this method! Answers longer than one block might only be partially retrieved.
-        blob.download(new FileOutputStream(tempLocalStorage+blob.hashCode()));
-        FileInputStream fis = new FileInputStream(tempLocalStorage+blob.hashCode());
-        int content;
         String retVal = "";
-        while((content = fis.read()) != -1)
-            retVal += (char) content;
+        for(int i=0; i<availableReducers; i++) {
+            String path = "";
+            if(i<10)
+                path = storagePath + tmpDir + "/part-r-0000"+i;
+            else
+                path = storagePath + tmpDir + "/part-r-000"+i;
+
+            CloudBlob blob = container.getBlockBlobReference(path);
+            blob.download(new FileOutputStream(tempLocalStorage + blob.hashCode()));
+            FileInputStream fis = new FileInputStream(tempLocalStorage + blob.hashCode());
+            int content;
+            retVal = "";
+            while ((content = fis.read()) != -1)
+                retVal += (char) content;
+            if(!retVal.isEmpty())
+                break;
+        }
         return retVal;
     }
 }

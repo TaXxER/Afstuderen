@@ -46,21 +46,10 @@ public class LtrUtils {
     public static String getPigConfigString(long fileSize, int mappers, int reducers){
         int  nodeMemory  = 400000000;
         long mapSplit    = (long)((fileSize / (mappers-1)) * 1.35); // always keep one mapper available for templetonjob. 1.35 roughly adjusts for data size changes in standardisation and feature scaling
-        long reduceSplit = (long)((fileSize / (reducers-1)) * 1.35);
-
-        String setReduceString = "";
-        int usedReducers = reducers > 1 ? reducers - 1 : 1; // always keep one reducer available for templetonjob
-        if(fileSize/usedReducers > nodeMemory){
-            reduceSplit = reduceSplit > nodeMemory ? nodeMemory : reduceSplit;
-            setReduceString = "SET pig.exec.reducers.bytes.per.reducer "+reduceSplit+";";
-        }else{
-            setReduceString = "SET default_parallel "+usedReducers+";";
-        }
 
         mapSplit = mapSplit > nodeMemory ? nodeMemory : mapSplit;
 
         String configString =
-        setReduceString +
         "SET job.name 'Learning to Rank';"+
         "SET mapred.task.timeout= 18000000;"+
         "SET mapreduce.task.timeout= 18000000;"+ // For Hadoop 2.3.0 and up
