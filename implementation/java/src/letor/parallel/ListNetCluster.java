@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM_2;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.MINI;
     private static final double   STEPSIZE   = 0.00001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 1;
