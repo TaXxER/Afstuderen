@@ -16,18 +16,19 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MINI;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM;
     private static final double   STEPSIZE   = 0.00001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 8;
+    private static int  dataNodes                     = 4;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
-    private static Metadata metadata                  = DataSets.getMetaData(DATASET);
+    private static int duplicationNumber              = 4; // only used for CUSTOM
+    private static Metadata metadata                  = DataSets.getMetaData(DATASET, duplicationNumber);
     private static long MAX_TRAIN_SIZE                = metadata.getMax_train_size(); // ohsumed: 5151958, MQ2007: 25820919, MQ2008: 5927007, MSLR-WEB10K: 838011150, MSLR-WEB30K:
     private static long MAX_VALI_SIZE                 = metadata.getMax_vali_size(); // ohsumed: 1764005, MQ2007:  8753466, MQ2008: 2237346, MSLR-WEB10K: 280714022, MSLR-WEB30K:
     private static long MAX_TEST_SIZE                 = metadata.getMax_test_size(); // ohsumed: 1764005, MQ2007:  8753466, MQ2008: 2237346, MSLR-WEB10K: 280714022, MSLR-WEB30K:
@@ -39,7 +40,7 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr8";
+        String clusterName          = "ltr4";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrstorage";
@@ -71,7 +72,10 @@ public class ListNetCluster {
             // Standardize data and scale features
             pigLines.add(trainConfigString);
             pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
-            pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
+            if(metadata.getName().equals("custom"))
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train[0-"+duplicationNumber+"].txt' USING PigStorage(' ');");
+            else
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1 PARALLEL "+availableReducers+";");
             pigLines.add("MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax(*));");
@@ -90,7 +94,10 @@ public class ListNetCluster {
                 minmaxList.add(Double.parseDouble(minmax));
             pigLines.add(trainConfigString);
             pigLines.add("REGISTER wasb:///user/hdp/lib/*.jar;");
-            pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
+            if(metadata.getName().equals("custom"))
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train[0-"+duplicationNumber+"].txt' USING PigStorage(' ');");
+            else
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             pigLines.add("VALIDATE = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/vali.txt' USING PigStorage(' ');");
             pigLines.add("TEST = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/test.txt' USING PigStorage(' ');");
             pigLines.add("TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));");
