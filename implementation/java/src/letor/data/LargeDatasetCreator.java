@@ -15,14 +15,19 @@ import java.util.List;
  */
 public class LargeDatasetCreator {
     // Class parameters
-    private static int duplicationFactor = 5;
+    private static int lowerDuplicationNumber = 0;
+    private static int upperDuplicationNumber = 10;
 
     // Global variables
     private static String dataFolderPath = "C:/Git-data/Afstuderen/implementation/java/input";
     private static String inputPath      = dataFolderPath+"/MSLR-WEB30K";
-    private static String outputPath     = dataFolderPath+"/custom-"+duplicationFactor;
+    private static String outputPath     = dataFolderPath+"/custom";
+
+    private static int writers;
 
     public static void main(String[] args){
+        writers = upperDuplicationNumber - lowerDuplicationNumber + 1;
+
         System.out.println("Reading dataset");
         // First pass: retrieve set of qid's
         HashSet<Long> qidSet            = retrieveQids();
@@ -70,7 +75,7 @@ public class LargeDatasetCreator {
 
         for(Long l:qidSet){
             LinkedList<Long> newQids = new LinkedList<Long>();
-            for(int i=0; i<duplicationFactor; i++){
+            for(int i=lowerDuplicationNumber; i <= upperDuplicationNumber; i++){
                 newQids.add(l+i*maxQid);
             }
             qidMap.put(l, newQids);
@@ -80,33 +85,37 @@ public class LargeDatasetCreator {
 
     private static void writeNewQids(HashMap<Long, List<Long>> newQids){
         BufferedReader reader = null;
-        BufferedWriter writer = null;
+        BufferedWriter[] writer = new BufferedWriter[writers];
+        for(int i = 0; i < writers; i++){
+            try {
+                writer[i] = new BufferedWriter(new FileWriter(outputPath + "/Fold1/train" + (lowerDuplicationNumber + i) + ".txt"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
         try {
-            writer = new BufferedWriter(new FileWriter(outputPath + "/Fold1/train.txt"));
-        } catch (IOException e) {
+            reader = new BufferedReader(new FileReader(inputPath + "/Fold1/train.txt"));
+        }catch(FileNotFoundException e){
             e.printStackTrace();
         }
-        for(int i = 0; i< duplicationFactor; i++) {
-            try {
-                reader = new BufferedReader(new FileReader(inputPath + "/Fold1/train.txt"));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    Long qid = Long.parseLong(line.split(" ")[1].substring(4)); // Read qid
-                    writer.write(getLine(line,newQids.get(qid).get(i)));
-                    writer.newLine();
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+        String line;
         try {
-            writer.flush();
-            writer.close();
+            while ((line = reader.readLine()) != null) {
+                Long qid = Long.parseLong(line.split(" ")[1].substring(4)); // Read qid
+
+                for (int i = 0; i < writers; i++) {
+                    writer[i].write(getLine(line, newQids.get(qid).get(i)));
+                    writer[i].newLine();
+                }
+            }
+            reader.close();
+
+            for( int i = 0; i < writers; i++) {
+                writer[i].flush();
+                writer[i].close();
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
