@@ -23,11 +23,11 @@ public class ListNetCluster {
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 8;
+    private static int  dataNodes                     = 24;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
-    private static int duplicationNumber              = 9; // only used for CUSTOM
+    private static int duplicationNumber              = 49; // only used for CUSTOM
     private static Metadata metadata                  = DataSets.getMetaData(DATASET, duplicationNumber);
     private static long MAX_TRAIN_SIZE                = metadata.getMax_train_size(); // ohsumed: 5151958, MQ2007: 25820919, MQ2008: 5927007, MSLR-WEB10K: 838011150, MSLR-WEB30K:
     private static long MAX_VALI_SIZE                 = metadata.getMax_vali_size(); // ohsumed: 1764005, MQ2007:  8753466, MQ2008: 2237346, MSLR-WEB10K: 280714022, MSLR-WEB30K:
@@ -40,12 +40,12 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr8";
+        String clusterName          = "ltr24";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
-        String storageAccount       = "ltrstorage";
-        String containerName        = "ltrcontainer";
-        String storageAccountKey    = "s7nkBIp0I6BUXJgxoqFGFjhsUILBQP54jpKJLS2fI8i9KYC1I6UJP7JjjplfHEFvJyX1n7PVdRnkT27KyzvdjQ==";
+        String storageAccount       = "ltrmini";
+        String containerName        = "ltrsmall";
+        String storageAccountKey    = "0eUNzH04rVPGDOIVIXtSqwIlvmIQ/pKQgW55r9CcJSA9RWLVTcDfGzalgu33k9OrP6nXvj++IRRHpOhoJrDHMA==";
         AzurePigWrapper apw         = new AzurePigWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
