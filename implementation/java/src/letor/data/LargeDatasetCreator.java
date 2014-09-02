@@ -1,5 +1,6 @@
 package letor.data;
 
+import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class LargeDatasetCreator {
     // Class parameters
-    private static int lowerDuplicationNumber = 11;
-    private static int upperDuplicationNumber = 20;
+    private static int lowerDuplicationNumber = 21;
+    private static int upperDuplicationNumber = 40;
 
     // Global variables
     private static String dataFolderPath = "C:/Git-data/Afstuderen/implementation/java/input";
@@ -88,7 +89,8 @@ public class LargeDatasetCreator {
         BufferedWriter[] writer = new BufferedWriter[writers];
         for(int i = 0; i < writers; i++){
             try {
-                writer[i] = new BufferedWriter(new FileWriter(outputPath + "/Fold1/train" + (lowerDuplicationNumber + i) + ".txt"));
+                String paddedNumberString = Strings.padStart(""+(lowerDuplicationNumber + i), 4, '0');
+                writer[i] = new BufferedWriter(new FileWriter(outputPath + "/Fold1/train" + paddedNumberString + ".txt"));
             }catch (IOException e){
                 e.printStackTrace();
             }
