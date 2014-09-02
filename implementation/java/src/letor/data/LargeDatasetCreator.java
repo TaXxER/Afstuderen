@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class LargeDatasetCreator {
     // Class parameters
-    private static int lowerDuplicationNumber = 21;
-    private static int upperDuplicationNumber = 40;
+    private static int lowerDuplicationNumber = 41;
+    private static int upperDuplicationNumber = 60;
 
     // Global variables
     private static String dataFolderPath = "C:/Git-data/Afstuderen/implementation/java/input";
