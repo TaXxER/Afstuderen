@@ -8,6 +8,7 @@ In a cross-validation evaluation experiment of a ranking model, the handling of 
 
 \subsection{Microsoft Azure HDInsight}
 Microsoft offers a scalable and on-demand Hadoop service with HDInsight, that enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight of HDInsight available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. HDInsight 3.1 offers multiple ways of submitting Hadoop jobs to a HDInsight cluster, described in Table \ref{tbl:hdinsight_endpoints}.\\
+
 \begin{table}
 \centering
 \begin{tabular}{p{4cm}p{2.8cm}p{5.5cm}}\toprule
@@ -23,6 +24,7 @@ WebHCat/Templeton & REST endpoint & WebHCat, formerly known as Templeton, is a R
 \caption{HDInsight REST endpoints for job submission}
 \label{tbl:hdinsight_endpoints}
 \end{table}
+
 Oozie and WebHCat/Templeton are the two methods for job submission in Table \ref{tbl:hdinsight_endpoints} that both 1) support Apache Pig jobs, and 2) Can be used from within Java code. Below the necessary procedures for job submission from Oozie as well as from WebHCat will be sketched.\\
 
 \begin{table}
@@ -43,3 +45,41 @@ Job submission procedure for Apache Oozie & Job submission procedure for WebHCat
 Table \ref{tbl:oozie_templeton} shows how Oozie job submission is more complex then for the case of dynamically generated jobs than WebHCat/Templeton. Oozie is more fitting for static Hadoop jobs that require a workflow consisting of a sequence of Pig and MapReduce jobs mixed together, but is a lesser fit for our situation. Templeton will be used for submission of the Pig jobs, as the HDInsight version that was available at the start of the implementation did not yet support WebHCat.
 
 \subsection{ListNet}
+The following sections describe the Pig jobs that form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
+\subsubsection{Preprocessing: feature scaling}
+The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test datasets using the following formula for rescaling:
+\begin{equation}
+x^{'} = \frac{x-min(x)}{max(x)-min(x)}
+\end{equation}
+This rescaling procedure set the range of each feature to $[0,1]$. 
+
+
+The first Pig job:
+\begin{lstlisting}
+REGISTER wasb:///user/hdp/lib/*.jar;
+TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
+TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
+TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1 PARALLEL [available reducers];
+MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax(*));
+MIN_MAX_GRPD = GROUP MIN_MAX ALL;
+MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
+STORE MIN_MAX_FIN INTO 'minmax[fold number]';
+\end{lstlisting}
+The second Pig job:
+\begin{lstlisting}
+REGISTER wasb:///user/hdp/lib/*.jar;
+TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
+VALIDATE = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/vali.txt' USING PigStorage(' ');
+TEST = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/test.txt' USING PigStorage(' ');
+TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
+VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));
+TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));
+DEFINE ScaleFeatures udf.util.ScaleFeatures('"+LtrUtils.toParamString(minmaxList)+"');
+TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));
+VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));
+TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));
+STORE TRAIN_SCA INTO 'train_sca[fold number]' USING BinStorage();
+STORE VALIDATE_SCA INTO 'validate_sca[fold number]' USING BinStorage();
+STORE TEST_SCA INTO 'test_sca[fold number]' USING BinStorage();
+\end{lstlisting}
+\subsubsection{}
