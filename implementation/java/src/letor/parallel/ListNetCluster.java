@@ -23,7 +23,7 @@ public class ListNetCluster {
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 24;
+    private static int  dataNodes                     = 32;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -40,7 +40,7 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr24";
+        String clusterName          = "ltr32";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrmini";
@@ -77,7 +77,11 @@ public class ListNetCluster {
                 int hundreds  = (duplicationNumber % 1000) / 100;
                 int tens      = (duplicationNumber % 100) / 10;
                 int units     = duplicationNumber % 10;
-                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train[0-"+thousands+"][0-"+hundreds+"][0-"+tens+"][0-"+units+"].txt' USING PigStorage(' ');");
+                String thousandsString = thousands > 0 ?  "[0-"+thousands+"]" : "0";
+                String hundredsString  = hundreds > 0 ?  "[0-"+hundreds+"]" : "0";
+                String tensString      = tens > 0 ?  "[0-"+tens+"]" : "0";
+                String unitsString     = units > 0 ? "[0-"+units+"]" : "0";
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train"+thousandsString+hundredsString+tensString+unitsString+".txt' USING PigStorage(' ');");
             } else {
                 pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             }
@@ -104,7 +108,11 @@ public class ListNetCluster {
                 int hundreds  = (duplicationNumber % 1000) / 100;
                 int tens      = (duplicationNumber % 100) / 10;
                 int units     = duplicationNumber % 10;
-                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train[0-"+thousands+"][0-"+hundreds+"][0-"+tens+"][0-"+units+"].txt' USING PigStorage(' ');");
+                String thousandsString = thousands > 0 ?  "[0-"+thousands+"]" : "0";
+                String hundredsString  = hundreds > 0 ?  "[0-"+hundreds+"]" : "0";
+                String tensString      = tens > 0 ?  "[0-"+tens+"]" : "0";
+                String unitsString     = units > 0 ? "[0-"+units+"]" : "0";
+                pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train"+thousandsString+hundredsString+tensString+unitsString+".txt' USING PigStorage(' ');");
             } else {
                 pigLines.add("TRAIN = LOAD '" + pathPrefix + "/input/" + metadata.getName() + "/Fold" + fold + "/train.txt' USING PigStorage(' ');");
             }

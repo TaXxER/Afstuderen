@@ -52,10 +52,10 @@
 \RequirePackage{multicol} % needed for the list of participants, index
 \RequirePackage{aliascnt}
 
-\setlength{\textwidth}{12.2cm}
-\setlength{\textheight}{19.3cm}
+\setlength{\textwidth}{12.5cm}
+\setlength{\textheight}{19.4cm}
 \renewcommand\@pnumwidth{2em}
-\renewcommand\@tocrmarg{3.5em}
+\renewcommand\@tocrmarg{3.4em}
 %
 \def\@dottedtocline#1#2#3#4#5{%
   \ifnum #1>\c@tocdepth \else

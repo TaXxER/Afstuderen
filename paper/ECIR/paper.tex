@@ -107,27 +107,34 @@ Some studies with evaluation results found through the literature search procedu
 \vspace{-0.08in}
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
 Qin et al. \cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
+
 $\mbox{WN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
+
 where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $I_{\{M_i(j)>M_k(j)\}}$ is an indicator function such that\\
+
 $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 1 & \mbox{if } M_i(j) > M_k(j), \\
 0 & \mbox{otherwise}
 \end{cases}$\\
+
 The LETOR 3.0 was a comparison on a \emph{dense} set of evaluation results, in the sense that there were evaluation results available for all learning to rank algorithms on all datasets included in their comparison. The Winning Number evaluation metric relies on the denseness of the evaluation results set. In contrast to the LETOR 3.0 comparison, our set of evaluation results will be sparse. We propose a normalized version of the Winning Number metric to enable comparison of a sparse set of evaluation results. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as\\
+
 $I^{'}_{M_i(j)>M_k(j)} = \begin{cases}
 1 & \parbox[t]{5cm}{if $M_i(j)$ and $M_k(j)$ are both defined and $M_i(j) > M_k(j)$,}\\
 0 & \parbox[t]{5cm}{otherwise}
 \end{cases}$\\
+
 From now on this adjusted version of Winning Number will be references to as \emph{Normalized Winning Number (NWN)}. The mathematical definition of Normalized Winning Number is\\
-$\text{NWN}_i(M) = \frac{\text{WN}_i(M)}{\text{IWN}_i(M)}$\\
-\noindent
-where $IWN$ is the Ideal Winning Number, defined as\\
-$\text{IWN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m D_{\{M_i(j),M_k(j)\}}$\\
+
+$\text{NWN}_i(M) = \frac{\text{WN}_i(M)}{\text{IWN}_i(M)}, \text{with } \text{IWN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m D_{\{M_i(j),M_k(j)\}}$\\
+
 where $j$ is the index of a dataset, $n$ the number of datasets in the comparison, $i$ and $k$ are indices of an algorithm, $M_i(j)$ is the performance of the $i$-th algorithm on the $j$-th dataset, $M$ is a ranking measure (such as NDCG or MAP), and $D_{\{M_i(j),M_k(j)\}}$ is an evaluation definition function such that\\
+
 $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 1 & \text{if } M_i(j) \text{ and } M_k(j) \text{ are both defined}, \\
 0 & \text{otherwise}
 \end{cases}$\\
+
 NDCG@$\{3,5,10\}$ and MAP are the most frequently used evaluation metrics in the used benchmark collections combined, therefore we will limit our meta-analysis to evaluation results reported in one of these four metrics.
 \section{Results of Learning to Rank Comparison}
 The following subsections provide the performance of learning to rank methods in terms of NWN for NDCG@$\{3,5,10\}$ and MAP. Performance of the learning to rank methods is plotted with NWN on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. Moving to the right, certainty on the performance of the method increases. The methods for which it holds that there is no other method that has 1) a higher NWN and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled. Table \ref{tab:raw_data} in the appendix provides raw NWN data for the learning to rank methods at NDCG@$\{3,5,10\}$ and MAP and their cross-metric weighted average.
@@ -178,7 +185,7 @@ Figure \ref{fig:normalized_winning_number_all} shows the NWN as function of IWN 
 \caption{Cross-benchmark comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_all}
 \end{figure}
-\vspace{-0.1in}
+\vspace{-0.05in}
 LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both IWN and NWN. LRUF is the only method that achieved this in all NDCG comparisons, the MAP comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being among the top performing methods in all NDCG comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the NDCG performance as opposed to the MAP performance. This was to be expected, because the cross-metric comparison input data of three NDCG entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the MAP comparison.\\
 LARF, IPRank and DCMP and several variants of RankSVM performed very well on the cross-metric comparison, with all having only one method in its top right quadrant. LARF also performed among the top methods on the NDCG and MAP comparisons and DCMP was a top performer in a few of the NDCG comparisons. C-CRF, DirectRank, FP-Rank, RankCSA, LambdaNeuralRank and VFLR all have a near-perfect NWN value, but have a low IWN value. Further evaluation runs of these methods on benchmark datasets that they are not yet evaluated on are desirable. The DirectRank paper \cite{Tan2013} shows that the method  is evaluated on more datasets than the number of datasets that we included evaluation results for in this meta-analysis. Some of the DirectRank measurements could not be used because measurements on some datasets were only available in graphical form and not in raw data.\\
 LAC-MR-OR and RE-QR showed very good ranking accuracy in the MAP comparison on multiple datasets. Because LAC-MR-OR is only evaluated on two datasets for NDCG@10 and RE-QR is not evaluated for NDCG at all, LAC-MR-OR and RE-QR are not within the top performing methods in the cross-metric comparison. 
@@ -191,8 +198,9 @@ Our comparison regarded evaluation results on NDCG@$\{3,5,10\}$ and MAP. By maki
 We proposed a new way of comparing learning to rank methods based on sparse evaluation results data on a set of benchmark datasets. Our comparison methodology comprises of two components: 1) NWN, which provides insight in the ranking accuracy of the learning to rank method, and 2) IWN, which gives insight in the degree of certainty concerning the performance of the ranking accuracy.\\
 Based on our literature search for evaluation results on well-known benchmarks collections, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others. However, no closing arguments can be formulated on which learning to rank methods are most accurate. LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the learning to rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases.\\
 More evaluation runs are needed for the methods on the left side of Figure \ref{fig:normalized_winning_number_all}. Our work contributes to this by identifying promising learning to rank methods that researchers could focus on in performing additional evaluation runs.
-\bibliographystyle{splncs03}
-\bibliography{Bibliography}
+\begin{tiny}
+\bibliographystyle{splncs03}\bibliography{Bibliography}
+\end{tiny}
 
 \newpage
 \section{Appendix}
