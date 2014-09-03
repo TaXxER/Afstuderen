@@ -65,6 +65,21 @@ MIN_MAX_GRPD = GROUP MIN_MAX ALL;
 MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
+
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{8cm}}\toprule
+UDF & Description \\
+\midrule
+udf.util.ToStandardForm() & Transforms the data set into the standard form of relevance label in first column followed by feature values. Strips data of any other columns, if present.\\
+udf.util.GetMinMax() & Extracts the minimum and maximum value per feature, for the documents of a single query.\\
+udf.util.CombineMinMax() & Combines outputs of the udf.util.GetMinMax() UDF for each query into globally minimum and maximum feature values.\\
+\bottomrule
+\end{tabular}
+\caption{Description of preprocessing User Defined Functions (1/2)}
+\label{tbl:preprocessing_udfs_1}
+\end{table}
+
 The second Pig job:
 \begin{lstlisting}
 REGISTER wasb:///user/hdp/lib/*.jar;
@@ -82,4 +97,16 @@ STORE TRAIN_SCA INTO 'train_sca[fold number]' USING BinStorage();
 STORE VALIDATE_SCA INTO 'validate_sca[fold number]' USING BinStorage();
 STORE TEST_SCA INTO 'test_sca[fold number]' USING BinStorage();
 \end{lstlisting}
-\subsubsection{}
+
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{8cm}}\toprule
+UDF & Description \\
+\midrule
+udf.util.ToStandardForm() & See Table \ref{tbl:preprocessing_udfs_1} for description.\\
+udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with which it is parametrised perform the following rescaling transformation to the features: $x^{'} = \frac{x-min(x)}{max(x)-min(x)}$.\\
+\bottomrule
+\end{tabular}
+\caption{Description of preprocessing User Defined Functions (2/2)}
+\label{tbl:preprocessing_udfs_2}
+\end{table}
