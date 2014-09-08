@@ -53,7 +53,8 @@ x^{'} = \frac{x-min(x)}{max(x)-min(x)}
 \end{equation}
 This rescaling procedure sets the values of all features to be within range $[0,1]$.\\
 
-The first Pig job:
+The first Pig job:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
@@ -64,6 +65,7 @@ MIN_MAX_GRPD = GROUP MIN_MAX ALL;
 MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
+\end{minipage}
 
 The minimum and maximum values per feature stored in MIN\_MAX\_FIN can now be read from \ac{HDFS} and used within the Java framework by using the Windows Azure Storage library. The second Pig job uses these minimum and maximum values by parametrising the \ac{UDF} that performs the rescaling transformation, udf.util.ScaleFeatures(), with the minimum and maximum feature values.\\
 
@@ -81,7 +83,8 @@ udf.util.CombineMinMax() & Combines outputs of the udf.util.GetMinMax() UDF for 
 \label{tbl:preprocessing_udfs_1}
 \end{table}
 
-The second Pig job:
+The second Pig job:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
@@ -98,6 +101,7 @@ STORE TRAIN_SCA INTO 'train_sca[fold number]' USING BinStorage();
 STORE VALIDATE_SCA INTO 'validate_sca[fold number]' USING BinStorage();
 STORE TEST_SCA INTO 'test_sca[fold number]' USING BinStorage();
 \end{lstlisting}
+\end{minipage}
 
 \begin{table}
 \centering
@@ -113,7 +117,10 @@ udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with whic
 \end{table}
 
 \subsubsection{Training}
-The first Pig job:
+The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{nDCG}@k.\\
+
+The first Pig job:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 DEFINE QueryLossGradient udf.listnet.QueryLossGradient('[feature dimensionality of data set]');
@@ -131,6 +138,7 @@ TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;
 TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));
 STORE TR_LOSS_GRADIENT INTO 'tr_loss_gradient-f[fold number]i[iteration number]';
 \end{lstlisting}
+\end{minipage}
 
 \begin{table}
 \centering
@@ -146,8 +154,10 @@ udf.listnet.MultiSum() & Calculates aggregated loss and feature gradients by sum
 \label{tbl:training_udfs_1}
 \end{table}
 
-The second Pig job of the training stage tests the performance of the model weights that were trained in the first Pig job on the validation data set.
-The second Pig job:
+The second Pig job of the training stage validates the performance of the model weights that were trained in the first Pig job on the validation data set.\\
+
+The second Pig job:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
@@ -162,6 +172,8 @@ NDCG_GRPD = GROUP NDCG ALL;
 AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
 STORE AVG_NDCG INTO 'avg_ndcg-f[fold number]i[iteration number]';
 \end{lstlisting}
+\end{minipage}
+
 \begin{table}
 \centering
 \begin{tabular}{p{5cm}p{8cm}}\toprule
@@ -175,7 +187,10 @@ udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
 \end{table}
 
 \subsubsection{Testing}
-Pig Job:
+The testing stage tests the best model found in the training iterations, selected on validation set \ac{nDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{nDCG}@k of this model on the test set.\\
+
+Test stage Pig job:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 TEST_SCA = LOAD 'test_sca[fold number]/*' USING BinStorage();
@@ -186,3 +201,6 @@ NDCG_GRPD = GROUP NDCG ALL;
 AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
 STORE AVG_NDCG INTO 'avg_ndcg';
 \end{lstlisting}
+\end{minipage}
+
+\subsection{SmoothRank}
