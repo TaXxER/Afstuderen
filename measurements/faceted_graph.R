@@ -11,7 +11,7 @@ getName <- function(s){
 			paste(
 				c(
 					"Cluster: ", 
-					str_extract(s, "\\d+"), 
+					sprintf("% 3d",as.numeric(str_extract(s, "\\d+"))), 
 					" data nodes"
 				),
 				collapse = ''
