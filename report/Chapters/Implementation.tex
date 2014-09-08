@@ -51,7 +51,7 @@ The preprocessing phase consists of two separate Pig jobs. The first Pig job det
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
 \end{equation}
-This rescaling procedure set the range of each feature to $[0,1]$. 
+This rescaling procedure sets the values of all features to be within range $[0,1]$.\\
 
 The first Pig job:
 \begin{lstlisting}
@@ -64,6 +64,8 @@ MIN_MAX_GRPD = GROUP MIN_MAX ALL;
 MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
+
+The minimum and maximum values per feature stored in MIN\_MAX\_FIN can now be read from \ac{HDFS} and used within the Java framework by using the Windows Azure Storage library. The second Pig job uses these minimum and maximum values by parametrising the \ac{UDF} that performs the rescaling transformation, udf.util.ScaleFeatures(), with the minimum and maximum feature values.\\
 
 \begin{table}
 \centering
