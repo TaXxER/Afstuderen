@@ -116,12 +116,14 @@ The first Pig job:
 REGISTER [path prefix]/lib/*.jar;
 DEFINE QueryLossGradient udf.listnet.QueryLossGradient('[feature dimensionality of data set]');
 DEFINE ExpRelOurScores udf.listnet.ExpRelOurScores('[neural network weights & iteration number]');
-(1) TRAIN_SCA = LOAD 'train_sca[fold number]/*' USING BinStorage();
-(1) TR_BY_QUERY = GROUP TRAIN_SCA BY $1 PARALLEL [number of avaiable reducers];
-(1) TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores(TRAIN_SCA));
-(1) STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores-f[fold number]' USING BinStorage();
-(*) TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f[fold number]/*' USING BinStorage();
-(*) TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores(*)) PARALLEL [number of available reducers];
+[FIRST TRAINING ITERATION:]
+	TRAIN_SCA = LOAD 'train_sca[fold number]/*' USING BinStorage();
+	TR_BY_QUERY = GROUP TRAIN_SCA BY $1 PARALLEL [number of avaiable reducers];
+	TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores(TRAIN_SCA));
+	STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores-f[fold number]' USING BinStorage();
+[SUBSEQUENT TRAINING ITERATIONS:]
+	TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f[fold number]/*' USING BinStorage();
+	TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores(*)) PARALLEL [number of available reducers];
 TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient(*)) PARALLEL [number of available reducers];
 TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;
 TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));
@@ -147,10 +149,12 @@ The second Pig job:
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
 DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
-(1) VALIDATE_SCA = LOAD 'validate_sca[fold number]/*' USING BinStorage();
-(1) VA_BY_QUERY = GROUP VALIDATE_SCA BY $1 PARALLEL [number of available reducers];
-(1) STORE VA_BY_QUERY INTO 'va_by_query-f[fold number]' USING BinStorage();
-(*) VA_BY_QUERY = LOAD 'va_by_query-f[fold number]/*' USING BinStorage();
+[FIRST TRAINING ITERATION:]
+	VALIDATE_SCA = LOAD 'validate_sca[fold number]/*' USING BinStorage();
+	VA_BY_QUERY = GROUP VALIDATE_SCA BY $1 PARALLEL [number of available reducers];
+	STORE VA_BY_QUERY INTO 'va_by_query-f[fold number]' USING BinStorage();
+[SUBSEQUENT TRAINING ITERATIONS:]
+	VA_BY_QUERY = LOAD 'va_by_query-f[fold number]/*' USING BinStorage();
 NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg(*);
 NDCG_GRPD = GROUP NDCG ALL;
 AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
@@ -169,3 +173,14 @@ udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
 \end{table}
 
 \subsubsection{Testing}
+Pig Job:
+\begin{lstlisting}
+REGISTER [path prefix]/lib/*.jar;
+TEST_SCA = LOAD 'test_sca[fold number]/*' USING BinStorage();
+TE_BY_QUERY = GROUP TEST_SCA BY $1 PARALLEL [number of available reducers];
+DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
+NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg(*);
+NDCG_GRPD = GROUP NDCG ALL;
+AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
+STORE AVG_NDCG INTO 'avg_ndcg';
+\end{lstlisting}
