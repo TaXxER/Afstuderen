@@ -24,7 +24,7 @@ name <- unlist(lapply(name, getName))
 measure$serial.parallel <- name
 maxTime <- max(measure$trainTime)
 d <- ggplot(data=measure, aes(x=dataSize, y=seconds, colour=serial.parallel, shape=serial.parallel))
-d <- d + geom_point(size=2) + stat_smooth(level=0.99, method = "glm", formula = y ~ exp(x)) + 
+d <- d + geom_point(size=2) + stat_smooth(se=FALSE, method = "glm", formula = y ~ exp(x)) + 
 	scale_x_log10() + theme_bw() + 
 	theme(
 		panel.grid.major = element_blank(),
@@ -33,7 +33,6 @@ d <- d + geom_point(size=2) + stat_smooth(level=0.99, method = "glm", formula = 
 		panel.background = element_blank(),
 		axis.line = element_line(color='black')
 	) + scale_y_continuous(expand = c(0.001, maxTime/10000))+	
-	facet_wrap(~serial.parallel)+
 	xlab("Dataset size (in Byte)") +
 	ylab("Training iteration time (in Seconds)") +
 	labs(colour = "Execution mode", shape = "Execution mode") 
