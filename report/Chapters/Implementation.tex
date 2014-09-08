@@ -46,17 +46,16 @@ Table \ref{tbl:oozie_templeton} shows how Oozie job submission is more complex t
 
 \subsection{ListNet}
 The following sections describe the Pig jobs that form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
-\subsubsection{Preprocessing: feature scaling}
+\subsubsection{Preprocessing}
 The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test datasets using the following formula for rescaling:
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
 \end{equation}
 This rescaling procedure set the range of each feature to $[0,1]$. 
 
-
 The first Pig job:
 \begin{lstlisting}
-REGISTER wasb:///user/hdp/lib/*.jar;
+REGISTER [path prefix]/lib/*.jar;
 TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
 TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
 TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1 PARALLEL [available reducers];
@@ -82,14 +81,14 @@ udf.util.CombineMinMax() & Combines outputs of the udf.util.GetMinMax() UDF for 
 
 The second Pig job:
 \begin{lstlisting}
-REGISTER wasb:///user/hdp/lib/*.jar;
+REGISTER [path prefix]/lib/*.jar;
 TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
 VALIDATE = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/vali.txt' USING PigStorage(' ');
 TEST = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/test.txt' USING PigStorage(' ');
 TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
 VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));
 TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));
-DEFINE ScaleFeatures udf.util.ScaleFeatures('"+LtrUtils.toParamString(minmaxList)+"');
+DEFINE ScaleFeatures udf.util.ScaleFeatures('[array with minimum and maximum feature values]');
 TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));
 VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));
 TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));
@@ -110,3 +109,63 @@ udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with whic
 \caption{Description of preprocessing User Defined Functions (2/2)}
 \label{tbl:preprocessing_udfs_2}
 \end{table}
+
+\subsubsection{Training}
+The first Pig job:
+\begin{lstlisting}
+REGISTER [path prefix]/lib/*.jar;
+DEFINE QueryLossGradient udf.listnet.QueryLossGradient('[feature dimensionality of data set]');
+DEFINE ExpRelOurScores udf.listnet.ExpRelOurScores('[neural network weights & iteration number]');
+(1) TRAIN_SCA = LOAD 'train_sca[fold number]/*' USING BinStorage();
+(1) TR_BY_QUERY = GROUP TRAIN_SCA BY $1 PARALLEL [number of avaiable reducers];
+(1) TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores(TRAIN_SCA));
+(1) STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores-f[fold number]' USING BinStorage();
+(*) TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f[fold number]/*' USING BinStorage();
+(*) TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores(*)) PARALLEL [number of available reducers];
+TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient(*)) PARALLEL [number of available reducers];
+TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;
+TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));
+STORE TR_LOSS_GRADIENT INTO 'tr_loss_gradient-f[fold number]i[iteration number]';
+\end{lstlisting}
+
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{8cm}}\toprule
+UDF & Description \\
+\midrule
+udf.listnet.QueryLossGradient() & Calculates the Cross Entropy loss for a query and calculates the gradients per feature based on this query.\\
+udf.listnet.ExpRelOurScores() & Calculates the predicted relevance label of a query based on the current model weights and transforms this following the transformation $x -> e^{x}$. In case the current iteration is the first iteration, the same transformation is applied to the ground truth relevance label.\\
+udf.listnet.MultiSum() & Calculates aggregated loss and feature gradients by summing the per-query losses and per-query feature gradients.\\
+\bottomrule
+\end{tabular}
+\caption{Description of training User Defined Functions (1/2)}
+\label{tbl:training_udfs_1}
+\end{table}
+
+The second Pig job of the training stage tests the performance of the model weights that were trained in the first Pig job on the validation data set.
+The second Pig job:
+\begin{lstlisting}
+REGISTER [path prefix]/lib/*.jar;
+DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
+(1) VALIDATE_SCA = LOAD 'validate_sca[fold number]/*' USING BinStorage();
+(1) VA_BY_QUERY = GROUP VALIDATE_SCA BY $1 PARALLEL [number of available reducers];
+(1) STORE VA_BY_QUERY INTO 'va_by_query-f[fold number]' USING BinStorage();
+(*) VA_BY_QUERY = LOAD 'va_by_query-f[fold number]/*' USING BinStorage();
+NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg(*);
+NDCG_GRPD = GROUP NDCG ALL;
+AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
+STORE AVG_NDCG INTO 'avg_ndcg-f[fold number]i[iteration number]';
+\end{lstlisting}
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{8cm}}\toprule
+UDF & Description \\
+\midrule
+udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
+\bottomrule
+\end{tabular}
+\caption{Description of training User Defined Functions (2/2)}
+\label{tbl:training_udfs_2}
+\end{table}
+
+\subsubsection{Testing}
