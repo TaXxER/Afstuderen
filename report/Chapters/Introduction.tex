@@ -23,11 +23,10 @@ This thesis addresses the following research questions:
 Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1991}:\\
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$
-
-\item[RQ3] Can those Learning-to-Rank algorithms be adjusted in such a way that the parallel execution speed-up increases without decreasing accuracy?
 \end{description}
 
 \section{Approach}
+\subsection{Methodology for Research Question I}
 A literature study will be performed to get insight in relevant existing techniques for large scale Learning-to-Rank. The literature study will be performed by using the following query:\\
 
 \emph{("learning to rank" \emph{OR} "learning-to-rank" \emph{OR} "machine learned ranking") \emph{AND} ("parallel" \emph{OR} "distributed")}\\
@@ -43,11 +42,28 @@ The query incorporates different ways of writing of Learning-to-Rank, with and w
 
 A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
 
-To answer the first research question, I will implement Learning-to-Rank methods in the MapReduce framework and measure runtime as a factor of the number of cluster nodes used to complete the computation.\\
+\subsection{Methodology for Research Question II}
+To find an answer to the second research question, the Learning-to-Rank methods determined in the first research question will be implemented in the MapReduce framework and training time will be measured as a factor of the number of cluster nodes used to perform the computation. The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning-to-Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.\\
 
-The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning-to-Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.
-The algorithms that we include in the measurements will be determined based on experimental results on the \emph{Yahoo! Learning to Rank Challenge} \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, the LETOR \cite{Qin2010} dataset and the LETOR successors MSLR-WEB10k and MSLR-WEB30k.
+To research the speed-up's dependence on the amount of data being processed, the training computations will be performed on datasets of varying sizes. The well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K offer a good initial set of datasets. Table \ref{tbl:initial_datasets} shows the
+% TODO: Waarom .Gov uit LETOR 3.0 niet?%
+\begin{table}[!h]
+\centering
+\begin{tabular}{p{3.4cm}p{3.4cm}r}\toprule
+Dataset & Collection & Size \\
+\midrule
+OHSUMED     & LETOR 3.0       &   4.55 MB\\
+MQ2008      & LETOR 4.0       &   5.93 MB\\
+MQ2007      & LETOR 4.0       &  25.52 MB\\
+MSLR-WEB10K & MSLR-WEB10K     & 938.01 MB\\
+MSLR-WEB30K & MSLR-WEB30K     &   2.62 GB\\
+\bottomrule
+\end{tabular}
+\caption{LETOR 3.0, LETOR 4.0 and MSLR30/40K datasets and sizes}
+\label{tbl:initial_datasets}
+\end{table}
 
+To test the how the computational performance of Learning to Rank algorithms both on cluster and on single-node computation scales to large quantities of data, larger datasets will be created by cloning the MSLR-WEB30K dataset such that the cloned queries will hold new distinct query ID's.
 \section{Thesis Overview}
 
 \begin{description}
