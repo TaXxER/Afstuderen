@@ -1,6 +1,30 @@
 This chapter describes and discusses the results of the running time measurements of the cluster and baseline implementations as described in \ref{chap:implementation}.
 \section{ListNet}
-Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes.
+Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are largely identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{p{3.4cm}p{3.4cm}r}\toprule
+Dataset & Collection & Size \\
+\midrule
+MINI		& GENERATED		  & 143.38 KB\\
+OHSUMED     & LETOR 3.0       &   4.55 MB\\
+MQ2008      & LETOR 4.0       &   5.93 MB\\
+MQ2007      & LETOR 4.0       &  25.52 MB\\
+MSLR-WEB10K & MSLR-WEB10K     & 938.01 MB\\
+MSLR-WEB30K & MSLR-WEB30K     &   2.62 GB\\
+CUSTOM-2	& GENERATED		  &   5.25 GB\\
+CUSTOM-5	& GENERATED		  &  13.12 GB\\
+CUSTOM-10	& GENERATED		  &  26.24 GB\\
+CUSTOM-20   & GENERATED       &  52.42 GB\\
+CUSTOM-50	& GENERATED		  & 131.21 GB\\
+CUSTOM-100	& GENERATED		  & 262.41 GB\\
+\bottomrule
+\end{tabular}
+\caption{Description of datasets used for running time experiments}
+\label{tbl:recap_datasets}
+\end{table}
+
 \begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/time_single.pdf}
