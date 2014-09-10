@@ -41,7 +41,9 @@ Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log}
 \label{fig:listnet_train_time_log}
 \end{figure}
 
-Figure \ref{fig:speedup_train_time} shows that speed-up is sub-linear such that the training time converges to a constant unit of time somewhere within the range of 150-200 seconds. This time is likely to be caused by Hadoop job scheduling overhead, this presumption is strengthened by long waiting periods between the separate MapReduce jobs that form a training iteration. 
+Figure \ref{fig:speedup_train_time} shows that speed-up is sub-linear such that the training time converges to a constant unit of time somewhere within the range of 150-200 seconds. This time is likely to be caused by Hadoop job scheduling overhead, this presumption is strengthened by long waiting periods between the separate MapReduce jobs that form a training iteration.\\
+
+Amdahl's law states that the speed-up of a program using parallel computing is limited by the time needed for the sequential fraction. A consequence of Amdahl's Law is that all parallel programs the have a non-parallelisable part have sub-linear spreed-up. %Leg uit dat dit overeenkomt met onze bevindingen: sub-linear speed-up en we hebben een constante factor. Leg ook uit dat deze constante tijd niet (nauwelijks) groeit bij toename van formaat van de dataset, waardoor verhoudingsgewijs het niet-paralleliseerbare deel van de berekening afneemt wanneer de grootte van de dataset toeneemt. Uitleggen aan de hand van Amdahl's law dat dit als gevolg heeft dat de maximaal haalbare speedup hierdoor hoger is bij grote datasets dan bij kleine datasets. 
 
 \begin{figure}
 \centering
