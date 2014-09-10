@@ -26,7 +26,7 @@ measure$seconds <- measure$trainTime/1000
 measure$serial.parallel <- name
 d <- ggplot(data=measure, aes(x=dataSize, y=seconds, colour=serial.parallel, shape=serial.parallel))
 d <- d + geom_point(size=2) + geom_line() + 
-	theme_bw() + 
+	scale_x_log10() + theme_bw() + 
 	theme(
 		panel.grid.major = element_blank(),
 		panel.grid.minor = element_blank(),

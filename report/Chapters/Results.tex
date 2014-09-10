@@ -1,6 +1,6 @@
 This chapter describes and discusses the results of the running time measurements of the cluster and baseline implementations as described in \ref{chap:implementation}.
 \section{ListNet}
-Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are largely identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.
+Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.
 
 \begin{table}[!h]
 \centering
@@ -25,6 +25,8 @@ CUSTOM-100	& GENERATED		  & 262.41 GB\\
 \label{tbl:recap_datasets}
 \end{table}
 
+Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log}
+
 \begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/time_single.pdf}
@@ -38,6 +40,14 @@ CUSTOM-100	& GENERATED		  & 262.41 GB\\
 \caption{Processing time of a single ListNet training iteration on a logarithmic axis}
 \label{fig:listnet_train_time_log}
 \end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
+\caption{Processing time as a function of data nodes in a cluster}
+\label{fig:speedup_train_time}
+\end{figure}
+
 Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log} also show that serial execution using the RankLib implementation of ListNet is several orders of magnitude faster than running ListNet on a cluster.
 \begin{figure}
 \centering
