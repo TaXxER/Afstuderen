@@ -41,7 +41,7 @@ Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log}
 \label{fig:listnet_train_time_log}
 \end{figure}
 
-Figure \ref{fig:speedup_train_time} shows that speed-up is not linear, but converges to a constant unit of time of about 200 seconds.
+Figure \ref{fig:speedup_train_time} shows that speed-up is sub-linear such that the training time converges to a constant unit of time somewhere within the range of 150-200 seconds. This time is likely to be caused by Hadoop job scheduling overhead, this presumption is strengthened by long waiting periods between the separate MapReduce jobs that form a training iteration. 
 
 \begin{figure}
 \centering
