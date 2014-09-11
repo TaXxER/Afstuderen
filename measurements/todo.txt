@@ -16,3 +16,8 @@ METINGEN TODO:
  - CUSTOM-5
  - CUSTOM-10
  - CUSTOM-20
+
+64 data nodes:
+ - (CUSTOM-10)
+ - CUSTOM-20
+ - CUSTOM-50
