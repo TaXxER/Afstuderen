@@ -16,7 +16,7 @@ import java.util.TreeMap;
  */
 public class DataFileChecker {
     // Initialize parameter
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM_10;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM;
 
     // Global variables
     private static String dataFolderPath = "C:/Git-data/Afstuderen/implementation/java/input/";

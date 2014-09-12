@@ -9,8 +9,16 @@ import letor.serial.util.Measurement;
  * Created by niek.tax on 7/15/2014.
  */
 public class WrappedRunner {
+
     public static void main(String[] args){
-        FoldRunHandler listNetWrapper = new FoldRunHandler(new ListNetHandler(), DataSets.DataSet.MSLR_WEB30K, 1, 1); // Method, dataset, folds, iterations
+        DataSets.DataSet    dataset             = DataSets.DataSet.CUSTOM;
+        Integer             duplicationNumber   = 7; // Only relevant in case of dataset Custom
+
+        FoldRunHandler listNetWrapper = null;
+        if(dataset == DataSets.DataSet.CUSTOM)
+            listNetWrapper = new FoldRunHandler(new ListNetHandler(), DataSets.DataSet.CUSTOM, duplicationNumber,  1, 1); // Method, dataset, folds, iterations
+        else
+            listNetWrapper = new FoldRunHandler(new ListNetHandler(), dataset, 1, 1); // Method, dataset, folds, iterations
         Measurement measurement = listNetWrapper.averageScore();
         System.out.println("Preprocessing: "+measurement.getPreprocessingTime());
         System.out.println("Train:         "+measurement.getTrainingTime());

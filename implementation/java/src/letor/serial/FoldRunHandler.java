@@ -21,8 +21,9 @@ import java.util.List;
 public class FoldRunHandler {
     private MetricScorerFactory mFact = new MetricScorerFactory();
 
-    private String path  = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
-    private int folds    = 1;
+    private String path             = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
+    private int folds               = 1;
+    private int duplicationNumber   = 0;
 
     private Ranker ranker;
 
@@ -37,13 +38,24 @@ public class FoldRunHandler {
     private Long trainTime;
     private Long endTime;
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations){
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations){
         this.ranker      = ranker.getParameterizedRanker();
+        this.folds       = folds;
+
         if(ranker instanceof ListNetHandler){
             ((ListNet)this.ranker).nIteration = iterations;
         }
-        this.path        = path + DataSets.getMetaData(dataSet).getName() +"\\";
-        this.folds       = folds;
+
+        if(dataSet.equals(DataSets.DataSet.CUSTOM)) {
+            this.duplicationNumber = duplicationNumber;
+            this.path        = path + DataSets.getMetaData(DataSets.DataSet.CUSTOM, duplicationNumber).getName() +"\\";
+        }else{
+            this.path        = path + DataSets.getMetaData(dataSet).getName() +"\\";
+        }
+    }
+
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations){
+        this(ranker, dataSet, 0, folds, iterations);
     }
 
     public Measurement averageScore() {
@@ -65,7 +77,7 @@ public class FoldRunHandler {
     }
 
     public double evaluate(String trainFile, String validationFile, String testFile){
-        List<RankList> train      = readInput(trainFile);
+        List<RankList> train      = readTrainInput(trainFile, duplicationNumber);
         List<RankList> validation = readInput(validationFile);
         List<RankList> test       = readInput(testFile);
 
@@ -88,8 +100,22 @@ public class FoldRunHandler {
         return samples;
     }
 
-    public int[] getFeatureFromSampleVector(List<RankList> samples)
-    {
+    public static List<RankList> readTrainInput(String inputFile, int duplicationNumber){
+        if(duplicationNumber==0)
+            return readInput(inputFile);
+        FeatureManager fm = new FeatureManager();
+        List<RankList> samples = null;
+        for(int i = 0; i <= duplicationNumber; i++){
+            String filePath = new StringBuilder(inputFile).insert(inputFile.length() - 4, String.format("%04d", i)).toString();
+            if(i==0) {
+                samples = fm.readInput(filePath, false, false);
+            }else
+                samples.addAll(fm.readInput(filePath, false, false));
+        }
+        return samples;
+    }
+
+    public int[] getFeatureFromSampleVector(List<RankList> samples){
         DataPoint dp = samples.get(0).get(0);
         int fc = dp.getFeatureCount();
         int[] features = new int[fc];

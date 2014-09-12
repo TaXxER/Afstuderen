@@ -25,16 +25,16 @@ CUSTOM-100	& GENERATED		  & 262.41 GB\\
 \label{tbl:recap_datasets}
 \end{table}
 
-Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log}
+Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log} show that the single-machine RankLib implementation of ListNet is very fast compared to the Hadoop MapReduce cluster implementation of ListNet for datasets that fit in memory. RankLib performs much worse in cases where the dataset does not fit into memory, which is likely to be a result of swapping data to and from virtual memory.
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/time_single.pdf}
 \caption{Processing time of a single ListNet training iteration}
 \label{fig:listnet_train_time}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/time_single_logx.pdf}
 \caption{Processing time of a single ListNet training iteration on a logarithmic axis}
@@ -47,7 +47,7 @@ Amdahl's law states that the speed-up of a program using parallel computing is l
 
 Note however that Hadoop job scheduling overhead is independent of dataset size. Therefore, the non-parallelisable fraction of the program will be smaller when the to be processed dataset is larger, allowing larger speed-up values for larger datasets. From this observation we can derive that for \emph{"large enough"} datasets, the speed-up obtained by parallelising ListNet using Hadoop MapReduce is large enough for the parallelisation to be beneficial in terms of processing time compared to the RankLib single-machine version of ListNet, even when the size of the to be processed dataset would not have been memory-bounded in RankLib ListNet. Figure \ref{fig:listnet_throughput} supports this claim as the processing throughput increases both when a larger cluster is used and when more data is processed.\\
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
 \caption{Processing time as a function of data nodes in a cluster}
@@ -55,7 +55,7 @@ Note however that Hadoop job scheduling overhead is independent of dataset size.
 \end{figure}
 
 Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log} also show that serial execution using the RankLib implementation of ListNet is several orders of magnitude faster than running ListNet on a cluster.
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/throughput_single_logx.pdf}
 \caption{Throughput of a ListNet training iteration}

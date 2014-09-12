@@ -9,7 +9,7 @@ import scala.tools.cmd.Meta;
 public class DataSets {
     public static enum DataSet {
         OHSUMED, MQ2007, MQ2008, MSLR_WEB10K, MSLR_WEB30K,
-        CUSTOM, CUSTOM_2, CUSTOM_5, CUSTOM_10, MINI
+        CUSTOM, MINI
     }
 
     public static Metadata getMetaData(DataSet ds, int duplicationNumber){
