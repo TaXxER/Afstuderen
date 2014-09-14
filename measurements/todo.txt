@@ -1,10 +1,5 @@
 METINGEN TODO:
 
-2 data nodes:
- - MINI
- - MQ2008
- - MSLR-WEB10K
-
 16 data nodes:
  - MINI
  - OHSUMED

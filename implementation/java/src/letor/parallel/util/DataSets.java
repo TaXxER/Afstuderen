@@ -19,7 +19,7 @@ public class DataSets {
                 value = new Metadata("custom", 136, 2306651316L * (duplicationNumber+1),  878653757L, 8788653757L);
                 break;
             default:
-                System.err.println("ERROR: Dataset unknown!");
+                value = getMetaData(ds);
         }
         return value;
     }

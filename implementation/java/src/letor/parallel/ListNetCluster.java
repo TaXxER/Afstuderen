@@ -16,14 +16,14 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB10K;
     private static final double   STEPSIZE   = 0.00001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 32;
+    private static int  dataNodes                     = 2;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -40,12 +40,12 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr32";
+        String clusterName          = "ltr2";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
-        String storageAccount       = "ltrmini";
-        String containerName        = "ltrsmall";
-        String storageAccountKey    = "0eUNzH04rVPGDOIVIXtSqwIlvmIQ/pKQgW55r9CcJSA9RWLVTcDfGzalgu33k9OrP6nXvj++IRRHpOhoJrDHMA==";
+        String storageAccount       = "ltrstorage";
+        String containerName        = "ltrcontainer";
+        String storageAccountKey    = "rabkwaQc5z1PwYgVI27ri32OQwmkVXZV8ZnyavGL4+JgTsUo1YLmkm7YUBXUCzXQ1JJjfIMG7Y8UWWE1JgLK/A==";
         AzurePigWrapper apw         = new AzurePigWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
