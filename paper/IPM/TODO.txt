@@ -1,0 +1,10 @@
+- Zorgen dat het geheel compileert met 'elsarticle' document class
+- Long style referenties weer fixes (mogelijk gewoon gefixt door .bib van thesis the copy-pasten)
+- PNG's vervangen door EPS/PDF of eventueel >1000 dpi JPG
+- Title page schrijven met 
+	- Title
+	- Author names and affiliations. (indicate all affiliations with a lower-case superscript letter immediately after the author's name and in fromt of the appropriate address. Provide full postal address of each affiliation, including country name and e-mail address of each author.
+	- Corresponding author. Clearly indicate who will handle the correspondance at all stages of refereeing and publication, also post-publication. Ensure that phone numbers (with country and area code) are provided in addition to the e-mail address and the complete postal address. Contact details must be kept up to date by the corresponding author.
+	- Present / Permanent address. If an author has moved since the work described in the article was done, or was visiting at the time, a 'Present address' (or 'Permanent address') may be indicated as a footnote to that author's name. The address at which the author actually did the work must be retained as the main, affiliation address. Superscript Arabic numerals are used for such footnotes.
+- Highlights schrijven: 3-5 bulletpoints van max. 85 characters.
+- Vitae. max 100 words bibliography of each author.
