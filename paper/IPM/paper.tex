@@ -41,13 +41,13 @@ Learning to rank \sep Information retrieval \sep Evaluation metric
 \end{frontmatter}
 
 \section{Introduction}
-Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarisation, machine translation, drug discovery and determining the ideal order of maintenance operations \citep{Rudin2009}. In addition, the ranking task has been argued to be a better fit for recommender systems than the regression task \cite{McNee2006} (which concerns predictions on a continuous scale) that is currently frequently used in such systems.\\
+Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarisation, machine translation, drug discovery and determining the ideal order of maintenance operations \citep{Rudin2009}. In addition, \cite{McNee2006} found the ranking task to be a better fit for recommender systems than the regression task (continuous scale predictions), which is currently still frequently used within such systems.\\
 
-Research in the field of ranking models has been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Increased amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective ranking models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
+Research in the field of ranking models has been based on manually designed ranking functions, such as the well-known BM25 model \citep{Robertson1994}. Increased amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective ranking models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
-In recent years, several learning to rank benchmark datasets have been proposed with the aim of enabling comparison of learning to rank methods in terms of ranking accuracy. Well-known benchmark datasets in the learning to rank field include the \emph{Yahoo! Learning to Rank Challenge} datasets \cite{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \cite{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on the benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a standard way of benchmarking.\\
+In recent years, several learning to rank benchmark datasets have been proposed with the aim of enabling comparison of learning to rank methods in terms of ranking accuracy. Well-known benchmark datasets in the learning to rank field include the \emph{Yahoo! Learning to Rank Challenge} datasets \citep{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \citep{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on the benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a standard way of benchmarking.\\
 
-Gomes et al. \cite{Gomes2013} analyzed the ranking accuracy of a set of models on both LETOR 3.0 and 4.0. Busa-Fekete et al. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both the Yahoo! Learning to Rank Challenge datasets and one of the datasets from LETOR 3.0. Both studies did not aim to be complete in benchmark datasets and learning to rank methods included in their comparisons. To our knowledge, no structured meta-analysis on ranking accuracy has been conducted where evaluation results on several benchmark collections are taken into account. In this paper we will perform a meta-analysis with the aim of comparing the ranking accuracy of learning to rank methods. The paper will describe two stages in the meta-analysis process: 1) collection of evaluation results, and 2) comparison of learning to rank methods.
+\cite{Gomes2013} analyzed the ranking accuracy of a set of models on both LETOR 3.0 and 4.0. \cite{Busa-Fekete2013} compared the accuracy of a small set of models over the LETOR 4.0 datasets, both MSLR datasets, both the Yahoo! Learning to Rank Challenge datasets and one of the datasets from LETOR 3.0. Both studies did not aim to be complete in benchmark datasets and learning to rank methods included in their comparisons. To our knowledge, no structured meta-analysis on ranking accuracy has been conducted where evaluation results on several benchmark collections are taken into account. In this paper we will perform a meta-analysis with the aim of comparing the ranking accuracy of learning to rank methods. The paper will describe two stages in the meta-analysis process: 1) collection of evaluation results, and 2) comparison of learning to rank methods.
 
 \section{Collecting Evaluation Results}
 \label{sec:collecting_evaluation_results}
@@ -75,17 +75,17 @@ Yandex Internet Mathematics 2009 contest & 1\\
 
 For the LETOR collections, the evaluation results of the baseline models will be used from LETOR 2.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor2.0/baseline.aspx}, 3.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and 4.0\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} as listed on the LETOR website.\\
 
-LETOR 1.0 and 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers that were released with the collection. Authors publishing evaluation results on these benchmark collections are requested to cite these papers. We collect evaluation measurements of learning to rank methods on these benchmark collections through forward literature search. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search performed using Google Scholar.
+LETOR 1.0 and 3.0, Yahoo! Learning to Rank Challenge, WCL2R and AOL have accompanying papers that were released with the collection. Authors publishing evaluation results on these benchmark collections are requested to cite these papers. We collect evaluation measurements of learning to rank methods on these benchmark collections through forward literature search. Table~\ref{tbl:ltr_benchmark_forref} presents an overview of the results of this forward literature search performed using Google Scholar.\\
 \begin{table}[!h]
 \centering
 \begin{tabular}{p{6cm}p{3cm}R{2cm}}\toprule
 Benchmark & Paper & \# of forward references \\
 \midrule
-LETOR 1.0 \& 2.0 & Liu et al. \cite{Liu2007b} & 307\\
-LETOR 3.0 & Qin et al. \cite{Qin2010} & 105\\
-Yahoo! Learning to Rank Challenge & Chapelle et al. \cite{Chapelle2011a} & 102\\
-AOL dataset & Pass et al. \cite{Pass2006} & 339\\
-WCL2R & Alc{\^a}ntara et al. \cite{Alcantara2010} & 2\\
+LETOR 1.0 \& 2.0 & \cite{Liu2007b} & 307\\
+LETOR 3.0 & \cite{Qin2010} & 105\\
+Yahoo! Learning to Rank Challenge & \cite{Chapelle2011a} & 102\\
+AOL dataset & \cite{Pass2006} & 339\\
+WCL2R & \cite{Alcantara2010} & 2\\
 \bottomrule
 \end{tabular}
 \caption{Forward references of learning to rank benchmark papers}
@@ -115,17 +115,17 @@ Table \ref{tab:ltr_methods_used} in the appendix gives an overview of the learni
 Some studies with evaluation results found through the literature search procedure were not usable for the meta-analysis. The following enumeration enumerates those properties that made one or more studies unusable for the meta-analysis. Between brackets are the studies that these properties apply to.
 
 \begin{enumerate}[noitemsep,nolistsep]
-\item A different evaluation methodology was used in the study compared to what was used in other studies using the same benchmark \cite{Geng2011, Lin2012}
-\item The study focuses on a different learning to rank task (e.g. rank aggregation or transfer ranking) \cite{De2011, De2010, Derhami2013, De2012, Chen2010, Ah-Pine2008, Wang2009c, De2013, Miao2013, Hoi2008, De2012b, Duh2011b, Argentini2012, Qin2010c, Volkovs2013, Desarkar2011, Pan2013, Lin2011b, Volkovs2012, Dammak2011}
-\item The study used an altered version of a benchmark that contained additional features \cite{Bidoki2009, Ding2010}
-\item The study provides no exact data of the evaluation results (e.g. results are only in graphical form) \cite{Wang2008, Wang2010, Xu2010, Kuo2009, Li2008, Xia2008, Zhou2011, Wu2011, Zhu2009, Karimzadehgan2011, Swersky2012, Pan2011, Ni2008, Ciaramita2008, Stewart2012, Petterson2009, Agarwal2010, Chang2009, Qin2008c, Adams2011, Sculley2009, Huang2008, Alejo2010, Sun2011, He2010b, Benbouzid2012, Geng2012, Chen2012, Xu2012, Shivaswamy2011}
-\item The study reported evaluation results in a different metric than the metrics chosen for this meta-analysis \cite{Yu2009, Thuy2009, Pahikkala2009, Kersting2009, Mohan2011}
-\item The study reported a higher performance on baseline methods than official benchmark runs \cite{Dubey2009, Banerjee2009, Peng2010b, Song2014, Bian2010, Bian2010b, Carvalho2008, Acharyya2012, Peng2010b, Tran2012, Asadi2013c}
-\item The study did not report any baseline performance that allowed us to check validity of the results \cite{Chakrabarti2008, Wang2012b, Buffoni2011}.
+\item A different evaluation methodology was used in the study compared to what was used in other studies using the same benchmark \citep{Geng2011, Lin2012}
+\item The study focuses on a different learning to rank task (e.g. rank aggregation or transfer ranking) \citep{De2011, De2010, Derhami2013, De2012, Chen2010, Ah-Pine2008, Wang2009c, De2013, Miao2013, Hoi2008, De2012b, Duh2011b, Argentini2012, Qin2010c, Volkovs2013, Desarkar2011, Pan2013, Lin2011b, Volkovs2012, Dammak2011}
+\item The study used an altered version of a benchmark that contained additional features \citep{Bidoki2009, Ding2010}
+\item The study provides no exact data of the evaluation results (e.g. results are only in graphical form) \citep{Wang2008, Wang2010, Xu2010, Kuo2009, Li2008, Xia2008, Zhou2011, Wu2011, Zhu2009, Karimzadehgan2011, Swersky2012, Pan2011, Ni2008, Ciaramita2008, Stewart2012, Petterson2009, Agarwal2010, Chang2009, Qin2008c, Adams2011, Sculley2009, Huang2008, Alejo2010, Sun2011, He2010b, Benbouzid2012, Geng2012, Chen2012, Xu2012, Shivaswamy2011}
+\item The study reported evaluation results in a different metric than the metrics chosen for this meta-analysis \citep{Yu2009, Thuy2009, Pahikkala2009, Kersting2009, Mohan2011}
+\item The study reported a higher performance on baseline methods than official benchmark runs \citep{Dubey2009, Banerjee2009, Peng2010b, Song2014, Bian2010, Bian2010b, Carvalho2008, Acharyya2012, Peng2010b, Tran2012, Asadi2013c}
+\item The study did not report any baseline performance that allowed us to check validity of the results \citep{Chakrabarti2008, Wang2012b, Buffoni2011}.
 \end{enumerate}
 
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
-Qin et al. \cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
+\cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
 
 $\text{WN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
 
