@@ -41,6 +41,7 @@ implementation/java/input/*
 *.prj
 *.sav
 *.snm
+*.spl
 *.synctex.gz
 *.synctex.gz(busy)
 *.tcp
