@@ -244,53 +244,96 @@ More evaluation runs are needed for the methods on the left side of Figure \ref{
 
 \begin{table*}[!hpt]
 \tiny{
-\begin{tabular}{lll|lll}\toprule
-Method & Described in & Evaluated in & Method & Described in & Evaluated in\\
+\begin{tabular}{lll}\toprule
+Method & Described in & Evaluated in\\
 \midrule
-AdaRank-MAP & \cite{Xu2007} & L2, L3, L4 & ListMLE & \cite{Xia2008} & \cite{Lin2010, Lin2011, Gao2014} \\
-AdaRank-NDCG & \cite{Xu2007} & L2, L3, L4,  \cite{Busa-Fekete2013,Tan2013} & ListNet & \cite{Cao2007} & L2, L3, L4 \\ 
-ADMM & \cite{Duh2011} & \cite{Duh2011} & ListReg & \cite{Wu2011} & \cite{Wu2011} \\ 
-ApproxAP & \cite{Qin2010b} & \cite{Qin2010b} & LRUF & \cite{Torkestani2012b} & \cite{Torkestani2012b} \\ 
-ApproxNDCG & \cite{Qin2010b} & \cite{Qin2010b} & MCP & \cite{Laporte2013} & \cite{Laporte2013} \\ 
-BagBoo & \cite{Pavlov2010} & \cite{Ganjisaffar2011c} & MHR & \cite{Qin2007} & L2 \\ 
-Best Single Feature &  & \cite{Gomes2013} &  MultiStageBoost & \cite{Kao2013} & \cite{Kao2013} \\ 
-BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} &  NewLoss & \cite{Peng2010} & \cite{Peng2010} \\ 
-BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009, Volkovs2013} & OWPC & \cite{Usunier2009} & \cite{Usunier2009} \\ 
-BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c, Volkovs2013} & PERF-MAP & \cite{Pan2011} & \cite{Torkestani2012b} \\ 
-BT & \cite{Zhou2008} & \cite{Zhou2008} & PermuRank & \cite{Xu2008} & \cite{Xu2008} \\ 
-C-CRF & \cite{Qin2008b} & \cite{Qin2008b} & Q.D.KNN & \cite{Geng2008} & \cite{Wang2013} \\ 
-CA & \cite{Metzler2007} & \cite{Busa-Fekete2013,Tan2013} & RandomForest & \cite{Gomes2013} & \cite{Gomes2013} \\ 
-CCRank & \cite{Wang2011c} & \cite{Wang2011c} & Rank-PMBGP & \cite{Sato2013} & \cite{Sato2013} \\ 
-CoList & \cite{Gao2014} & \cite{Gao2014} & RankAggNDCG & \cite{Wang2013} & \cite{Wang2013} \\
-Consistent-RankCosine & \cite{Ravikumar2011} & \cite{Tan2013} & RankBoost & \cite{Freund2003} & L2, L3, L4, \cite{Busa-Fekete2013, Alcantara2010, Sato2013} \\
-DCMP & \cite{Renjifo2012}  & \cite{Renjifo2012}  & RankBoost (Kernel-PCA) & \cite{Duh2008} & \cite{Duh2008, Sato2013} \\
-DirectRank & \cite{Tan2013} & \cite{Tan2013} & RankBoost (SVD) & \cite{Lin2009} & \cite{Lin2009} \\
-EnergyNDCG & \cite{Freno2011} & \cite{Freno2011} & RankCSA & \cite{He2010} & \cite{He2010} \\
-FBPCRank & \cite{Lai2011} & \cite{Lai2011} & RankDE & \cite{Bollegala2011} & \cite{Sato2013} \\
-FenchelRank & \cite{Lai2013} & \cite{Lai2013, Lai2013b, Laporte2013} & RankELM (pairwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
-FocusedBoost & \cite{Niu2012} & \cite{Niu2012} &  RankELM (pointwise) & \cite{Zong2013} & \cite{Zong2013} \\ 
-FocusedNet & \cite{Niu2012} & \cite{Niu2012} & RankMGP & \cite{Lin2012} & \cite{Lin2012} \\ 
-FocusedSVM & \cite{Niu2012} & \cite{Niu2012} & RankNet & \cite{Burges2005} & \cite{Busa-Fekete2013, Papini2012, Niu2012} \\ 
-FP-Rank & \cite{Song2013} & \cite{Song2013} & RankRLS & \cite{Pahikkala2009} & \cite{Pahikkala2010} \\ 
-FRank & \cite{Tsai2007} & L2, L3, \cite{Wang2012} & RankSVM & \cite{Herbrich1999, Joachims2002} & L2, L3, \cite{Busa-Fekete2013, Freno2011, He2010, Alcantara2010, Papini2012} \\ 
-FSMRank & \cite{Lai2013c} & \cite{Lai2013c,Laporte2013} & RankSVM-Primal &  & L3, \cite{Lai2011} \\ 
-FSM$^{SVM}$ & \cite{Lai2013c} & \cite{Lai2013c} & RankSVM-Struct &  & L3, L4 \\
-GAS-E & \cite{Geng2007} & \cite{Lai2013c} & RCP & \cite{Elsas2008} & \cite{Elsas2008} \\ 
-GP & \cite{DeAlmeida2007} & \cite{Alcantara2010} & RE-QR & \cite{Veloso2010} & \cite{Veloso2010} \\
-GPRank & \cite{Silva2009} & \cite{Torkestani2012} & REG-SHF-SDCG & \cite{Wu2009} & \cite{Wu2009} \\  
-GRankRLS & \cite{Pahikkala2010} & \cite{Pahikkala2010} & Ridge Regression & \cite{Cossock2006} & L3 \\
-GroupCE & \cite{Lin2011} & \cite{Lin2011} & RSRank & \cite{Sun2009} & \cite{Lai2013} \\ 
-GroupMLE & \cite{Lin2010} & \cite{Lin2011} & SmoothGrad & \cite{Le2007} & \cite{Tan2013} \\ 
-IntervalRank & \cite{Moon2010} & \cite{Moon2010, Freno2011} & SmoothRank & \cite{Chapelle2010} & L3, \cite{Chapelle2010} \\
-IPRank & \cite{Wang2009b} & \cite{Wang2009b, Torkestani2012} & SoftRank & \cite{Taylor2008, Guiver2008} & \cite{Qin2010b} \\ 
-KeepRank & \cite{Chen2009} & \cite{Chen2009} & SortNet & \cite{Rigutini2008} & \cite{Rigutini2008,Freno2011, Papini2012} \\
-KL-CRF & \cite{Volkovs2011} & \cite{Volkovs2011} & SparseRank & \cite{Lai2013b} & \cite{Lai2013b} \\ 
-LAC-MR-OR & \cite{Veloso2008} & \cite{Veloso2008, Alcantara2010} & SVM$^{MAP}$ & \cite{Yue2007} & L3, \cite{Wang2012, Xu2008, Niu2012} \\ 
-LambdaMART & \cite{Burges2010} & \cite{Asadi2013a, Ganjisaffar2011c} &SwarmRank & \cite{Diaz-Aviles2009} & \cite{Sato2013} \\ 
-LambdaNeuralRank & \cite{Papini2012} & \cite{Papini2012} & TGRank & \cite{Lai2013} & \cite{Lai2013} \\ 
-LambdaRank & \cite{Burges2006} & \cite{Papini2012, Tan2013} & TM & \cite{Zhou2008} & \cite{Zhou2008, Papini2012, Tan2013} \\ 
-LARF & \cite{Torkestani2012} & \cite{Torkestani2012} &  VFLR & \cite{Cai2012} & \cite{Cai2012} \\
-Linear Regression & \cite{Cossock2006} & L3, \cite{Wang2012, Volkovs2011} & & & \\
+AdaRank-MAP & \cite{Xu2007} & L2, L3, L4 \\
+AdaRank-NDCG & \cite{Xu2007} & L2, L3, L4,  \cite{Busa-Fekete2013,Tan2013} \\ 
+ADMM & \cite{Duh2011} & \cite{Duh2011} \\ 
+ApproxAP & \cite{Qin2010b} & \cite{Qin2010b} \\ 
+ApproxNDCG & \cite{Qin2010b} & \cite{Qin2010b} \\ 
+BagBoo & \cite{Pavlov2010} & \cite{Ganjisaffar2011c} \\ 
+Best Single Feature &  & \cite{Gomes2013} \\ 
+BL-MART & \cite{Ganjisaffar2011c} & \cite{Ganjisaffar2011c} \\ 
+BoltzRank-Single & \cite{Volkovs2009} & \cite{Volkovs2009, Volkovs2013} \\ 
+BoltzRank-Pair & \cite{Volkovs2009} & \cite{Volkovs2009, Ganjisaffar2011c, Volkovs2013} \\ 
+BT & \cite{Zhou2008} & \cite{Zhou2008} \\ 
+C-CRF & \cite{Qin2008b} & \cite{Qin2008b} \\ 
+CA & \cite{Metzler2007} & \cite{Busa-Fekete2013,Tan2013} \\ 
+CCRank & \cite{Wang2011c} & \cite{Wang2011c} \\ 
+CoList & \cite{Gao2014} & \cite{Gao2014} \\
+Consistent-RankCosine & \cite{Ravikumar2011} & \cite{Tan2013} \\
+DCMP & \cite{Renjifo2012}  & \cite{Renjifo2012}  \\
+DirectRank & \cite{Tan2013} & \cite{Tan2013} \\
+EnergyNDCG & \cite{Freno2011} & \cite{Freno2011} \\
+FBPCRank & \cite{Lai2011} & \cite{Lai2011} \\
+FenchelRank & \cite{Lai2013} & \cite{Lai2013, Lai2013b, Laporte2013} \\ 
+FocusedBoost & \cite{Niu2012} & \cite{Niu2012} \\ 
+FocusedNet & \cite{Niu2012} & \cite{Niu2012} \\ 
+FocusedSVM & \cite{Niu2012} & \cite{Niu2012} \\ 
+FP-Rank & \cite{Song2013} & \cite{Song2013} \\ 
+FRank & \cite{Tsai2007} & L2, L3, \cite{Wang2012} \\ 
+FSMRank & \cite{Lai2013c} & \cite{Lai2013c,Laporte2013} \\ 
+FSM$^{SVM}$ & \cite{Lai2013c} & \cite{Lai2013c} \\
+GAS-E & \cite{Geng2007} & \cite{Lai2013c} \\ 
+GP & \cite{DeAlmeida2007} & \cite{Alcantara2010} \\
+GPRank & \cite{Silva2009} & \cite{Torkestani2012} \\  
+GRankRLS & \cite{Pahikkala2010} & \cite{Pahikkala2010} \\
+GroupCE & \cite{Lin2011} & \cite{Lin2011} \\ 
+GroupMLE & \cite{Lin2010} & \cite{Lin2011} \\ 
+IntervalRank & \cite{Moon2010} & \cite{Moon2010, Freno2011} \\
+IPRank & \cite{Wang2009b} & \cite{Wang2009b, Torkestani2012} \\ 
+KeepRank & \cite{Chen2009} & \cite{Chen2009} \\
+KL-CRF & \cite{Volkovs2011} & \cite{Volkovs2011} \\ 
+LAC-MR-OR & \cite{Veloso2008} & \cite{Veloso2008, Alcantara2010} \\ 
+LambdaMART & \cite{Burges2010} & \cite{Asadi2013a, Ganjisaffar2011c} \\ 
+LambdaNeuralRank & \cite{Papini2012} & \cite{Papini2012} \\ 
+LambdaRank & \cite{Burges2006} & \cite{Papini2012, Tan2013} \\ 
+LARF & \cite{Torkestani2012} & \cite{Torkestani2012} \\
+Linear Regression & \cite{Cossock2006} & L3, \cite{Wang2012, Volkovs2011} \\
+ListMLE & \cite{Xia2008} & \cite{Lin2010, Lin2011, Gao2014} \\
+ListNet & \cite{Cao2007} & L2, L3, L4 \\
+ListReg & \cite{Wu2011} & \cite{Wu2011}\\
+LRUF & \cite{Torkestani2012b} & \cite{Torkestani2012b}\\
+MCP & \cite{Laporte2013} & \cite{Laporte2013}\\
+MHR & \cite{Qin2007} & L2\\
+MultiStageBoost & \cite{Kao2013} & \cite{Kao2013}\\
+NewLoss & \cite{Peng2010} & \cite{Peng2010}\\
+OWPC & \cite{Usunier2009} & \cite{Usunier2009}\\
+PERF-MAP & \cite{Pan2011} & \cite{Torkestani2012b}\\
+PermuRank & \cite{Xu2008} & \cite{Xu2008}\\
+Q.D.KNN & \cite{Geng2008} & \cite{Wang2013}\\
+RandomForest & \cite{Gomes2013} & \cite{Gomes2013}\\
+Rank-PMBGP & \cite{Sato2013} & \cite{Sato2013}\\
+RankAggNDCG & \cite{Wang2013} & \cite{Wang2013}\\
+RankBoost & \cite{Freund2003} & L2, L3, L4, \cite{Busa-Fekete2013, Alcantara2010, Sato2013}\\
+RankBoost (Kernel-PCA) & \cite{Duh2008} & \cite{Duh2008, Sato2013}\\
+RankBoost (SVD) & \cite{Lin2009} & \cite{Lin2009}\\
+RankCSA & \cite{He2010} & \cite{He2010}\\
+RankDE & \cite{Bollegala2011} & \cite{Sato2013}\\
+RankELM (pairwise) & \cite{Zong2013} & \cite{Zong2013}\\
+RankELM (pointwise) & \cite{Zong2013} & \cite{Zong2013}\\
+RankMGP & \cite{Lin2012} & \cite{Lin2012}\\
+RankNet & \cite{Burges2005} & \cite{Busa-Fekete2013, Papini2012, Niu2012}\\
+RankRLS & \cite{Pahikkala2009} & \cite{Pahikkala2010}\\
+RankSVM & \cite{Herbrich1999, Joachims2002} & L2, L3, \cite{Busa-Fekete2013, Freno2011, He2010, Alcantara2010, Papini2012}\\
+RankSVM-Struct &  & L3, L4\\
+RankSVM-Primal &  & L3, \cite{Lai2011}\\
+RCP & \cite{Elsas2008} & \cite{Elsas2008}\\
+RE-QR & \cite{Veloso2010} & \cite{Veloso2010}\\
+REG-SHF-SDCG & \cite{Wu2009} & \cite{Wu2009}\\
+Ridge Regression & \cite{Cossock2006} & L3\\
+RSRank & \cite{Sun2009} & \cite{Lai2013}\\
+SmoothGrad & \cite{Le2007} & \cite{Tan2013}\\
+SmoothRank & \cite{Chapelle2010} & L3, \cite{Chapelle2010}\\
+SoftRank & \cite{Taylor2008, Guiver2008} & \cite{Qin2010b}\\
+SortNet & \cite{Rigutini2008} & \cite{Rigutini2008,Freno2011, Papini2012}\\
+SparseRank & \cite{Lai2013b} & \cite{Lai2013b}\\
+SVM$^{MAP}$ & \cite{Yue2007} & L3, \cite{Wang2012, Xu2008, Niu2012}\\
+SwarmRank & \cite{Diaz-Aviles2009} & \cite{Sato2013}\\
+TGRank & \cite{Lai2013} & \cite{Lai2013}\\
+TM & \cite{Zhou2008} & \cite{Zhou2008, Papini2012, Tan2013}\\
+VFLR & \cite{Cai2012} & \cite{Cai2012}\\
 \bottomrule
 \end{tabular}
 \caption{Learning to rank algorithms with measurements on benchmark datasets}}

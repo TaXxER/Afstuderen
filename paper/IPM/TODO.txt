@@ -1,3 +1,2 @@
-- Long style referenties weer fixes (mogelijk gewoon gefixt door .bib van thesis the copy-pasten)
 - Highlights schrijven: 3-5 bulletpoints van max. 85 characters.
 - Vitae. max 100 words bibliography of each author.
