@@ -238,13 +238,12 @@ More evaluation runs are needed for the methods on the left side of Figure \ref{
 
 \bibliographystyle{apalike}
 \bibliography{Bibliography}
-
+\newpage
 \appendix
-\section{Meta-analysis raw data}
+\section{Meta-analysis data sources}
 
-\begin{table*}[!hpt]
-\tiny{
-\begin{tabular}{lp{3cm}p{6cm}}\toprule
+{\fontsize{5.5pt}{5.4pt}\selectfont
+\begin{longtable}{p{2.671cm}p{2.812cm}p{7.7cm}}\toprule
 Method & Described in & Evaluated in\\
 \midrule
 AdaRank-MAP & \cite{Xu2007} & L2, L3, L4 \\
@@ -335,13 +334,15 @@ TGRank & \cite{Lai2013} & \cite{Lai2013}\\
 TM & \cite{Zhou2008} & \cite{Zhou2008, Papini2012, Tan2013}\\
 VFLR & \cite{Cai2012} & \cite{Cai2012}\\
 \bottomrule
-\end{tabular}
-\caption{Learning to rank algorithms with measurements on benchmark datasets}}
+\caption{Learning to rank algorithms with measurements on benchmark datasets}
 \label{tab:ltr_methods_used}
-\end{table*}
+\end{longtable}
+}
 
-\tiny{
-\begin{longtable}[!hpt]{@{}lrrrrrrrrrrrrrrrr@{}}\toprule
+\newpage
+\section{Meta-analysis raw data}
+{\fontsize{5.5pt}{5.4pt}\selectfont
+\begin{longtable}{@{}lrrrrrrrrrrrrrrrr@{}}\toprule
 & \multicolumn{2}{c}{NDCG@3} & \phantom{a} 
 & \multicolumn{2}{c}{NDCG@5} & \phantom{a} 
 & \multicolumn{2}{c}{NDG@10} & \phantom{a} 
