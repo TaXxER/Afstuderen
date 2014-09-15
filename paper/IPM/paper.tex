@@ -1,8 +1,9 @@
-\documentclass[preprint]{elsarticle}
+\documentclass[english, authoryear, preprint]{elsarticle}
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{longtable}
 \usepackage{dblfloatfix}
+\usepackage{apalike}
 \usepackage{fixltx2e}
 \usepackage{enumitem}
 \usepackage{amsmath}
@@ -18,20 +19,15 @@
 \begin{document}
 \begin{frontmatter}
 \title{A Cross-Benchmark Comparison of 87 Learning to Rank Methods}
-
 \author[avanade,ut]{Niek Tax\corref{cor}\fnref{fn}}
 \ead{niek.tax@avanade.com}
-
 \author[avanade]{Sander Bockting}
 \ead{sander.bockting@avanade.com}
-
 \author[ut]{Djoerd Hiemstra}
 \ead{d.hiemstra@utwente.nl}
-
 \cortext[cor]{Corresponding Author: Niek Tax, Avanade Netherlands B.V., Versterkerstraat 6,
 1322AP Almere, the Netherlands; Email, niek.tax@avanade.com; Phone, +31634085760}
 \fntext[fn]{Author is affiliated with the University of Twente, but this paper written during his time at Avanade Netherlands B.V.}
-
 \address[avanade]{Avanade Netherlands B.V., Versterkerstraat 6,
 1322AP Almere, the Netherlands}
 \address[ut]{University of Twente, P.O. Box 217, 7500AE Enschede,
@@ -43,8 +39,6 @@ Learning to rank is an increasingly important scientific field that comprises th
 Learning to rank \sep Information retrieval \sep Evaluation metric
 \end{keyword}
 \end{frontmatter}
-
-
 
 \section{Introduction}
 Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarisation, machine translation, drug discovery and determining the ideal order of maintenance operations \cite{Rudin2009}. In addition, the ranking task has been argued to be a better fit for recommender systems than the regression task \cite{McNee2006} (which concerns predictions on a continuous scale) that is currently frequently used in such systems.\\
@@ -173,7 +167,7 @@ The following subsections provide the performance of learning to rank methods in
 \subsection{NDCG@3}
 \begin{figure}
 \centering
-\includegraphics[scale=0.19]{gfx/ndcg3_winnum}
+\includegraphics[scale=0.26]{gfx/ndcg3_winnum}
 \caption{NDCG@3 comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_ndcg3}
 \end{figure}
@@ -183,7 +177,8 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 
 \subsection{NDCG@5}
 \begin{figure}
-\includegraphics[scale=0.19]{gfx/ndcg5_winnum}
+\centering
+\includegraphics[scale=0.26]{gfx/ndcg5_winnum}
 \caption{NDCG@5 comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_ndcg5}
 \end{figure}
@@ -192,7 +187,7 @@ Figure \ref{fig:normalized_winning_number_ndcg5} shows the NWN of learning to ra
 \subsection{NDCG@10}
 \begin{figure}
 \centering
-\includegraphics[scale=0.19]{gfx/ndcg10_winnum}
+\includegraphics[scale=0.26]{gfx/ndcg10_winnum}
 \caption{NDCG@10 comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_ndcg10}
 \end{figure}
@@ -202,7 +197,7 @@ Figure \ref{fig:normalized_winning_number_ndcg10} shows the NWN of learning to r
 \subsection{MAP}
 \begin{figure}
 \centering
-\includegraphics[scale=0.19]{gfx/map_winnum}
+\includegraphics[scale=0.26]{gfx/map_winnum}
 \caption{MAP comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_map}
 \end{figure}
@@ -213,7 +208,7 @@ LARF and LRUF score very high NWN scores, but based on only few datasets, just a
 \subsection{Cross-Metric}
 \begin{figure}
 \centering
-\includegraphics[scale=0.21]{gfx/combined_normalized_winnum}
+\includegraphics[scale=0.28]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_all}
 \end{figure}
@@ -241,7 +236,7 @@ Based on our literature search for evaluation results on well-known benchmarks c
 
 More evaluation runs are needed for the methods on the left side of Figure \ref{fig:normalized_winning_number_all}. Our work contributes to this by identifying promising learning to rank methods that researchers could focus on in performing additional evaluation runs.
 
-\bibliographystyle{apa}
+\bibliographystyle{apalike}
 \bibliography{Bibliography}
 
 \appendix

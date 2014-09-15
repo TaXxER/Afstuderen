@@ -1,5 +1,3 @@
-- Zorgen dat het geheel compileert met 'elsarticle' document class
 - Long style referenties weer fixes (mogelijk gewoon gefixt door .bib van thesis the copy-pasten)
-- PNG's vervangen door EPS/PDF of eventueel >1000 dpi JPG
 - Highlights schrijven: 3-5 bulletpoints van max. 85 characters.
 - Vitae. max 100 words bibliography of each author.
