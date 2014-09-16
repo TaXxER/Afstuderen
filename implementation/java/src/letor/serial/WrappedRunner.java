@@ -14,7 +14,7 @@ public class WrappedRunner {
     public static void main(String[] args){
         AbstractParameterizedRanker handler             = new SmoothRankHandler();
         DataSets.DataSet            dataset             = DataSets.DataSet.CUSTOM;
-        Integer                     duplicationNumber   = 4; // Only relevant in case of dataset Custom
+        Integer                     duplicationNumber   = 1; // Only relevant in case of dataset Custom
 
         FoldRunHandler ltrWrapper = null;
         if(dataset == DataSets.DataSet.CUSTOM)
