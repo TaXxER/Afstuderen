@@ -16,12 +16,12 @@ public class WrappedRunner {
         DataSets.DataSet            dataset             = DataSets.DataSet.CUSTOM;
         Integer                     duplicationNumber   = 4; // Only relevant in case of dataset Custom
 
-        FoldRunHandler listNetWrapper = null;
+        FoldRunHandler ltrWrapper = null;
         if(dataset == DataSets.DataSet.CUSTOM)
-            listNetWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  1, 1); // Method, dataset, folds, iterations
+            ltrWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  1, 1); // Method, dataset, folds, iterations
         else
-            listNetWrapper = new FoldRunHandler(handler, dataset, 1, 1); // Method, dataset, folds, iterations
-        Measurement measurement = listNetWrapper.averageScore();
+            ltrWrapper = new FoldRunHandler(handler, dataset, 1, 1); // Method, dataset, folds, iterations
+        Measurement measurement = ltrWrapper.averageScore();
         System.out.println("Preprocessing: "+measurement.getPreprocessingTime());
         System.out.println("Train:         "+measurement.getTrainingTime());
         System.out.println("Test:          "+measurement.getTestTime());
