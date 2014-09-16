@@ -2,8 +2,6 @@ package letor.serial;
 
 import ciir.umass.edu.learning.{RankList, Ranker, DataPoint}
 import ciir.umass.edu.utilities.Sorter
-import org.ejml.data.{DenseMatrix64F, ReshapeMatrix64F}
-import org.ejml.ops.CommonOps
 import scala.collection.JavaConverters._
 
 /*
@@ -109,20 +107,6 @@ class SmoothRank extends Ranker{
     val wEvaluated = (0 until rl.size).map(x => eval(rl.get(x)))
     val idx = Sorter.sort(wEvaluated.toArray, false)
     new RankList(rl, idx)
-  }
-
-  def addToPseudoSolver(rl:RankList, a:ReshapeMatrix64F, b:ReshapeMatrix64F) = {
-    var aRl = new DenseMatrix64F(rl.size, features.length)
-    var bRl = new DenseMatrix64F(rl.size, 1)
-    for(i <- 0 until rl.size){
-      var xElem = List[Double]()
-      val dp = rl.get(i)
-      for(j <- 1 to features.length)
-        aRl.set(i, j-1, dp.getFeatureValue(j).toDouble)
-      bRl.set(i, 0, Math.pow(2, dp.getLabel)-1 )
-    }
-    CommonOps.insert(aRl,a,0,0)
-    CommonOps.insert(bRl,b,0,0)
   }
 
   def scaleFeatures(samples:java.util.List[RankList], numFeatures:Int):Array[RankList] = {

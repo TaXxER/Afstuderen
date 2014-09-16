@@ -1,6 +1,7 @@
 package letor.serial;
 
 import letor.parallel.util.DataSets;
+import letor.serial.parameterizedRankers.AbstractParameterizedRanker;
 import letor.serial.parameterizedRankers.ListNetHandler;
 import letor.serial.parameterizedRankers.SmoothRankHandler;
 import letor.serial.util.Measurement;
@@ -11,14 +12,15 @@ import letor.serial.util.Measurement;
 public class WrappedRunner {
 
     public static void main(String[] args){
-        DataSets.DataSet    dataset             = DataSets.DataSet.CUSTOM;
-        Integer             duplicationNumber   = 7; // Only relevant in case of dataset Custom
+        AbstractParameterizedRanker handler             = new SmoothRankHandler();
+        DataSets.DataSet            dataset             = DataSets.DataSet.CUSTOM;
+        Integer                     duplicationNumber   = 4; // Only relevant in case of dataset Custom
 
         FoldRunHandler listNetWrapper = null;
         if(dataset == DataSets.DataSet.CUSTOM)
-            listNetWrapper = new FoldRunHandler(new ListNetHandler(), DataSets.DataSet.CUSTOM, duplicationNumber,  1, 1); // Method, dataset, folds, iterations
+            listNetWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  1, 1); // Method, dataset, folds, iterations
         else
-            listNetWrapper = new FoldRunHandler(new ListNetHandler(), dataset, 1, 1); // Method, dataset, folds, iterations
+            listNetWrapper = new FoldRunHandler(handler, dataset, 1, 1); // Method, dataset, folds, iterations
         Measurement measurement = listNetWrapper.averageScore();
         System.out.println("Preprocessing: "+measurement.getPreprocessingTime());
         System.out.println("Train:         "+measurement.getTrainingTime());

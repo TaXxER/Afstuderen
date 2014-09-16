@@ -1,0 +1,3 @@
+- We propose a novel way to compare learning to rank methods
+- We perform a meta-analysis on a large set of papers that report ranking accuracy on a benchmark dataset
+- LRUF, FSMRank, FenchelRank, SmoothRank and ListNet are the most accurate, with increasing certainty
