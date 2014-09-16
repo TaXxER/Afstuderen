@@ -7,8 +7,27 @@ Ranking algorithms consist of a sequence of operations on the input data which a
 \subsection{Storing Input Data for HDInsight Processing}
 Azure HDInsight supports both the traditional \ac{HDFS} as described by Shvacko et al. \cite{Shvachko2010}, as well as Microsoft's own \ac{WASB} storage solution. Blob storage decouples the storage from the HDInsight Hadoop cluster; it enables safe deletion of a HDInsight cluster without losing data, as data is not solely stored on the cluster itself, but also on a separate storage that is not cluster-dependent. Azure \ac{WASB} storage allows the user to select one of their data centre for storage. \ac{WASB} storage in the West Europe region (located in Amsterdam) will be used for storage, as this data centre is located close to where the experiments are executed.
 
-\subsection{Microsoft Azure HDInsight Job submission}
-Microsoft offers a scalable and on-demand Hadoop service with HDInsight, that enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight of HDInsight available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. HDInsight 3.1 offers multiple ways of submitting Hadoop jobs to a HDInsight cluster, described in Table \ref{tbl:hdinsight_endpoints}.\\
+\subsection{The HDInsight Platform}
+Microsoft offers a scalable and on-demand Hadoop service with HDInsight, that enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight of HDInsight available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. While early versions of Hadoop were merely an open source implementation of MapReduce, Hadoop offers a wide variety of programming models since the introduction of Hadoop YARN in Hadoop 2.0 \cite{Vavilapalli2013}. Newly supported programming models since Hadoop 2.0 include Dryad \cite{Isard2007}, Giraph \cite{Avery2011}, MPI, REEF \cite{Chun2013}, Spark \cite{Zaharia2010}, and Storm \cite{Aniello2013}. Even tough listed programming models are now supported by Hadoop and even though some of these programming models have recently increased in popularity, they still lack the critical mass as the data processing framework of choice as Lin argued back in 2012 \cite{Lin2013}. Therefore, even though some of these programming models might be a better fit for iterative algorithms, we use Hadoop MapReduce of the programming model to implement the Learning to Rank algorithms.\\
+
+HDInsight 3.1 offers multiple ways of submitting Hadoop jobs to a HDInsight cluster, described in Table \ref{tbl:hdinsight_endpoints}. Oozie and WebHCat/Templeton are the two methods for job submission in Table \ref{tbl:hdinsight_endpoints} that both 1) support Apache Pig jobs, and 2) Can be used from within Java code. Table \ref{tbl:oozie_templeton} shows the necessary procedures for job submission from Oozie as well as from WebHCat will be sketched. Table \ref{tbl:oozie_templeton} shows Oozie job submission to be more complex for the case of dynamically generated jobs than WebHCat/Templeton. Oozie is more fitting for static Hadoop jobs that require a workflow consisting of a sequence of Pig and MapReduce jobs mixed together, but is a lesser fit for our situation. Templeton will be used for submission of the Pig jobs, as the HDInsight version that was available at the start of the implementation did not yet support WebHCat.\\
+
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{5cm}}\toprule
+Job submission procedure for Apache Oozie & Job submission procedure for WebHCat/Templeton \\
+\midrule
+1. Let the framework build the Pig job dynamically. & 1. Let the framework build the Pig job dynamically.\\
+2. Encapsulate the Pig job in an Oozie workflow. & 2. Submit the Pig job through the WebHCat/Templeton REST API.\\
+3. Upload the Oozie workflow to HDFS storage. & \\
+4. Execute the Oozie workflow through the Oozie REST API. & \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of Oozie and WebHCat job submission procedures}
+\label{tbl:oozie_templeton}
+\end{table}
+
+
 
 \begin{table}
 \centering
@@ -26,33 +45,19 @@ WebHCat/Templeton & REST endpoint & WebHCat, formerly known as Templeton, is a R
 \label{tbl:hdinsight_endpoints}
 \end{table}
 
-Oozie and WebHCat/Templeton are the two methods for job submission in Table \ref{tbl:hdinsight_endpoints} that both 1) support Apache Pig jobs, and 2) Can be used from within Java code. Below the necessary procedures for job submission from Oozie as well as from WebHCat will be sketched.\\
+\subsection{Handling repetitive tasks}
+Fold handling  in a cross-validation experiment is the process of loading the correct data folds for training, validation and testing in the multiple rounds that the cross-validation experiment consists of. Fold handling is a task that needs to be taken care of regardless of the ranking model that is being evaluated. Given that most ranking models are of an iterative nature, the task of iteration handling is also a task that need to be done for most models. Iteration handling and fold handling are procedures in which the same steps are repeated for each iteration or cross-validation round respectively. Pig Latin, in contrast to more procedural languages that generate MapReduce job like Sawzall \cite{Pike2005}, has no support for loops which are needed to perform iteration handling and fold handling. Since iteration handling and fold handling are tasks that need to be addressed for each ranking model and that cannot be solved with Pig, we create a framework that takes care of both iteration and fold handling and generates the Pig Latin code for the current iteration and fold.\\
 
-% TODO: Stuk over werkzaamheden framework uitbreiden: uitlezen resultaten (evaluatieresultaten + doorgeven tussenresultaten (die tweede wellicht later in het document pas introduceren))
-Fold handling  in a cross-validation experiment is the process of loading the correct data folds for training, validation and testing in the multiple rounds that the cross-validation experiment consists of. Fold handling is a task that needs to be taken care of regardless of the ranking model that is being evaluated. Given that most ranking models are of an iterative nature, the task of iteration handling is also a task that need to be done for most models. Iteration handling and fold handling are procedures in which the same steps are repeated for each iteration or cross-validation round respectively. Pig Latin, however, has no support for loops which are needed to perform iteration handling and fold handling. Since iteration handling and fold handling are tasks that need to be addressed for each ranking model and that cannot be solved with Pig, we create a framework that takes care of both iteration and fold handling and generates the Pig Latin code for the current iteration and fold. The aim of this framework is to let implementations of ranking models focus solely on implementing the sequential steps of one iteration of the algorithm, while the framework arranges that 1) these sequential steps are performed iteratively and 2) these sequential steps are performed on the multiple training folds of data. This framework that handles folding and iterations will be implemented in Java and will work such that fold- and iteration dependent parts of the Pig code will be generated dynamically by the Java framework after which the Pig job will be sent to the cluster.\\
+Handling communication between Pig jobs within a single iteration of a Learning to Rank algorithm is another problem that needs to be addressed. A Pig Job writes its result to \ac{WASB} storage, while this result is in most cases needed by a subsequent Pig job as parameter. The framework enables reading the result of a Pig job from \ac{WASB} storage which can then be used as parameter within a subsequent Pig job. An example of this is a Pig implementation of gradient descent, where a first Pig job might calculate gradients and writes them to storage, after which the framework assists in reading the gradients from storage and allows them to be used as input parameters of a second Pig job that calculates new feature weights based on its gradient parameter and a predetermined step size.\\
 
-Another responsibility of the framework is to handle communication between multiple Pig jobs within a single iteration of a Learning to Rank algorithm. The framework enables reading the result of a Pig job from \ac{WASB} storage which can then be used as parameter within a subsequent Pig job. An example of this is a Pig implementation of gradient descent, where a first Pig job might calculate gradients and writes them to storage, after which the framework assists in reading the gradients from storage and allows them to be used as input parameters of a second Pig job that calculates new feature weights based on its gradient parameter and a predetermined step size.\\
+The aim of this framework is to let implementations of ranking models focus solely on implementing the sequential steps of one iteration of the algorithm, while the framework handles that 1) these sequential steps are performed iteratively, 2) these sequential steps are performed on the multiple training folds of data and 3) data can be passed from one Pig job within the algorithm to another Pig job. This framework that handles folding and iterations will be implemented in Java and will work such that fold- and iteration dependent parts of the Pig code will be generated dynamically by the Java framework after which the Pig job will be sent to the cluster.\\
 
-\begin{table}
-\centering
-\begin{tabular}{p{5cm}p{5cm}}\toprule
-Job submission procedure for Apache Oozie & Job submission procedure for WebHCat/Templeton \\
-\midrule
-1. Let the framework build the Pig job dynamically. & 1. Let the framework build the Pig job dynamically.\\
-2. Encapsulate the Pig job in an Oozie workflow. & 2. Submit the Pig job through the WebHCat/Templeton REST API.\\
-3. Upload the Oozie workflow to HDFS storage. & \\
-4. Execute the Oozie workflow through the Oozie REST API. & \\
-\bottomrule
-\end{tabular}
-\caption{Comparison of Oozie and WebHCat job submission procedures}
-\label{tbl:oozie_templeton}
-\end{table}
+\subsection{Framework description}
+TODO
 
-Table \ref{tbl:oozie_templeton} shows how Oozie job submission is more complex then for the case of dynamically generated jobs than WebHCat/Templeton. Oozie is more fitting for static Hadoop jobs that require a workflow consisting of a sequence of Pig and MapReduce jobs mixed together, but is a lesser fit for our situation. Templeton will be used for submission of the Pig jobs, as the HDInsight version that was available at the start of the implementation did not yet support WebHCat.
-
-\subsection{ListNet}
+\section{ListNet}
 The following sections describe the Pig jobs that form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
-\subsubsection{Preprocessing}
+\subsection{Preprocessing}
 The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test datasets using the following formula for rescaling:
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
@@ -71,13 +76,13 @@ MIN_MAX_GRPD = GROUP MIN_MAX ALL;
 MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
-\end{minipage}
+\end{minipage}\\
 
 The minimum and maximum values per feature stored in MIN\_MAX\_FIN can now be read from \ac{HDFS} and used within the Java framework by using the Windows Azure Storage library. The second Pig job uses these minimum and maximum values by parametrising the \ac{UDF} that performs the rescaling transformation, udf.util.ScaleFeatures(), with the minimum and maximum feature values.\\
 
 \begin{table}
 \centering
-\begin{tabular}{p{5cm}p{8cm}}\toprule
+\begin{tabular}{p{6cm}p{7cm}}\toprule
 UDF & Description \\
 \midrule
 udf.util.ToStandardForm() & Transforms the data set into the standard form of relevance label in first column followed by feature values. Strips data of any other columns, if present.\\
@@ -107,7 +112,7 @@ STORE TRAIN_SCA INTO 'train_sca[fold number]' USING BinStorage();
 STORE VALIDATE_SCA INTO 'validate_sca[fold number]' USING BinStorage();
 STORE TEST_SCA INTO 'test_sca[fold number]' USING BinStorage();
 \end{lstlisting}
-\end{minipage}
+\end{minipage}\\
 
 \begin{table}
 \centering
@@ -122,7 +127,7 @@ udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with whic
 \label{tbl:preprocessing_udfs_2}
 \end{table}
 
-\subsubsection{Training}
+\subsection{Training}
 The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{nDCG}@k.\\
 
 The first Pig job:\\
@@ -144,11 +149,11 @@ TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;
 TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));
 STORE TR_LOSS_GRADIENT INTO 'tr_loss_gradient-f[fold number]i[iteration number]';
 \end{lstlisting}
-\end{minipage}
+\end{minipage}\\
 
 \begin{table}
 \centering
-\begin{tabular}{p{5cm}p{8cm}}\toprule
+\begin{tabular}{p{6cm}p{7cm}}\toprule
 UDF & Description \\
 \midrule
 udf.listnet.QueryLossGradient() & Calculates the Cross Entropy loss for a query and calculates the gradients per feature based on this query.\\
@@ -178,11 +183,11 @@ NDCG_GRPD = GROUP NDCG ALL;
 AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
 STORE AVG_NDCG INTO 'avg_ndcg-f[fold number]i[iteration number]';
 \end{lstlisting}
-\end{minipage}
+\end{minipage}\\
 
 \begin{table}
 \centering
-\begin{tabular}{p{5cm}p{8cm}}\toprule
+\begin{tabular}{p{6cm}p{7cm}}\toprule
 UDF & Description \\
 \midrule
 udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
@@ -192,7 +197,7 @@ udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
 \label{tbl:training_udfs_2}
 \end{table}
 
-\subsubsection{Testing}
+\subsection{Testing}
 The testing stage tests the best model found in the training iterations, selected on validation set \ac{nDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{nDCG}@k of this model on the test set.\\
 
 Test stage Pig job:\\
@@ -207,6 +212,9 @@ NDCG_GRPD = GROUP NDCG ALL;
 AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
 STORE AVG_NDCG INTO 'avg_ndcg';
 \end{lstlisting}
-\end{minipage}
+\end{minipage}\\
 
-\subsection{SmoothRank}
+\section{SmoothRank}
+\subsection{Preprocessing}
+\subsection{Training}
+\subsection{Testing}
