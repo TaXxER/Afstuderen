@@ -1,24 +1,24 @@
 \label{chap:implementation}
-This chapter describes implementation details of the Learning-to-Rank algorithm parallel implementations in HDInsight that are either Hadoop, Microsoft Azure, or HDInsight and are not part of the algorithm specification itself. The first section of this chapter will briefly discuss the HDInsight platform, the Hadoop ecosystem components offered by HDInsight and, in this regard, the Hadoop components used for implementation of the algorithms described in Chapter \ref{chap:ltr_methods}.
+The first section of this chapter will briefly discuss the HDInsight platform, the Hadoop ecosystem components offered by HDInsight and, in this regard, the Hadoop components used for implementation of the algorithms described in Chapter \ref{chap:ltr_methods}. The second section of this chapter describes a Java framework that handles the joint components needed for MapReduce Learning to Rank computation that are independent of the Learning to Rank model. The subsequent sections describe the implementation details of specific Learning to Rank models.
 
 \section{Architecture}
-Ranking models almost without exception consist of a sequence of operations on the input data, that are in most cases repeatedly executed in a series of iterations. Apache Pig will be used to implement the sequence of operation on the input data, because the higher level of abstraction that Apache Pig offers makes it easier to focus solely on the data operations as compared to native Hadoop MapReduce.\\
+Ranking algorithms consist of a sequence of operations on the input data which are often, but not always, of iterative nature. Apache Pig \cite{Olston2008} will be used to implement the sequence of operation on the input data, because the higher level of abstraction that Apache Pig offers makes it easier to focus solely on the data operations as compared to native Hadoop MapReduce.\\
 
-% TODO: Stuk over werkzaamheden framework uitbreiden: uitlezen resultaten (evaluatieresultaten + doorgeven tussenresultaten (die tweede wellicht later in het document pas introduceren))
-In a cross-validation evaluation experiment of a ranking model, the handling of which folds are loaded for training, evaluation and testing is a task that need to be taken care of regardless of the ranking model. Given that most ranking models are of an iterative nature, the task of iteration handling is also a task that need to be done for (most) models. Since these tasks need to be considered for (almost) all ranking models it seems natural to develop a framework that takes care of these tasks. The aim of this framework is to let implementations of ranking models focus solely on implementing the sequential steps of one iteration of the algorithm, while the framework arranges that 1) these sequential steps are performed iteratively and 2) these sequential steps are performed on the multiple training folds of data. This framework that handles folding and iterations will be implemented in Java and will work such that fold- and iteration dependent parts of the Pig code will be generated dynamically by the Java framework after which the Pig job will be sent to the cluster.\\
+\subsection{Storing Input Data for HDInsight Processing}
+Azure HDInsight supports both the traditional \ac{HDFS} as described in \cite{Shvachko2010}, as well as Microsoft's own \ac{WASB} storage solution. Blob storage decouples the storage from the HDInsight Hadoop cluster; it enables safe deletion of a HDInsight cluster without losing data, as data is not solely stored on the cluster itself, but also on a separate storage that is not cluster-dependent. Azure \ac{WASB} storage allows the user to select one of their data centre for storage. \ac{WASB} storage in the West Europe region (located in Amsterdam) will be used for storage, as this data centre is located close to where the experiments are executed.
 
-\subsection{Microsoft Azure HDInsight}
+\subsection{Microsoft Azure HDInsight Job submission}
 Microsoft offers a scalable and on-demand Hadoop service with HDInsight, that enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight of HDInsight available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. HDInsight 3.1 offers multiple ways of submitting Hadoop jobs to a HDInsight cluster, described in Table \ref{tbl:hdinsight_endpoints}.\\
 
 \begin{table}
 \centering
-\begin{tabular}{p{4cm}p{2.8cm}p{5.5cm}}\toprule
+\begin{tabular}{p{4.2cm}p{2.6cm}p{5.5cm}}\toprule
 Job submission method & Type & Description \\
 \midrule
 Powershell & Powershell scripts & The Azure module for Windows PowerShell enables direct submission of Hadoop jobs through PowerShell cmdlets.\\
 C\# API & C\# API & A wrapper API is offered to submit Hadoop MapReduce jobs directly from C\# code.\\
-HiveServer/HiveServer2 & REST endpoint & HiveServer and its successor HiveServer 2 are, as its name suggests, REST endpoints that allow remote submission of Hive queries.\\
-Oozie & REST endpoint & Apache Oozie is a workflow scheduler to manage Apache Hadoop jobs. Oozie enables users to specify Directed Acyclical Graphs of action, where each action is specified in either MapReduce or Pig.\\
+HiveServer/HiveServer2 & REST endpoint & Apache Hive \cite{Thusoo2009} is an open-source data warehousing solution on top of Hadoop, that supports processing of a SQL-like declarative language called HiveQL. HiveServer and its successor HiveServer 2 are REST endpoints that allow remote submission of HiveQL queries.\\
+Oozie & REST endpoint & Apache Oozie \cite{Islam2012} is a workflow scheduler to manage Apache Hadoop jobs. Oozie enables users to specify Directed Acyclical Graphs of action, where each action is specified in either MapReduce or Pig.\\
 WebHCat/Templeton & REST endpoint & WebHCat, formerly known as Templeton, is a REST API for HCatalog, a table and storage management layer for Hadoop. WebHCat allows users to use either Apache Pig, Apache MapReduce or Apache Hive for data processing.\\	
 \bottomrule
 \end{tabular}
@@ -27,6 +27,9 @@ WebHCat/Templeton & REST endpoint & WebHCat, formerly known as Templeton, is a R
 \end{table}
 
 Oozie and WebHCat/Templeton are the two methods for job submission in Table \ref{tbl:hdinsight_endpoints} that both 1) support Apache Pig jobs, and 2) Can be used from within Java code. Below the necessary procedures for job submission from Oozie as well as from WebHCat will be sketched.\\
+
+% TODO: Stuk over werkzaamheden framework uitbreiden: uitlezen resultaten (evaluatieresultaten + doorgeven tussenresultaten (die tweede wellicht later in het document pas introduceren))
+In a cross-validation evaluation experiment of a ranking model, the handling of which folds are loaded for training, evaluation and testing is a task that need to be taken care of regardless of the ranking model. Given that most ranking models are of an iterative nature, the task of iteration handling is also a task that need to be done for (most) models. Since these tasks need to be considered for (almost) all ranking models it seems natural to develop a framework that takes care of these tasks. The aim of this framework is to let implementations of ranking models focus solely on implementing the sequential steps of one iteration of the algorithm, while the framework arranges that 1) these sequential steps are performed iteratively and 2) these sequential steps are performed on the multiple training folds of data. This framework that handles folding and iterations will be implemented in Java and will work such that fold- and iteration dependent parts of the Pig code will be generated dynamically by the Java framework after which the Pig job will be sent to the cluster.\\
 
 \begin{table}
 \centering
