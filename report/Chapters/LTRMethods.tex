@@ -2,6 +2,7 @@
 The learning algorithms of the well-performing Learning-to-Rank methods selected in Chapter \ref{chap:cross_comparison} are presented and explained in this Chapter. The Learning-to-Rank methods will be discussed in order of an increasing degree of certainty and decreasing ranking accuracy, as concluded in Chapter \ref{chap:cross_comparison}.
 
 \section{ListNet}
+\label{sec:ltrmethods_listnet}
 ListNet \cite{Cao2007} is a listwise ranking function whose loss function is not directly related to information retrieval evaluation metrics. ListNet's loss function is defined using a probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory which has been extensively researched. ListNet uses the Plackett-Luce model \cite{Plackett1975,Luce1959}, which is one of the most well-known permutation probability distributions. The Plackett-Luce model defines the probability of all possible permutations $\pi$, given all document ranking scores $S$, as shown in Equation \ref{eq:plackett_luce}.
 \begin{equation}
 P(\pi|S) = \prod\limits_{j=1}^{m}\frac{\phi(s_{\pi^{-1}(j)})}{\sum\nolimits_{u=1}^{m}\phi(s_{\pi^{-1}(u)})}

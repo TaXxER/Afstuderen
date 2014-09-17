@@ -1,6 +1,24 @@
-This chapter describes and discusses the results of the running time measurements of the cluster and baseline implementations as described in \ref{chap:implementation}.
+This chapter describes and discusses the results of the running time measurements of the cluster and baseline implementations as described in \ref{chap:implementation}. In addition, ranking accuracy results are included to validate the correctness of the Learning to Rank algorithm implementations.
 \section{ListNet}
-Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (which presents the same data with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.
+\subsection{Ranking accuracy}
+\begin{table}[!h]
+\centering
+\begin{tabular}{p{6cm}p{1.6cm}p{1.4cm}r}\toprule
+Dataset & RankLib & Cluster & Official evaluation \\
+\midrule
+OHSUMED (LETOR 3.0 version)     & 0.29          &   TODO & 0.3793 \\
+MQ2008      					& 0.3865        &   TODO & 0.4689 \\
+MQ2007      					& 0.2873        &   TODO & 0.4767 \\
+MSLR-WEB10K 					& 0.1744     	&   TODO & - \\
+MSLR-WEB30K 					& 0.1837     	&   TODO & - \\
+\bottomrule
+\end{tabular}
+\caption{\acs{NDCG}@10 performance on the testing set on the first fold}
+\label{tbl:accuracy_comparison}
+\end{table}
+
+\subsection{Speedup}
+Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (which presents the same data with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.\\
 
 \begin{table}[!h]
 \centering

@@ -61,11 +61,12 @@ We create a utility class HDInsightWrapper, which abstracts away connection setu
 Setting the degree of parallelisation is crucial to obtain optimal cluster utilisation. HDInsight cluster machines offer four mapper slots and two reducer slots per data node. Cluster utilisation is optimal when the computational work is evenly distributed over exactly the number of available mappers in the map phase, and evenly distributed over exactly the number of reducers in the reduce phase. The number of mappers used can be controlled by setting MapReduce configuration parameters mapreduce.input.fileinputformat.split.maxsize, mapreduce.input.fileinputformat.split.minsize, and the Pig configuration parameter pig.maxCombinedSplitSize to the data size in bytes of the input training data divided by the number of available mappers. To control the number of used reducers, Pig offers two options: 1) the default\_parallel parameters, which can set a default number of reducers used throughout all MapReduce jobs that the Pig script consists of, and 2) the "PARALLEL" clause, which sets the number of reducers at operator level (overrides default\_parallel if set). The framework uses listed configuration parameters to control the numbers of mappers used and uses the "PARALLEL" clause to set the number of used reducers. Pig code to set the number of mappers and reducers are dynamically set by the framework such that the optimal number of mappers and reducers are used.
 
 \section{ListNet}
-The following sections describe the Pig jobs that form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
+The following sections describe the Pig jobs that jointly form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
 \subsection{Preprocessing}
 The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test datasets using the following formula for rescaling:
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
+\label{eq:rescaling}
 \end{equation}
 This rescaling procedure sets the values of all features to be within range $[0,1]$.\\
 
@@ -82,8 +83,7 @@ MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
 \end{minipage}\\
-
-The minimum and maximum values per feature stored in MIN\_MAX\_FIN can now be read from \ac{HDFS} and used within the Java framework by using the Windows Azure Storage library. The second Pig job uses these minimum and maximum values by parametrising the \ac{UDF} that performs the rescaling transformation, udf.util.ScaleFeatures(), with the minimum and maximum feature values.\\
+All expressions between square brackets in the code snippet above are dynamically set by the framework. The minimum and maximum values per feature stored in MIN\_MAX\_FIN are read from storage by the framework after completion of the MapReduce job. The framework passes these minimum and maximum values to the second Pig job by passing an array of minimum and maximum values to the constructor of the udf.util.ScaleFeatures() \ac{UDF}, that performs the rescaling operation of Equation \ref{eq:rescaling}s.\\
 
 \begin{table}
 \centering
@@ -95,7 +95,7 @@ udf.util.GetMinMax() & Extracts the minimum and maximum value per feature, for t
 udf.util.CombineMinMax() & Combines outputs of the udf.util.GetMinMax() UDF for each query into globally minimum and maximum feature values.\\
 \bottomrule
 \end{tabular}
-\caption{Description of preprocessing User Defined Functions (1/2)}
+\caption{Description of preprocessing phase User Defined Functions (Pig job 1)}
 \label{tbl:preprocessing_udfs_1}
 \end{table}
 
@@ -128,12 +128,12 @@ udf.util.ToStandardForm() & See Table \ref{tbl:preprocessing_udfs_1} for descrip
 udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with which it is parametrised perform the following rescaling transformation to the features: $x^{'} = \frac{x-min(x)}{max(x)-min(x)}$.\\
 \bottomrule
 \end{tabular}
-\caption{Description of preprocessing User Defined Functions (2/2)}
+\caption{Description of preprocessing phase User Defined Functions (Pig job 2)}
 \label{tbl:preprocessing_udfs_2}
 \end{table}
 
 \subsection{Training}
-The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{nDCG}@k.\\
+The Pig jobs that form the ListNet training phase form an implementation of the theoretical description of ListNet as described in section \ref{sec:ltrmethods_listnet}. The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{nDCG}@k.\\
 
 The first Pig job:\\
 \begin{minipage}{\linewidth}
@@ -156,17 +156,19 @@ STORE TR_LOSS_GRADIENT INTO 'tr_loss_gradient-f[fold number]i[iteration number]'
 \end{lstlisting}
 \end{minipage}\\
 
+The actual neural network weights, passed by the framework as constructor parameter in the script above, are administered in Java code. The per-feature gradients calculated by the Pig job above are read from storage after completion and used to update the neural network by, for each feature, adding the feature gradient multiplied with a step size parameter to the previous feature weight.
+
 \begin{table}
 \centering
 \begin{tabular}{p{6cm}p{7cm}}\toprule
 UDF & Description \\
 \midrule
 udf.listnet.QueryLossGradient() & Calculates the Cross Entropy loss for a query and calculates the gradients per feature based on this query.\\
-udf.listnet.ExpRelOurScores() & Calculates the predicted relevance label of a query based on the current model weights and transforms this following the transformation $x -> e^{x}$. In case the current iteration is the first iteration, the same transformation is applied to the ground truth relevance label.\\
+udf.listnet.ExpRelOurScores() & Calculates the predicted relevance label of a query based on the current model weights and transforms this following the transformation $x \rightarrow e^{x}$. In case the current iteration is the first iteration, the same transformation is applied to the ground truth relevance label.\\
 udf.listnet.MultiSum() & Calculates aggregated loss and feature gradients by summing the per-query losses and per-query feature gradients.\\
 \bottomrule
 \end{tabular}
-\caption{Description of training User Defined Functions (1/2)}
+\caption{Description of training phase User Defined Functions (Pig job 1)}
 \label{tbl:training_udfs_1}
 \end{table}
 
@@ -198,7 +200,7 @@ UDF & Description \\
 udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
 \bottomrule
 \end{tabular}
-\caption{Description of training User Defined Functions (2/2)}
+\caption{Description of training phase User Defined Functions (Pig job 2)}
 \label{tbl:training_udfs_2}
 \end{table}
 
