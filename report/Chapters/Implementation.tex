@@ -2,32 +2,14 @@
 The first section of this chapter will briefly discuss the HDInsight platform, the Hadoop ecosystem components offered by HDInsight and, in this regard, the Hadoop components used for implementation of the algorithms described in Chapter \ref{chap:ltr_methods}. The second section of this chapter describes a Java framework that handles the joint components needed for MapReduce Learning to Rank computation that are independent of the Learning to Rank model. The subsequent sections describe the implementation details of specific Learning to Rank models.
 
 \section{Architecture}
-Ranking algorithms consist of a sequence of operations on the input data which are often, but not always, of iterative nature. Apache Pig \cite{Olston2008} will be used to implement the sequence of operation on the input data. Pig Latin, the data processing language that runs on Apache Pig, designed based on the observation that the traditional MapReduce paradigm is too low-level and rigid, and holds the middle between the declarative style of SQL and the procedural style of MapReduce. The Apache Pig system translates Pig Latin into MapReduce plans that are executed over Hadoop. The choice to implement the Learning to Rank algorithms in Pig Latin allow more focus on the data operations and less focus on low-level implementation details compared to native Hadoop MapReduce. Furthermore, it allows us to rely on Apache Pig to create efficient MapReduce plans out of the Pig Latin code which lowers the implementation-dependent factor of the experiments.\\
+Ranking algorithms consist of a sequence of operations on the input data which are often, but not always, of iterative nature. Apache Pig \cite{Olston2008} will be used to implement the sequence of operations on the input data. Pig Latin, the data processing language that runs on Apache Pig, was designed based on the observation that the traditional MapReduce paradigm is too low-level and rigid, and holds the middle between the declarative style of SQL and the procedural style of MapReduce. The Apache Pig system translates Pig Latin into MapReduce plans that are executed over Hadoop. The choice to implement the Learning to Rank algorithms in Pig Latin allows for more focus on the data operations and less focus on low-level implementation details, as compared to native Hadoop MapReduce. Furthermore, it allows us to rely on Apache Pig to create efficient MapReduce plans out of the Pig Latin code and therefore lowers the implementation-dependent factor of the experiments.\\
 
-\subsection{Storing Input Data for HDInsight Processing}
-Azure HDInsight supports both the traditional \ac{HDFS} as described by Shvacko et al. \cite{Shvachko2010}, as well as Microsoft's own \ac{WASB} storage solution. Blob storage decouples the storage from the HDInsight Hadoop cluster; it enables safe deletion of a HDInsight cluster without losing data, as data is not solely stored on the cluster itself, but also on a separate storage that is not cluster-dependent. Azure \ac{WASB} storage allows the user to select one of their data centre for storage. \ac{WASB} storage in the West Europe region (located in Amsterdam) will be used for storage, as this data centre is located close to where the experiments are executed.
-
-\subsection{The HDInsight Platform}
-Microsoft offers a scalable and on-demand Hadoop service with HDInsight, that enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight of HDInsight available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. While early versions of Hadoop were merely an open source implementation of MapReduce, Hadoop offers a wide variety of programming models since the introduction of Hadoop YARN in Hadoop 2.0 \cite{Vavilapalli2013}. Newly supported programming models since Hadoop 2.0 include Dryad \cite{Isard2007}, Giraph \cite{Avery2011}, MPI, REEF \cite{Chun2013}, Spark \cite{Zaharia2010}, and Storm \cite{Aniello2013}. Even tough listed programming models are now supported by Hadoop and even though some of these programming models have recently increased in popularity, they still lack the critical mass as the data processing framework of choice as Lin argued back in 2012 \cite{Lin2013}. Therefore, even though some of these programming models might be a better fit for iterative algorithms, we use Hadoop MapReduce of the programming model to implement the Learning to Rank algorithms.\\
+\subsection{The HDInsight Platform
+Azure HDInsight supports both the traditional \ac{HDFS} as described by Shvacko et al. \cite{Shvachko2010}, as well as Microsoft's own storage solution \ac{WASB}. Blob storage decouples the storage from the HDInsight Hadoop cluster; it enables safe deletion of a HDInsight cluster without losing data, as data is not solely stored on the cluster itself, but also on a separate storage that is not cluster-dependent. Azure \ac{WASB} storage allows the user to select one of Microsoft's data centres for storage. \ac{WASB} storage in the West Europe region (located in Amsterdam) will be used for storage, as this data centre is located close to where the experiments are executed.
+}
+Microsoft offers a scalable and on-demand Hadoop service with HDInsight, which enables Hadoop services for those not able to make the required investments for their own cluster. The latest HDInsight version available at the time of writing, HDInsight 3.1, runs the Hortonworks distribution of Hadoop version 2.4. While early versions of Hadoop were merely an open source implementation of MapReduce, newer versions since Hadoop 2.0 offer support for variety of programming models with the introduction of Hadoop YARN \cite{Vavilapalli2013}. Newly supported programming models since Hadoop 2.0 include Dryad \cite{Isard2007}, Giraph \cite{Avery2011}, MPI, REEF \cite{Chun2013}, Spark \cite{Zaharia2010}, and Storm \cite{Aniello2013}. Even though these programming models are now supported by Hadoop and even though some of these programming models have recently increased in popularity, they still lack the critical mass as the data processing framework of choice as Lin argued back in 2012 \cite{Lin2013}. Therefore, even though some of these programming models might be a better fit for iterative algorithms, we use Hadoop MapReduce of the programming model to implement the Learning to Rank algorithms.\\
 
 HDInsight 3.1 offers multiple ways of submitting Hadoop jobs to a HDInsight cluster, described in Table \ref{tbl:hdinsight_endpoints}. Oozie and WebHCat/Templeton are the two methods for job submission in Table \ref{tbl:hdinsight_endpoints} that both 1) support Apache Pig jobs, and 2) Can be used from within Java code. Table \ref{tbl:oozie_templeton} shows the necessary procedures for job submission from Oozie as well as from WebHCat will be sketched. Table \ref{tbl:oozie_templeton} shows Oozie job submission to be more complex for the case of dynamically generated jobs than WebHCat/Templeton. Oozie is more fitting for static Hadoop jobs that require a workflow consisting of a sequence of Pig and MapReduce jobs mixed together, but is a lesser fit for our situation. Templeton will be used for submission of the Pig jobs, as the HDInsight version that was available at the start of the implementation did not yet support WebHCat.\\
-
-\begin{table}
-\centering
-\begin{tabular}{p{5cm}p{5cm}}\toprule
-Job submission procedure for Apache Oozie & Job submission procedure for WebHCat/Templeton \\
-\midrule
-1. Let the framework build the Pig job dynamically. & 1. Let the framework build the Pig job dynamically.\\
-2. Encapsulate the Pig job in an Oozie workflow. & 2. Submit the Pig job through the WebHCat/Templeton REST API.\\
-3. Upload the Oozie workflow to HDFS storage. & \\
-4. Execute the Oozie workflow through the Oozie REST API. & \\
-\bottomrule
-\end{tabular}
-\caption{Comparison of Oozie and WebHCat job submission procedures}
-\label{tbl:oozie_templeton}
-\end{table}
-
-
 
 \begin{table}
 \centering
@@ -43,6 +25,21 @@ WebHCat/Templeton & REST endpoint & WebHCat, formerly known as Templeton, is a R
 \end{tabular}
 \caption{HDInsight REST endpoints for job submission}
 \label{tbl:hdinsight_endpoints}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{p{5cm}p{5cm}}\toprule
+Job submission procedure for Apache Oozie & Job submission procedure for WebHCat/Templeton \\
+\midrule
+1. Let the framework build the Pig job dynamically. & 1. Let the framework build the Pig job dynamically.\\
+2. Encapsulate the Pig job in an Oozie workflow. & 2. Submit the Pig job through the WebHCat/Templeton REST API.\\
+3. Upload the Oozie workflow to HDFS storage. & \\
+4. Execute the Oozie workflow through the Oozie REST API. & \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of Oozie and WebHCat job submission procedures}
+\label{tbl:oozie_templeton}
 \end{table}
 
 \subsection{Handling repetitive tasks}

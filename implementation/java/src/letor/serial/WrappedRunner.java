@@ -13,7 +13,7 @@ public class WrappedRunner {
 
     public static void main(String[] args){
         AbstractParameterizedRanker handler             = new SmoothRankHandler();
-        DataSets.DataSet            dataset             = DataSets.DataSet.MINI;
+        DataSets.DataSet            dataset             = DataSets.DataSet.MSLR_WEB10K;
         Integer                     duplicationNumber   = 1; // Only relevant in case of dataset Custom
 
         FoldRunHandler ltrWrapper = null;
