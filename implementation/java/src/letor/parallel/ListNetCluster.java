@@ -1,6 +1,6 @@
 package letor.parallel;
 
-import letor.parallel.util.AzurePigWrapper;
+import letor.parallel.util.HDInsightWrapper;
 import letor.parallel.util.DataSets;
 import letor.parallel.util.LtrUtils;
 import letor.parallel.util.Metadata;
@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * MapReduce (Hadoop) implementation of the ListNet algorithm
- * Makes use of AzurePigWrapper
+ * Makes use of HDInsightWrapper
  *
  */
 
@@ -27,7 +27,7 @@ public class ListNetCluster {
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
-    private static int duplicationNumber              = 49; // only used for CUSTOM
+    private static int  duplicationNumber             = 49; // only used for CUSTOM
     private static Metadata metadata                  = DataSets.getMetaData(DATASET, duplicationNumber);
     private static long MAX_TRAIN_SIZE                = metadata.getMax_train_size(); // ohsumed: 5151958, MQ2007: 25820919, MQ2008: 5927007, MSLR-WEB10K: 838011150, MSLR-WEB30K:
     private static long MAX_VALI_SIZE                 = metadata.getMax_vali_size(); // ohsumed: 1764005, MQ2007:  8753466, MQ2008: 2237346, MSLR-WEB10K: 280714022, MSLR-WEB30K:
@@ -46,7 +46,7 @@ public class ListNetCluster {
         String storageAccount       = "ltrstorage";
         String containerName        = "ltrcontainer";
         String storageAccountKey    = "rabkwaQc5z1PwYgVI27ri32OQwmkVXZV8ZnyavGL4+JgTsUo1YLmkm7YUBXUCzXQ1JJjfIMG7Y8UWWE1JgLK/A==";
-        AzurePigWrapper apw         = new AzurePigWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
+        HDInsightWrapper hdw        = new HDInsightWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
 
@@ -93,7 +93,7 @@ public class ListNetCluster {
             pigLines.add("STORE MIN_MAX_FIN INTO 'minmax"+f+"';");
             String combinedPigLines = LtrUtils.concatenateStringList(pigLines);
             System.out.println("combinedPigLines: "+combinedPigLines);
-            String minmaxString = apw.azureRunPig(combinedPigLines, "minmax"+f);
+            String minmaxString = hdw.runPig(combinedPigLines, "minmax" + f);
             System.out.println("PIG JOB DONE");
             System.out.println();
             pigLines.clear();
@@ -129,8 +129,8 @@ public class ListNetCluster {
             pigLines.add("STORE VALIDATE_SCA INTO 'validate_sca"+f+"' USING BinStorage();");
             pigLines.add("STORE TEST_SCA INTO 'test_sca"+f+"' USING BinStorage();");
             combinedPigLines = LtrUtils.concatenateStringList(pigLines);
-            System.out.println("combinedPigLines: "+combinedPigLines);
-            apw.azureRunPig(combinedPigLines);
+            System.out.println("combinedPigLines: " + combinedPigLines);
+            hdw.runPig(combinedPigLines);
             System.out.println("PIG JOB DONE");
             System.out.println();
             pigLines.clear();
@@ -175,7 +175,7 @@ public class ListNetCluster {
                 pigLines.add("STORE TR_LOSS_GRADIENT INTO '"+outputDir+"';");
                 combinedPigLines = LtrUtils.concatenateStringList(pigLines);
                 System.out.println("combinedPigLines: "+combinedPigLines);
-                String lossGradientString = apw.azureRunPig(combinedPigLines, outputDir);
+                String lossGradientString = hdw.runPig(combinedPigLines, outputDir);
                 System.out.println("PIG JOB DONE");
                 System.out.println();
                 pigLines.clear();
@@ -209,7 +209,7 @@ public class ListNetCluster {
                 pigLines.add("STORE AVG_NDCG INTO '"+outputDir+"';");
                 combinedPigLines = LtrUtils.concatenateStringList(pigLines);
                 System.out.println("combinedPigLines: "+combinedPigLines);
-                String avg_ndcg = apw.azureRunPig(combinedPigLines, outputDir);
+                String avg_ndcg = hdw.runPig(combinedPigLines, outputDir);
                 System.out.println("PIG JOB DONE");
                 System.out.println();
                 pigLines.clear();
@@ -253,7 +253,7 @@ public class ListNetCluster {
             String concatenatedPigLines = LtrUtils.concatenateStringList(pigLines);
             String outputDir = "avg_ndcg";
             System.out.println("combinedPigLines: "+concatenatedPigLines);
-            String avg_ndcg = apw.azureRunPig(concatenatedPigLines, outputDir);
+            String avg_ndcg = hdw.runPig(concatenatedPigLines, outputDir);
             System.out.println("PIG JOB DONE");
             System.out.println();
             pigLines.clear();

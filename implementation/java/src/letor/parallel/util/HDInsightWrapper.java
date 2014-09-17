@@ -25,7 +25,7 @@ import java.util.concurrent.*;
  *
  * @author Niek Tax
  */
-public class AzurePigWrapper {
+public class HDInsightWrapper {
     String clusterName;
     String clusterUser;
     String clusterPassword;
@@ -46,7 +46,7 @@ public class AzurePigWrapper {
 
     int availableReducers;
 
-    public AzurePigWrapper(String clusterName, String containerName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
+    public HDInsightWrapper(String clusterName, String containerName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
         this.clusterName        = clusterName;
         this.containerName      = containerName;
         this.clusterUser        = clusterUser;
@@ -67,11 +67,11 @@ public class AzurePigWrapper {
         this.retrieveStatusURL   = azureClusterURL+"/queue/";
     }
 
-    public AzurePigWrapper(String clusterName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
+    public HDInsightWrapper(String clusterName, String clusterUser, String clusterPassword, String storageAccount, String storageAccountKey, int availableReducers){
         this(clusterName, clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
     }
 
-    public void azureRunPig(String pigLine) throws Exception{
+    public void runPig(String pigLine) throws Exception{
         // STEP 1: Post pig job
         HttpResponse response = null;
         int          attempt  = 0;
@@ -156,23 +156,23 @@ public class AzurePigWrapper {
         }
     }
 
-    public String azureRunPig(String pigLine, String tmpDir) throws Exception{
+    public String runPig(String pigLine, String outputDir) throws Exception{
         //STEP 1 & 2: Post pig job and poll server until job finished
-        azureRunPig(pigLine);
+        runPig(pigLine);
 
         System.out.println("M/R job done, starting data retrieval");
 
         //STEP 3: Retrieve answer
-        return retrieveData(tmpDir);
+        return retrieveData(outputDir);
     }
 
-    private String retrieveData(String tmpDir) throws Exception{
+    private String retrieveData(String fileDir) throws Exception{
         boolean succeeded = false;
         int     attempts = 0;
         String  answer = null;
         while(!succeeded && attempts < 3) {
             try {
-                answer = retrieveDataAttempt(tmpDir);
+                answer = retrieveDataAttempt(fileDir);
                 succeeded = true;
             } catch (StorageException e) {
                 System.err.println("WARNING: StorageException thrown");
@@ -192,21 +192,21 @@ public class AzurePigWrapper {
         }
 
         if(answer==null)
-            throw new Exception("Error reading data, not able to read file "+tmpDir);
+            throw new Exception("Error reading data, not able to read file "+fileDir);
 
         return answer;
     }
 
-    private String retrieveDataAttempt(String tmpDir) throws Exception {
+    private String retrieveDataAttempt(String fileDir) throws Exception {
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
         CloudBlobContainer container = storageAccount.createCloudBlobClient().getContainerReference(containerName);
         String retVal = "";
         for(int i=0; i<availableReducers; i++) {
             String path = "";
             if(i<10)
-                path = storagePath + tmpDir + "/part-r-0000"+i;
+                path = storagePath + fileDir + "/part-r-0000"+i;
             else
-                path = storagePath + tmpDir + "/part-r-000"+i;
+                path = storagePath + fileDir + "/part-r-000"+i;
 
             CloudBlob blob = container.getBlockBlobReference(path);
             blob.download(new FileOutputStream(tempLocalStorage + blob.hashCode()));

@@ -1,9 +1,9 @@
 package letor.parallel;
 
-import letor.parallel.util.AzurePigWrapper;
+import letor.parallel.util.HDInsightWrapper;
 
 /**
- * Test class for AzurePigWrapper
+ * Test class for HDInsightWrapper
  *
  * Created by niek.tax on 6/11/2014.
  */
@@ -21,13 +21,13 @@ public class AzurePigWrapperTest {
         String storageAccount       = "ltrstorage";
         String storageAccountKey    = "igtZD3Jih9lsvxoIcxCury1GDqS7Z4DQ0Ci7xVphY9p/6rnwaHG5qZFBKXjt0wOgwNwVqno5sitAy/eucuPGMA==";
 
-        AzurePigWrapper wrapper = new AzurePigWrapper(clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey, 1);
+        HDInsightWrapper wrapper = new HDInsightWrapper(clusterName, clusterUser, clusterPassword, storageAccount, storageAccountKey, 1);
 
         String pigLine = "TRAIN = LOAD '" + pathPrefix + "/input/" + DATASET + "/Fold" + fold + "/train.txt' USING PigStorage(' '); " +
                          "TR = FOREACH TRAIN GENERATE $1; "+
                          "STORE TR INTO '"+outDir+"';";
 
-        String result = wrapper.azureRunPig(pigLine, outDir);
+        String result = wrapper.runPig(pigLine, outDir);
 
         System.out.println("RESULT: "+result);
     }
