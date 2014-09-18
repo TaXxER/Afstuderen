@@ -13,12 +13,12 @@ MSLR-WEB10K 					& 0.1744     	&   TODO & - \\
 MSLR-WEB30K 					& 0.1837     	&   TODO & - \\
 \bottomrule
 \end{tabular}
-\caption{\acs{NDCG}@10 performance on the testing set on the first fold}
+\caption{\acs{nDCG}@10 performance on the testing set on the first fold}
 \label{tbl:accuracy_comparison}
 \end{table}
 
 \subsection{Speedup}
-Figure \ref{fig:listnet_train_time} and Figure \ref{fig:listnet_train_time_log} (which presents the same data with a logarithmic data size axis) show the processing times of a single training iteration using the ListNet implementation included in RankLib library and the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are determined by the collection of datasets used. As previously described in the methodology section, the LETOR 3.0, LETOR 4.0 and MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K. Table \ref{tbl:recap_datasets} describes the datasets used in the experiments.\\
+Figure \ref{fig:listnet_train_time} (linear data size axis) and Figure \ref{fig:listnet_train_time_log} (logarithmic data size axis) show the processing times of a single iteration of the ListNet training algorithm, using the ListNet implementation included in the RankLib library as well as the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are originate from the data sizes of the datasets used. Measurements were performed on a set of datasets consisting of the LETOR 3.0 OHSUMED dataset, LETOR 4.0 datasets and the MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K (as described in section \ref{ssec:rq2_methodology}). Table \ref{tbl:recap_datasets} describes the datasets used in the experiments and their single training fold data sizes.\\
 
 \begin{table}[!h]
 \centering

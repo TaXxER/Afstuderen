@@ -44,6 +44,7 @@ The query incorporates different ways of writing of Learning-to-Rank, with and w
 A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
 
 \subsection{Methodology for Research Question II}
+\label{ssec:rq2_methodology}
 To find an answer to the second research question, the Learning-to-Rank methods determined in the first research question will be implemented in the MapReduce framework and training time will be measured as a factor of the number of cluster nodes used to perform the computation. The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning-to-Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.\\
 
 To research the speed-up's dependence on the amount of data being processed, the training computations will be performed on datasets of varying sizes. The well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K offer a good initial set of datasets. Table \ref{tbl:initial_datasets} shows the
