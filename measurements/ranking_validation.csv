@@ -1,10 +1,10 @@
 Dataset	NDCG@10	Iterations	Type		
 OHSUMED	0.434	1	Cluster		
 OHSUMED	0	1	Cluster		
-OHSUMED	0.3046	5	Cluster		
-OHSUMED	0.1977	5	Cluster		
-OHSUMED					
-OHSUMED					
+OHSUMED	0.3046	5	Cluster		0.324075
+OHSUMED	0.1977	5	Cluster		0.100745381
+OHSUMED	0.4795	5	Cluster		
+OHSUMED	0.3145	5	Cluster		
 OHSUMED					
 OHSUMED	0.2405	5	RankLib		
 OHSUMED	0.1227	5	RankLib		0.19158
