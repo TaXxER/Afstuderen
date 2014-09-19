@@ -33,10 +33,12 @@ public class Ndcg extends EvalFunc<Double>{
     }
 
     public Double exec(Tuple input) throws IOException {
-        Integer[] top_k_rels     = new Integer[k];
-        Double[] top_k_preds = new Double[k];
+        Integer[]       top_k_rels    = new Integer[k];
+        PredRelPair[]   top_k_preds   = new PredRelPair[k];
+
         Arrays.fill(top_k_rels, 0);
-        Arrays.fill(top_k_preds, 0.0);
+        for(int i=0; i<k; i++)
+            top_k_preds[i] = new PredRelPair(0.0,0);
 
         Iterator docBagIterator = ((DataBag) input.get(1)).iterator();
         while(docBagIterator.hasNext()){
@@ -73,18 +75,23 @@ public class Ndcg extends EvalFunc<Double>{
             min_i  = 0;
             for(int i=0;i<k;i++){
                 if(i>0)
-                    min_i = top_k_preds[min_i] > top_k_preds[i] ? i : min_i;
-                if(!higher && pred > top_k_preds[i])
+                    min_i = top_k_preds[min_i].pred > top_k_preds[i].pred ? i : min_i;
+                if(!higher && pred > top_k_preds[i].pred)
                     higher = true;
             }
-            if(higher)
-                top_k_preds[min_i] = pred;
+            if(higher) {
+                top_k_preds[min_i] = new PredRelPair(pred, rel);
+            }
         }
         // Calculate ideal NDCG@k
 
         // docList is now ordered by relevance
         double idealDCG = getDCG(top_k_rels);
-        double DCG      = getDCG(top_k_preds);
+
+        Integer[] predrels = new Integer[k];
+        for(int i=0; i<k; i++)
+            predrels[i] = top_k_preds[i].rel;
+        double DCG      = getDCG(predrels);
         return (idealDCG>0) ? DCG/idealDCG : 0.0;
     }
 
@@ -100,15 +107,12 @@ public class Ndcg extends EvalFunc<Double>{
         return dcg;
     }
 
-    private static double getDCG(Double[] l){
-        Arrays.sort(l, Collections.reverseOrder());
-        double dcg = 0.0;
-
-        int i = 1;
-        for(double e:l) {
-            dcg += (Math.pow(2.0, e) - 1.0) / SimpleMath.logBase2(i + 1);
-            i++;
+    private class PredRelPair {
+        public final Double pred;
+        public final Integer rel;
+        public PredRelPair(Double pred, Integer rel) {
+            this.pred = pred;
+            this.rel = rel;
         }
-        return dcg;
     }
 }

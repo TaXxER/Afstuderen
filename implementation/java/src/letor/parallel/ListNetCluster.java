@@ -7,6 +7,7 @@ import letor.parallel.util.Metadata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * MapReduce (Hadoop) implementation of the ListNet algorithm
@@ -16,14 +17,14 @@ import java.util.List;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB10K;
-    private static final double   STEPSIZE   = 0.00001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
-    private static final int      ITERATIONS = 2;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.OHSUMED;
+    private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
+    private static final int      ITERATIONS = 5;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 2;
+    private static int  dataNodes                     = 1;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -40,12 +41,12 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr2";
+        String clusterName          = "ltr1";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
-        String storageAccount       = "ltrstorage";
-        String containerName        = "ltrcontainer";
-        String storageAccountKey    = "rabkwaQc5z1PwYgVI27ri32OQwmkVXZV8ZnyavGL4+JgTsUo1YLmkm7YUBXUCzXQ1JJjfIMG7Y8UWWE1JgLK/A==";
+        String storageAccount       = "ltrorlando";
+        String containerName        = "ltr1";
+        String storageAccountKey    = "/Qv1ci7kewXJG6OMCZ9L+z+4S0PaRfN0g6LjLgAQmqiqIWje3DiXJwL04L64hXvzFb0gajuIgzVzkWyjkzYobw==";
         HDInsightWrapper hdw        = new HDInsightWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
@@ -68,6 +69,10 @@ public class ListNetCluster {
             double[] gradient = new double[DIM];
             double[] bestW = new double[DIM];
             double   bestNdcg = 0.0;
+
+            Random random = new Random();
+            for(int i=0; i<DIM; i++)
+                w[i] = (random.nextInt(2)==0?1:-1)*random.nextFloat()/10; // Formule uit RankLib
 
             // Standardize data and scale features
             pigLines.add(trainConfigString);
@@ -167,7 +172,6 @@ public class ListNetCluster {
                 //  lossForAQuery += -P_y(j) * math.log(P_z(j))
                 // }
                 pigLines.add("TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient(*)) PARALLEL "+availableReducers+";");
-
                 // gradient += gradientForAQuery; loss += lossForAQuery
                 pigLines.add("TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;");
                 pigLines.add("TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));");
@@ -270,9 +274,12 @@ public class ListNetCluster {
         System.out.println("Average NDCG:       "+averageNdcg);
         System.out.println("Preprocessing time: "+(preproccessedTime- startTime)/1000000+" ms");
         System.out.println("Training time:      "+(trainedTime-preproccessedTime)/1000000+" ms");
-        if(ITERATIONS>1)
-            System.out.println("Training time2:     "+(trainedTime2-trainedTime)/1000000+" ms");
-        System.out.println("Test Time:          "+(endTime-trainedTime2)/1000000+" ms");
+        if(ITERATIONS>1) {
+            System.out.println("Training time2:     " + (trainedTime2 - trainedTime) / 1000000 + " ms");
+            System.out.println("Test Time:          "+(endTime-trainedTime2)/1000000+" ms");
+        }else
+            System.out.println("Test Time:          "+(endTime-trainedTime)/1000000+" ms");
+
         System.out.println("Total time:         "+(endTime-startTime)/1000000+" ms");
     }
 }
