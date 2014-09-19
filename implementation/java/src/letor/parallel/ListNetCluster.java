@@ -17,14 +17,14 @@ import java.util.Random;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.OHSUMED;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.MQ2007;
     private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 5;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 1;
+    private static int  dataNodes                     = 4;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -41,7 +41,7 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr1";
+        String clusterName          = "ltr4";
         String clusterUser          = "admin";
         String clusterPassword      = "Qw!23456789";
         String storageAccount       = "ltrorlando";
