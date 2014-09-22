@@ -1,9 +1,11 @@
 This chapter describes and discusses the results of the running time measurements of the cluster and baseline implementations as described in \ref{chap:implementation}. In addition, ranking accuracy results are included to validate the correctness of the Learning to Rank algorithm implementations.
 \section{ListNet}
+
 \subsection{Ranking accuracy}
+To validate out ListNet Cluster implementation we run experiments on the LETOR 3.0 OHSUMED and the MQ2007 and MQ2008 datasets from LETOR 4.0 and compare their performance in terms of \ac{nDCG}@10. Hadoop job scheduling overhead is large when processing relatively small datasets (as we will explain in more detail in section \ref{ssec:speedup}), therefore \ac{nDCG}@10 experiments are limited to five training iterations and are run only on one of the five folding combinations. Because of the stochastic nature of the ListNet ranking procedure, which is a result of random weight initialisation prior to the first training iteration, the \ac{nDCG}@10 performance is not guaranteed to be identical between multiple runs on the same input data. To account for the non-determinism of ListNet, we repeat each experiment five times and report the average \ac{nDCG}@10 as well as the standard deviation in \ac{nDCG}@10.0
 \begin{table}[!h]
 \centering
-\begin{tabular}{p{6cm}p{1.6cm}p{1.4cm}r}\toprule
+\begin{tabular}{p{3.5cm}p{2.6cm}p{2.6cm}r}\toprule
 Dataset & RankLib & Cluster & Official evaluation \\
 \midrule
 OHSUMED (LETOR 3.0 version) & 0.1916 $\pm$ 0.0634 & 0.3395 $\pm$ 0.0952 & 0.3793 \\
@@ -16,6 +18,7 @@ MQ2007      				& 0.2918 $\pm$ 0.0546 & 0.4554 $\pm$ 0.0085 & 0.4767 \\
 \end{table}
 
 \subsection{Speedup}
+\label{ssec:speedup}
 Figure \ref{fig:listnet_train_time} (linear data size axis) and Figure \ref{fig:listnet_train_time_log} (logarithmic data size axis) show the processing times of a single iteration of the ListNet training algorithm, using the ListNet implementation included in the RankLib library as well as the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are originate from the data sizes of the datasets used. Measurements were performed on a set of datasets consisting of the LETOR 3.0 OHSUMED dataset, LETOR 4.0 datasets and the MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K (as described in section \ref{ssec:rq2_methodology}). Table \ref{tbl:recap_datasets} describes the datasets used in the experiments and their single training fold data sizes.\\
 
 \begin{table}[!h]
