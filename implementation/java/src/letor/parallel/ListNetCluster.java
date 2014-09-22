@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MQ2007;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.MSLR_WEB30K;
     private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
     private static final int      ITERATIONS = 5;
     private static final int      FOLDS      = 1;
