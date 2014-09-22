@@ -2,8 +2,13 @@ This chapter describes and discusses the results of the running time measurement
 \section{ListNet}
 
 \subsection{Ranking accuracy}
-To validate out ListNet Cluster implementation we run experiments on the LETOR 3.0 OHSUMED and the MQ2007 and MQ2008 datasets from LETOR 4.0 and compare their performance in terms of \ac{nDCG}@10. Hadoop job scheduling overhead is large when processing relatively small datasets (as we will explain in more detail in section \ref{ssec:speedup}), therefore \ac{nDCG}@10 experiments are limited to five training iterations and are run only on one of the five folding combinations. Because of the stochastic nature of the ListNet ranking procedure, which is a result of random weight initialisation prior to the first training iteration, the \ac{nDCG}@10 performance is not guaranteed to be identical between multiple runs on the same input data. To account for the non-determinism of ListNet, we repeat each experiment five times and report the average \ac{nDCG}@10 as well as the standard deviation in \ac{nDCG}@10.0
-\begin{table}[!h]
+To validate our ListNet cluster implementation we run experiments on the LETOR 3.0 OHSUMED and the LETOR 4.0 datasets MQ2007 and MQ2008 and compare their performance with the RankLib implementation of ListNet and with the official evaluation results in terms of \ac{nDCG}@10. Hadoop job scheduling overhead is large when processing relatively small datasets (as we will explain in more detail in section \ref{ssec:speedup}), therefore \ac{nDCG}@10 experiments are limited to five training iterations and are run only on one of the five folds. Because of the stochastic nature of the ListNet ranking procedure, which is a result of random weight initialisation prior to the first training iteration, the \ac{nDCG}@10 performance is not guaranteed to be identical between multiple runs on the same input data. To account for this non-determinism of ListNet, we repeat each experiment five times and report the average as well as the standard deviation of the resulting rankings on the testing fold in terms of \ac{nDCG}@10.\\
+
+Table \ref{tbl:accuracy_comparison} shows the mean and the standard deviation of the ranking accuracy in \ac{nDCG}@10 on the first data fold for our own cluster implementation of ListNet, the RankLib implementation of ListNet, as well as the official LETOR evaluation results of ListNet as reported on the LETOR 3.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and LETOR 4.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} websites. Note that the official LETOR evaluation results are structurally higher compared to the results obtained with RankLib and our cluster implementation, which can be attributed to the fact that the official evaluation runs use as many ListNet iterations as needed for convergence on the validation fold, while we limited our experiment to five iterations. The official evaluation results of the LETOR benchmarks do not report the standard deviation of their experimental results and it is not mentioned in the LETOR papers \cite{Qin2010, Qin2013} how many times their experiments were repeated. For the ListNet step size hyperparameter we choose a value of $0.0001$, which is the default value step size value in RankLib, for both the cluster and the RankLib runs. It is not clear what step size was used in the official evaluation runs. We expect, given that LETOR aims to compare ranking methods in terms of their ranking potential, that the official LETOR benchmark results optimises the step size hyperparameter on the validation set and reported the performance on the optimal step size found with this procedure. Using this procedure one is expected to find a higher ranking accuracy than one would expect to find using a default step size value. Hyperparameter optimisation on the validation set would however not be feasible for our cluster implementation of ListNet given the Hadoop job scheduling overhead of the cluster.\\
+
+A remarkable finding is that the cluster implementation shows better ranking accuracy than the RankLib version of ListNet after five iterations. We attribute this to the normalisation preprocessing step that we incorporated into our ListNet implementation that transforms each feature into a [0,1]-range. RankLib does not perform this normalisation preprocessing step. It has been shown that the gradient descent optimisation procedure, which is used in ListNet, converges faster on normalised data \cite{Ng1999}.
+
+\begin{table}
 \centering
 \begin{tabular}{p{3.5cm}p{2.6cm}p{2.6cm}r}\toprule
 Dataset & RankLib & Cluster & Official evaluation \\
@@ -21,7 +26,7 @@ MQ2007      				& 0.2918 $\pm$ 0.0546 & 0.4554 $\pm$ 0.0085 & 0.4767 \\
 \label{ssec:speedup}
 Figure \ref{fig:listnet_train_time} (linear data size axis) and Figure \ref{fig:listnet_train_time_log} (logarithmic data size axis) show the processing times of a single iteration of the ListNet training algorithm, using the ListNet implementation included in the RankLib library as well as the cluster implementation described in chapter \ref{chap:implementation} with different numbers of data nodes. The horizontal positions of the measurements are identical between execution method, as they are originate from the data sizes of the datasets used. Measurements were performed on a set of datasets consisting of the LETOR 3.0 OHSUMED dataset, LETOR 4.0 datasets and the MSLR-WEB10/30K datasets are used, supplemented with generated datasets that are multiplications of MSLR-WEB30K (as described in section \ref{ssec:rq2_methodology}). Table \ref{tbl:recap_datasets} describes the datasets used in the experiments and their single training fold data sizes.\\
 
-\begin{table}[!h]
+\begin{table}
 \centering
 \begin{tabular}{p{3.4cm}p{3.4cm}r}\toprule
 Dataset & Collection & Single fold training size \\
@@ -47,14 +52,14 @@ CUSTOM-100	& GENERATED		  & 262.41 GB\\
 Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log} show that the single-machine RankLib implementation of ListNet is very fast compared to the Hadoop MapReduce cluster implementation of ListNet for datasets that fit in memory. As soon as the amount of data processed with RankLib ListNet approaches the physical memory limit of the machine that is used for computation (16 GB for our single-machine measurements), RankLib ListNet processing time start to increase exponentially. This increase is likely to be a result of the machine needing to use the on-disk sections of virtual memory and the swapping that takes place as a result thereof. As an exception to the datasets described in Table \ref{tbl:recap_datasets}, the largest dataset processed with RankLib ListNet is CUSTOM-8, which is 20.99 GB in size and thereby larger than the 16 GB physical memory limit. Experiments with RankLib ListNet on CUSTOM-10 were attempted, but were stopped after not completing within 12 hours. In section \ref{sec:goals} we defined speed-up as Sun and Gustafson \emph{relative speed-up} metric \cite{Sun1991}, which defines speed-up as the number of times that the execution of the fastest single machine solution is lower than the execution time with $N$ machines. Note that speed-up, following this definition, is not computable for larger datasets, as it is not computationally feasible to perform computation on datasets larger than CUSTOM-8 with a single machine. As an alternative, Figure \ref{fig:speedup_train_time} shows visualises speed-up by plotting cluster size against training time.\\
 
 
-\begin{figure}[!h]
+\begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/time_single.pdf}
 \caption{Processing time of a single ListNet training iteration}
 \label{fig:listnet_train_time}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/time_single_logx.pdf}
 \caption{Processing time of a single ListNet training iteration on a logarithmic axis}
@@ -69,14 +74,14 @@ Note however that Hadoop job scheduling overhead is independent of dataset size.
 
 Figure \ref{fig:listnet_throughput} shows the throughput in bytes per second. Our observation that RankLib ListNet performs very slow for data sets that do not fit in physical memory and virtual memory is needed is very notable in this graph. Furthermore, this graph shows how both increase in number in data nodes in a cluster and increase in input data size result in an increase in throughput. The sub-linear growth of throughput as a factor of input data size can again be explained as a result of the non-parallelisable Hadoop job scheduling part of the operation.\\
 
-\begin{figure}[!h]
+\begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
 \caption{Processing time as a function of data nodes in a cluster}
 \label{fig:speedup_train_time}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/throughput_single_logx.pdf}
 \caption{Throughput of a ListNet training iteration}
