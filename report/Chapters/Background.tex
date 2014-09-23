@@ -117,7 +117,7 @@ An algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorith
 
 $AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
 
-With $k$ being the positions in the result set between 1 and $n$. Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant.
+With $k$ being the positions in the result set between 1 and $n$. Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant. The total number of available relevant documents in the document set \emph{R} is assumed to be seven.
 \ac{MAP} is the average \ac{AP} for a set of queries.\\
 
 $MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$\\
@@ -131,10 +131,10 @@ $MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$\\
 $r_i$ & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 &  &  \\ 
 P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\ 
 \hline
- &  &  &  &  &  &  &  &  &  & /\#Relevant docs & = & 7 \\ 
+ &  &  &  &  &  &  &  &  &  & \# of relevant docs & = & 7 \\ 
  &  &  &  &  &  &  &  &  &  & AP@10 & = & 0.34 \\ 
 \end{tabular}
-\caption{Average Precision example calculation. The number of relevant documents \emph{R} is assumed to be seven.}
+\caption{Average Precision example calculation.}
 \label{tab:example_calculation_AP}
 \end{table}
 
