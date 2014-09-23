@@ -4,21 +4,21 @@ Ranking is a core problem in the field of information retrieval. The ranking tas
 
 Research in the field of ranking models has for a long time been based on manually designed ranking functions, such as the well-known BM25 model \cite{Robertson1994}. Luhn \cite{Luhn1957} was the first to propose a model that assigned relevance scores to documents given a query back in 1957. The increasing amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective models. Learning to Rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
-In recent years several Learning to Rank benchmark datasets have been proposed that enable comparison of the performance of different Learning to Rank methods. Well-known benchmark datasets include the \emph{Yahoo! Learning to Rank Challenge} dataset \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR dataset \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning to Rank field focuses on ranking accuracy, while efficiency and scalability of Learning to Rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of Learning to Rank methods has so far been an overlooked research area in his influential book on Learning to Rank.\\
+In recent years several Learning to Rank benchmark data sets have been proposed that enable comparison of the performance of different Learning to Rank methods. Well-known benchmark data sets include the \emph{Yahoo! Learning to Rank Challenge} data set \cite{Chapelle2011a}, the Yandex Internet Mathematics competition\footnote{http://imat-relpred.yandex.ru/en/}, and the LETOR data set \cite{Qin2010} that was published by Microsoft Research. One of the concluding observations of the \emph{Yahoo! Learning to Rank Challenge} was that almost all work in the Learning to Rank field focuses on ranking accuracy, while efficiency and scalability of Learning to Rank algorithms is still an underexposed research area that is likely to become more important in the near future as training sets are becoming larger and larger \cite{Chapelle2011b}. Liu \cite{Liu2007} confirms the observation that efficiency and scalability of Learning to Rank methods has so far been an overlooked research area in his influential book on Learning to Rank.\\
 
 Some research has been done in the area of parallel or distributed machine learning \cite{Chu2007,Chang2007}. However, almost none of these studies include the Learning to Rank sub-field of machine learning. The field of efficient Learning to Rank has been getting some attention lately \cite{Asadi2013a,Asadi2013b,Busa-Fekete2012,Sousa2012,Shukla2012}, since Liu \cite{Liu2007} first stated its growing importance back in 2007. Only several of these studies \cite{Sousa2012,Shukla2012} have explored the possibilities of efficient Learning to Rank through the use of parallel programming paradigms.\\
 
 MapReduce \cite{Dean2004} is a parallel programming framework that is inspired by the \emph{Map} and \emph{Reduce} functions commonly used in functional programming. Since Google developed the MapReduce parallel programming framework back in 2004 it has grown to be the industry standard model for parallel programming. Lin \cite{Lin2013} observed that algorithms that are of iterative nature, which most Learning to Rank algorithms are, are not amenable to the MapReduce framework. Lin argued that as a solution to the non-amenability of iterative algorithms to the MapReduce framework, iterative algorithms can often be replaced with non-iterative alternatives or can still be optimized in such a way that its performance in a MapReduce setting is good enough. Alternative programming models are argued against by Lin, as they lack the critical mass as the data processing framework of choice.\\
 
-The appearance of benchmark datasets gave insight in the performance of different Learning to Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark datasets. Up to now it remains unknown whether popular existing Learning to Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning to Rank. A more extensive overview of my research goals and questions are described in section \ref{sec:goals}.\\
+The appearance of benchmark data sets gave insight in the performance of different Learning to Rank approaches, which resulted in increasing popularity of those methods that showed to perform well on one or more benchmark data sets. Up to now it remains unknown whether popular existing Learning to Rank methods scale well when they are used in a parallel manner using the MapReduce framework. This thesis aims to be an exploratory start in this little researched area of parallel Learning to Rank. A more extensive overview of my research goals and questions are described in section \ref{sec:goals}.\\
 
 \section{Research Goals}
 \label{sec:goals}
 The objective of this thesis is to explore the speed-up in execution time of Learning to Rank algorithms through parallelisation using the MapReduce framework.
-This work focuses on those Learning to Rank algorithms that have shown leading performance on relevant benchmark datasets.
+This work focuses on those Learning to Rank algorithms that have shown leading performance on relevant benchmark data sets.
 This thesis addresses the following research questions:
 \begin{description}
-\item[RQ1] What are the best performing Learning to Rank algorithms in terms of accuracy on relevant benchmark datasets?\\
+\item[RQ1] What are the best performing Learning to Rank algorithms in terms of accuracy on relevant benchmark data sets?\\
 
 \item[RQ2] What is the speed-up of those Learning to Rank algorithms when executed using the MapReduce framework?\\
 Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1991}:\\
@@ -47,12 +47,12 @@ A one-level forward and backward reference search is used to find relevant paper
 \label{ssec:rq2_methodology}
 To find an answer to the second research question, the Learning to Rank methods determined in the first research question will be implemented in the MapReduce framework and training time will be measured as a factor of the number of cluster nodes used to perform the computation. The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning to Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.\\
 
-To research the speed-up's dependence on the amount of data being processed, the training computations will be performed on datasets of varying sizes. The well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K offer a good initial set of datasets. Table \ref{tbl:initial_datasets} shows the
+To research the speed-up's dependence on the amount of data being processed, the training computations will be performed on data sets of varying sizes. The well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K offer a good initial set of data sets. Table \ref{tbl:initial_datasets} shows the
 % TODO: Waarom .Gov uit LETOR 3.0 niet?%
 \begin{table}[!h]
 \centering
 \begin{tabular}{p{3.4cm}p{3.4cm}r}\toprule
-Dataset & Collection & Size \\
+Data set & Collection & Size \\
 \midrule
 OHSUMED     & LETOR 3.0       &   4.55 MB\\
 MQ2008      & LETOR 4.0       &   5.93 MB\\
@@ -61,17 +61,17 @@ MSLR-WEB10K & MSLR-WEB10K     & 938.01 MB\\
 MSLR-WEB30K & MSLR-WEB30K     &   2.62 GB\\
 \bottomrule
 \end{tabular}
-\caption{The LETOR 3.0, LETOR 4.0 and MSLR30/40K datasets and their data sizes}
+\caption{The LETOR 3.0, LETOR 4.0 and MSLR30/40K data sets and their data sizes}
 \label{tbl:initial_datasets}
 \end{table}
 
-To test the how the computational performance of Learning to Rank algorithms both on cluster and on single-node computation scales to large quantities of data, larger datasets will be created by cloning the MSLR-WEB30K dataset such that the cloned queries will hold new distinct query ID's.
+To test the how the computational performance of Learning to Rank algorithms both on cluster and on single-node computation scales to large quantities of data, larger data sets will be created by cloning the MSLR-WEB30K data set such that the cloned queries will hold new distinct query ID's.
 \section{Thesis Overview}
 
 \begin{description}
 \item[Chapter II: Background]{introduces the reader to the basic principles and recent work in the fields of Learning to Rank.}
 \item[Chapter III: Related Work]{concisely describes existing work in the field of parallel Learning to Rank.}
-\item[Chapter IV: Benchmark Results]{sketches the accuracy of existing Learning to Rank methods on several benchmark datasets and describes the selection of Learning to Rank methods for the parallelisation experiments.}
+\item[Chapter IV: Benchmark Results]{sketches the accuracy of existing Learning to Rank methods on several benchmark data sets and describes the selection of Learning to Rank methods for the parallelisation experiments.}
 \item[Chapter V: Selected Learning to Rank Methods]{describes the algorithms and details of the Learning to Rank methods selected in Chapter IV.}
 \item[Chapter VI: Implementation]{describes implementation details of the Learning to Rank algorithms in the Hadoop framework.}
 \item[Chapter VII: Results \& Discussion]{presents and discusses speed-up results for the implemented Learning to Rank methods.}

@@ -63,7 +63,7 @@ Setting the degree of parallelisation is crucial to obtain optimal cluster utili
 \section{ListNet}
 The following sections describe the Pig jobs that jointly form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
 \subsection{Preprocessing}
-The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test datasets using the following formula for rescaling:
+The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test data sets using the following formula for rescaling:
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
 \label{eq:rescaling}
@@ -74,7 +74,7 @@ The first Pig job:\\
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
-TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
+TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');
 TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
 TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1 PARALLEL [available reducers];
 MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax(*));
@@ -103,9 +103,9 @@ The second Pig job:\\
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
 REGISTER [path prefix]/lib/*.jar;
-TRAIN = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/train.txt' USING PigStorage(' ');
-VALIDATE = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/vali.txt' USING PigStorage(' ');
-TEST = LOAD '[path prefix]/input/[dataset name]/Fold[fold number]/test.txt' USING PigStorage(' ');
+TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');
+VALIDATE = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/vali.txt' USING PigStorage(' ');
+TEST = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/test.txt' USING PigStorage(' ');
 TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
 VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));
 TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));
