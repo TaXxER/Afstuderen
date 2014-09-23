@@ -62,7 +62,7 @@ Figures \ref{fig:listnet_train_time} and \ref{fig:listnet_train_time_log} show t
 \begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/time_single_logx.pdf}
-\caption{Processing time of a single ListNet training iteration on a logarithmic axis}
+\caption{Processing time of a single ListNet training iteration on a logarithmic data size axis}
 \label{fig:listnet_train_time_log}
 \end{figure}
 
@@ -72,20 +72,20 @@ Amdahl's law states that the speed-up of a program using parallel computing is l
 
 Note however that Hadoop job scheduling overhead is independent of dataset size. Therefore, the non-parallelisable fraction of the program will be smaller when the to be processed dataset is larger, allowing larger speed-up values for larger datasets. From this observation we can derive that for \emph{"large enough"} datasets, the speed-up obtained by parallelising ListNet using Hadoop MapReduce is large enough for the parallelisation to be beneficial in terms of processing time compared to the RankLib single-machine version of ListNet, even when the size of the to be processed dataset would not have been memory-bounded in RankLib ListNet.\\
 
-Figure \ref{fig:listnet_throughput} shows the throughput in bytes per second. Our observation that RankLib ListNet performs very slow for data sets that do not fit in physical memory and virtual memory is needed is very notable in this graph. Furthermore, this graph shows how both increase in number in data nodes in a cluster and increase in input data size result in an increase in throughput. The sub-linear growth of throughput as a factor of input data size can again be explained as a result of the non-parallelisable Hadoop job scheduling part of the operation.\\
+Figure \ref{fig:listnet_processing_speed} shows the processing speed in bytes per second. Our observation that RankLib ListNet performs very slow for data sets that do not fit in physical memory and virtual memory is needed is very notable in this graph. Furthermore, this graph shows how both increase in number in data nodes in a cluster and increase in input data size result in an increase in processing speed. The sub-linear growth of processing speed as a factor of input data size can again be explained as a result of the non-parallelisable Hadoop job scheduling part of the operation.\\
 
 \begin{figure}
 \centering
 \includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
-\caption{Processing time as a function of data nodes in a cluster}
+\caption{Processing time of a single ListNet training iteration as a function of the number of data nodes in a cluster}
 \label{fig:speedup_train_time}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/throughput_single_logx.pdf}
-\caption{Throughput of a ListNet training iteration}
-\label{fig:listnet_throughput}
+\includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/processing_speed_single_logx.pdf}
+\caption{Processing speed of a a single ListNet training iteration on various data sets}
+\label{fig:listnet_processing_speed}
 \end{figure}
 
 \section{SmoothRank}
