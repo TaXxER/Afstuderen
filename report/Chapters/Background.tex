@@ -97,7 +97,7 @@ One limitation of \ac{NDCG} that it does not penalise for missing documents in t
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
 
 where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
-An algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
+The algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
 
 \LinesNumbered
 \begin{algorithm}[H]
@@ -108,7 +108,7 @@ An algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorith
 	$p \leftarrow p * (1-R)$
  }
  Output $ERR$
- \caption{Algorithm to compute the \acs{ERR} metric, obtained from \cite{Chapelle2009}}
+ \caption{The algorithm for computation of the \acs{ERR} metric, obtained from \cite{Chapelle2009}}
  \label{alg:err}
 \end{algorithm}
 
