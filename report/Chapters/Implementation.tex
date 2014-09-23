@@ -133,7 +133,7 @@ udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with whic
 \end{table}
 
 \subsection{Training}
-The Pig jobs that form the ListNet training phase form an implementation of the theoretical description of ListNet as described in section \ref{sec:ltrmethods_listnet}. The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{nDCG}@k.\\
+The Pig jobs that form the ListNet training phase form an implementation of the theoretical description of ListNet as described in section \ref{sec:ltrmethods_listnet}. The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{NDCG}@k.\\
 
 The first Pig job:\\
 \begin{minipage}{\linewidth}
@@ -197,7 +197,7 @@ STORE AVG_NDCG INTO 'avg_ndcg-f[fold number]i[iteration number]';
 \begin{tabular}{p{6cm}p{7cm}}\toprule
 UDF & Description \\
 \midrule
-udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
+udf.util.Ndcg() & Calculates \ac{NDCG}@k for a query.\\
 \bottomrule
 \end{tabular}
 \caption{Description of training phase User Defined Functions (Pig job 2)}
@@ -205,7 +205,7 @@ udf.util.Ndcg() & Calculates \ac{nDCG}@k for a query.\\
 \end{table}
 
 \subsection{Testing}
-The testing stage tests the best model found in the training iterations, selected on validation set \ac{nDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{nDCG}@k of this model on the test set.\\
+The testing stage tests the best model found in the training iterations, selected on validation set \ac{NDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{NDCG}@k of this model on the test set.\\
 
 Test stage Pig job:\\
 \begin{minipage}{\linewidth}

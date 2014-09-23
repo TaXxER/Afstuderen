@@ -68,7 +68,7 @@
 %********************************************************************
 % Frontmatter
 %*******************************************************
-\include{FrontBackmatter/DirtyTitlepage}
+%\include{FrontBackmatter/DirtyTitlepage}
 \include{FrontBackmatter/Titlepage}
 \include{FrontBackmatter/Titleback}
 \cleardoublepage\include{FrontBackmatter/Preface}
@@ -92,17 +92,17 @@
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
 \chapter{Related Work}
-\include*{Chapters/RelatedWork}
+\include{Chapters/RelatedWork}
 
 \chapter{Benchmark results}
 \include*{Chapters/BenchmarkResults}
 \chapter{Cross Benchmark Comparison}
 \include*{Chapters/CrossBenchmarkComparison}
-\chapter{Selected Learning-to-Rank methods}
+\chapter{Selected Learning to Rank methods}
 \include*{Chapters/LTRMethods}
 \chapter{Implementation}
 \include*{Chapters/Implementation}
-\chapter{Results \& Discussion}
+\chapter{MapReduce experiments}
 \include*{Chapters/Results}
 \chapter{Conclusions}
 \include*{Chapters/Conclusions}

@@ -1,5 +1,5 @@
 \label{chap:ltr_methods}
-The learning algorithms of the well-performing Learning-to-Rank methods selected in Chapter \ref{chap:cross_comparison} are presented and explained in this Chapter. The Learning-to-Rank methods will be discussed in order of an increasing degree of certainty and decreasing ranking accuracy, as concluded in Chapter \ref{chap:cross_comparison}.
+The learning algorithms of the well-performing Learning to Rank methods selected in Chapter \ref{chap:cross_comparison} are presented and explained in this Chapter. The Learning to Rank methods will be discussed in order of an increasing degree of certainty and decreasing ranking accuracy, as concluded in Chapter \ref{chap:cross_comparison}.
 
 \section{ListNet}
 \label{sec:ltrmethods_listnet}
@@ -40,24 +40,24 @@ where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the \ac{KL divergence} 
 \end{algorithm}
 
 \section{SmoothRank}
-SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, I apply the SmoothRank approximation method to the \ac{nDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{MAP} or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax activation function \cite{Bridle1990}, which is often used in neural networks. The softmax function is formally defined as shown in Equation \ref{eq:softmax_algorithm}.
+SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, I apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{MAP} or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax activation function \cite{Bridle1990}, which is often used in neural networks. The softmax function is formally defined as shown in Equation \ref{eq:softmax_algorithm}.
 \begin{equation}
 p_i = \frac{e^{f_i/\sigma}}{\sum\nolimits_{j=1}^{m}e^{f_j/\sigma}}
 \label{eq:softmax_algorithm}
 \end{equation}
 
-where $\sigma$ is the smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{nDCG} formula and hereby introduce a soft version of indicator variable $h_{i,j}$ through the computation shown in Equation \ref{eq:soft_ndcg}.
+where $\sigma$ is the smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{NDCG} formula and hereby introduce a soft version of indicator variable $h_{i,j}$ through the computation shown in Equation \ref{eq:soft_NDCG}.
 
 \begin{equation}
 h_{i,j} = e^{-\frac{(f(x_i))-(f(x_{d(j)}))^2}{\sigma}}\Big/\sum\nolimits_{k=1}^{m}e^{-\frac{(f(x_k))-f(x_{d(j)})^2}{\sigma}}
-\label{eq:soft_ndcg}
+\label{eq:soft_NDCG}
 \end{equation}
 
-It can be shown that the derivative of the smoothed \ac{nDCG} version shown in Equation \ref{eq:soft_ndcg} and the smoothed versions of other \ac{IR} metrics can be calculated in $\mathcal{O}(m^2)$, which enable fast gradient descent optimisation. The optimisation step in SmoothRank uses the nonlinear conjugate gradient method  with Polak-Ribiere update \cite{Shewchuk1994}, which is a type of gradient descent method. This optimisation method is prone to local optima, which is alleviated by adding a pre-calculated, better than naive, starting point and by adding a regularisation term.\\
+It can be shown that the derivative of the smoothed \ac{NDCG} version shown in Equation \ref{eq:soft_NDCG} and the smoothed versions of other \ac{IR} metrics can be calculated in $\mathcal{O}(m^2)$, which enable fast gradient descent optimisation. The optimisation step in SmoothRank uses the nonlinear conjugate gradient method  with Polak-Ribiere update \cite{Shewchuk1994}, which is a type of gradient descent method. This optimisation method is prone to local optima, which is alleviated by adding a pre-calculated, better than naive, starting point and by adding a regularisation term.\\
 
 The starting point in SmoothRank is set to either the solution of a simple linear regression, or alternatively to the solution of Rank\acs{SVM}. Since this starting point is expected to already be a good solution, a regulariser term is added to the SmoothRank objective function to prevent the solution from deviating to much from the starting point. The regularised smooth objective function is formulated as $\lambda||w-w_0||_2$ where $\lambda$ is a hyper-parameter tuned on the validation set, $w_0$ is the starting point solution, and $||x||_2$ is the $\ell2$-norm regularisation function defined as $||x||_2 = \sqrt{\sum\nolimits_ix_i^2}$.\\
 
-The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function with optima that substantially differ from the true optimal rankings. To deal with the problem of choosing the smoothing parameter, SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by two at each iteration. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
+The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_NDCG} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function with optima that substantially differ from the true optimal rankings. To deal with the problem of choosing the smoothing parameter, SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by two at each iteration. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
 \LinesNumbered
 \begin{algorithm}[H]
  Find an initial solution $w_0$ (by regression or Rank\acs{SVM}).\\
@@ -72,7 +72,7 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_ndcg} is
 \end{algorithm}
 
 \section{FenchelRank}
-FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning-to-Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses a generic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard pairwise loss function with $\ell_1$-norm regularisation. The $\ell_1$-norm regularisation function in this equation is represented by $||x||_1$ and is defined as $||x||_1=\sum\nolimits_i|x_i|$.
+FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learning to Rank problem, which is the problem of learning a ranking function with only a few non-zero coefficients with respect to the input features. FenchelRank is based on the theory of Fenchel Duality \cite{Rifkin2007} and uses a generic algorithm framework proposed by Shalev-Shwartz and Singer \cite{Shalev-Shwartz2010}. FenchelRank optimises the objective function shown in Equation \ref{eq:pairwise_l1_loss} which is equivalent to the standard pairwise loss function with $\ell_1$-norm regularisation. The $\ell_1$-norm regularisation function in this equation is represented by $||x||_1$ and is defined as $||x||_1=\sum\nolimits_i|x_i|$.
 \begin{equation}
 \min_w G(w) = \min_w I_{||w||_{1} \le 1}(w) + \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:pairwise_l1_loss}
@@ -119,7 +119,7 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
 \end{algorithm}
 
 \section{FSMRank}
-Lai et al. \cite{Lai2013c} observed that existing feature selection methods in Learning-to-Rank all follow a two-stage paradigm consisting of a first stage of selecting a subset of features from the original features, followed by a second stage where a ranking model learnt based on the selected features. Lai et al. \cite{Lai2013c} state it as a limitation of this paradigm that the selected features in the first step are not necessarily the optimal features for the second stage where the ranking model is build. FSMRank \cite{Lai2013c} addresses this limitation by formulating a joint convex optimisation function that minimises ranking errors while simultaneously selecting a subset of features.\\
+Lai et al. \cite{Lai2013c} observed that existing feature selection methods in Learning to Rank all follow a two-stage paradigm consisting of a first stage of selecting a subset of features from the original features, followed by a second stage where a ranking model learnt based on the selected features. Lai et al. \cite{Lai2013c} state it as a limitation of this paradigm that the selected features in the first step are not necessarily the optimal features for the second stage where the ranking model is build. FSMRank \cite{Lai2013c} addresses this limitation by formulating a joint convex optimisation function that minimises ranking errors while simultaneously selecting a subset of features.\\
 
 FSMRank uses an extended version of gradient descent optimisation, proposed by Yuri Nesterov, that enables faster convergence for convex problems \cite{Nesterov2004}. Nesterov's accelerated gradient descent can guarantee an $\epsilon$-accurate solution in at most $T$ iterations where $\epsilon=\mathcal{O}(1/T^2)$.\\
 
@@ -169,7 +169,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
 \end{algorithm}
 
 \section{LRUF}
-LRUF \cite{Torkestani2012b} is Learning-to-Rank method based on the theory of learning automata. Learning automata are adaptive decision-making units that learn the optimal set of actions through repeated interactions with its environment. Variable structure learning automata can be defined as a triple $<\beta,\alpha,L>$, with $\beta$ being the set of inputs, $\alpha$ the set of actions. $L$, the learning algorithm ,is a recurrence relation that modifies the action probability vector of the actions in $\alpha$.\\
+LRUF \cite{Torkestani2012b} is Learning to Rank method based on the theory of learning automata. Learning automata are adaptive decision-making units that learn the optimal set of actions through repeated interactions with its environment. Variable structure learning automata can be defined as a triple $<\beta,\alpha,L>$, with $\beta$ being the set of inputs, $\alpha$ the set of actions. $L$, the learning algorithm ,is a recurrence relation that modifies the action probability vector of the actions in $\alpha$.\\
 
 Three well-known learning algorithms $L$ used in variable structure learning automata are \emph{linear reward-penalty} ($L_{R-P}$), \emph{linear reward-$\epsilon$-penalty} ($L_{R-\epsilon P}$) and \emph{linear reward-inaction} ($L_{R-I}$). LRUF uses the $L_{R-I}$ learning algorithm, which updates the action probability vector following Equation \ref{eq:lruf_reward_update} when the selected action $a_i(k)$ is rewarded by the environment.
 \begin{equation}
