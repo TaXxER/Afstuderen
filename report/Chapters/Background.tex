@@ -37,6 +37,7 @@ The predictions and the loss function might either be defined for:
 These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning to Rank will be described in more detail in section \ref{sec:ltr_approaches}.
 
 \section{How to evaluate a ranking}
+\label{sec:how_to_evaluate_a_ranking}
 Evaluation metrics have long been studied in the field of information retrieval. First in the form of evaluation of unranked retrieval sets and later, when the information retrieval field started focussing more on ranked retrieval, in the form of ranked retrieval evaluation. In this section several frequently used evaluation metrics for ranked results will be described.\\
 
 No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used to express the evaluation results in chapter \ref{chap:benchmark_results} of this thesis.
@@ -52,7 +53,6 @@ with $rel_i$ the graded relevance of the result at position $i$. The idea is tha
 Burges et al. \cite{Burges2005} proposed an alternative definition of \ac{DCG} that puts stronger emphasis on document relevance\\
 
 $DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
-
 
 \subsubsection{Normalized Discounted Cumulative Gain}
 \ac{NDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. The definition of \ac{NDCG} can be written down mathematically as\\
