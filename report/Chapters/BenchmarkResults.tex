@@ -6,7 +6,7 @@ This chapter describes benchmark characteristics, e.g. collection size and featu
 The accuracies of the Learning to Rank methods described in the following sections can only be compared within the benchmark and not between benchmarks for the following reasons:
 \begin{enumerate}
 \item Differences in feature sets between data sets detract from fair comparison
-\item Although the \ac{nDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{nDCG} evaluation tools of benchmark data sets produced different scores
+\item Although the \ac{NDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{NDCG} evaluation tools of benchmark data sets produced different scores
 \end{enumerate}
 
 \section{Yahoo! Learning to Rank Challenge}
@@ -24,7 +24,7 @@ The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two d
 \caption{Yahoo! Learning to Rank Challenge data set characteristics, as described in the overview paper \cite{Chapelle2011a}}
 \label{tab:yahoo_characteristics}
 \end{table}\\
-Both \ac{nDCG} and \ac{ERR} are measured as performance metrics, but the final standings of the challenge were based on the \ac{ERR} values. Model validation on the Learning to Rank methods participating in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. Competitors could train on the training set and get immediate feedback on their performance on the validation set. The test set performance is used to create the final standings and is only measured after the competition has ended to avoid overfitting on the test set. The large number of documents, queries and features compared to other benchmark data sets makes the Yahoo! Learning to Rank Challenge data set interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper \cite{Chapelle2011a}:\\
+Both \ac{NDCG} and \ac{ERR} are measured as performance metrics, but the final standings of the challenge were based on the \ac{ERR} values. Model validation on the Learning to Rank methods participating in the challenge is performed using a train/validation/test-set split following the characteristics shown in Table \ref{tab:yahoo_characteristics}. Competitors could train on the training set and get immediate feedback on their performance on the validation set. The test set performance is used to create the final standings and is only measured after the competition has ended to avoid overfitting on the test set. The large number of documents, queries and features compared to other benchmark data sets makes the Yahoo! Learning to Rank Challenge data set interesting. Yahoo did not provide detailed feature descriptions to prevent competitors to get detailed insight in the characteristics of the Yahoo data collection and features used at Yahoo. Instead high level descriptions of feature categories are provided. The following categories of features are described in the challenge overview paper \cite{Chapelle2011a}:\\
 \begin{description}
 \item[Web graph]{Quality and popularity metrics of web documents, e.g. PageRank \cite{Page1999}}.
 \item[Document statistics]{Basic document statistics such as the number of words and url characteristics.}
@@ -56,7 +56,7 @@ The challenge overview paper \cite{Chapelle2011a} states as one of the lessons o
 \label{fig:yahoo_results}
 \end{table}
 
-Although the winning \ac{GBDT} models performs very well in terms of \ac{nDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
+Although the winning \ac{GBDT} models performs very well in terms of \ac{NDCG} their high complexity makes them unsuitable to use in production. The winning models take weeks to train and are very slow during query evaluation. An exception in training time is the BagBoo \cite{Pavlov2010} method used by Pavlov \& Brunk. The bagging component of the BagBoo method enables it to achieve high scalability through parallelism. Pavlov et al. \cite{Pavlov2010} managed to train half a million trees on 200 nodes in 2 hours.
 
 \section{LETOR}
 The LETOR benchmark set was first released by Microsoft Research Asia in April 2007 \cite{Liu2007b} to solve the absence of a experimental platform for Learning to Rank at that time. LETOR has been updated several times since: LETOR 2.0 was released at the end of 2007, LETOR 3.0 \cite{Qin2010} in December 2008 and LETOR 4.0 \cite{Qin2013} in July 2009.
@@ -84,7 +84,7 @@ LETOR 2.0 only uses the topic distillation queries. Baseline Learning to Rank al
 	\begin{itemize}
 	\item ListNet \cite{Cao2007}
 	\item AdaRank-MAP \cite{Xu2007}
-	\item AdaRank-nDCG \cite{Xu2007}
+	\item AdaRank-NDCG \cite{Xu2007}
 	\end{itemize}}
 \end{description} 
 
@@ -98,10 +98,10 @@ Rank\acs{SVM} & 0.4411 & 0.3410 & 0.4201 \\
 FRank & 0.4423 & 0.3357 & 0.4708 \\ 
 ListNet & 0.4489 & 0.3743 & 0.4579 \\ 
 AdaRank-\acs{MAP} & 0.4385 & 0.1940 & 0.4063 \\ 
-AdaRank-\acs{nDCG} & 0.4369 & 0.2702 & 0.3878 \\ 
+AdaRank-\acs{NDCG} & 0.4369 & 0.2702 & 0.3878 \\ 
 \acs{MHR} & 0.4423 &  &  \\ 
 \end{tabular}
-\caption{\acs{nDCG}@10 results of the baseline methods on LETOR 2.0}
+\caption{\acs{NDCG}@10 results of the baseline methods on LETOR 2.0}
 \label{tab:letor2.0_results}
 \end{table}
 Table \ref{tab:letor2.0_results} shows the performance of the baseline methods on the data sets in the LETOR 2.0 collection. ListNet can be regarded as the winner of the comparison as it outperformed the other methods on two of the three data sets and ranked third on the third data set. \acs{MHR} was only evaluated on the OHSUMED data set, on which it performed second best, after ListNet.
@@ -110,7 +110,7 @@ Table \ref{tab:letor2.0_results} shows the performance of the baseline methods o
 \subsection{LETOR 3.0}
 The LETOR 3.0 benchmark collection \cite{Qin2010} as released in 2007 contained two data sets: the OHSUMED collection and the .gov collection. Tables \ref{tbl:features_ohsumed} and \ref{tbl:features_gov} in Appendix \ref{chap:appendix_a} provide the descriptions of the features of the OHSUMED and the .gov collections for LETOR 3.0 respectively. Where LETOR 2.0 only used topic distillation (TD) queries on the .gov corpus, LETOR 3.0 also uses named page finding (NP) and home page finding (HP) queries. With query sets available from both the \ac{TREC} 2003 and 2004 conferences there are six query sets in total: TD2003, TD2004, NP2003, NP2004, HP2003 and HP2004. It is noteworthy that the OHSUMED, TD2003 and TD2004 data sets of LETOR 2.0 and LETOR 3.0 are not identical and therefore not comparable due to differences in sampling method.\\
 
-The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number} metric is defined as the number of other algorithms that it can beat over all of the seven data sets (six .gov sets + OHSUMED). The LETOR organisation implemented and evaluated several well-known Learning to Rank algorithms themselves and in addition gathers and publications and results of new algorithms evaluated on the LETOR benchmark. The baseline Learning to Rank algorithms evaluated by the LETOR team are:
+The evaluation metrics used are \ac{NDCG} and \ac{MAP}. The \emph{winning number} metric is defined as the number of other algorithms that it can beat over all of the seven data sets (six .gov sets + OHSUMED). The LETOR organisation implemented and evaluated several well-known Learning to Rank algorithms themselves and in addition gathers and publications and results of new algorithms evaluated on the LETOR benchmark. The baseline Learning to Rank algorithms evaluated by the LETOR team are:
 \begin{description}
 \item[pointwise]{\leavevmode
 	\begin{itemize}
@@ -126,13 +126,13 @@ The evaluation metrics used are \ac{nDCG} and \ac{MAP}. The \emph{winning number
 	\begin{itemize}
 	\item ListNet \cite{Cao2007}
 	\item AdaRank-MAP \cite{Xu2007}
-	\item AdaRank-nDCG \cite{Xu2007}
+	\item AdaRank-NDCG \cite{Xu2007}
 	\item \ac{SVM}$^{MAP}$ \cite{Yue2007} 
 	\end{itemize}}
 \end{description} 
 
 \subsubsection{Results}
-The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{nDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
+The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline methods. Figures \ref{fig:ndcg_winning_number} and \ref{fig:map_winning_number} show ListNet to be the best performing baseline in terms of winning number on both \ac{NDCG} and \ac{MAP}. The LETOR website lists\footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} a few algorithms that have since been evaluated on the LETOR benchmark collection.\\
 
 \begin{figure}[!h]
 \includegraphics[scale=0.30]{gfx/ndcg_winning_number}
@@ -146,10 +146,10 @@ The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline m
 \label{fig:map_winning_number}
 \end{figure}
 
-I will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven data sets in \ac{nDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{nDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR data sets in terms of \ac{nDCG}@10 and \ac{MAP}.
+I will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven data sets in \ac{NDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{NDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR data sets in terms of \ac{NDCG}@10 and \ac{MAP}.
 \begin{table}[!h]
 \begin{tabular}{l|ll}
- & \ac{nDCG}@10 & \ac{MAP} \\ 
+ & \ac{NDCG}@10 & \ac{MAP} \\ 
  \hline
 TD2003 & 0.348 & 0.2753 \\ 
 TD2004 & 0.317 & 0.2231 \\ 
@@ -178,7 +178,7 @@ HP2004 & 0.7188 & 0.7720 & 0.7666 & 0.8221 & 0.784 \\
 OHSUMED & 0.4436 & 0.4504 & 0.4523 & 0.4568 & 0.441 \\ 
 \# winning data sets & 2 & 2 & 1 & 3 & - \\ 
 \end{tabular}
-\caption{\acs{nDCG}@10 comparison of algorithms recently evaluated on LETOR 3.0 with the ListNet baselines}
+\caption{\acs{NDCG}@10 comparison of algorithms recently evaluated on LETOR 3.0 with the ListNet baselines}
 \label{tbl:LETOR_recently_added}
 \end{table}
 
@@ -197,11 +197,11 @@ The LETOR 4.0 benchmark collection\footnote{http://http://research.microsoft.com
 \label{tab:letor4_characteristics}
 \end{table}
 \subsubsection{Results}
-Rank\ac{SVM}-Struct, ListNet, AdaRank-\ac{nDCG}, AdaRank-\ac{MAP} and RankBoost were used as baseline models on the LETOR 4.0 data set and were implemented and evaluated by the publishers of LETOR 4.0. Table \ref{tab:letor4_baseline_results} shows the performance of those baseline models on the LETOR 4.0 benchmark collection.\\
+Rank\ac{SVM}-Struct, ListNet, AdaRank-\ac{NDCG}, AdaRank-\ac{MAP} and RankBoost were used as baseline models on the LETOR 4.0 data set and were implemented and evaluated by the publishers of LETOR 4.0. Table \ref{tab:letor4_baseline_results} shows the performance of those baseline models on the LETOR 4.0 benchmark collection.\\
 
 \begin{table}
 \begin{tabular}{l|lll}
-Model & Data set & Mean \ac{nDCG} & \ac{nDCG}@10 \\ 
+Model & Data set & Mean \ac{NDCG} & \ac{NDCG}@10 \\ 
 \hline
 Rank\ac{SVM}-Struct & MQ2007 & 0.4966 & 0.4439 \\ 
  & MQ2008 & 0.4832 & 0.2279 \\ 
@@ -209,7 +209,7 @@ Rank\ac{SVM}-Struct & MQ2007 & 0.4966 & 0.4439 \\
 ListNet & MQ2007 & 0.4988 & 0.4440 \\ 
  & MQ2008 & 0.4914 & 0.2303 \\ 
 \hline
-AdaRank-\ac{nDCG} & MQ2007 & 0.4914 & 0.4369 \\ 
+AdaRank-\ac{NDCG} & MQ2007 & 0.4914 & 0.4369 \\ 
  & MQ2008 & 0.4950 & 0.2307 \\ 
 \hline
 AdaRank-\ac{MAP} & MQ2007 & 0.4891 & 0.4335 \\ 
@@ -222,13 +222,13 @@ RankBoost & MQ2007 & 0.5003 & 0.4464 \\
 \label{tab:letor4_baseline_results}
 \end{table}
 
-BoostedTree model \cite{Kocsis2013} showed an \ac{nDCG} of 0.5071 on the MQ2007 data set and thereby beat all baseline models.
+BoostedTree model \cite{Kocsis2013} showed an \ac{NDCG} of 0.5071 on the MQ2007 data set and thereby beat all baseline models.
 
 \section{Other data sets}
 LETOR and the Yahoo! Learning to Rank Challenge data sets are the most used benchmark collections in the field. Several other benchmark collections for the Learning to Rank task have been proposed.
 
 \subsection{MSLR-WEB10/30k}
-MSLR-WEB30k and the smaller subset MSLR WEB10k are two large data sets with 30,000 and 10,000 queries respectively. The data was obtained from the Microsoft Bing\footnote{http://www.bing.com/} commercial web search engine. A feature list and feature descriptions are available. The data set only includes features that are commonly used in the research community, as proprietary features were excluded from the data set. Microsoft published these data sets as unofficial successor to LETOR in June 2010, but no baseline evaluations were described by the MSLR-WEB10/30k team. The Microsoft Research website from which the data set is obtainable\footnote{http://research.microsoft.com/en-us/projects/mslr/download.aspx} also offers an evaluation script for \ac{nDCG} and \ac{MAP}. The presence of an official evaluation script enables fair comparison of evaluation results from other researchers comparable.
+MSLR-WEB30k and the smaller subset MSLR WEB10k are two large data sets with 30,000 and 10,000 queries respectively. The data was obtained from the Microsoft Bing\footnote{http://www.bing.com/} commercial web search engine. A feature list and feature descriptions are available. The data set only includes features that are commonly used in the research community, as proprietary features were excluded from the data set. Microsoft published these data sets as unofficial successor to LETOR in June 2010, but no baseline evaluations were described by the MSLR-WEB10/30k team. The Microsoft Research website from which the data set is obtainable\footnote{http://research.microsoft.com/en-us/projects/mslr/download.aspx} also offers an evaluation script for \ac{NDCG} and \ac{MAP}. The presence of an official evaluation script enables fair comparison of evaluation results from other researchers comparable.
 
 \subsection{WCL2R}
 The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two data sets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both data sets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
@@ -244,7 +244,7 @@ LAC & 0.296 & 0.360 & 0.403 & 0.244 & 0.266 & 0.315 \\
 GP & 0.288 & 0.344 & 0.396 & 0.221 & 0.262 & 0.318 \\ 
 RankBoost & 0.295 & 0.328 & 0.375 & 0.247 & 0.264 & 0.305 \\ 
 \end{tabular}
-\caption{\acs{nDCG} results of the baseline methods on the WCL2R collection, obtained from \cite{Alcantara2010}}
+\caption{\acs{NDCG} results of the baseline methods on the WCL2R collection, obtained from \cite{Alcantara2010}}
 \label{tab:results_WCL2R}
 \end{table}
 
