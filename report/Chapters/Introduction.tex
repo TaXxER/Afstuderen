@@ -44,7 +44,9 @@ $S_N = \frac{\text{execution time using one core}}{\text{execution time using \e
 The single core execution time in this formula is defined as the time that the fastest known single-machine implementation of the algorithm takes to perform the execution.
 
 \section{Approach}
-\subsection{Methodology for Research Question I}
+We will describe our research methodology on a per Research Question basis. Prior to describing the methodologies for answering the Research Questions, we will describe the characteristics of our search for related work.
+
+\subsection{Literature Study Methodology}
 A literature study will be performed to get insight in relevant existing techniques for large scale Learning to Rank. The literature study will be performed by using the following query:\\
 
 \emph{("learning to rank" \emph{OR} "learning-to-rank" \emph{OR} "machine learned ranking") \emph{AND} ("parallel" \emph{OR} "distributed")}\\
@@ -56,16 +58,19 @@ and the following bibliographic databases:
 \item Google Scholar
 \end{itemize}
 
-The query incorporates different ways of writing of Learning to Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous is all definitions, we are interested in both approaches in non-sequential data processing.\\
+The query incorporates different ways of writing of Learning to Rank, with and without hyphens, and the synonymous term \emph{machine learned ranking} to increase search recall, i.e. to make sure that no relevant studies are missed. For the same reason the terms \emph{parallel} and \emph{distributed} are included in the search query. Even though \emph{parallel} and \emph{distributed} are not always synonymous, we are interested in both approaches in non-sequential data processing.\\
 
-A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.\\
+A one-level forward and backward reference search is used to find relevant papers missed so far. To handle the large volume of studies involved in the backward and forward reference search, relevance of the studies will be evaluated solely on the title of the study.
+
+\subsection{Methodology for Research Question I}
+To answer our first research question we will identify the Learning to Rank benchmark data sets that are used in literature to report the ranking accuracy of new Learning to Rank methods. These benchmark data sets will be identified by observing the data sets used in the papers found in the previously described literature study. Based on the benchmark data sets found, a literature search for papers will be performed and a cross-benchmark comparison method will be formulated. This literature search and cross-benchmark comparison procedure will be described in detail in section \ref{chap:cross_comparison}.
 
 \subsection{Methodology for Research Question II}
 \label{ssec:rq2_methodology}
 To find an answer to the second research question, the Learning to Rank methods determined in the first research question will be implemented in the MapReduce framework and training time will be measured as a factor of the number of cluster nodes used to perform the computation. The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning to Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.\\
 
-To research the speed-up's dependence on the amount of data being processed, the training computations will be performed on data sets of varying sizes. The well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K offer a good initial set of data sets. Table \ref{tbl:initial_datasets} shows the
-% TODO: Waarom .Gov uit LETOR 3.0 niet?%
+To research the speed-up's dependence on the amount of data that is being processed, the training computations will be performed on data sets of varying sizes. We use the well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K as a starting set of data sets for our experiments. Table \ref{tbl:initial_datasets} shows the data sizes of these data sets. The data sizes reported are not the total on-disk sizes of the data sets, but instead the size of the largest training set of all data folds (for an explanation of the concept of data folds, see \ref{sec:cross_validation}).
+
 \begin{table}[!h]
 \centering
 \begin{tabular}{p{3.4cm}p{3.4cm}r}\toprule
@@ -82,7 +87,7 @@ MSLR-WEB30K & MSLR-WEB30K     &   2.62 GB\\
 \label{tbl:initial_datasets}
 \end{table}
 
-To test the how the computational performance of Learning to Rank algorithms both on cluster and on single-node computation scales to large quantities of data, larger data sets will be created by cloning the MSLR-WEB30K data set such that the cloned queries will hold new distinct query ID's.
+MSLR-WEB30K is the largest in data size of the benchmark data sets used in practice, but 2.62GB is still relatively small for MapReduce data processing. To test the how the computational performance of Learning to Rank algorithms both on cluster and on single-node computation scales to large quantities of data, larger data sets will be created by cloning the MSLR-WEB30K data set such that the cloned queries will hold new distinct query ID's.
 \section{Thesis Overview}
 
 \begin{description}
