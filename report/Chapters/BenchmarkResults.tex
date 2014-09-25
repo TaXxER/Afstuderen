@@ -6,8 +6,9 @@ This chapter describes benchmark characteristics, e.g. collection size and featu
 The accuracies of the Learning to Rank methods described in the following sections can only be compared within the benchmark and not between benchmarks for the following reasons:
 \begin{enumerate}
 \item Differences in feature sets between data sets detract from fair comparison
-\item Although the \ac{NDCG} definition is unambiguous, Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{NDCG} evaluation tools of benchmark data sets produced different scores
+\item Although the \ac{NDCG} definition is unambiguous (note: there are two existing versions of \ac{NDCG}: J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005}, but both are in itself defined unambiguously), Busa-Fekete et al. \cite{Busa-Fekete2012} found that \ac{NDCG} evaluation tools of different benchmark data sets produced different scores
 \end{enumerate}
+% TODO: hoe zit dit? Komt de vondst van Busa-Fekete door het Burges and Jarvelin verschil? %
 
 \section{Yahoo! Learning to Rank Challenge}
 Yahoo's observation that all existing benchmark data sets were too small to draw reliable conclusions prompted Yahoo to release two internal data sets from Yahoo! search. Data sets used at commercial search engines are many times larger than available benchmark data sets. Yahoo! published a subset of their own commercial training data and launched a Learning to Rank competition based on this data. The Yahoo! Learning to Rank Challenge \cite{Chapelle2011a} is a public Learning to Rank competition which took place from March to May 2010, with the goal to promote the data sets and encourage the research community to develop new Learning to Rank algorithms.\\
@@ -99,7 +100,7 @@ FRank & 0.4423 & 0.3357 & 0.4708 \\
 ListNet & 0.4489 & 0.3743 & 0.4579 \\ 
 AdaRank-\acs{MAP} & 0.4385 & 0.1940 & 0.4063 \\ 
 AdaRank-\acs{NDCG} & 0.4369 & 0.2702 & 0.3878 \\ 
-\acs{MHR} & 0.4423 &  &  \\ 
+\acs{MHR} & 0.4423 & - & - \\ 
 \end{tabular}
 \caption{\acs{NDCG}@10 results of the baseline methods on LETOR 2.0}
 \label{tab:letor2.0_results}
@@ -231,7 +232,7 @@ LETOR and the Yahoo! Learning to Rank Challenge data sets are the most used benc
 MSLR-WEB30k and the smaller subset MSLR WEB10k are two large data sets with 30,000 and 10,000 queries respectively. The data was obtained from the Microsoft Bing\footnote{http://www.bing.com/} commercial web search engine. A feature list and feature descriptions are available. The data set only includes features that are commonly used in the research community, as proprietary features were excluded from the data set. Microsoft published these data sets as unofficial successor to LETOR in June 2010, but no baseline evaluations were described by the MSLR-WEB10/30k team. The Microsoft Research website from which the data set is obtainable\footnote{http://research.microsoft.com/en-us/projects/mslr/download.aspx} also offers an evaluation script for \ac{NDCG} and \ac{MAP}. The presence of an official evaluation script enables fair comparison of evaluation results from other researchers comparable.
 
 \subsection{WCL2R}
-The WCL2R collection, released by Alc{\^a}ntara et al \cite{Alcantara2010}, contains of two data sets from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both data sets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
+The WCL2R collection, released by Alc{\^a}ntara et al. \cite{Alcantara2010}, contains of two data sets originating from the Chilean search engine TodoCL\footnote{www.todocl.cl}. Both data sets contain approximately 3 million documents. WCL2R is the only benchmark collection known that provides click-through data on user level. The collection contains 277,095 queries and logs of in total 1,5 million clicks by 16,829 users. The WCL2R paper provides evaluation results for the well-known Rank\ac{SVM} \cite{Herbrich1999,Joachims2002} and RankBoost \cite{Freund2003} algorithms. In addition two ranking methods developed at the same university of the WCL2R paper were evaluated: LAC \cite{Veloso2008} and a ranking algorithm based on \ac{GP} \cite{DeAlmeida2007}. Table \ref{tab:results_WCL2R} shows the performance of those algorithms on the WCL2R collection. No evaluations of other algorithms on the WCL2R collection are known.
 
 \begin{table}[!h]
 \begin{tabular}{l|lll|lll}
