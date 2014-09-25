@@ -13,7 +13,7 @@ The accuracies of the Learning to Rank methods described in the following sectio
 \section{Yahoo! Learning to Rank Challenge}
 Yahoo's observation that all existing benchmark data sets were too small to draw reliable conclusions prompted Yahoo to release two internal data sets from Yahoo! search. Data sets used at commercial search engines are many times larger than available benchmark data sets. Yahoo! published a subset of their own commercial training data and launched a Learning to Rank competition based on this data. The Yahoo! Learning to Rank Challenge \cite{Chapelle2011a} is a public Learning to Rank competition which took place from March to May 2010, with the goal to promote the data sets and encourage the research community to develop new Learning to Rank algorithms.\\
 
-The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two data sets respectively: a standard Learning to Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment, I will only look at the standard Learning to Rank data set, because transfer learning is a separate research area that is not included in this thesis.\\
+The Yahoo! Learning to Rank Challenge consists of two tracks that uses the two data sets respectively: a standard Learning to Rank track and a transfer learning track where the goal was to learn a specialized ranking function that can be used for a small country by leveraging a larger training set of another country. For this experiment, we will only look at the standard Learning to Rank data set, because transfer learning is a separate research area that is not included in this thesis.\\
 \begin{table}[!h]
 \begin{tabular}{l|lll}
  & Train & Validation & Test \\ 
@@ -147,7 +147,7 @@ The LETOR paper \cite{Qin2010} describes the performance of the LETOR baseline m
 \label{fig:map_winning_number}
 \end{figure}
 
-I will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven data sets in \ac{NDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{NDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR data sets in terms of \ac{NDCG}@10 and \ac{MAP}.
+We will describe the performance of the algorithms that were evaluated by the LETOR team on LETOR 3.0 after publication of the LETOR paper by Qin et al. \cite{Qin2010}, as listed on the LETOR website\footnotemark[2] by comparing their performance with the ListNet baseline. We will consider those methods to be better than ListNet when they beat the ListNet baseline in at least four of the seven data sets in \ac{NDCG} value. Note that this does not necessarily imply that these methods would have scored a higher \ac{NDCG} winning number than ListNet. Table \ref{tbl:LETOR_ListNet} shows the ListNet performance on the seven LETOR data sets in terms of \ac{NDCG}@10 and \ac{MAP}.
 \begin{table}[!h]
 \begin{tabular}{l|ll}
  & \ac{NDCG}@10 & \ac{MAP} \\ 

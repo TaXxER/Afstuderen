@@ -40,7 +40,7 @@ where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the \ac{KL divergence} 
 \end{algorithm}
 
 \section{SmoothRank}
-SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, I apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{MAP} or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax activation function \cite{Bridle1990}, which is often used in neural networks. The softmax function is formally defined as shown in Equation \ref{eq:softmax_algorithm}.
+SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, we apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{MAP} or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax activation function \cite{Bridle1990}, which is often used in neural networks. The softmax function is formally defined as shown in Equation \ref{eq:softmax_algorithm}.
 \begin{equation}
 p_i = \frac{e^{f_i/\sigma}}{\sum\nolimits_{j=1}^{m}e^{f_j/\sigma}}
 \label{eq:softmax_algorithm}
