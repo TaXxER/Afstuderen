@@ -28,12 +28,13 @@ The existence of multiple benchmark data sets for Learning to Rank makes it non-
 \begin{description}
 \item[RQ1] What are the best performing Learning to Rank algorithms in terms of ranking accuracy on relevant benchmark data sets?
 \end{description}
-
-There are several existing metrics that can be used to express the accuracy of a ranking, which we will explore in section \ref{sec:how_to_evaluate_a_ranking}.
+\bigskip
+Ranking accuracy is an ambiguous concept, as there exists several metrics that can be used to express the accuracy of a ranking. We will explore several metrics for ranking accuracy in section \ref{sec:how_to_evaluate_a_ranking}.\\
 
 \begin{description}
 \item[RQ2] What is the speed-up of those Learning to Rank algorithms when executed using the MapReduce framework?
 \end{description}
+\bigskip
 With multiple existing definitions of speed-up, we will use the speed-up definition known as \emph{relative speed-up} \cite{Sun1991}, which is formulated as follows:\\
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$\\
