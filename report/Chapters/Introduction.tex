@@ -31,6 +31,8 @@ The existence of multiple benchmark data sets for Learning to Rank makes it non-
 \bigskip
 Ranking accuracy is an ambiguous concept, as there exists several metrics that can be used to express the accuracy of a ranking. We will explore several metrics for ranking accuracy in section \ref{sec:how_to_evaluate_a_ranking}.\\
 
+After determining the most accurate ranking methods, we perform speed-up experiment on distributed MapReduce implementations of those algorithms. We formulate this in the following research question: \\
+
 \begin{description}
 \item[RQ2] What is the speed-up of those Learning to Rank algorithms when executed using the MapReduce framework?
 \end{description}
@@ -39,7 +41,7 @@ With multiple existing definitions of speed-up, we will use the speed-up definit
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$\\
 
-The single core execution time in this formula should be measured by used the fastest known single-machine implementation of the algorithm.
+The single core execution time in this formula is defined as the time that the fastest known single-machine implementation of the algorithm takes to perform the execution.
 
 \section{Approach}
 \subsection{Methodology for Research Question I}
