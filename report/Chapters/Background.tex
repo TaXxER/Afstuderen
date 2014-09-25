@@ -1,5 +1,5 @@
 %************************************************
-This chapter is written with the goal to provide the reader with a subtle introduction in the Learning to Rank field. Models and theories explained in this chapter can be regarded as prior knowledge needed to understand the subsequent chapters of this thesis.
+This chapter is written with the goal to provide the reader with a subtle introduction in the Learning to Rank field and the MapReduce computational model. Models and theories explained in this chapter can be regarded as prior knowledge needed to understand the subsequent chapters of this thesis.
 \section{A basic introduction to Learning to Rank}
 Different definitions of Learning to Rank exist. In general, all ranking methods that use machine learning technologies to solve the problem of ranking are called Learning to Rank methods. Figure \ref{fig:discriminative_training} describes the general process of machine learning. It shows training elements from an input space that are mapped to an output space using a model such that the difference between the actual labels of the training elements and the labels predicted with with the model are minimal in terms of a loss function.
 \begin{figure}[!h]
@@ -7,7 +7,7 @@ Different definitions of Learning to Rank exist. In general, all ranking methods
 \caption{Machine learning framework for Learning to Rank, obtained from Liu \cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}\\
-Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning to Rank method when it is \emph{feature based} and uses \emph{discriminative training}, which are itself defined as follows:
+Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning to Rank method when it is \emph{feature based} and uses \emph{discriminative training}, in which the concepts \emph{feature based} and \emph{discriminative training} are itself defined as:
 \begin{description}
 \item[Feature Based]{means that all documents under investigation are represented by feature vectors. Those feature vectors reflect the relevance of the documents to the query, or the importance of the document in itself.}
 \item[Discriminative Training]{means that the learning process can be well described by the four components of discriminative learning. That is, a Learning to Rank method has its own \emph{input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function}, like the machine learning process described by Figure \ref{fig:discriminative_training}. \emph{Input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function} are hereby defined as follows:
@@ -34,15 +34,15 @@ The predictions and the loss function might either be defined for:
 \item the classification of the most relevant document out of a document-pair
 \item the ranking of documents directly
 \end{enumerate}
-These three approaches are in literature respectively called the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning to Rank will be described in more detail in section \ref{sec:ltr_approaches}.
+These three approaches are in literature respectively labelled the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning to Rank will be described in more detail in section \ref{sec:ltr_approaches}.
 
 \section{How to evaluate a ranking}
 \label{sec:how_to_evaluate_a_ranking}
 Evaluation metrics have long been studied in the field of information retrieval. First in the form of evaluation of unranked retrieval sets and later, when the information retrieval field started focussing more on ranked retrieval, in the form of ranked retrieval evaluation. In this section several frequently used evaluation metrics for ranked results will be described.\\
 
-No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used to express the evaluation results in chapter \ref{chap:benchmark_results} of this thesis.
+No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used in chapters \ref{chap:benchmark_results} and \ref{chap:cross_comparison} of this thesis to compare Learning to Rank methods in terms of ranking accuracy.
 \subsection{Normalized Discounted Cumulative Gain}
-Cumulative gain, or its predecessor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
+Cumulative gain, or its successor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
 \subsubsection{Discounted Cumulative Gain}
 There are two definitions of \ac{DCG} used in practice. \ac{DCG} at position $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
 
@@ -82,8 +82,8 @@ $\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 
 $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 0.6 & 0.29 & 29.96 \\   
 \hline
  &  &  &  &  &  &  &  &  &  &  &  \\
- & \multicolumn{10}{c}{J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} \ac{NDCG} = $\frac{29.17}{29.96} = 0.97$} &  \\  
- & \multicolumn{10}{c}{Burges \cite{Burges2005} et al. \ac{NDCG} = $\frac{732.7}{788.0} = 0.93$} &  \\ 
+ & \multicolumn{10}{c}{Burges \cite{Burges2005} et al. \ac{NDCG} = $\frac{732.7}{788.0} = 0.9298$} &  \\ 
+  & \multicolumn{10}{c}{J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} \ac{NDCG} = $\frac{29.17}{29.96} = 0.9736$} &  \\
 \end{tabular}
 \caption{Example calculation of \acs{NDCG}}
 \label{tab:example_calculation_NDCG}
@@ -137,9 +137,6 @@ P@$i$ & 1 &  &  &  & 0.4 & 0.5 &  & 0.5 &  &  &  & 2.4 \\
 \caption{Average Precision example calculation.}
 \label{tab:example_calculation_AP}
 \end{table}
-
-%\subsection{Concluding notes on evaluation measures}
-%TODO: Ingaan op verbanden/correlaties tussen metrics.
 
 \section{Approaches to Learning to Rank}
 \label{sec:ltr_approaches}
