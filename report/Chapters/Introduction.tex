@@ -21,12 +21,16 @@ The appearance of benchmark data sets for Learning to Rank gave insight in the r
 
 \section{Research Goals}
 \label{sec:goals}
-The objective of this thesis is to explore the speed-up in execution time of Learning to Rank algorithms through parallelisation using the MapReduce computational model. The set of Learning to Rank models described in literature is of such size that it is infeasible to conduct an exhaustive experiment on all Learning to Rank models. Therefore we set the scope of our scalability experiment to include those Learning to Rank algorithms that have shown leading performance on relevant benchmark data sets.
-This thesis addresses the following research questions:
+The objective of this thesis is to explore the speed-up in execution time of Learning to Rank algorithms through parallelisation using the MapReduce computational model. The set of Learning to Rank models described in literature is of such size that it is infeasible to conduct an exhaustive experiment on all Learning to Rank models. Therefore, we set the scope of our scalability experiment to include those Learning to Rank algorithms that have shown leading performance on relevant benchmark data sets.\\
+
+The existence of multiple benchmark data sets for Learning to Rank makes it non-trivial to determine the best Learning to Rank methods in terms of ranking accuracy. Given two ranking methods, there might be non-agreement between evaluation results on different benchmarks on which ranking method is more accurate. Furthermore, given two benchmark data sets, the sets of Learning to Rank methods that are evaluated on these benchmark data sets might not be identical. To be able to scope our experiment on the speed-up of the most accurate Learning to Rank methods to the most accurate ranking methods we first need to identify what the most accurate Learning to Rank algorithms are. This brings us the the first research question: \\
+
 \begin{description}
 \item[RQ1] What are the best performing Learning to Rank algorithms in terms of ranking accuracy on relevant benchmark data sets?
 \end{description}
+
 There are several existing metrics that can be used to express the accuracy of a ranking, which we will explore in section \ref{sec:how_to_evaluate_a_ranking}.
+
 \begin{description}
 \item[RQ2] What is the speed-up of those Learning to Rank algorithms when executed using the MapReduce framework?
 \end{description}
