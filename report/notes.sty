@@ -510,7 +510,6 @@
 \renewcommand{\@makechapterhead}[1]{%
 
   {\parindent \z@ \raggedright \normalfont
-%    \hrule                                        % horizontal line
     \vspace{10pt}%                                 % add vertical space
     \ifnum \c@secnumdepth >\m@ne
         \huge \bfseries \scshape \@chapapp\space \thechapter % Chapter number
@@ -532,76 +531,31 @@
 	
  	\addtolength{\textwidth}{-1.75in}
    	\addtolength{\oddsidemargin}{1.35in}
-%	\addtolength{\textwidth}{-3in}
-  	
 	\setlength\textwidth{-3in}
 	
 	\thiswatermark{				%Put watermark on this page only
-%    		\put(-170,-760){\includegraphics[]{images/UTNL}}
 		\put(-170,-760){\includegraphics[]{gfx/UTEN}}
-		\put(-17.8,-756){\includegraphics[scale=1.22]{gfx/UT_Logo_Black_RGB_EN.pdf}}
-		\put(314.5,-737.5){\includegraphics[scale=0.07]{gfx/ava_tag_color_rgb.jpg}}
+		\put(-17.8,-756){\includegraphics[scale=1.00]{gfx/UT_Logo_Black_RGB_EN.pdf}}
+		\put(314.5,-737.5){\includegraphics[scale=1.00]{gfx/ava_tag_color_rgb.jpg}}
    	}
 
 	\addtolength{\voffset}{-5pt}
 
 	\flushleft
-
-%   \begin{center}
-
-
-%\hspace{3cm}
 {\fontencoding{OT1}\fontfamily{phv}\selectfont \@title}\\%[0.5cm]
-
-%\textsc{\LARGE \@university}\\[0.2cm]
 \textbf{\fontencoding{OT1}\fontfamily{phv}\selectfont \@faculty}
-
 \vfill
-
-% Upper part of the page
-%\includegraphics[scale=0.7]{\@crest}
-
-% Title
-%\HRule \\[0.4cm]
-
-%[0.4cm]
-
-%{\fontfamily{phv}\selectfont 
-%Helvetica looks like this}: 
-%{\fontencoding{OT1}\fontfamily{bch}\selectfont Charter looks like this}.
-%\renewcommand{\rmdefault}{phv} % Arial
-%\renewcommand{\sfdefault}{phv} % Arial
-
-
-
-
-
 \begin{minipage}[l][3in][l]{5.5in}
-%\renewcommand{\baselinestretch}{4}
-%\par\vspace{0pt} 
-
 \textbf{\Huge \@course}\\
 \vspace{10pt}
 
 \textit{\huge \@subtitle}
 \end{minipage}
-
-%\textbf{\Huge \@course}\\
-
-%\HRule \\[1.5cm]
-
 \vfill
-%Based upon the lectures given by:\\[0.4cm]
 \uppercase{\@author}
 
 \vfill
-% Bottom of the page
-%http://creativecommons.org/licenses/by-nc-sa/3.0/
 { 
-
-
-
-%\begin{flushleft}
 {\Large \@num}
 
 {\textbf{Assessment Committee:}\\
@@ -617,45 +571,24 @@
 
 \vspace{10pt}
 {\@date}
-
-
-%{CourseID: \@courseid}
-%
-%{Prints:  \@prints}
-%
-%{Price: \euro \@price}
-%\end{flushleft}
-
-%\includegraphics{./images/UT_Logo_Black_RGB_EN.pdf}\\
 }
-%\end{center}
-
    \cleardoublepage
 }
 \pagestyle{fancy}
 }
-
-
-%% Remove Existing header and footers and replace with below
 \fancyhf{}
 
 \renewcommand{\headrulewidth}{1pt}	%no line for top header
 \renewcommand{\footrulewidth}{1pt}	%no line for botom header
 
-\fancyhead[L,L]{\leftmark} 
-%\fancyhead[R,R]{\@date}
-%\fancyfoot[L,L]{\@courseid\ \@course} 
+\fancyhead[L,L]{\leftmark}
 \fancyfoot[RO,LE]{\thepage}
 
-%% For Chapter and Part start pages remove the header information
 \fancypagestyle{plain}{% 
 	\fancyhead{} %get rid of the headers on plain pages 
-	%\fancyfoot[L]{\@courseid\ \@course} 
-	%\fancyfoot[R]{\thepage}
 \fancyfoot[RO,LE]{\thepage}
 	\renewcommand{\headrulewidth}{0pt}
 }
-
 
 \floatstyle{ruled}
 \newfloat{example}{H}{loe}
