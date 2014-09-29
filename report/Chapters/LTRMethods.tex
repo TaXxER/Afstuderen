@@ -132,7 +132,7 @@ Let $S = {(q_k, \hat{X}^{(q_k), Y^{(q_k)}})}_{k=1}^n$ be a training set with que
 
 The second term of Equation \ref{eq:fsmrank_optimisation_function} contains a $\ell_1$-norm regularisation term to select the effective features from the feature set. $\lambda_2$ is a hyper-parameter of the model and can be used to set the weight of the regularisation term.\\
 
-The third and last term of the equation represents the loss function in terms of ranking errors. Loss function $f$ can in theory be any convex loss function, but Lai et al. \cite{Lai2013c} used a squared hinge loss function for their evaluation measurements. 
+The third and last term of the equation represents the loss function in terms of ranking errors. Loss function $f$ can in theory be any convex loss function, but Lai et al. \cite{Lai2013c} used a squared hinge loss function for their evaluation measurements.\\
 
 Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. As stated, FSMRank uses an  extended version of Nesterov's accelerated gradient method. This optimisation method can handle optimisation problems in the form of $\min_w \l(w) + r(w)$ where $l(w)$ is a convex function with Lipschitz gradient and $r(w)$ is convex, but non-smooth. The optimization function of Equation \ref{eq:fsmrank_optimisation_function} is reformulated to match this form as presented in Equation \ref{eq:fsmrank_optimisation_reformulated}.
 \begin{equation}
