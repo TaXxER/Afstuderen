@@ -58,6 +58,7 @@ It can be shown that the derivative of the smoothed \ac{NDCG} version shown in E
 The starting point in SmoothRank is set to either the solution of a simple linear regression, or alternatively to the solution of Rank\acs{SVM}. Since this starting point is expected to already be a good solution, a regulariser term is added to the SmoothRank objective function to prevent the solution from deviating to much from the starting point. The regularised smooth objective function is formulated as $\lambda||w-w_0||_2$ where $\lambda$ is a hyper-parameter tuned on the validation set, $w_0$ is the starting point solution, and $||x||_2$ is the $\ell2$-norm regularisation function defined as $||x||_2 = \sqrt{\sum\nolimits_ix_i^2}$.\\
 
 The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_NDCG} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function with optima that substantially differ from the true optimal rankings. To deal with the problem of choosing the smoothing parameter, SmoothRank uses an annealing method where the optimisation procedure starts with a large $\sigma$ and iteratively reduces it by dividing it by two at each iteration. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
+
 \LinesNumbered
 \begin{algorithm}[H]
  Find an initial solution $w_0$ (by regression or Rank\acs{SVM}).\\

@@ -83,6 +83,7 @@ MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
 STORE MIN_MAX_FIN INTO 'minmax[fold number]';
 \end{lstlisting}
 \end{minipage}\\
+
 All expressions between square brackets in the code snippet above are dynamically set by the framework. The minimum and maximum values per feature stored in MIN\_MAX\_FIN are read from storage by the framework after completion of the MapReduce job. The framework passes these minimum and maximum values to the second Pig job by passing an array of minimum and maximum values to the constructor of the udf.util.ScaleFeatures() \ac{UDF}, that performs the rescaling operation of Equation \ref{eq:rescaling}.\\
 
 \begin{table}
