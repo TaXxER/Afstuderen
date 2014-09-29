@@ -1,4 +1,7 @@
-\section{Computing models}
+\section{Distributed Computing Models}
 We explored the possibilities of Hadoop MapReduce for distributed computation of Learning to Rank training algorithms. Hadoop, since the introduction of Hadoop YARN in Hadoop 2.0, offers integration with other distributed computing models, including Dryad \cite{Isard2007}, Spark \cite{Zaharia2010}, Storm \cite{Aniello2013} and MPI. Of these distributed programming models, Spark is particularly promising, since Shukla et al. \cite{Shukla2012} already showed that it is able to speed-up the ListNet training procedure with much lower job scheduling overhead than that we found for MapReduce. For the newly supported programming models in Hadoop, it holds that they lack the critical mass as the distributed programming model of choice. This lack of a critical mass results in higher integration costs and less available support. The integration of new programming model into the Hadoop YARN framework is a step in the good direction to alleviate the integration cost of these programming models, but does not yet completely eliminate the problem. Cloud-based Hadoop services like Microsoft HDInsight and Amazon Elastic MapReduce.
 
-\section{Learning to Rank algorithms}
+\section{Learning to Rank Algorithms}
+As an answer to the first research question of this thesis, we found five Learning to Rank methods for it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. These algorithms were, from highest ranking accuracy / lowest certainty to lowest ranking accuracy / highest certainty: ListNet, SmoothRank, FenchelRank, FSMRank and LRUF. In this thesis we explored the speed-up characteristics of ListNet on Hadoop MapReduce. The speed-up characteristics of SmoothRank, FenchelRank, FSMRank and LRUF are using the MapReduce computing model are still to be explored.
+
+\section{Optimisation Algorithms}
