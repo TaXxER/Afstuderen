@@ -1,0 +1,3 @@
+Co-authors Sander Bockting and Djoerd Hiemstra are aware of the current submission and consent to its review by IP&M.
+
+Please note that the paper exceeds the 4000 word limit and therefore requires a justification for its length. Justification: the maniscript counts only 3800 words excluding bibliography and appendices. The paper involves an exhaustive literature review which results unavoidably in a large number of words in the bibliography and appendices. Due to the complete meta-analysis nature of this paper, it could not have been written within 4000 words, when the words in the bibliography are included in the count.
