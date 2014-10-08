@@ -12,8 +12,8 @@ class SmoothRank extends Ranker{
   //Parameters
   val initialSF                = Math.pow(2,  6).toFloat
   val stoppingSF               = Math.pow(2, -6).toFloat
-  val initIterations           = 100
-  val initEps                  = 0.00001.toFloat // step size
+  val initIterations           = 1
+  val initEps                  = 0.0000001.toFloat // step size
   val k                        = 10
   val lambda                   = 0.01 // We chose it on the validation set in the set {10E−6, 10E−5, . . . , 10E2, 10E3}
 
@@ -27,18 +27,31 @@ class SmoothRank extends Ranker{
 
     scaledSamples = scaleFeatures(samples, features.length)
 
-    w = (0 until features.length).map(i => (1.toFloat/features.length)).toArray // uniform weight vector
-    PRINTLN("")
-    for(i <- 1 to initIterations){
-      val dw = arrayByConst(initEps, scaledSamples.map(rl => (0 until rl.size-1).map(dpi => (1 to features.length).map(f => rl.get(dpi).getFeatureValue(f) * (rl.get(dpi).getLabel - eval(rl.get(dpi)).toFloat))).transpose.toArray.map(_.sum)).transpose.toArray.map(_.sum))
-      w = (w, dw).zipped.map(_+_)
-      PRINT("dw: ")
-      dw.foreach(x => PRINT(""+x+" "))
+      w = (0 until features.length).map(i => (1.toFloat/features.length)).toArray // uniform weight vector
+      PRINTLN("Start iterations")
       PRINTLN("")
-      PRINT("w:  ")
-      w.foreach(x => PRINT(""+x+" "))
-      PRINTLN("")
-      val cost = scaledSamples.map(rl => (0 until rl.size-1).map(dpi => Math.pow(eval(rl.get(dpi)) - rl.get(dpi).getLabel,2)).reduceLeft(_+_)).reduceLeft(_+_)
+      for(i <- 1 to initIterations){
+        val dw = arrayByConst(initEps, scaledSamples.map(rl => (0 until rl.size-1).map(dpi => (1 to features.length).map(f => rl.get(dpi).getFeatureValue(f) * (rl.get(dpi).getLabel - eval(rl.get(dpi)).toFloat))).transpose.toArray.map(_.sum)).transpose.toArray.map(_.sum))
+        w = (w, dw).zipped.map(_+_)
+        PRINT("dw: ")
+        dw.foreach(x => PRINT(""+x+" "))
+        PRINTLN("")
+        PRINT("w:  ")
+        w.foreach(x => PRINT(""+x+" "))
+        PRINTLN("")
+
+        val docWiseLoss = scaledSamples.map(
+          rl => (0 until rl.size-1)
+            .map(dpi => Math.pow(eval(rl.get(dpi)) - rl.get(dpi).getLabel,2))
+        )
+
+//      PRINT("docWiseLoss: ")
+//      docWiseLoss.foreach(x => PRINTLN(""+x+" "))
+//      PRINTLN("")
+
+      val cost = docWiseLoss.map(
+        q => if(q.isEmpty) 0 else q.reduceLeft(_+_)
+      ).reduceLeft(_+_)
       PRINTLN("Cost: "+cost)
       PRINTLN("")
     }
