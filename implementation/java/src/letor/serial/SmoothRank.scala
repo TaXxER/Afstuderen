@@ -27,32 +27,32 @@ class SmoothRank extends Ranker{
 
     scaledSamples = scaleFeatures(samples, features.length)
 
-      w = (0 until features.length).map(i => (1.toFloat/features.length)).toArray // uniform weight vector
-      PRINTLN("Start iterations")
+    w = (0 until features.length).map(i => (1.toFloat/features.length)).toArray // uniform weight vector
+    PRINTLN("Start iterations")
+    PRINTLN("")
+    for(i <- 1 to initIterations) {
+      val dw = arrayByConst(initEps, scaledSamples.map(rl => (0 until rl.size - 1).map(dpi => (1 to features.length).map(f => rl.get(dpi).getFeatureValue(f) * (rl.get(dpi).getLabel - eval(rl.get(dpi)).toFloat))).transpose.toArray.map(_.sum)).transpose.toArray.map(_.sum))
+      w = (w, dw).zipped.map(_ + _)
+      PRINT("dw: ")
+      dw.foreach(x => PRINT("" + x + " "))
       PRINTLN("")
-      for(i <- 1 to initIterations){
-        val dw = arrayByConst(initEps, scaledSamples.map(rl => (0 until rl.size-1).map(dpi => (1 to features.length).map(f => rl.get(dpi).getFeatureValue(f) * (rl.get(dpi).getLabel - eval(rl.get(dpi)).toFloat))).transpose.toArray.map(_.sum)).transpose.toArray.map(_.sum))
-        w = (w, dw).zipped.map(_+_)
-        PRINT("dw: ")
-        dw.foreach(x => PRINT(""+x+" "))
-        PRINTLN("")
-        PRINT("w:  ")
-        w.foreach(x => PRINT(""+x+" "))
-        PRINTLN("")
+      PRINT("w:  ")
+      w.foreach(x => PRINT("" + x + " "))
+      PRINTLN("")
 
-        val docWiseLoss = scaledSamples.map(
-          rl => (0 until rl.size-1)
-            .map(dpi => Math.pow(eval(rl.get(dpi)) - rl.get(dpi).getLabel,2))
-        )
+      val docWiseLoss = scaledSamples.map(
+        rl => (0 until rl.size - 1)
+          .map(dpi => Math.pow(eval(rl.get(dpi)) - rl.get(dpi).getLabel, 2))
+      )
 
-//      PRINT("docWiseLoss: ")
-//      docWiseLoss.foreach(x => PRINTLN(""+x+" "))
-//      PRINTLN("")
+      //    PRINT("docWiseLoss: ")
+      //    docWiseLoss.foreach(x => PRINTLN(""+x+" "))
+      //    PRINTLN("")
 
       val cost = docWiseLoss.map(
-        q => if(q.isEmpty) 0 else q.reduceLeft(_+_)
-      ).reduceLeft(_+_)
-      PRINTLN("Cost: "+cost)
+        q => if (q.isEmpty) 0 else q.reduceLeft(_ + _)
+      ).reduceLeft(_ + _)
+      PRINTLN("Cost: " + cost)
       PRINTLN("")
     }
     w0 = w
@@ -236,15 +236,12 @@ class SmoothRank extends Ranker{
     sum
   }
 
-  // TODO: Dit is wat raar, checken...
+  // Discount function
   def D(r:Int, rl:RankList):Float = {
     var D = (0).toFloat
     if (r <= k) {
       D = 1 / (Math.log(1 + r) / Math.log(2)).toFloat
-      D = D / G(rl
-        .getCorrectRanking
-        .get(r)
-        .getLabel)
+      D = D/Z(rl)
     }
     D
   }
@@ -299,6 +296,16 @@ class SmoothRank extends Ranker{
         i = i+1
       }
     i
+  }
+
+  /*
+   * Returns the DCG obtained with the best ranking
+   */
+  def Z(rl:RankList):Float = {
+    val correct = rl.getCorrectRanking
+    val maxIndex = Math.min(rl.size()-1,k-1)
+    val z = (0 until maxIndex).map(i => correct.get(i).getLabel).reduceLeft(_+_)
+    z
   }
 
   /*
