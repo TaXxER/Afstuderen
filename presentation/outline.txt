@@ -1,0 +1,28 @@
+- Learning to Rank
+- Wat is Learning to Rank?
+	- Voorbeeld Google
+	- Voorbeeld Avanade Touch Analytics
+- Wat is een goede ranking?
+	- Vele evaluation metrics, NDCG uitleggen als voorbeeld
+- Veel werk gedaan in het ontwikkelen van nieuwe (accuratere) ranking methoden, maar niet in schaalbaarheid (recent door zowel Yahoo! als Microsoft gekenmerkt als gebied waar nog veel onderzoek in moet gebeuren)
+- Research Question: Scalability
+- Maar welke ranking method?
+- Probleemstelling: wat is de beste Learning to Rank method?
+	- Vele benchmarksets: Yahoo!, Microsoft, Yandex, TodoCL
+	- Een zootje: vele learning methods voorgesteld, meestal maar op 1 of enkele set(s) getest
+- Methodologie
+	- Structured literature review
+	- Search queries
+	- Google Scholar / Scopus / Web of Science
+	- 1 level of forward and backward references
+- Meta-Analysis methodology
+	- Winning Number
+	- Ideal Winning Number & Normalized Winning Number 
+- Results & Discussion
+	- 5 dominerende methoden (pareto-optimaal?)
+- Explanation ListNet
+- Korte intro MapReduce
+- Results ListNet on cluster
+- Conclusions
+- Future work
+
