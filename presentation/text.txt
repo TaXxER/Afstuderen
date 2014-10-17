@@ -57,3 +57,51 @@ that by the sum of DCG values on the optimal ranking, we find that this ranking 
 scale, so it is actually quite good.
 
 [Slide 14]
+A lot of research has been done in the finding more accurate ranking methods. Recently, research teams at both Microsoft as 
+well as Yahoo! identified applying Learning to Rank data sets on very large data sets to be an underexposed research
+area that is quickly gaining relevance as training data is quickly getting larger and larger. Based on this observation
+by Microsoft and Yahoo! our ultimate research goal is to find a way of processing large amounts of data with Learning to
+Rank algorithms. There are many ways to approach this problem, one could focus on designing low time complexity learning
+algorithms, or on designing dedicated hardware for Learning to Rank. The approach that we take is to explore the speed-up
+that can be achieved when we execute a Learning to Rank algorithm in a distributed manner using MapReduce. We focus on MapReduce
+because it has over the years become the de facto method of distributed processing and therefore it is the distributed 
+programming approach than can most easily be applied in practice. For other distributed programming approaches, expertise
+and organisational support is often lacking for other methods of distributed computation. So this is actually our second research
+question. Our first research question sets the scope for our second research question. There are many Learning to Rank algorithms,
+so which algorithm should we implement in MapReduce?
+
+[Slide 15]
+So for our first research question. There are many benchmark datasets that can be used to evaluate how good a Learning
+to Rank method is in terms of ranking accuracy. This slide shows the different existing Learning to Rank benchmark collections.
+Some of these are benchmark collections consisting of multiple benchmark datasets, so the total number of benchmark datasets
+is actually a multiple of these 8 benchmark collections. The problem with this is that there is no standard way of evaluating an 
+algorithm. Many researchers have proposed new ranking methods and evaluated them on one or a couple of the benchmark
+datasets shown on this slide. But since some learning methods are evaluated on some benchmark sets and other learning methods
+are evaluated on other benchmark sets, it is hard to compare them. As an attempt to compare Learning to Rank algorithms
+across those different benchmark datasets, I tried to collect all evaluation results of Learning to Rank methods on one
+of the benchmark datasets that are published in literature. My literature search strategy was as follows. Some of these
+benchmark collections have an accompanying paper to cite when you use the benchmark set. To gather evaluation results on
+these benchmark collections we gathered all evaluation results published in papers that cited the benchmark papers.
+For the other benchmark datasets that do not have an accompanying paper, we performed a google scholar search on the name
+of the dataset name.
+
+[Slide 16]
+Close to a thousand papers in total. Luckily a large share of those papers did not report any evaluation results on one
+of the benchmark sets, so these were filtered out. We chose to scope te comparison on NDCG values on ranking lengths
+of 3, 5 and 10, since these are ranking lengths often used when NDCG performance is reported. In addition we included
+evaluation results on another ranking metric, called Mean Average Precision. We did a couple of additional filtering steps
+on the set of papers, to filter out papers that used altered forms of benchmark sets, did not provide any exact results but
+instead only graphical representations. Also, each benchmark set comes with a few baseline ranking methods for which
+the creators of the set ran the evaluation. We also check whether the reported baseline performance was the same as
+the official baseline run, as any deviations from the official performance might indicate a difference in evaluation 
+methodology.
+
+[Slide 17]
+This slide shows a table of the papers that survived our filtering steps. In total it includes evaluation results on
+87 Learning to Rank methods.
+
+[Slide 18]
+The LETOR 3.0 benchmark collection consists of seven data sets and in the official LETOR 3.0 paper, the researchers
+compared eight learning to rank methods on those seven data sets. To make this comparison across multiple data sets
+they proposed a comparison methodology called Winning Number, which for each ranking algorithm counts the number of 
+other ranking methods that it beats in terms of NDCG score, summed over all datasets.

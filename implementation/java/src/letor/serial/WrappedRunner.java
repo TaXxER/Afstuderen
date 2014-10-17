@@ -15,7 +15,7 @@ public class WrappedRunner {
         Integer                     folds               = 1;
         Integer                     iterations          = 5;
         AbstractParameterizedRanker handler             = new SmoothRankHandler();
-        DataSets.DataSet            dataset             = DataSets.DataSet.MQ2007;
+        DataSets.DataSet            dataset             = DataSets.DataSet.OHSUMED;
         Integer                     duplicationNumber   = 1; // Only relevant in case of dataset Custom
 
         FoldRunHandler ltrWrapper = null;
