@@ -1,0 +1,59 @@
+[Slide 1]
+Welcome everyone to the presentation of my master thesis research.
+I am here to present to you my research with the title "Scaling Learning to Rank to Big Data", with the subtitle "A study concerning the parallelisation of Learning to Rank algorithms using the MapReduce computing model".
+
+From this title you can deduct that it has two main topics: on the one hand it involves big data techniques, which, as its name suggests, are techniques to handle very large volumes of data.
+The second main topic of this research is called "Learning to Rank". Learning to Rank is a research field that has been getting a lot of attention lately, that involves the use of Machine Learning techniques to predict rankings.
+
+[Slide 2]
+This is a typical, supervised, Machine Learning experiment set-up. We have a set of data, that can be described in
+several attributes, or features, we have the labels of these data items. We apply a learning algorithm, we obtain
+a predictive model, which we can now use to label any new data items.
+
+[Slide 3]
+Often this label is of categorical nature. An example of this are fraud detection models that are used at banks.
+In this example financial transactions are our data items. Things like, sender, receiver, transaction amount might
+be our featres in the feature vector, and our labels are either fraudulent or non-fraudulent. Based on historical
+data for which it is known whether the transactions were fraudulent or not we can create our predictive model, 
+which we can use real-time to detect fraudulent transactions.
+
+[Slide 4]
+Machine Learning models can also be used to solve the regression task instead of the classification task, in this
+case we use our model to predict continuous scale values. Think for example about financial forecasts, where we 
+want to have an actual number as our prediction. Recently the machine learning community has started to focus 
+on a third type of Machine Learning task, called Learning to Rank, where the predictive model outputs rankings,
+instead of a categorical of real valued prediction.
+
+[Slide 5]
+A well-known example of a field where Learning to Rank is applicable is in the world of search engines, Yahoo!, in
+this example. What search engines do is they use attributes about the search query, attributes about the 
+documents, and often also attributes about you, the person searching for information, as input features, to 
+predict the most relevant ranking of documents. So Yahoo! here ranked documents to optimize relevance for the 
+search term Avanade. 1,2,3,4,5.
+
+[Slide 11]
+So, how do we decide what the most relevant ranking is? Might a different ranking where the second and the third 
+search result have been swapped be better perhaps? To decide which ranking is better, and also to be able to use
+predictive models to optimize our rankings, we need a metric that quantifies the quality of a ranking.
+
+[Slide 12]
+There are multiple metrics that does this. But the one most frequently used in literature is NDCG, Normalized
+Discounted Cumulative Gain. To be able to calculate NDCG we need a set of "ground truth" relevance labels that can
+be obtained through experiments with human assessors, or alternatively they can be infered from click-through logs.
+Cumulative Gain is based on the observation that, perhaps trivial, relevant documents tend to be more useful than
+less relevant documents. We can calculate it by summing all the relevance labels of an ordered ranking of length p.
+Discounted Normalized Gain adds to this the observation that relevant documents are more useful when the are higher
+up in the ranking. For each position in the ranking it calculated 2 to the power of the relevance, minus 1, divided
+by the 2log of i+1, and then sums over all positions in the ranking. Normalized Discounted Cumulative Gain calculates
+the DCG over the predicted ranking, and than divides that by the DCG that would have been obtained is it would have
+been calculated on the list of documents descendingly sorted on relevance.
+
+[Slide 13]
+An example. Here we have a ranking of length 10. The upper two rows represent the generated ranking that we want to 
+evaluate, with the upper row being the relevance label and the second row being the DCG values.
+The lower two rows are the best possible ranking of the same documents, again the upper row representing the relevance
+labels and the lower two rows representing their DCG values. When we sum the DCG values of the actual ranking and divide
+that by the sum of DCG values on the optimal ranking, we find that this ranking has a NDCG value of about 0.93 on a 0 to 1
+scale, so it is actually quite good.
+
+[Slide 14]
