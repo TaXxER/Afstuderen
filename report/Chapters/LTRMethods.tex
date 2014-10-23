@@ -35,7 +35,7 @@ where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the \ac{KL divergence} 
  	}
  }
  Output Neural Network model $\omega$.
- \caption{The ListNet learning algorithm, obtained from \cite{Cao2007}}
+ \caption{The ListNet learning algorithm, obtained from Cao et al. \cite{Cao2007}}
  \label{alg:listnet}
 \end{algorithm}
 
@@ -68,7 +68,7 @@ The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_NDCG} is
  	 $\lambda||w-w_0||_2 - \sum\nolimits_{q}A_q(w,\sigma)$\\
  	 $\sigma = \sigma/2$
  }
- \caption{The SmoothRank learning algorithm, obtained from \cite{Chapelle2010}}
+ \caption{The SmoothRank learning algorithm, obtained from Chapelle and Wu \cite{Chapelle2010}}
  \label{alg:smoothrank}
 \end{algorithm}
 
@@ -115,7 +115,7 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
  Update $w_{t+1}=(1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})j_{t})e^{j_{t}}$
  }
  return $w_{T}$ as ranking predictor for $w$
- \caption{The FenchelRank learning algorithm, obtained from \cite{Lai2013}}
+ \caption{The FenchelRank learning algorithm, obtained from Lai et al. \cite{Lai2013}}
  \label{alg:fenchelrank}
 \end{algorithm}
 
@@ -165,7 +165,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
  	$z_{t+1} = w_t + \frac{\alpha_t-1}{\alpha_t+1}(w_t-w_{t-1})$ 
  }
  
- \caption{The FSMRank learning algorithm, obtained from \cite{Lai2013c}}
+ \caption{The FSMRank learning algorithm, obtained from Lai et al. \cite{Lai2013c}}
  \label{alg:fsmrank}
 \end{algorithm}
 
@@ -231,6 +231,6 @@ Torkestani \cite{Torkestani2012b} does not provide pseudo code specifically for 
  	}
  }
  Output $\underline{R_i}$
- \caption{The LRUF algorithm, obtained from \cite{Torkestani2012b}}
+ \caption{The LRUF algorithm, obtained from Torkestani \cite{Torkestani2012b}}
  \label{alg:lruf}
 \end{algorithm}
