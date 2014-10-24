@@ -99,9 +99,9 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
 
 $ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_r$\\
 
-where the product sequence part of the formula represents the chance that the user will stop at position $r$. $R_i$ in this formula represents the probability of the user being satisfied in his information need at position $i$ in the ranking.\\
+where the product sequence part of the formula represents the chance that the user will stop at position $r$. $R_i$ in this formula represents the probability of the user being satisfied in his information need after assessing the document at position $i$ in the ranking.\\
 
-The algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
+The algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.\\
 
 \LinesNumbered
 \begin{algorithm}[H]
@@ -112,9 +112,15 @@ The algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorit
 	$p \leftarrow p * (1-R)$
  }
  Output $ERR$
- \caption{The algorithm for computation of the \acs{ERR} metric, obtained from \cite{Chapelle2009}}
+ \caption{The algorithm for computation of the \acs{ERR} metric, obtained from Chapelle et al. \cite{Chapelle2009}}
  \label{alg:err}
 \end{algorithm}
+\vspace{0.5cm}
+In this algorithm $\mathcal{R}$ is a mapping from relevance grades to the probability of the document satisfying the information need of the user. Chapelle et al. \cite{Chapelle2009} state that there are different ways to define this mapping, but they describe one possible mapping that is based on the Burges version \cite{Burges2005} of the gain function for \ac{DCG}:\\
+
+$\mathcal{R}(r) = \frac{2^{r}-1}{2^{max\_rel}}$\\
+
+\noindent where $max\_rel$ is the maximum relevance value present in the data set.
 
 \subsection{Mean Average Precision}
 \ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
