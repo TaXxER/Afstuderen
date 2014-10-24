@@ -62,7 +62,7 @@ $DCG_{B} = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
 $NDCG = \frac{DCG}{IDCG}$\\
 
-Often it is the case that queries in the data set differ in the number of documents that are associated with them. For queries with a large number of associated documents it might not always be needed to rank the complete set of associated documents, since the lower sections of this ranking might never be visited. \acl{NDCG} is often used with a fixed set size for the result set to mitigate this problem. \ac{NDCG} with a fixed set size is often called \ac{NDCG}@k, where $k$ represents the set size.\\
+Often it is the case that queries in the data set differ in the number of documents that are associated with them. For queries with a large number of associated documents it might not always be needed to rank the complete set of associated documents, since the lower sections of this ranking might never be examined. \acl{NDCG} is often used with a fixed set size for the result set to mitigate this problem. \ac{NDCG} with a fixed set size is often called \ac{NDCG}@k, where $k$ represents the set size.\\
 
 Table \ref{tab:example_calculation_NDCG} shows an example calculation for \ac{NDCG}@k with $k=10$ for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.\\
 
@@ -95,18 +95,19 @@ $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 
 \end{table}
 
 \subsection{Expected Reciprocal Rank}
-\ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{NDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
+\ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{NDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that a user examines search results from top to bottom and at each position has a certain probability of being satisfied in his information need, at which point he stops examining the remainder of the list. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
 
-$ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_i$\\
+$ERR = \sum\nolimits_{r=1}^n \frac{1}{r} \prod\nolimits_{i=1}^{r-1}(1-R_i)R_r$\\
 
-where the product sequence part of the formula represents the chance that the user will stop at position $r$.\\
+where the product sequence part of the formula represents the chance that the user will stop at position $r$. $R_i$ in this formula represents the probability of the user being satisfied in his information need at position $i$ in the ranking.\\
+
 The algorithm to compute \ac{ERR} is shown in Listing \ref{alg:err}. The algorithm requires relevance grades $g_i$, $1 \le i \le n$ and mapping function $R$ that maps relevance grades to probability of relevance.
 
 \LinesNumbered
 \begin{algorithm}[H]
  $p \leftarrow 1, ERR \leftarrow 0$\\
  \For{$r\leftarrow 1$ \KwTo $n$}{
-	$R \leftarrow R(g[r])$\\
+	$R \leftarrow \mathcal{R}(rel_r)$\\
 	$ERR \leftarrow ERR + p * \frac{R}{r}$\\
 	$p \leftarrow p * (1-R)$
  }
