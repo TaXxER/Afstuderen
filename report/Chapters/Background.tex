@@ -125,10 +125,9 @@ $\mathcal{R}(r) = \frac{2^{r}-1}{2^{max\_rel}}$\\
 \subsection{Mean Average Precision}
 \ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
 
-$AP = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*relevance(k)}{\text{number of relevant docs}}$\\
+$AP(q) = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*rel_k}{\text{number of relevant docs}}$\\
 
-With $k$ being the positions in the result set between 1 and $n$. Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant. The total number of available relevant documents in the document set \emph{R} is assumed to be seven.
-\ac{MAP} is the average \ac{AP} for a set of queries.\\
+where $n$ is the number of documents in query $q$. Since \ac{AP} is a binary relevance judgement metric, $rel_k$ is either 1 (relevant) or 0 (not relevant). Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant. The total number of available relevant documents in the document set \emph{R} is assumed to be seven. \ac{MAP} is the average \ac{AP} for a set of queries.\\
 
 $MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$\\
 
