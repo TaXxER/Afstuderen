@@ -23,21 +23,21 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 \end{description}
 
 
-Figure \ref{fig:ltr_framework} shows how the machine learning process as described in Figure \ref{fig:discriminative_training} typically takes place in a ranking scenario. A set of queries $q_i$ with $1 \le i \le n$, the documents associated with these queries which are represented by feature vector $x_i$, and the relevance judgements of those documents $y_i$ are used together to train a model $h$. Model $h$ can after training be used to predict a ranking of the documents $y_i$, such the difference between the document rankings predicted by $h$ and the actual optimal rankings based on $y_i$ is minimal in terms of a loss function.
+Figure \ref{fig:ltr_framework} shows how the machine learning process as described in Figure \ref{fig:discriminative_training} typically takes place in a ranking scenario. Let $q_i$ with $1 \le i \le n$ be a set of queries of size $n$. Let $x_j^i$ with $1 \le j \le m$ be the sets of documents of size $m$ that are associated with query $i$, in which each document is represented by a feature vector. The queries, the associated documents and the relevance judgements $y_i$ are jointly used to train a model $h$. Model $h$ can after training be used to predict a ranking of the documents for a given query, such the difference between the document rankings predicted by $h$ and the actual optimal rankings based on $y_i$ is minimal in terms of a certain loss function.
 \begin{figure}[!h]
-\includegraphics[scale=0.25]{gfx/ltr_framework}
+\centering
+\includegraphics[scale=0.3]{gfx/ltr_framework}
 \caption{A typical Learning to Rank setting, obtained from Liu \cite{Liu2007}}
 \label{fig:ltr_framework}
 \end{figure}\\
 
-The predictions and the loss function might either be defined for:
-\begin{enumerate}
-\item the relevance of a single document
-\item the classification of the most relevant document out of a document-pair
-\item the ranking of documents directly
-\end{enumerate}
+Learning to Rank algorithms can be divided into three groups: the pointwise approach, the pairwise approach and the listwise approach. The approaches are explained in more detail in section \ref{sec:ltr_approaches}. The main difference between the three approaches is in the way in which they define the input space and the output space. 
+\begin{description}
+\item[Pointwise] the relevance of each associated document
+\item[Pairwise] the classification of the most relevant document out for each pair of documents in the set of associated documents
+\item[Listwise] the relevance ranking of the associated documents
+\end{description}
 \smallskip
-These three approaches are in literature respectively labelled the pointwise approach, the pairwise approach and the listwise approach. These three approaches to Learning to Rank will be described in more detail in section \ref{sec:ltr_approaches}.
 
 \section{How to evaluate a ranking}
 \label{sec:how_to_evaluate_a_ranking}
@@ -45,24 +45,26 @@ Evaluation metrics have long been studied in the field of information retrieval.
 
 No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used in chapters \ref{chap:benchmark_results} and \ref{chap:cross_comparison} of this thesis to compare Learning to Rank methods in terms of ranking accuracy.
 \subsection{Normalized Discounted Cumulative Gain}
-Cumulative gain, or its successor discounted cumulative gain and normalized discounted cumulative gain, is one of the most widely used measures for effectiveness of ranking methods.
+Cumulative gain and its successors discounted cumulative gain and normalized discounted cumulative gain are arguably the most widely used measures for effectiveness of ranking methods.
 \subsubsection{Discounted Cumulative Gain}
-There are two definitions of \ac{DCG} used in practice. \ac{DCG} at position $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
+There are two definitions of \ac{DCG} used in practice. \ac{DCG} for a predicted ranking of length $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
 
-$DCG_p = \sum\nolimits_{i=1}^p \frac{rel_i-1}{log_2(i+1)}$\\
+$DCG_{JK} = \sum\nolimits_{i=1}^p \frac{rel_i-1}{log_2(i+1)}$\\
 
 with $rel_i$ the graded relevance of the result at position $i$. The idea is that highly relevant documents that appear lower in a search result should be penalized (discounted). This discounting is done by reducing the graded relevance  logarithmically proportional to the position of the result.\\
 
 Burges et al. \cite{Burges2005} proposed an alternative definition of \ac{DCG} that puts stronger emphasis on document relevance\\
 
-$DCG_p = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
+$DCG_{B} = \sum\nolimits_{i=1}^p \frac{2^{rel_i-1}}{log_2(i+1)}$\\
 
 \subsubsection{Normalized Discounted Cumulative Gain}
 \ac{NDCG} normalizes the \ac{DCG} metric to a value in the [0,1] interval by dividing by the \ac{DCG} value of the optimal rank. This optimal rank is obtained by sorting documents on relevance for a given query. The definition of \ac{NDCG} can be written down mathematically as\\
 
-$nDCG_p = \frac{DCG_p}{IDCG_p}$\\
+$NDCG = \frac{DCG}{IDCG}$\\
 
-Table \ref{tab:example_calculation_NDCG} shows an example calculation for \ac{NDCG} for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.\\
+Often it is the case that queries in the data set differ in the number of documents that are associated with them. For queries with a large number of associated documents it might not always be needed to rank the complete set of associated documents, since the lower sections of this ranking might never be visited. \acl{NDCG} is often used with a fixed set size for the result set to mitigate this problem. \ac{NDCG} with a fixed set size is often called \ac{NDCG}@k, where $k$ represents the set size.\\
+
+Table \ref{tab:example_calculation_NDCG} shows an example calculation for \ac{NDCG}@k with $k=10$ for both the J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} and Burges et al. \cite{Burges2005} version of \ac{DCG}.\\
 
 \begin{table}[!h]
 \begin{tabular}{llllllllllll}
@@ -71,7 +73,7 @@ Table \ref{tab:example_calculation_NDCG} shows an example calculation for \ac{ND
  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Sum \\ 
 \hline
 \hline
-rel(i) & 10 & 7 & 6 & 8 & 9 & 5 & 1 & 3 & 2 & 4 &  \\
+$rel_i$ & 10 & 7 & 6 & 8 & 9 & 5 & 1 & 3 & 2 & 4 &  \\
 \hline
 $\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 40.4 & 16 & 55.1 & 99.0 & 5.7 & 0.3 & 1.3 & 0.6 & 2.3 & 732.7 \\
 \hline
@@ -85,14 +87,12 @@ $\frac{2^{rel_i-1}}{log_2(i+1)}$ & 512 & 161.5 & 64 & 27.6 & 12.4 & 5.7 & 2.7 & 
 $\frac{rel_i}{log_2(i+1)}$ & 10 & 5.68 & 4 & 3.01 & 2.32 & 1.78 & 1.33 & 0.95 & 0.6 & 0.29 & 29.96 \\   
 \hline
  &  &  &  &  &  &  &  &  &  &  &  \\
- & \multicolumn{10}{c}{Burges \cite{Burges2005} et al. \ac{NDCG} = $\frac{732.7}{788.0} = 0.9298$} &  \\ 
-  & \multicolumn{10}{c}{J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} \ac{NDCG} = $\frac{29.17}{29.96} = 0.9736$} &  \\
+  & \multicolumn{10}{c}{$NDCG_{B}@10$ = $\frac{732.7}{788.0} = 0.9298$} &  \\ 
+  & \multicolumn{10}{c}{$NDCG_{JK}@10$ = $\frac{29.17}{29.96} = 0.9736$} &  \\
 \end{tabular}
-\caption{Example calculation of \acs{NDCG}}
+\caption{Example calculation of \acs{NDCG}@10}
 \label{tab:example_calculation_NDCG}
 \end{table}
-
-One limitation of \ac{NDCG} that it does not penalise for missing documents in the result set. \acl{NDCG} is often used with a fixed set size for the result set to mitigate the missing document problem. \ac{NDCG} with a fixed set size is often called \ac{NDCG}@k, where $k$ represents the set size.
 
 \subsection{Expected Reciprocal Rank}
 \ac{ERR} \cite{Chapelle2009} was designed based on the observation that \ac{NDCG} is based on the false assumption that the usefulness of a document at rank $i$ is independent of the usefulness of the documents at rank less than $i$. \ac{ERR} is based on the reasoning that users are likely to stop exploring the result list once they have found a document that satisfied their information need. The \ac{ERR} metric is defined as the expected reciprocal length of time that the user will take to find a relevant document. \ac{ERR} is formally defined as\\
