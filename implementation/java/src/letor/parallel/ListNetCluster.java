@@ -17,14 +17,14 @@ import java.util.Random;
 
 public class ListNetCluster {
     // Initialise hyper-parameters
-    private static final DataSets.DataSet DATASET = DataSets.DataSet.MQ2007;
+    private static final DataSets.DataSet DATASET = DataSets.DataSet.CUSTOM;
     private static final double   STEPSIZE   = 0.0001; // MSLR-WEB10K: 0.0001, ohsumed: 0.01
-    private static final int      ITERATIONS = 5;
+    private static final int      ITERATIONS = 2;
     private static final int      FOLDS      = 1;
     private static final int      k          = 10; // NDCG@k
 
     // Initialise paralellisation parameters
-    private static int  dataNodes                     = 4;
+    private static int  dataNodes                     = 64;
     private static int  availableMappers              = 4*dataNodes;
     private static int  availableReducers             = 2*dataNodes;
 
@@ -41,12 +41,12 @@ public class ListNetCluster {
 
     public static void main(String[] args) throws Exception {
         // Cluster configuration
-        String clusterName          = "ltr4";
-        String clusterUser          = "admin";
+        String clusterName          = "ltr64";
+        String clusterUser          = "ltradmin";
         String clusterPassword      = "Qw!23456789";
-        String storageAccount       = "ltrorlando";
-        String containerName        = "ltr1";
-        String storageAccountKey    = "/Qv1ci7kewXJG6OMCZ9L+z+4S0PaRfN0g6LjLgAQmqiqIWje3DiXJwL04L64hXvzFb0gajuIgzVzkWyjkzYobw==";
+        String storageAccount       = "ltrmini";
+        String containerName        = "ltrsmall";
+        String storageAccountKey    = "BhtOmUzMsrWBmSdyzEGgX5zPbeBQrJNdtOypfskEXLwvkZh5lcrcf2JO023oepUhee67vt9+XrMXoHYw7Yjflg==";
         HDInsightWrapper hdw        = new HDInsightWrapper(clusterName, containerName, clusterUser, clusterPassword, storageAccount, storageAccountKey, availableReducers);
 
         ArrayList<String> pigLines  = new ArrayList<String>();
@@ -127,12 +127,12 @@ public class ListNetCluster {
             pigLines.add("VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));");
             pigLines.add("DEFINE ScaleFeatures udf.util.ScaleFeatures('"+LtrUtils.toParamString(minmaxList)+"');");
-            //pigLines.add("TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));");
-            //pigLines.add("VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));");
-            //pigLines.add("TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));");
-            pigLines.add("STORE TRAIN_STD INTO 'train_sca"+f+"' USING BinStorage();");
-            pigLines.add("STORE VALIDATE_STD INTO 'validate_sca"+f+"' USING BinStorage();");
-            pigLines.add("STORE TEST_STD INTO 'test_sca"+f+"' USING BinStorage();");
+            pigLines.add("TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));");
+            pigLines.add("VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));");
+            pigLines.add("TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));");
+            pigLines.add("STORE TRAIN_SCA INTO 'train_sca"+f+"' USING BinStorage();");
+            pigLines.add("STORE VALIDATE_SCA INTO 'validate_sca"+f+"' USING BinStorage();");
+            pigLines.add("STORE TEST_SCA INTO 'test_sca"+f+"' USING BinStorage();");
             combinedPigLines = LtrUtils.concatenateStringList(pigLines);
             System.out.println("combinedPigLines: " + combinedPigLines);
             hdw.runPig(combinedPigLines);
