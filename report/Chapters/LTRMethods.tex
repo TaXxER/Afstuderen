@@ -3,34 +3,42 @@ The learning algorithms of the well-performing Learning to Rank methods selected
 
 \section{ListNet}
 \label{sec:ltrmethods_listnet}
-ListNet \cite{Cao2007} is a listwise ranking function whose loss function is not directly related to information retrieval evaluation metrics. ListNet's loss function is defined using a probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory which has been extensively researched. ListNet is based on the Plackett-Luce model \cite{Plackett1975,Luce1959}, which is a permutation probability distribution over permutations that is often used in the field of econometrics. The Plackett-Luce model defines a probability over permutations $\pi$ from the set of all possible permutations $\Omega$, given all document ranking scores $s$. The Plackett-Luce model defines the probability of a permutation $\pi$ given the list as scores $s$ as shown in Equation \ref{eq:plackett_luce}.
+ListNet \cite{Cao2007} is a listwise ranking function whose loss function is not directly related to an information retrieval evaluation metric. ListNet's loss function is defined using a probability distribution on permutations. Probability distributions on permutations have been a research topic within the field of probability theory which has been extensively researched. ListNet is based on the Plackett-Luce model \cite{Plackett1975,Luce1959}, which is a permutation probability distribution over permutations that is well-known in the field of econometrics. The Plackett-Luce model defines a probability over permutations $\pi$ from the set of all possible permutations $\Omega$, given all document ranking scores $s$. The Plackett-Luce model defines the probability of a permutation $\pi$ given the list as scores $s$ as shown in Equation \ref{eq:plackett_luce}.
 \begin{equation}
 P_s(\pi) = \prod\limits_{j=1}^{n}\frac{\phi(s_{\pi(j)})}{\sum\nolimits_{k=j}^{n}\phi(s_{\pi(k)})}
 \label{eq:plackett_luce}
 \end{equation}
-where $\pi$ is a permutation on the $n$ objects, $\phi$ is an monotonically increasing and strictly positive function.\\
+where $\pi$ is a permutation on the $n$ objects, $\phi$ is a monotonically increasing and strictly positive function, and $s_{\pi(j)}$ is the score of the object at position $j$ of permutation $\pi$.\\
 
-However, the total number of permutations of a list of $n$ documents is $n!$, therefore the calculations of the probabilities of all possible permutations quickly becomes intractable. To cope with this problem, the authors of ListNet propose the calculation of a \emph{top one probability} as alternative. The top one probability of an object $j$ equals the sum of the permutations probabilities of permutations in which object $j$ is ranked as the top object. It seems to be the case that the $n!$ permutation probabilities still need to be calculated for this, but we can calculate the top one probability efficiently using Equation \ref{eq:top_one}.
+However, the total number of permutations of a list of $n$ documents is $n!$, therefore, calculating the probabilities of all possible permutations quickly becomes intractable. To cope with this problem, the authors of ListNet propose the calculation of a \emph{top one probability} as an alternative to the actual permutation probabilities. The top one probability of an object $j$ equals the sum of the permutations probabilities of permutations in which object $j$ is ranked as the top object. At first sight it seems to be the case that the $n!$ permutation probabilities still need to be calculated for this, but we can calculate the top one probability efficiently using Equation \ref{eq:top_one}.
 \begin{equation}
 P_s(j) = \frac{\phi{s_j}}{\sum\nolimits_{k=1}^{n}\phi(s_k)}
 \label{eq:top_one}
 \end{equation}
 
-ListNet uses Gradient Descent to optimise a neural network such that its Cross Entropy loss compared to the top one over the training data relevance labels is minimal. For the monotonically increasing and strictly positive function $\phi$ is chosen to be the exponential function. Note that some sources, including Liu \cite{Liu2007}, describe ListNet as using \ac{KL divergence} as loss function. \ac{KL divergence} and Cross Entropy are however identical up to an additive constant when comparing distribution $q$ against a fixed reference distribution $p$. This follows from the definition of Cross Entropy Loss, which is shown in Equation \ref{eq:cross_entropy}.
+ListNet uses Gradient Descent to optimise a neural network such that its Cross Entropy loss compared to the top one over the training data relevance labels is minimal. For the monotonically increasing and strictly positive function $\phi$ is chosen to be the exponential function. With this choice for the exponential function, we can rewrite the abstract version top one probability definition of Equation \ref{eq:top_one} with the more specific Equation \ref{eq:top_one_2}.\\
+\begin{equation}
+P_s(j) = \frac{\phi{s_j}}{\sum\nolimits_{k=1}^{n}\phi(s_k)} = \frac{exp(s_j)}{\sum\nolimits_{k=1}^{n}exp(s_k)}
+\label{eq:top_one_2}
+\end{equation}
+
+Note that some sources, including Liu \cite{Liu2007}, describe ListNet as using \ac{KL divergence} as loss function. This difference in definition is not relevant however, as \ac{KL divergence} and Cross Entropy are identical up to an additive constant when comparing distribution $q$ against a fixed reference distribution $p$. The listwise Cross Entropy loss function $L(y^{(i)},z^{(i)})$ is defined in Equation \ref{eq:cross_entropy}.
 \begin{equation}
 L(y^{(i)},z^{(i)}) = \sum\limits_{j=1}^{n}P_{y^{(i)}}(j)\log(P_{z^{(i)}}(j))
 \label{eq:cross_entropy}
 \end{equation}
 where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the \ac{KL divergence} of $q$ from $p$.\\
 
-\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$. 
+\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$.
+
 \begin{multline}
 \Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum\limits_{j=1}^{n^{(i)}}P_{y^{(i)}}(x_{j}^{(i)})\frac{\partial f_{\omega}(x_{j}^{(i)})}{\partial\omega} \\ 
 + \frac{1}{\sum\nolimits_{j=1}^{n^{(i)}}exp(f_{\omega}(x_{j}^{(i)}))} \sum\limits_{j=1}^{n^{(i)}}exp(f_{\omega}(x_{j}^{(i)})) \frac{\partial f_{\omega(x_{j}^{(i)})}}{\partial\omega}
 \label{eq:gradient_descent}
 \end{multline}
+\\
+The ListNet training algorithm is similar to RankNet, with the difference that ListNet uses a listwise loss function where RankNet uses a pairwise loss function. Algorithm \ref{alg:listnet} shows the pseudo-code of the ListNet training algorithm.\\
 
-\noindent Algorithm \ref{alg:listnet} shows the pseudo-code of the ListNet training phase.\\
 \LinesNumbered
 \begin{algorithm}[H]
  \KwData{training data \{$(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})$\}}
