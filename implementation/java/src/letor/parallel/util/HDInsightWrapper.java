@@ -124,9 +124,10 @@ public class HDInsightWrapper {
             };
             Future<HttpResponse> future = executor.submit(task);
             try {
-                response = future.get(10, TimeUnit.SECONDS);
+                response = future.get(12, TimeUnit.SECONDS);
             }catch (TimeoutException e){
                 System.err.println("Time out, no response obtained from cluster");
+                Thread.sleep(1000);
                 continue;
             }
 
