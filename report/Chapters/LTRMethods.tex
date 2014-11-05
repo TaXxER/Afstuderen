@@ -117,18 +117,18 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
  \KwIn{desired accuracy $\epsilon$, maximum number of iterations $T$ and the radius $r$ of the $\ell1$ ball.}
  Initialize: $w_1$ = $0_m$\\
  \For{$t\leftarrow 1$ \KwTo $T$}{
- 	//check if the early stopping criterion is satisfied\\
+ 	\emph{//check if the early stopping criterion is satisfied}\\
  	\If{$||g_{t}||_{\infty} + \langle d_{t}, -Kw_{t} \rangle \le \epsilon$}{
- 	//here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$, \\
- 	// $\langle x,y \rangle$ represents the inner products of vectors $x$ and $y$, and\\
- 	// $g_{t} = d_{t}^{T}K$\\
+ 	\emph{//here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$,} \\
+ 	\emph{// $\langle x,y \rangle$ represents the inner products of vectors $x$ and $y$, and}\\
+ 	\emph{// $g_{t} = d_{t}^{T}K$}\\
  	return $w_{t}$ as ranking predictor $w$
  	}
- //greedily choose a feature to update\\
+ \emph{//greedily choose a feature to update}\\
  Choose $j_{t} = \argmax_{j}|(g_t)_j)|$\\
- //compute an appropriate step size\\
+ \emph{//compute an appropriate step size}\\
  Let $\mu_t = \argmax_{0 \le \mu_{t} \le 1} D((1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})_{j_{t}})e^{j_{t}})$\\
- //update the model with the chosen feature and step size\\
+ \emph{//update the model with the chosen feature and step size}\\
  Update $w_{t+1}=(1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})j_{t})e^{j_{t}}$
  }
  return $w_{T}$ as ranking predictor for $w$
@@ -167,7 +167,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
  \For{$t\leftarrow 1$ \KwTo $T$}{
  	Let $g = l^{'}(z_t)$\\
  	\While{true}{
- 		//projection step\\
+ 		\emph{//projection step}\\
  		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$\\
  		\If{$l(w_t) \le l(z_t) + \langle l^{'}(z_t),w_t-z_t \rangle +\frac{L}{2}||w_t-z_t||^2$}{
  			break\\
@@ -175,7 +175,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
  		$L = \lambda L$ 		
  	}
  	\If{$\frac{|F(w_t)-F(w_{t-1})|}{|F(w_{t-1})|} \le \epsilon_s$}{
- 		//early stopping criterion\\
+ 		\emph{//early stopping criterion}\\
  		break
  	}
  	$\alpha_{t+1}=\frac{1+\sqrt{1+4\alpha_t^2}}{2}$\\
