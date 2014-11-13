@@ -3,17 +3,18 @@ This chapter provides an introduction to Learning to Rank and MapReduce. Knowled
 Different definitions of Learning to Rank exist. In general, all ranking methods that use machine learning technologies to solve the problem of ranking are called Learning to Rank methods. Figure \ref{fig:discriminative_training} describes the general process of machine learning. Input space $X$ consists of input objects $x$. A hypothesis $h$ defines a mapping of input objects from $X$ into the output space $Y$, resulting in prediction $\hat{y}$. The loss of an hypothesis is the difference between the predictions made by the hypothesis and the correct values mapped from the input space into the output space, called the \emph{ground truth labels}. The task of machine learning is to find the best fitting hypothesis $h$ from the set of all possible hypotheses $H$, called the hypothesis space.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.26]{gfx/descriminative_training}
+\centering
+\includegraphics[scale=0.36]{gfx/descriminative_training}
 \caption{Machine learning framework for Learning to Rank, obtained from Liu \cite{Liu2007}}
 \label{fig:discriminative_training}
 \end{figure}
 
-Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning to Rank method when it is \emph{feature based} and uses \emph{discriminative training}, in which the concepts \emph{feature based} and \emph{discriminative training} are itself defined as:
+Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking methods to be a Learning to Rank method when it is \emph{feature based} and uses \emph{discriminative training}, in which the concepts \emph{feature-based} and \emph{discriminative training} are themselves defined as:
 \begin{description}
-\item[Feature Based]{means that all documents under investigation are represented by feature vectors. Those feature vectors can be used to predict the relevance of the documents to the query, or the importance of the document in itself.}
+\item[Feature-Based]{means that all objects under investigation are represented by feature vectors. In a Learning to Rank for Information Retrieval case, this means that the feature vectors can be used to predict the relevance of the documents to the query, or the importance of the document itself.}
 \item[Discriminative Training]{means that the learning process can be well described by the four components of discriminative learning. That is, a Learning to Rank method has its own \emph{input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function}, like the machine learning process described by Figure \ref{fig:discriminative_training}. \emph{Input space}, \emph{output space}, \emph{hypothesis space}, and \emph{loss function} are hereby defined as follows:
 	\begin{description}
-	\item[Input Space]{contains the objects under investigation. Usually objects are represented by feature vectors, extracted according to different applications.}
+	\item[Input Space]{contains the objects under investigation. Usually objects are represented by feature vectors, extracted from the objects themselves.}
 	\item[Output Space]{contains the learning target with respect to the input objects.}
 	\item[Hypothesis Space]{defines the class of functions mapping the input space to the output space. The functions operate on the feature vectors of the input object, and make predictions according to the format of the output space.}
 	\item[Loss Function]{in order to learn the optimal hypothesis, a training set is usually used, which contains a number of objects and their ground truth labels, sampled from the product of the input and output spaces. A loss function calculates the difference between the predictions $\hat{y}$ and the ground truth labels on a given set of data.}
@@ -25,7 +26,7 @@ Liu \cite{Liu2007} proposes a more narrow definition and only considers ranking 
 Figure \ref{fig:ltr_framework} shows how the machine learning process as described in Figure \ref{fig:discriminative_training} typically takes place in a ranking scenario. Let $q_i$ with $1 \le i \le n$ be a set of queries of size $n$. Let $x_j^i$ with $1 \le j \le m$ be the sets of documents of size $m$ that are associated with query $i$, in which each document is represented by a feature vector. The queries, the associated documents and the relevance judgements $y_i$ are jointly used to train a model $h$. Model $h$ can after training be used to predict a ranking of the documents for a given query, such the difference between the document rankings predicted by $h$ and the actual optimal rankings based on $y_i$ is minimal in terms of a certain loss function.
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.3]{gfx/ltr_framework}
+\includegraphics[scale=0.36]{gfx/ltr_framework}
 \caption{A typical Learning to Rank setting, obtained from Liu \cite{Liu2007}}
 \label{fig:ltr_framework}
 \end{figure}\\
@@ -44,7 +45,10 @@ Evaluation metrics have long been studied in the field of information retrieval.
 
 No single evaluation metric that we are going to describe is indisputably better or worse than any of the other metrics. Different benchmarking settings have used different evaluation metrics. Metrics introduced in this section will be used in chapters \ref{chap:benchmark_results} and \ref{chap:cross_comparison} of this thesis to compare Learning to Rank methods in terms of ranking accuracy.
 \subsection{Normalized Discounted Cumulative Gain}
-Cumulative gain and its successors discounted cumulative gain and normalized discounted cumulative gain are arguably the most widely used measures for effectiveness of ranking methods.
+Cumulative gain and its successors discounted cumulative gain and normalized discounted cumulative gain are arguably the most widely used measures for effectiveness of ranking methods. Cumulative Gain, without discounting factor and normalisation step, is defined as\\
+
+$CG_{k} = \sum\nolimits_{i=1}^k rel_i$
+
 \subsubsection{Discounted Cumulative Gain}
 There are two definitions of \ac{DCG} used in practice. \ac{DCG} for a predicted ranking of length $p$ was originally defined by J{\"a}rvelin and Kek{\"a}l{\"a}inen \cite{Jarvelin2002} as\\
 
