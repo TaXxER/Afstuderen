@@ -126,13 +126,15 @@ $\mathcal{R}(r) = \frac{2^{r}-1}{2^{max\_rel}}$\\
 \noindent where $max\_rel$ is the maximum relevance value present in the data set.
 
 \subsection{Mean Average Precision}
-\ac{AP} \cite{Zhu2004} is an often used binary relevance judgement based metric that can be seen as a trade-off between precision and recall that is defined as\\
+\ac{AP} \cite{Zhu2004} is an often used binary relevance-judgement-based metric that can be seen as a trade-off between precision and recall that is defined as\\
 
 $AP(q) = \frac{\sum\nolimits_{k=1}^{n}Precision(k)*rel_k}{\text{number of relevant docs}}$\\
 
 where $n$ is the number of documents in query $q$. Since \ac{AP} is a binary relevance judgement metric, $rel_k$ is either 1 (relevant) or 0 (not relevant). Table \ref{tab:example_calculation_AP} provides an example calculation of average precision where de documents at positions 1, 5, 6 and 8 in the ranking are relevant. The total number of available relevant documents in the document set \emph{R} is assumed to be seven. \ac{MAP} is the average \ac{AP} for a set of queries.\\
 
 $MAP = \frac{\sum\nolimits_{q=1}^{Q}AP(q)}{Q}$\\
+
+In this formula $Q$ is the number queries.
 
 \begin{table}
 \begin{tabular}{lllllllllllll}
@@ -161,7 +163,7 @@ The pointwise approach can be seen as the most straightforward way of using mach
 	\end{enumerate}
 Well-known algorithms that belong to the pointwise approach include McRank \cite{Li2007} and PRank \cite{Crammer2001}.
 \subsection{Pairwise Approach}
-Pointwise Learning to Rank methods have the drawback that they optimise real valued expected relevance, while evaluation metrics like \ac{NDCG} and \ac{ERR} are only impacted by a change in expected relevance when that change impacts a pairwise preference. The pairwise approach solves this drawback of the pointwise approach by regarding ranking as pairwise classification.\\
+Pointwise Learning to Rank methods have the drawback that they optimise real-valued expected relevance, while evaluation metrics like \ac{NDCG} and \ac{ERR} are only impacted by a change in expected relevance when that change impacts a pairwise preference. The pairwise approach solves this drawback of the pointwise approach by regarding ranking as pairwise classification.\\
 
 Aggregating a set of predicted pairwise preferences into the corresponding optimal rank is shown to be a NP-Hard problem \cite{Feldman2012}. An often used solution to this problem is to upper bound the number of classification mistakes by an easy to optimise function \cite{Bartlett2006}.\\
 
