@@ -164,7 +164,7 @@ Figure \ref{fig:normalised_winning_number_NDCG3} shows the performance of Learni
 
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.35]{gfx/ndcg3_winnum}
+\includegraphics[scale=0.32]{gfx/ndcg3_winnum}
 \caption{\acs{NDCG}@3 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG3}
 \end{figure}
@@ -177,6 +177,7 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 Figure \ref{fig:normalised_winning_number_NDCG5} shows the performance of Learning to Rank methods for the \ac{NDCG}@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg35} in Appendix \ref{app:norm_winnum_ndcg35} provides the raw Normalised Winning Number data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
+\centering
 \includegraphics[scale=0.35]{gfx/ndcg5_winnum}
 \caption{\acs{NDCG}@5 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG5}
@@ -188,7 +189,8 @@ LambdaNeuralRank again beat all other methods solely with results on the AOL dat
 Figure \ref{fig:normalised_winning_number_NDCG10} shows the performance of Learning to Rank methods for the \ac{NDCG}@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10map} in Appendix \ref{app:norm_winnum_ndcg10map} provides the raw Normalised Winning Number data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.35]{gfx/ndcg10_winnum}
+\centering
+\includegraphics[scale=0.30]{gfx/ndcg10_winnum}
 \caption{\acs{NDCG}@10 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG10}
 \end{figure}
@@ -199,7 +201,8 @@ LambdaMART and LambdaNeuralRank score a \ac{NWN} of 1.0 on the \ac{NDCG}@10 comp
 Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning to Rank methods for the \ac{MAP} metric. Table \ref{tab:raw_data_norm_winnum_ndcg10map} in Appendix \ref{app:norm_winnum_ndcg10map} provides the raw \ac{NWN} data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.35]{gfx/map_winnum}
+\centering
+\includegraphics[scale=0.30]{gfx/map_winnum}
 \caption{\acs{MAP} comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_map}
 \end{figure}
@@ -212,14 +215,15 @@ LARF and LRUF score very high \ac{NWN} scores, but based on only relatively few 
 Figure \ref{fig:normalised_winning_number_all} shows the \ac{NWN} as function of \ac{IWN} for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.405]{gfx/combined_normalized_winnum}
+\centering
+\includegraphics[scale=0.38]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_all}
 \end{figure}
 
 The cross-metric comparison is based on the \ac{NDCG}@3, \ac{NDCG}@5, \ac{NDCG}@10 and \ac{MAP} comparisons combined, which justifies analysing the comparison more thoroughly. Figure \ref{fig:normalised_winning_number_all} labels the algorithms with no other algorithm having a higher value on both the horizontal axis and vertical axis, but also labels the algorithms with exactly one algorithm having a higher value on both axes with smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labelled as baselines.\\
 
-LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both \ac{IWN} and \ac{NWN}. LRUF is the only method that achieved this in all \ac{NDCG} comparisons, the \ac{MAP} comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being among the top performing methods in all \ac{NDCG} comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the \ac{NDCG} performance as opposed to the \ac{MAP} performance. This was to be expected, because the cross-metric comparison input data of three \ac{NDCG} entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the \ac{MAP} comparison.\\
+LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both \ac{IWN} and \ac{NWN}. In other words, we can conclude these methods to be pareto-optimal in the trade-off between certainty and ranking accuracy. LRUF is the only method that achieved this in all \ac{NDCG} comparisons, the \ac{MAP} comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being among the top performing methods in all \ac{NDCG} comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the \ac{NDCG} performance as opposed to the \ac{MAP} performance. This was to be expected, because the cross-metric comparison input data of three \ac{NDCG} entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the \ac{MAP} comparison.\\
 
 LARF, \acs{IP}Rank and DCMP and several variants of Rank\ac{SVM} performed very well on the cross-metric comparison, with all having only one method in its top right quadrant. LARF also performed among the top methods on the \ac{NDCG} and \ac{MAP} comparisons and DCMP was a top performer in a few of the \ac{NDCG} comparisons.\\
 
@@ -228,9 +232,9 @@ C-CRF, DirectRank, FP-Rank, RankCSA, LambdaNeuralRank and VFLR all have near-per
 LAC-MR-OR and RE-QR showed very good ranking accuracy in the \ac{MAP} comparison on multiple data sets. Because LAC-MR-OR is only evaluated on two data sets for \ac{NDCG}@10 and RE-QR is not evaluated for \ac{NDCG} at all, LAC-MR-OR and RE-QR are not within the top performing methods in the cross-metric comparison. 
 
 \section{Limitations}
-In the \ac{NWN} calculation the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the Learning to Rank methods are (approximately) distributed uniformly over the benchmarks, such that the average Learning to Rank method tested are approximately equally hard for each data set. It could be the case however that this assumption is false and that significantly more accurate Learning to Rank methods are evaluated on some data sets than on other data sets. \\
+In the \ac{NWN} calculation, the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the Learning to Rank methods are (approximately) distributed uniformly over the benchmarks, such that the average Learning to Rank method tested are approximately equally hard for each data set. This assumption goes wrong in the case that, for a given data set $s$, the evaluation results are on average obtained from significantly better Learning to Rank methods compared to another data sets. As a result, the $IWN$ of Learning to Rank methods evaluated on $s$ will be undervalued.\\
 
-A second limitation is that the data sets on which Learning to Rank methods have been evaluated can not always be regarded a random choice. It might be the case that some researchers chose to publish results for exactly those benchmark data sets that showed the most positive results for their Learning to Rank method.\\
+A second limitation is that the data sets on which Learning to Rank methods have been evaluated cannot always be regarded a random choice. It might be the case that some researchers specifically targeted benchmark data sets that showed the most positive results for the Learning to Rank method. A result of this publication bias in the evaluation results will be that the Learning to Rank method obtains an artificially high \ac{NWN}. High \ac{IWN} scores are achieved by having evaluation results on multiple data sets, which decreases the possibilities for a publication bias.\\
 
 Another limitation is that our comparison methodology relies on the correctness of the evaluation results found in the literature search step. This brings up a risk of overly optimistic evaluation results affecting our \ac{NWN} results. Limiting the meta-analysis to those studies that report comparable results on one of the baseline methods of a benchmark set reduces this limitation but does not solve it completely. By taking \ac{IWN} into account in Figure \ref{fig:normalised_winning_number_all} we further mitigate this limitation, as \ac{IWN} is loosely related with the number of studies that reported evaluation results for an algorithm.\\
 
@@ -245,10 +249,8 @@ Based on this this new comparison approach for a set of sparse evaluation result
 \end{description}
 Although no closing arguments can be formulated on which Learning to Rank methods are most accurate, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others.\\
 
-Based on our literature search for evaluation results on well-known benchmarks collections, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others. However, no closing arguments can be formulated on which learning to rank methods are most accurate. LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the learning to rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases.\\
+Based on our literature search, LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were found to be the learning to rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy (e.g. pareto-optimal in the trade-off between certainty and ranking accuracy). From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases.\\
 
-LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the Learning to Rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases. For more definite conclusions on the relative performance of these five methods, more evaluation runs on are desirable for the methods on the left side on the list on benchmark data sets that these methods have not yet been evaluated on.\\
+For more definite conclusions on the relative performance of these five methods, more evaluation runs on are desirable for the methods on the left side on the list on benchmark data sets that these methods have not yet been evaluated on. More evaluation runs are especially needed for the methods on the left side of Figure \ref{fig:normalised_winning_number_all}. Our work contributes to this by identifying promising learning to rank methods that researchers could focus on in performing additional evaluation runs.\\
 
-More evaluation runs are needed for the methods on the left side of Figure \ref{fig:normalised_winning_number_all}. Our work contributes to this by identifying promising learning to rank methods that researchers could focus on in performing additional evaluation runs.\\
-
-In the following chapters of this thesis, concerning parallel execution of the Learning to Rank training phase, the scope will be limited to the five methods that turned out to be superior Learning to Rank methods in terms of ranking accuracy and certainty about this ranking accuracy: LRUF, FSMRank, FenchelRank, SmoothRank and ListNet. Although it can not be concluded that these methods are inarguably the most accurate Learning to Rank methods, a strong presumption has been raised that these five Learning to Rank are accurate ranking methods.\\
+In the following chapters of this thesis, concerning parallel execution of the Learning to Rank training phase, the scope will be limited to the five methods that turned out to be superior Learning to Rank methods in terms of ranking accuracy and certainty about this ranking accuracy: LRUF, FSMRank, FenchelRank, SmoothRank and ListNet. Although it cannot be concluded that these methods are inarguably the most accurate Learning to Rank methods, a strong presumption has been raised that these five Learning to Rank are accurate ranking methods.\\
