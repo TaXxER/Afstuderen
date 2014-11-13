@@ -18,7 +18,7 @@ P_s(j) = \frac{\phi{s_j}}{\sum\nolimits_{k=1}^{n}\phi(s_k)}
 
 ListNet uses Gradient Descent to optimise a neural network such that its Cross Entropy loss compared to the top one over the training data relevance labels is minimal. For the monotonically increasing and strictly positive function $\phi$ is chosen to be the exponential function. With this choice for the exponential function, we can rewrite the abstract version top one probability definition of Equation \ref{eq:top_one} with the more specific Equation \ref{eq:top_one_2}.\\
 \begin{equation}
-P_s(j) = \frac{\phi{s_j}}{\sum\nolimits_{k=1}^{n}\phi(s_k)} = \frac{exp(s_j)}{\sum\nolimits_{k=1}^{n}exp(s_k)}
+P_s(j) = \frac{\phi(s_j)}{\sum\nolimits_{k=1}^{n}\phi(s_k)} = \frac{exp(s_j)}{\sum\nolimits_{k=1}^{n}exp(s_k)}
 \label{eq:top_one_2}
 \end{equation}
 
