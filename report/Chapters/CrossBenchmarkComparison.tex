@@ -69,7 +69,7 @@ $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
-From now on this adjusted version of Winning Number will be references to as \ac{NWN}. The mathematical definition of \ac{NWN} is\\
+From now on this adjusted version of Winning Number will be referred to as \ac{NWN}. The mathematical definition of \ac{NWN} is\\
 
 $\text{Normalised Winning Number}_i(M) = \frac{\text{Winning Number}_i(M)}{\text{Ideal Winning Number}_i(M)}$\\
 
@@ -163,7 +163,8 @@ The following subsections provide the performance of Learning to Rank methods in
 Figure \ref{fig:normalised_winning_number_NDCG3} shows the performance of Learning to Rank methods for the \ac{NDCG}@3 metric. Table \ref{tab:raw_data_norm_winnum_ndcg35} in Appendix \ref{app:norm_winnum_ndcg35} provides the raw \ac{NWN} data for the Learning to Rank methods for which \ac{NDCG}@3 evaluation results were available.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.285]{gfx/ndcg3_winnum}
+\centering
+\includegraphics[scale=0.35]{gfx/ndcg3_winnum}
 \caption{\acs{NDCG}@3 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG3}
 \end{figure}
@@ -176,7 +177,7 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 Figure \ref{fig:normalised_winning_number_NDCG5} shows the performance of Learning to Rank methods for the \ac{NDCG}@5 metric. Table \ref{tab:raw_data_norm_winnum_ndcg35} in Appendix \ref{app:norm_winnum_ndcg35} provides the raw Normalised Winning Number data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.285]{gfx/ndcg5_winnum}
+\includegraphics[scale=0.35]{gfx/ndcg5_winnum}
 \caption{\acs{NDCG}@5 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG5}
 \end{figure}
@@ -187,7 +188,7 @@ LambdaNeuralRank again beat all other methods solely with results on the AOL dat
 Figure \ref{fig:normalised_winning_number_NDCG10} shows the performance of Learning to Rank methods for the \ac{NDCG}@10 metric. Table \ref{tab:raw_data_norm_winnum_ndcg10map} in Appendix \ref{app:norm_winnum_ndcg10map} provides the raw Normalised Winning Number data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.285]{gfx/ndcg10_winnum}
+\includegraphics[scale=0.35]{gfx/ndcg10_winnum}
 \caption{\acs{NDCG}@10 comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_NDCG10}
 \end{figure}
@@ -198,7 +199,7 @@ LambdaMART and LambdaNeuralRank score a \ac{NWN} of 1.0 on the \ac{NDCG}@10 comp
 Figure \ref{fig:normalised_winning_number_map} shows the performance of Learning to Rank methods for the \ac{MAP} metric. Table \ref{tab:raw_data_norm_winnum_ndcg10map} in Appendix \ref{app:norm_winnum_ndcg10map} provides the raw \ac{NWN} data for the Learning to Rank methods.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.285]{gfx/map_winnum}
+\includegraphics[scale=0.35]{gfx/map_winnum}
 \caption{\acs{MAP} comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_map}
 \end{figure}
@@ -211,7 +212,7 @@ LARF and LRUF score very high \ac{NWN} scores, but based on only relatively few 
 Figure \ref{fig:normalised_winning_number_all} shows the \ac{NWN} as function of \ac{IWN} for the methods described in Table \ref{tab:ltr_methods_used}. Table \ref{tab:raw_data_norm_winnum_all} in Appendix \ref{app:norm_winnum_all} provide the raw data plotted in Figure \ref{fig:normalised_winning_number_all}.\\
 
 \begin{figure}[!h]
-\includegraphics[scale=0.33]{gfx/combined_normalized_winnum}
+\includegraphics[scale=0.405]{gfx/combined_normalized_winnum}
 \caption{Cross-benchmark comparison of Learning to Rank methods}
 \label{fig:normalised_winning_number_all}
 \end{figure}
