@@ -71,7 +71,7 @@ To answer our first research question we will identify the Learning to Rank benc
 \label{ssec:rq2_methodology}
 To find an answer to the second research question, the Learning to Rank methods determined in the first research question will be implemented in the MapReduce framework and training time will be measured as a factor of the number of cluster nodes used to perform the computation. The HDInsight cloud-based MapReduce platform from Microsoft will be used to run the Learning to Rank algorithms on. HDInsight is based on the popular open source MapReduce implementation Hadoop\footnote{http://hadoop.apache.org/}.\\
 
-To research the speed-up's dependence on the amount of data that is being processed, the training computations will be performed on data sets of varying sizes. We use the well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K as a starting set of data sets for our experiments. Table \ref{tbl:initial_datasets} shows the data sizes of these data sets. The data sizes reported are not the total on-disk sizes of the data sets, but instead the size of the largest training set of all data folds (for an explanation of the concept of data folds, see \ref{sec:cross_validation}).
+To research the speed-up's dependence on the amount of processed data, the training computations will be performed on data sets of varying sizes. We use the well-known benchmark collections LETOR 3.0, LETOR 4.0 and MSLR-WEB30/40K as a starting set of data sets for our experiments. Table \ref{tbl:initial_datasets} shows the data sizes of these data sets. The data sizes reported are not the total on-disk sizes of the data sets, but instead the size of the largest training set of all data folds (for an explanation of the concept of data folds, see \ref{sec:cross_validation}).
 
 \begin{table}[!h]
 \centering
@@ -93,10 +93,10 @@ MSLR-WEB30K is the largest in data size of the benchmark data sets used in pract
 
 \section{Thesis Overview}
 \begin{description}
-\item[Chapter 2: Background]{introduces the reader to the basic principles and recent work in the fields of Learning to Rank and the MapReduce computing model. Aims at bringing those unfamiliar with those topics up to speed to be able to understand the succeeding chapters of this thesis.}
+\item[Chapter 2: Background]{introduces the basic principles and recent work in the fields of Learning to Rank and the MapReduce computing model.}
 \item[Chapter 3: Related Work]{concisely describes existing work in the field of parallel and distributed Learning to Rank.}
-\item[Chapter 4: Benchmark Data Sets]{described the characteristics of the existing benchmark data sets in the Learning to Rank field.}
-\item[Chapter 5: Cross Benchmark Comparison]{described the methodology of a comparison of ranking accuracy of Learning to Rank methods across benchmark data sets and described the results of this comparison.}
+\item[Chapter 4: Benchmark Data Sets]{describes the characteristics of the existing benchmark data sets in the Learning to Rank field.}
+\item[Chapter 5: Cross-Benchmark Comparison]{describes the methodology of a comparison of ranking accuracy of Learning to Rank methods across benchmark data sets and describes the results of this comparison.}
 \item[Chapter 6: Selected Learning to Rank Methods]{describes the algorithms and details of the Learning to Rank methods selected in Chapter V.}
 \item[Chapter 7: Implementation]{describes implementation details of the Learning to Rank algorithms in the Hadoop framework.}
 \item[Chapter 8: MapReduce Experiments]{presents and discusses speed-up results for the implemented Learning to Rank methods.}
