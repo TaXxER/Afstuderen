@@ -67,13 +67,12 @@ implementation/java/input/*
 # IntelliJ IDEA temp files
 implementation/java/.idea
 implementation/java/out
+implementation/RankLib-2.1/.idea
+implementation/RankLib-2.1/out/*
 *.iml
 *.iws
 
 # IntelliJ project temp files
 implementation/java/src/META-INF/*
-
-# RankLib 2.1 code
-implementation/RankLib-2.1/*
 
 *.zip
