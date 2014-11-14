@@ -70,12 +70,12 @@ public class DataSets {
     }
 
     public static Metadata OHSUMED     = new Metadata("ohsumed",     45,  5151958L,     1764005L,   1764005L);
-    public static Metadata TD2003      = new Metadata("TD2003",      0,   0L,           0L,         0L);
-    public static Metadata TD2004      = new Metadata("TD2004",      0,   0L,           0L,         0L);
-    public static Metadata NP2003      = new Metadata("TD2003",      0,   0L,           0L,         0L);
-    public static Metadata NP2004      = new Metadata("TD2004",      0,   0L,           0L,         0L);
-    public static Metadata HP2003      = new Metadata("HP2003",      0,   0L,           0L,         0L);
-    public static Metadata HP2004      = new Metadata("HP2004",      0,   0L,           0L,         0L);
+    public static Metadata TD2003      = new Metadata("TD2003",      64,  0L,           0L,         0L);
+    public static Metadata TD2004      = new Metadata("TD2004",      64,  0L,           0L,         0L);
+    public static Metadata NP2003      = new Metadata("TD2003",      64,  0L,           0L,         0L);
+    public static Metadata NP2004      = new Metadata("TD2004",      64,  0L,           0L,         0L);
+    public static Metadata HP2003      = new Metadata("HP2003",      64,  0L,           0L,         0L);
+    public static Metadata HP2004      = new Metadata("HP2004",      64,  0L,           0L,         0L);
     public static Metadata MQ2007      = new Metadata("MQ2007",      46,  25820919L,    8753466L,   8753466L);
     public static Metadata MQ2008      = new Metadata("MQ2008",      46,  5927007L,     2237346L,   2237346L);
     public static Metadata MSLR_WEB10K = new Metadata("MSLR-WEB10K", 136, 838011150L,   280714022L, 280714022L);

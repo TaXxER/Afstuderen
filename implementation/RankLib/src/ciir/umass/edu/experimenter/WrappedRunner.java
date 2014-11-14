@@ -21,9 +21,9 @@ public class WrappedRunner {
 
         FoldRunHandler ltrWrapper = null;
         if(dataset == DataSets.DataSet.CUSTOM)
-            ltrWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  folds, iterations);
+            ltrWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  folds, iterations, false);
         else
-            ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k);
+            ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, false);
         Measurement measurement = ltrWrapper.averageScore();
         System.out.println("Preprocessing: "+measurement.getPreprocessingTime()+" ms");
         System.out.println("Train:         "+measurement.getTrainingTime()+" ms");

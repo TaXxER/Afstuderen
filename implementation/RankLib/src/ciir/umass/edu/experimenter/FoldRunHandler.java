@@ -21,7 +21,7 @@ import java.util.List;
 public class FoldRunHandler {
     private MetricScorerFactory mFact = new MetricScorerFactory();
 
-    private String path             = "C:\\Git-data\\Afstuderen\\implementation\\java\\input\\";
+    private String path             = "C:\\Git-data\\Afstuderen\\implementation\\RankLib\\input\\";
     private int folds               = 1;
     private int duplicationNumber   = 0;
     private int k                   = 10;
@@ -39,10 +39,13 @@ public class FoldRunHandler {
     private Long trainTime;
     private Long endTime;
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations, int k){
-        this.ranker      = ranker.getParameterizedRanker();
-        this.folds       = folds;
-        this.k           = k;
+    private boolean normalization = false;
+
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations, int k, boolean normalization){
+        this.ranker         = ranker.getParameterizedRanker();
+        this.folds          = folds;
+        this.k              = k;
+        this.normalization  = normalization;
 
         if(ranker instanceof ListNetHandler){
             ((ListNet)this.ranker).nIteration = iterations;
@@ -57,11 +60,11 @@ public class FoldRunHandler {
     }
 
     public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations){
-        this(ranker, dataSet, 0, folds, iterations, 10);
+        this(ranker, dataSet, 0, folds, iterations, 10, false);
     }
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations, int k){
-        this(ranker, dataSet, 0, folds, iterations, k);
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations, int k, boolean normalization){
+        this(ranker, dataSet, 0, folds, iterations, k, normalization);
     }
 
     public Measurement averageScore() {
@@ -69,12 +72,12 @@ public class FoldRunHandler {
 
         startTime = System.nanoTime();
         for(int i=0; i<folds; i++){
-            System.out.println("Start Fold "+(i+1)+" evaluation");
+            //System.out.println("Start Fold "+(i+1)+" evaluation");
             String trainFiles      = path + "Fold"+(i+1)+"\\train.txt";
             String validationFiles = path + "Fold"+(i+1)+"\\vali.txt";
             String testFiles       = path + "Fold"+(i+1)+"\\test.txt";
             double foldScore = evaluate(trainFiles, validationFiles, testFiles);
-            System.out.println("Fold "+(i+1)+" = "+foldScore);
+            //System.out.println("Fold "+(i+1)+" = "+foldScore);
             scoreSum += foldScore;
         }
         endTime = System.nanoTime();
@@ -88,6 +91,30 @@ public class FoldRunHandler {
         List<RankList> test       = readInput(testFile);
 
         int[] features = getFeatureFromSampleVector(train);
+
+        if(normalization){
+            boolean firstdoc = true;
+            float[] minmax = new float[2*features.length];
+            for(int e=0; e<train.size(); e++){
+                for(int d=0; d<train.get(e).size(); d++){
+                    for(int f=0; f<features.length; f++){
+                        float val = train.get(e).get(d).getFeatureValue(f);
+                        if(firstdoc) {
+                            minmax[2*f]     = val;
+                            minmax[(2*f)+1] = val;
+                            firstdoc = false;
+                        }else {
+                            minmax[2*f]     = val < minmax[2*f] ? val : minmax[2*f];
+                            minmax[(2*f)+1] = val > minmax[(2*f)+1] ? val : minmax[(2*f)+1];
+                        }
+                    }
+                }
+            }
+            train       = normalize(train, minmax);
+            validation  = normalize(validation, minmax);
+            test        = normalize(test, minmax);
+        }
+
         ranker.set(train, features);
         Ranker.verbose = true;
         ranker.set(trainScorer);
@@ -128,5 +155,17 @@ public class FoldRunHandler {
         for(int i=0;i<fc;i++)
             features[i] = i+1;
         return features;
+    }
+
+    private List<RankList> normalize(List<RankList> rl, float[] minmax){
+        for(int i=0; i<rl.size(); i++){
+            for(int j=0; j<rl.get(i).size(); j++){
+                DataPoint dp = rl.get(i).get(j);
+                for(int f=0; f<dp.getFeatureCount(); f++){
+                    dp.setFeatureValue(f, dp.getFeatureValue(f) - minmax[2*f] / (minmax[(2*f)+1] - minmax[2*f]));
+                }
+            }
+        }
+        return rl;
     }
 }
