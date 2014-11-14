@@ -1,5 +1,6 @@
 # Super large data files
 implementation/java/input/*
+implementation/RankLib-2.1/input/*
 
 # LaTeX temp files
 *.4tc
@@ -68,11 +69,12 @@ implementation/java/input/*
 implementation/java/.idea
 implementation/java/out
 implementation/RankLib-2.1/.idea
-implementation/RankLib-2.1/out/*
+implementation/RankLib-2.1/out/
 *.iml
 *.iws
 
 # IntelliJ project temp files
 implementation/java/src/META-INF/*
+implementation/RankLib-2.1/src/META-INF/*
 
 *.zip
