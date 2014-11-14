@@ -6,7 +6,9 @@ package ciir.umass.edu.experimenter.util;
  */
 public class DataSets {
     public static enum DataSet {
-        OHSUMED, MQ2007, MQ2008, MSLR_WEB10K, MSLR_WEB30K,
+        OHSUMED, TD2003, TD2004, NP2003, NP2004, HP2003, HP2004,
+        MQ2007, MQ2008,
+        MSLR_WEB10K, MSLR_WEB30K,
         CUSTOM, MINI
     }
 
@@ -27,6 +29,24 @@ public class DataSets {
         switch(ds){
             case OHSUMED:
                 value = OHSUMED;
+                break;
+            case TD2003:
+                value = TD2003;
+                break;
+            case TD2004:
+                value = TD2004;
+                break;
+            case NP2003:
+                value = NP2003;
+                break;
+            case NP2004:
+                value = NP2004;
+                break;
+            case HP2003:
+                value = HP2003;
+                break;
+            case HP2004:
+                value = HP2004;
                 break;
             case MQ2007:
                 value = MQ2007;
@@ -50,6 +70,12 @@ public class DataSets {
     }
 
     public static Metadata OHSUMED     = new Metadata("ohsumed",     45,  5151958L,     1764005L,   1764005L);
+    public static Metadata TD2003      = new Metadata("TD2003",      0,   0L,           0L,         0L);
+    public static Metadata TD2004      = new Metadata("TD2004",      0,   0L,           0L,         0L);
+    public static Metadata NP2003      = new Metadata("TD2003",      0,   0L,           0L,         0L);
+    public static Metadata NP2004      = new Metadata("TD2004",      0,   0L,           0L,         0L);
+    public static Metadata HP2003      = new Metadata("HP2003",      0,   0L,           0L,         0L);
+    public static Metadata HP2004      = new Metadata("HP2004",      0,   0L,           0L,         0L);
     public static Metadata MQ2007      = new Metadata("MQ2007",      46,  25820919L,    8753466L,   8753466L);
     public static Metadata MQ2008      = new Metadata("MQ2008",      46,  5927007L,     2237346L,   2237346L);
     public static Metadata MSLR_WEB10K = new Metadata("MSLR-WEB10K", 136, 838011150L,   280714022L, 280714022L);
