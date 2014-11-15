@@ -5,6 +5,7 @@ import ciir.umass.edu.experimenter.parameterizedRankers.AbstractParameterizedRan
 import ciir.umass.edu.experimenter.parameterizedRankers.ListNetHandler;
 import ciir.umass.edu.experimenter.parameterizedRankers.SmoothRankHandler;
 import ciir.umass.edu.experimenter.util.Measurement;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.BufferedWriter;
@@ -37,10 +38,12 @@ public class NormalizationExperimenter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         CSVWriter writer = new CSVWriter(out);
 
-        for(DataSets.DataSet dataset: datasets) {
-            for (int iterations = 1; iterations < maxIterations; iterations++) {
+        for (int iterations = 1; iterations < maxIterations; iterations++) {
+            for(DataSets.DataSet dataset: datasets) {
+
                 if(iterations % 2 != 0)
                     continue;
 

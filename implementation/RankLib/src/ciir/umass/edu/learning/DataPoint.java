@@ -46,6 +46,7 @@ public class DataPoint {
 	 */
 	public DataPoint(String text)
 	{
+        featureCount = 0;
 		fVals = new float[MAX_FEATURE];
 		Arrays.fill(fVals, INFINITY);
 		int lastFeature = -1;

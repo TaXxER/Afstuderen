@@ -42,6 +42,8 @@ public class FoldRunHandler {
     private double  learningRate  = 0.00001;
     private boolean normalization = false;
 
+    private int[] features;
+
     public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations, int k, boolean normalization, double learningRate){
         this.ranker         = ranker.getParameterizedRanker();
         this.folds          = folds;
@@ -92,7 +94,7 @@ public class FoldRunHandler {
         List<RankList> validation = readInput(validationFile);
         List<RankList> test       = readInput(testFile);
 
-        int[] features = getFeatureFromSampleVector(train);
+        this.features = getFeatureFromSampleVector(train);
 
         if(normalization){
             boolean firstdoc = true;
@@ -164,8 +166,11 @@ public class FoldRunHandler {
         for(int i=0; i<rl.size(); i++){
             for(int j=0; j<rl.get(i).size(); j++){
                 DataPoint dp = rl.get(i).get(j);
-                for(int f=0; f<dp.getFeatureCount(); f++){
-                    dp.setFeatureValue(f, dp.getFeatureValue(f) - minmax[2*f] / (minmax[(2*f)+1] - minmax[2*f]));
+                for(int f=0; f < features.length; f++){
+                    if(minmax[(2*f)+1] > 0)
+                        dp.setFeatureValue(f, dp.getFeatureValue(f) - minmax[2*f] / (minmax[(2*f)+1] - minmax[2*f]));
+                    else
+                        dp.setFeatureValue(f, 0.0f);
                 }
             }
         }
