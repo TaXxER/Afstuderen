@@ -114,10 +114,7 @@ public class FeatureManager {
 					continue;
 				if(content.indexOf("#")==0)
 					continue;
-				
-				if(countEntries % 10000 == 0)
-					System.out.print("\rReading feature file [" + fn + "]: " + countRL + "... ");
-				
+
 				DataPoint qp = new DataPoint(content);
 
 				if(lastID.compareTo("")!=0 && lastID.compareTo(qp.getID())!=0)
@@ -140,8 +137,6 @@ public class FeatureManager {
 			if(rl.size() > 0 && (!mustHaveRelDoc || hasRel))
 				samples.add(rl);
 			in.close();
-			System.out.println("\rReading feature file [" + fn + "]... [Done.]            ");
-			System.out.println("(" + samples.size() + " ranked lists, " + countEntries + " entries read)");
 		}
 		catch(Exception ex)
 		{

@@ -39,13 +39,15 @@ public class FoldRunHandler {
     private Long trainTime;
     private Long endTime;
 
+    private double  learningRate  = 0.00001;
     private boolean normalization = false;
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations, int k, boolean normalization){
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int duplicationNumber, int folds, int iterations, int k, boolean normalization, double learningRate){
         this.ranker         = ranker.getParameterizedRanker();
         this.folds          = folds;
         this.k              = k;
         this.normalization  = normalization;
+        this.learningRate   = learningRate;
 
         if(ranker instanceof ListNetHandler){
             ((ListNet)this.ranker).nIteration = iterations;
@@ -60,11 +62,11 @@ public class FoldRunHandler {
     }
 
     public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations){
-        this(ranker, dataSet, 0, folds, iterations, 10, false);
+        this(ranker, dataSet, 0, folds, iterations, 10, false, 0.00001);
     }
 
-    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations, int k, boolean normalization){
-        this(ranker, dataSet, 0, folds, iterations, k, normalization);
+    public FoldRunHandler(AbstractParameterizedRanker ranker, DataSets.DataSet dataSet, int folds, int iterations, int k, boolean normalization, double learningRate){
+        this(ranker, dataSet, 0, folds, iterations, k, normalization, learningRate);
     }
 
     public Measurement averageScore() {
@@ -116,10 +118,11 @@ public class FoldRunHandler {
         }
 
         ranker.set(train, features);
-        Ranker.verbose = true;
         ranker.set(trainScorer);
         ranker.setValidationSet(validation);
         preTime = System.nanoTime();
+        ranker.verbose = false;
+        ((ListNet) ranker).learningRate = this.learningRate;
         ranker.init();
         ranker.learn();
         trainTime = System.nanoTime();

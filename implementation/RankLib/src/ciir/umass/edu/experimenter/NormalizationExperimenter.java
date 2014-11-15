@@ -41,16 +41,29 @@ public class NormalizationExperimenter {
 
         for(DataSets.DataSet dataset: datasets) {
             for (int iterations = 1; iterations < maxIterations; iterations++) {
+                if(iterations % 2 != 0)
+                    continue;
+
+                double learningRate = 0.01;
+
+                if (dataset.equals(DataSets.DataSet.NP2003) || dataset.equals(DataSets.DataSet.NP2004))
+                    learningRate = 0.001;
+                else
+                    if(dataset.equals(DataSets.DataSet.HP2004))
+                        learningRate = 0.00004;
+
                 // Without normalization
-                FoldRunHandler ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, false);
+                System.out.println("DATASET: "+dataset+", LR: "+learningRate+", ITERATIONS: "+iterations+", UNNORMALISED");
+                FoldRunHandler ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, false, learningRate);
                 Measurement measurement = ltrWrapper.averageScore();
-                String[] values = {dataset.name(), ""+iterations, "normalized", ""+measurement.getEvaluationResult()};
+                String[] values = {dataset.name(), ""+iterations, "unnormalized", ""+measurement.getEvaluationResult()};
                 writer.writeNext(values);
 
                 // With normalization
-                ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, true);
-                measurement = ltrWrapper.averageScore();
-                String[] values2 = {dataset.name(), ""+iterations, "unnormalized", ""+measurement.getEvaluationResult()};
+                System.out.println("DATASET: "+dataset+", LR: "+learningRate+", ITERATIONS: "+iterations+", NORMALISED");
+                FoldRunHandler ltrWrapper2 = new FoldRunHandler(handler, dataset, folds, iterations, k, true, learningRate);
+                Measurement measurement2 = ltrWrapper2.averageScore();
+                String[] values2 = {dataset.name(), ""+iterations, "normalized", ""+measurement2.getEvaluationResult()};
                 writer.writeNext(values2);
                 try {
                     writer.flush();

@@ -24,7 +24,7 @@ public class ListNet extends RankNet {
 	
 	//Parameters
 	public static int nIteration = 1500;
-	public static double learningRate = 0.00001; 
+	public static double learningRate = 0.001; // default: 0.00001
 	public static int nHiddenLayer = 0;//FIXED, it doesn't work with hidden layer
 	
 	public ListNet()

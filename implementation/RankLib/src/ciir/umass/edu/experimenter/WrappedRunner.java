@@ -16,14 +16,14 @@ public class WrappedRunner {
         Integer                     iterations          = 1000;
         Integer                     k                   = 10;
         AbstractParameterizedRanker handler             = new ListNetHandler();
-        DataSets.DataSet            dataset             = DataSets.DataSet.OHSUMED;
+        DataSets.DataSet            dataset             = DataSets.DataSet.TD2004;
         Integer                     duplicationNumber   = 1; // Only relevant in case of dataset Custom
 
         FoldRunHandler ltrWrapper = null;
         if(dataset == DataSets.DataSet.CUSTOM)
-            ltrWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  folds, iterations, false);
+            ltrWrapper = new FoldRunHandler(handler, DataSets.DataSet.CUSTOM, duplicationNumber,  folds, iterations, false, 0.00001);
         else
-            ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, false);
+            ltrWrapper = new FoldRunHandler(handler, dataset, folds, iterations, k, false, 0.00001);
         Measurement measurement = ltrWrapper.averageScore();
         System.out.println("Preprocessing: "+measurement.getPreprocessingTime()+" ms");
         System.out.println("Train:         "+measurement.getTrainingTime()+" ms");
