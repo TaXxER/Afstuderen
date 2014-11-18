@@ -1,6 +1,7 @@
 setwd("C:/Git-data/Afstuderen/measurements")
 library(ggplot2)
 library(mgcv)
+library(sitools)
 library(stringr)
 library(scales)
 measure = read.csv("raw_data.csv") # read csv file
@@ -34,7 +35,7 @@ d <- d + geom_point(size=2) + geom_line() +
 		panel.border     = element_blank(),
 		panel.background = element_blank(),
 		axis.line = element_line(color='black')
-	) + scale_y_continuous(expand = c(0, 10000000))+	
+	) + scale_y_continuous(expand = c(0, 10000000))+
 	facet_wrap(~serial.parallel)+
 	xlab("Dataset size (in Byte)") +
 	ylab("Training iteration time (in Seconds)") +

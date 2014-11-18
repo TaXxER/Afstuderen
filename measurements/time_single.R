@@ -3,6 +3,7 @@ library(ggplot2)
 library(mgcv)
 library(stringr)
 library(scales)
+library(sitools)
 measure = read.csv("raw_data.csv") # read csv file
 name <- paste(measure$serial.parallel, measure$nodeCount, sep = " ")
 
@@ -33,7 +34,9 @@ d <- d + geom_point(size=2) + geom_line() +
 		panel.border     = element_blank(),
 		panel.background = element_blank(),
 		axis.line = element_line(color='black')
-	) + scale_y_continuous(expand = c(0, 0))+	
+	) + 
+	scale_x_continuous(labels=f2si)+
+	scale_y_continuous(expand = c(0, 0))+	
 	xlab("Dataset size (in Byte)") +
 	ylab("Training iteration time (in Seconds)") +
 	labs(colour = "Execution mode", shape = "Execution mode") 

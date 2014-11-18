@@ -32,6 +32,8 @@ public class NDCGScorer extends MetricScorer {
         gainMap.put(0,0.0);
         gainMap.put(1,1.0);
         gainMap.put(2,3.0);
+        gainMap.put(3,7.0);
+        gainMap.put(4,15.0);
 	}
 	public NDCGScorer(int k)
 	{
@@ -151,7 +153,9 @@ public class NDCGScorer extends MetricScorer {
 		for(int i=1;i<=size;i++)
 		{
             if(i==1)
-			    dcg += gainMap.get(rel.get(idx[i-1]));
+			    dcg += gainMap.get(
+                        rel.get(idx[i-1])
+                );
             else
                 dcg += gainMap.get(rel.get(idx[i-1]))/SimpleMath.logBase2(i);
 		}

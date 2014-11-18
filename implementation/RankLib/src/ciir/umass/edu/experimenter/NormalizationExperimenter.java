@@ -27,14 +27,12 @@ public class NormalizationExperimenter {
 
         Set<DataSets.DataSet>       datasets            = new HashSet<DataSets.DataSet>();
         // Add all LETOR 3.0 data sets
-        datasets.add(DataSets.DataSet.OHSUMED);
-        datasets.add(DataSets.DataSet.TD2003);datasets.add(DataSets.DataSet.TD2004);
-        datasets.add(DataSets.DataSet.NP2003);datasets.add(DataSets.DataSet.NP2004);
-        datasets.add(DataSets.DataSet.HP2003);datasets.add(DataSets.DataSet.HP2004);
+        datasets.add(DataSets.DataSet.MSLR_WEB30K);
+        datasets.add(DataSets.DataSet.MSLR_WEB10K);
 
         BufferedWriter out = null;
         try {
-            out = new BufferedWriter(new FileWriter("normalization_measurements.csv"));
+            out = new BufferedWriter(new FileWriter("normalization_measurements_mslr_web.csv"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +45,7 @@ public class NormalizationExperimenter {
                 if(iterations % 2 != 0)
                     continue;
 
-                double learningRate = 0.01;
+                double learningRate = 0.0001;
 
                 if (dataset.equals(DataSets.DataSet.NP2003) || dataset.equals(DataSets.DataSet.NP2004))
                     learningRate = 0.001;

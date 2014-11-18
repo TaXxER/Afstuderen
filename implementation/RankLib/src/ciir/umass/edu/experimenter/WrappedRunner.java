@@ -16,7 +16,7 @@ public class WrappedRunner {
         Integer                     iterations          = 1000;
         Integer                     k                   = 10;
         AbstractParameterizedRanker handler             = new ListNetHandler();
-        DataSets.DataSet            dataset             = DataSets.DataSet.TD2004;
+        DataSets.DataSet            dataset             = DataSets.DataSet.MSLR_WEB10K;
         Integer                     duplicationNumber   = 1; // Only relevant in case of dataset Custom
 
         FoldRunHandler ltrWrapper = null;

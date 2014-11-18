@@ -3,6 +3,7 @@ library(ggplot2)
 library(boot)
 library(mgcv)
 library(stringr)
+library(sitools)
 library(scales)
 measure = read.csv("raw_data.csv") # read csv file
 name <- paste(measure$serial.parallel, measure$nodeCount, sep = " ")
@@ -28,14 +29,14 @@ measure$throughput <- measure$dataSize/measure$seconds
 measure$serial.parallel <- name
 d <- ggplot(data=measure, aes(x=dataSize, y=throughput, colour=serial.parallel, shape=serial.parallel))
 d <- d + geom_point(size=2) + geom_line() + 
-	scale_x_log10() + theme_bw() + 
+	scale_x_log10(labels=f2si) + theme_bw() + 
 	theme(
 		panel.grid.major = element_blank(),
 		panel.grid.minor = element_blank(),
 		panel.border     = element_blank(),
 		panel.background = element_blank(),
 		axis.line = element_line(color='black')
-	) + scale_y_continuous(expand = c(0, 0)) +
+	) + scale_y_continuous(labels=f2si,expand = c(0, 0)) +
 	xlab("Dataset Size (in Byte)") +
 	ylab("Throughput (in Byte/Second)") +
 	labs(colour = "Execution mode", shape = "Execution mode") 
