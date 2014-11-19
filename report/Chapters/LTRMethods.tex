@@ -57,20 +57,20 @@ The ListNet training algorithm is similar to RankNet, with the difference that L
 \end{algorithm}
 
 \section{SmoothRank}
-SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, we apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{MAP} or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax activation function \cite{Bridle1990}, which is often used in neural networks. The softmax function is formally defined as shown in Equation \ref{eq:softmax_algorithm}.
+SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, we apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{ERR}, \ac{MAP}, or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax function \cite{Bridle1990} that is often used as an activation function for the neurons in neural networks. The softmax function as a smoothing framework for ranking evaluation measures in given in Equation \ref{eq:softmax_algorithm}.
 \begin{equation}
-p_i = \frac{e^{f_i/\sigma}}{\sum\nolimits_{j=1}^{m}e^{f_j/\sigma}}
+p_i = \frac{e^{f_i/\sigma}}{\sum\nolimits_{j=1}^{n}e^{f_j/\sigma}}
 \label{eq:softmax_algorithm}
 \end{equation}
 
-where $\sigma$ is the smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{NDCG} formula and hereby introduce a soft version of indicator variable $h_{i,j}$ through the computation shown in Equation \ref{eq:soft_NDCG}.
+where $p_i$ is a probability over documents $i \in \{1,...,n\}$ given the outputs $f_1,...,f_n$ of the evaluation function on the document relevance labels, with $\sigma$ being a smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{NDCG} formula and hereby introduce a soft version of indicator variable $h_{i,j}$ through the computation shown in Equation \ref{eq:soft_NDCG}.
 
 \begin{equation}
-h_{i,j} = e^{-\frac{(f(x_i))-(f(x_{d(j)}))^2}{\sigma}}\Big/\sum\nolimits_{k=1}^{m}e^{-\frac{(f(x_k))-f(x_{d(j)})^2}{\sigma}}
+h_{i,j} = e^{-\frac{(f(x_i))-(f(x_{d(j)}))^2}{\sigma}}\Big/\sum\nolimits_{k=1}^{n}e^{-\frac{(f(x_k))-f(x_{d(j)})^2}{\sigma}}
 \label{eq:soft_NDCG}
 \end{equation}
 
-It can be shown that the derivative of the smoothed \ac{NDCG} version shown in Equation \ref{eq:soft_NDCG} and the smoothed versions of other \ac{IR} metrics can be calculated in $\mathcal{O}(m^2)$, which enable fast gradient descent optimisation. The optimisation step in SmoothRank uses the nonlinear conjugate gradient method  with Polak-Ribiere update \cite{Shewchuk1994}, which is a type of gradient descent method. This optimisation method is prone to local optima, which is alleviated by adding a pre-calculated, better than naive, starting point and by adding a regularisation term.\\
+It can be shown that the derivative of the smoothed \ac{NDCG} version shown in Equation \ref{eq:soft_NDCG} and the smoothed versions of other \ac{IR} metrics can be calculated in $\mathcal{O}(n^2)$, which enable fast gradient descent optimisation. The optimisation step in SmoothRank uses the nonlinear conjugate gradient method  with Polak-Ribiere update \cite{Shewchuk1994}, which is a type of gradient descent method. This optimisation method is prone to local optima, which is alleviated by adding a pre-calculated, better than naive, starting point and by adding a regularisation term.\\
 
 The starting point in SmoothRank is set to either the solution of a simple linear regression, or alternatively to the solution of Rank\acs{SVM}. Since this starting point is expected to already be a good solution, a regulariser term is added to the SmoothRank objective function to prevent the solution from deviating too much from the starting point. The regularised smooth objective function is formulated as $\lambda||w-w_0||_2$ where $\lambda$ is a hyper-parameter tuned on the validation set, $w_0$ is the starting point solution, and $||x||_2$ is the $\ell2$-norm regularisation function defined as $||x||_2 = \sqrt{\sum\nolimits_ix_i^2}$.\\
 
