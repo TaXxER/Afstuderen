@@ -12,7 +12,7 @@ where $\pi$ is a permutation on the $n$ objects, $\phi$ is a monotonically incre
 
 However, the total number of permutations of a list of $n$ documents is $n!$, therefore, calculating the probabilities of all possible permutations quickly becomes intractable. To cope with this problem, the authors of ListNet propose the calculation of a \emph{top one probability} as an alternative to the actual permutation probabilities. The top one probability of an object $j$ equals the sum of the permutations probabilities of permutations in which object $j$ is ranked as the top object. At first sight it seems to be the case that the $n!$ permutation probabilities still need to be calculated for this, but we can calculate the top one probability efficiently using Equation \ref{eq:top_one}.
 \begin{equation}
-P_s(j) = \frac{\phi{s_j}}{\sum\nolimits_{k=1}^{n}\phi(s_k)}
+P_s(j) = \frac{\phi(s_j)}{\sum\nolimits_{k=1}^{n}\phi(s_k)}
 \label{eq:top_one}
 \end{equation}
 
@@ -24,12 +24,12 @@ P_s(j) = \frac{\phi(s_j)}{\sum\nolimits_{k=1}^{n}\phi(s_k)} = \frac{exp(s_j)}{\s
 
 Note that some sources, including Liu \cite{Liu2007}, describe ListNet as using \ac{KL divergence} as loss function. This difference in definition is not relevant however, as \ac{KL divergence} and Cross Entropy are identical up to an additive constant when comparing distribution $q$ against a fixed reference distribution $p$. The listwise Cross Entropy loss function $L(y^{(i)},z^{(i)})$ is defined in Equation \ref{eq:cross_entropy}.
 \begin{equation}
-L(y^{(i)},z^{(i)}) = \sum\limits_{j=1}^{n}P_{y^{(i)}}(j)\log(P_{z^{(i)}}(j))
+L(y^{(i)},z^{(i)}) = -\sum\limits_{j=1}^{n}P_{y^{(i)}}(j)\log(P_{z^{(i)}}(j))
 \label{eq:cross_entropy}
 \end{equation}
-where $H(p)$ is the entropy of $p$ and $D_{KL}(p||q)$ is the \ac{KL divergence} of $q$ from $p$.\\
+where $P_s(j)$ is the top one probability of object $j$ given relevance score $s$. This relevance score $s$ is either the true relevance score $y^{(i)}$ or the predicted relevance score $z^{(i)}$.\\
 
-\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to parameter $\omega$.
+\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to the model parameters $\omega$. In this equation, $z^{(i)}(f_\omega)$ represents the predicted relevance scores of object $i$ when a neural network $f$ with weights $\omega$ is used.
 
 \begin{multline}
 \Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum\limits_{j=1}^{n^{(i)}}P_{y^{(i)}}(x_{j}^{(i)})\frac{\partial f_{\omega}(x_{j}^{(i)})}{\partial\omega} \\ 
@@ -98,12 +98,12 @@ FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learnin
 
 \noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term. Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate the optimal value of this non-differentiable optimisation problem by instead solving the Fenchel dual of the optimisation problem.
 \begin{equation}
-\min_x(f(x)-g(x)) = \max_p(f_*(p)-f^*(p))
+\min_x(f(x)-g(x)) = \max_p(g_*(p)-f^*(p))
 \label{eq:fenchel_duality_theorem}
 \end{equation}
-\noindent where $f^*$ is the convex, and $f_*$ the concave conjugate of $f$.\\
+\noindent where $f^*$ is the convex conjugate of $f$ and $g_*$ is the concave conjugate of $g$.\\
 
-To ease applying Fenchel's duality theorem (Equation 7) to the $\ell_1$-regularised pairwise loss function (Equation \ref{eq:pairwise_l1_loss}), Lai et al. define $D(w)$ as $D(w) = -G(w)$. Equation \ref{eq:fenchel_dual} shown the resulting Fenchel dual of the $\ell_1$-regularised pairwise loss function, which is the loss function that is used in FenchelRank.
+To ease applying Fenchel's duality theorem (Equation \ref{eq:fenchel_duality_theorem}) to the $\ell_1$-regularised pairwise loss function (Equation \ref{eq:pairwise_l1_loss}), Lai et al. define $D(w)$ as $D(w) = -G(w)$. Equation \ref{eq:fenchel_dual} shows the resulting Fenchel dual of the $\ell_1$-regularised pairwise loss function, which is the loss function that is used in FenchelRank.
 \begin{equation}
 \max_w D(w) = \max_w I_{||w||_{1} \le 1}(w) - \frac{r^2}{p} \sum\limits_{i=1}^{p}\max(0,\frac{1}{r}-(Kw)_i)^2
 \label{eq:fenchel_dual}
