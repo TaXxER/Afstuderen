@@ -175,7 +175,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
  \For{$t\leftarrow 1$ \KwTo $T$}{
  	Let $g = l^{'}(z_t)$\\
  	\While{true}{
- 		\emph{//projection step}\\
+ 		\emph{// projection step}\\
  		$w_t= \argmin_{w_t:w_t\in \mathbb{R}_{+}^{2d}} Q(w_t,z_t)$\\
  		\If{$l(w_t) \le l(z_t) + \langle l^{'}(z_t),w_t-z_t \rangle +\frac{L}{2}||w_t-z_t||^2$}{
  			break\\
@@ -183,7 +183,7 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
  		$L = \lambda L$ 		
  	}
  	\If{$\frac{|F(w_t)-F(w_{t-1})|}{|F(w_{t-1})|} \le \epsilon_s$}{
- 		\emph{//early stopping criterion}\\
+ 		\emph{// early stopping criterion}\\
  		break
  	}
  	$\alpha_{t+1}=\frac{1+\sqrt{1+4\alpha_t^2}}{2}$\\
@@ -195,9 +195,9 @@ Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. A
 \end{algorithm}
 
 \section{LRUF}
-LRUF \cite{Torkestani2012b} is Learning to Rank method based on the theory of learning automata. Learning automata are adaptive decision-making units that learn the optimal set of actions through repeated interactions with its environment. Variable structure learning automata can be defined as a triple $<\beta,\alpha,L>$, with $\beta$ being the set of inputs, $\alpha$ the set of actions. $L$, the learning algorithm ,is a recurrence relation that modifies the action probability vector of the actions in $\alpha$.\\
+LRUF \cite{Torkestani2012b} is Learning to Rank method based on the theory of learning automata. Learning automata are adaptive decision-making units that learn the optimal set of actions through repeated interactions with its environment. Variable structure learning automata can be defined as a triple $<\beta,\alpha,L>$, with $\beta$ being the set of inputs, $\alpha$ the set of actions. $L$, the learning algorithm, is a recurrence relation that modifies the action probability vector of the actions in $\alpha$.\\
 
-Three well-known learning algorithms $L$ used in variable structure learning automata are \emph{linear reward-penalty} ($L_{R-P}$), \emph{linear reward-$\epsilon$-penalty} ($L_{R-\epsilon P}$) and \emph{linear reward-inaction} ($L_{R-I}$). LRUF uses the $L_{R-I}$ learning algorithm, which updates the action probability vector following Equation \ref{eq:lruf_reward_update} when the selected action $a_i(k)$ is rewarded by the environment.
+Three well-known learning algorithms for variable structure learning automata that can be used as $L$ are \emph{linear reward-penalty} ($L_{R-P}$), \emph{linear reward-$\epsilon$-penalty} ($L_{R-\epsilon P}$) and \emph{linear reward-inaction} ($L_{R-I}$). LRUF uses the $L_{R-I}$ learning algorithm, which updates the action probability vector following Equation \ref{eq:lruf_reward_update} at the moment that the selected action $a_i(k)$ is performed and rewarded by the environment.
 \begin{equation}
 p_j(k+1)=	\begin{cases}	p_j(k)+a[1-p_j(k)] 	&\mbox{if } j=i \\ 
 							(1-a)p_j(k) 		&\mbox{otherwise} 
@@ -206,7 +206,7 @@ p_j(k+1)=	\begin{cases}	p_j(k)+a[1-p_j(k)] 	&\mbox{if } j=i \\
 \end{equation}
 \noindent where $i$ and $j$ are indices of action in $\alpha$ and $p(k)$ is the probability vector over the action set at rank $k$. $a$ is the learning rate of the model.\\
 
-A variable action-set learning automaton is an automaton in which the number of available actions change over time. It has been shown that a combination of a variable action-set learning automaton with the $L_{R-I}$ learning algorithm is absolutely expedient and $\epsilon$-optimal \cite{Thathachar1987}, which means that it is guaranteed to approximate the optimal solution to some value $\epsilon$ and each update step is guaranteed not to decrease performance of the model. A variable-action set learning automata has a finite set of $r$ actions $\alpha={\alpha_1,...,\alpha_r}$. $A$ is defined as the power set of $\alpha$, $A={A_1,..,A_m}$ with $m = 2^{r}-1$. $\psi(k)$ is a probability distribution over $A$ such that $\psi(k)=p(A(k)=A_i|A_i\in A, 1\le i \le 2^r-1)$. $\hat{p}_i(k)$ is the probability of choosing action $\alpha_i$ given that action subset $A(k)$ has already been selected and $\alpha_i \in A(k)$.\\
+A variable action-set learning automaton is an automaton in which the number of available actions change over time. It has been shown that a combination of a variable action-set learning automaton with the $L_{R-I}$ learning algorithm is absolutely expedient and $\epsilon$-optimal \cite{Thathachar1987}, which means that it is guaranteed to approximate the optimal solution to some value $\epsilon$ and each update step is guaranteed not to decrease performance of the model. A variable-action set learning automaton has a finite set of $r$ actions $\alpha={\alpha_1,...,\alpha_r}$. $A$ is defined as the power set of $\alpha$, $A={A_1,..,A_m}$ with $m = 2^{r}-1$. $A(k)$ is the subset of all action that can be chosen by the learning automaton at each instant k. $\psi(k)$ is a probability distribution over $A$ such that $\psi(k)=p(A(k)=A_i|A_i\in A, 1\le i \le 2^r-1)$. $\hat{p}_i(k)$ is the probability of choosing action $\alpha_i$ given that action subset $A(k)$ has already been selected and $\alpha_i \in A(k)$.\\
 
 LRUF uses an optimisation problem that can be illustrated as a quintuple $<q_i,A_i,\underline{d_i},\underline{R_i},\underline{f_i}>$, where $q_i$ is a submitted query, $A_i$ is a variable action-set learning automaton, $\underline{d_i}$ is a set of documents associated with $q_i$, and $\underline{R_i}={r_i^j|\forall d_i^j \in \underline{d_i}}$ is a ranking function that assigns rank $r_i^j$ to each document. $\underline{f_i}$ is a feedback set used for the update step described in Equation \ref{eq:lruf_reward_update}. For each rank $k$ the learning automaton $A_i$ chooses one of its actions following its probability vector, jointly forming $\underline{R_i}$. LRUF translates the feedback in $\underline{f_i}$ to an understandable value to use it to converge the action probability vector in optimal configuration. Therefore LRUF defines a $g_i: \underline{f_i} \rightarrow \mathbb{R}^{+}$ to be a mapping from the feedback set into a positive real number. The LRUF mapping function $g_i$ computes the average relevance score of ranking $R_i$ based on $f_i$ and is defined as shown in Equation \ref{eq:lruf_average_relevance}.
 \begin{equation}
@@ -217,7 +217,7 @@ g_i=\frac{1}{N_i}\sum\nolimits_{d_{i}^{j}\in \underline{f_i}} a(r_{i}^{j})^{-1}
 
 In case the document set of the search engine changes, i.e. new documents are indexed or old documents are removed, LRUF has an Increase Action-Set Size (IAS) and a Reduce Action-Set Size (RAS) procedure to adapt to the new document set without needing a complete retraining of the model. Because this thesis focusses on model accuracy and scalability the IAS and RAS procedure of LRUF will not be explained in further detail.\\
 
-Torkestani \cite{Torkestani2012b} does not provide pseudo-code specifically for the training phase of the LRUF algorithm. Instead an algorithm including both ranking and automaton update is presented, and included in Algorithm \ref{alg:lruf}. Initial training of the algorithm can be performed by using the training data relevance labels in the feedback set of the algorithm.
+Torkestani \cite{Torkestani2012b} does not provide pseudo-code specifically for the training phase of the LRUF algorithm. Instead an algorithm including both ranking and automaton update is presented, and included in Algorithm \ref{alg:lruf}. Initial training of the algorithm can be performed by using the training data relevance labels in the feedback set of the algorithm. $T_i$ in this algorithm is a dynamic relevance threshold initially set to zero. $n_i$ is the number of documents to rank using $R_i$.
 
 \begin{algorithm}
  \KwData{Query $q_i$, Number of results $n_i$}
