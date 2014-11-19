@@ -55,6 +55,9 @@ implementation/RankLib/input/*
 # Except old versions
 !*/oude_versies/*.pdf
 
+# Except PDF images in gfx
+!/report/gfx/*.pdf
+
 # Visio temp files
 *.~vdx
 
