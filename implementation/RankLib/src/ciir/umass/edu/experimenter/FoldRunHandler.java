@@ -162,18 +162,22 @@ public class FoldRunHandler {
         return features;
     }
 
-    private List<RankList> normalize(List<RankList> rl, float[] minmax){
-        for(int i=0; i<rl.size(); i++){
-            for(int j=0; j<rl.get(i).size(); j++){
-                DataPoint dp = rl.get(i).get(j);
+    private List<RankList> normalize(List<RankList> rls, float[] minmax){
+        for(int i=0; i<rls.size(); i++){
+            RankList rl = rls.get(i);
+            for(int j=0; j<rls.get(i).size(); j++){
+                DataPoint dp = rls.get(i).get(j);
                 for(int f=0; f < features.length; f++){
                     if(minmax[(2*f)+1] > 0)
                         dp.setFeatureValue(f, dp.getFeatureValue(f) - minmax[2*f] / (minmax[(2*f)+1] - minmax[2*f]));
                     else
                         dp.setFeatureValue(f, 0.0f);
+                    rl.remove(j);
+                    rl.add(dp);
                 }
+                rls.set(i, rl);
             }
         }
-        return rl;
+        return rls;
     }
 }

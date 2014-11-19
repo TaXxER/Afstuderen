@@ -29,7 +29,7 @@ L(y^{(i)},z^{(i)}) = -\sum\limits_{j=1}^{n}P_{y^{(i)}}(j)\log(P_{z^{(i)}}(j))
 \end{equation}
 where $P_s(j)$ is the top one probability of object $j$ given relevance score $s$. This relevance score $s$ is either the true relevance score $y^{(i)}$ or the predicted relevance score $z^{(i)}$.\\
 
-\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to the model parameters $\omega$. In this equation, $z^{(i)}(f_\omega)$ represents the predicted relevance scores of object $i$ when a neural network $f$ with weights $\omega$ is used.
+\noindent Equation \ref{eq:gradient_descent} describes the gradient descent step to minimise listwise loss function $L(y^{(i)},z^{(i)}(f_\omega))$ with respect to the model parameters $\omega$. In this equation, $z^{(i)}(f_\omega)$ represents the predicted relevance scores of object $i$ when a neural network $f$ with weight vector $\omega$ is used.
 
 \begin{multline}
 \Delta\omega = \frac{\partial L(y^{(i)},z^{(i)}(f_\omega))}{\partial \omega} = - \sum\limits_{j=1}^{n^{(i)}}P_{y^{(i)}}(x_{j}^{(i)})\frac{\partial f_{\omega}(x_{j}^{(i)})}{\partial\omega} \\ 
@@ -43,7 +43,7 @@ The ListNet training algorithm is similar to RankNet, with the difference that L
 \begin{algorithm}[H]
  \KwData{training data \{$(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})$\}}
  \KwIn{number of iterations $T$ and learning rate $\eta$}
- Initialize parameter $\omega$\\
+ Initialize weight vector $\omega$\\
  \For{$t\leftarrow 1$ \KwTo $T$}{
  	\For{$i\leftarrow 1$ \KwTo $m$}{
  		Input $x^{(i)}$ of query $q^{(i)}$ to Neural Network and, for the current value of $\omega$, compute score list $z^{(i)}(f_\omega)$.\\
@@ -59,22 +59,30 @@ The ListNet training algorithm is similar to RankNet, with the difference that L
 \section{SmoothRank}
 SmoothRank \cite{Chapelle2010} is a listwise ranking method that, in contrast to ListNet, directly optimises an information retrieval evaluation measure. SmoothRank enables direct optimisation of the non-convex and discontinuous evaluation measure by smoothing, that is, approximating the rank position. In this section, we apply the SmoothRank approximation method to the \ac{NDCG} evaluation measure for illustration, but the same procedure can be applied to \ac{ERR}, \ac{MAP}, or any other information retrieval measure. The smoothing function used in SmoothRank is based on the softmax function \cite{Bridle1990} that is often used as an activation function for the neurons in neural networks. The softmax function as a smoothing framework for ranking evaluation measures in given in Equation \ref{eq:softmax_algorithm}.
 \begin{equation}
-p_i = \frac{e^{f_i/\sigma}}{\sum\nolimits_{j=1}^{n}e^{f_j/\sigma}}
+p_i = \frac{e^{f(i)/\sigma}}{\sum\nolimits_{j=1}^{n}e^{f(j)/\sigma}}
 \label{eq:softmax_algorithm}
 \end{equation}
 
-where $p_i$ is a probability over documents $i \in \{1,...,n\}$ given the outputs $f_1,...,f_n$ of the ranking function on the documents, with $\sigma$ being a smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{NDCG} formula and hereby introduce a soft version $h_{i,j}$ of the indicator variable $\mathbb{1}_{i,j}$ ("is document $i$ ranked at the $j$-th position?") through the computation shown in Equation \ref{eq:soft_NDCG}.
+where $p_i$ is a probability over documents $i \in \{1,...,n\}$ given the outputs $f_1,...,f_n$ of the ranking function on the documents, with $\sigma$ being a smoothing parameter. Chapelle et al. \cite{Chapelle2010} apply this softmax function to the \ac{NDCG} formula and hereby introduce a soft version $h_{i,j}$ of the indicator variable $\mathbb{1}_{i,j}$ that represents a function that outputs the boolean representation of the answer to the questions: "is document $i$ ranked at the $j$-th position?". $h_{i,j}$ is calculated through the formula shown in Equation \ref{eq:soft_NDCG}.
 
 \begin{equation}
 h_{i,j} = e^{-\frac{(f(x_i))-(f(x_{d(j)}))^2}{\sigma}}\Big/\sum\nolimits_{k=1}^{n}e^{-\frac{(f(x_k))-f(x_{d(j)})^2}{\sigma}}
 \label{eq:soft_NDCG}
 \end{equation}
 
+where $d(j)$ is a function that returns the index of the document that was ranked at position $j$ by ranking function $f$.\\
+
 It can be shown that the derivative of the smoothed \ac{NDCG} version shown in Equation \ref{eq:soft_NDCG} and the smoothed versions of other \ac{IR} metrics can be calculated in $\mathcal{O}(n^2)$, which enable fast gradient descent optimisation. The optimisation step in SmoothRank uses the non-linear conjugate gradient method  with Polak-Ribiere update \cite{Shewchuk1994}. This optimisation method is prone to local optima, which is alleviated by adding a pre-calculated, better than naive, starting point and by adding a regularisation term.\\
 
 The starting point in SmoothRank is set to either the solution of a simple linear regression, or alternatively to the solution of Rank\acs{SVM}. Since this starting point is expected to already be a good solution, a regulariser term is added to the SmoothRank objective function to prevent the solution from deviating too much from the starting point. The regularised smooth objective function is formulated as $\lambda||w-w_0||_2$ where $\lambda$ is a hyper-parameter tuned on the validation set, $w_0$ is the starting point solution, and $||x||_2$ is the $\ell2$-norm regularisation function defined as $||x||_2 = \sqrt{\sum\nolimits_ix_i^2}$.\\
 
-The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_NDCG} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function with optima that substantially differ from the true optimal rankings. To deal with the problem of choosing the smoothing parameter, SmoothRank uses an annealing procedure where optimisation starts with a large $\sigma$ in the first iteration and iteratively reduces it by dividing it by two at each iteration. Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method.\\
+The choice of the smoothing parameter $\sigma$ in Equation \ref{eq:soft_NDCG} is important, because a too small value makes the function more non-smooth and therefore harder to optimise, while a too large value results in a optimisation function with optima that substantially differ from the true optimal rankings. To deal with the problem of choosing the smoothing parameter, SmoothRank uses an annealing procedure where optimisation starts with a large $\sigma$ in the first iteration and iteratively reduces it by dividing it by two at each iteration.\\
+
+Algorithm \ref{alg:smoothrank} shows the algorithm that summarises all steps of the SmoothRank method. In this algorithm, $A_q(w,\sigma)$ is the smoothed version of the \ac{NDCG} metric, calculated for ranking function $f$ and using smoothing parameter $\sigma$, based on the smoothed indicator function $h_{i,j}$ as defined in Equation \ref{eq:soft_NDCG}. This smoothed version of the Burges \ac{NDCG} is defined in Equation \ref{eq:smooth_NDCG}.
+\begin{equation}
+A_q(f,\sigma) = \sum\nolimits_{i=1}^{n} \sum\nolimits_{j=1}^{n} \frac{2^{rel_i}-1}{\log_2(j+1)} h_{i,j}
+\label{eq:smooth_NDCG}
+\end{equation}
 
 \LinesNumbered
 \begin{algorithm}[H]
@@ -96,7 +104,7 @@ FenchelRank \cite{Lai2013} is a ranking method that addresses the sparse Learnin
 \label{eq:pairwise_l1_loss}
 \end{equation}
 
-\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term. Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate the optimal value of this non-differentiable optimisation problem by instead solving the Fenchel dual of the optimisation problem.
+\noindent where $I_{C}(w)$ is a function that is 0 if condition $C$ is satisfied, and $\infty$ otherwise. $w$ is the weight vector with the weights of the features. $r$ is a hyper-parameter of the model that represents the radius of the $\ell_1$ ball. $m$ is the dimension of the data, $p$ is the number of comparable object pairs, $K$ is a matrix in $\mathbb{R}^{p \times m}$ that contains pairwise information. The objective function in Equation \ref{eq:pairwise_l1_loss} is not differentiable everywhere because of its $\ell_1$-norm regularisation term. Fenchel's duality theorem \cite{Rifkin2007}, defined in Equation \ref{eq:fenchel_duality_theorem}, provides a way to approximate the optimal value of this non-differentiable optimisation problem by instead solving the Fenchel dual of the optimisation problem.
 \begin{equation}
 \min_x(f(x)-g(x)) = \max_p(g_*(p)-f^*(p))
 \label{eq:fenchel_duality_theorem}
@@ -117,18 +125,18 @@ Algorithm \ref{alg:fenchelrank} shows the FenchelRank training algorithm to opti
  \KwIn{desired accuracy $\epsilon$, maximum number of iterations $T$ and the radius $r$ of the $\ell1$ ball.}
  Initialize: $w_1$ = $0_m$\\
  \For{$t\leftarrow 1$ \KwTo $T$}{
- 	\emph{//check if the early stopping criterion is satisfied}\\
+ 	\emph{// check if the early stopping criterion is satisfied}\\
  	\If{$||g_{t}||_{\infty} + \langle d_{t}, -Kw_{t} \rangle \le \epsilon$}{
- 	\emph{//here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$,} \\
+ 	\emph{// here $d_{t} = \nabla f^{*}(-Kw_{t}) = \frac{\partial f^{*}(-Kw)}{\partial(Kw)}|w=w_{t}$,} \\
  	\emph{// $\langle x,y \rangle$ represents the inner products of vectors $x$ and $y$, and}\\
  	\emph{// $g_{t} = d_{t}^{T}K$}\\
  	return $w_{t}$ as ranking predictor $w$
  	}
- \emph{//greedily choose a feature to update}\\
+ \emph{// greedily choose a feature to update}\\
  Choose $j_{t} = \argmax_{j}|(g_t)_j)|$\\
- \emph{//compute an appropriate step size}\\
+ \emph{// compute an appropriate step size}\\
  Let $\mu_t = \argmax_{0 \le \mu_{t} \le 1} D((1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})_{j_{t}})e^{j_{t}})$\\
- \emph{//update the model with the chosen feature and step size}\\
+ \emph{// update the model with the chosen feature and step size}\\
  Update $w_{t+1}=(1-\mu_{t})w_{t} + \mu_{t}\sign((g_{t})j_{t})e^{j_{t}}$
  }
  return $w_{T}$ as ranking predictor for $w$
@@ -141,27 +149,27 @@ Lai et al. \cite{Lai2013c} observed that existing feature selection methods in L
 
 FSMRank uses an extended version of gradient descent optimisation, proposed by Yuri Nesterov, that enables faster convergence for convex problems \cite{Nesterov2004}. Nesterov's accelerated gradient descent can guarantee an $\epsilon$-accurate solution in at most $T$ iterations where $\epsilon=\mathcal{O}(1/T^2)$.\\
 
-Let $S = {(q_k, \hat{X}^{(q_k), Y^{(q_k)}})}_{k=1}^n$ be a training set with queries $q_k$, corresponding retrieval objects $\hat{X}^{(q_k)}$, and corresponding relevance labels $Y^{(q_k)}$. Let $||x||_1$ be the $l_1$-norm regularisation function that is defined as $||x||_1 = \sum\nolimits_i |x_i|$. Let $\oslash$ be the element-wise division operator. $\hat{A}$ is a $d \times d$ similarity matrix that contains similarity scores between features. The convex joint optimisation function in FSMRank is defined as shown in Equation \ref{eq:fsmrank_optimisation_function}.
+Let $S = {(q_k, x^{(q_k)}, y^{(q_k)})}_{k=1}^n$ be a training set with queries $q_k$, corresponding retrieval objects $x^{(q_k)}$, and corresponding relevance labels $y^{(q_k)}$. Let $||x||_1$ be the $l_1$-norm regularisation function that is defined as $||x||_1 = \sum\nolimits_i |x_i|$. FSMRank defines a normalisation preprocessing step following the formula $x' = \frac{x - min(x)}{max(x)-min(x)}$ to scale the input features to a $[0,1]$-range. Let $\oslash$ be the element-wise division operator. $\hat{A}$ is a $d \times d$ similarity matrix that contains similarity scores between features. The convex joint optimisation function in FSMRank is defined as shown in Equation \ref{eq:fsmrank_optimisation_function}.
 \begin{equation}
-\min_{\hat{w}} \frac{\lambda_1}{2} \hat{w}^T \hat{A}\hat{w} + \lambda_2 ||\hat{w}\oslash\hat{s}||_1 + f(\hat{w}, (\hat{X}^{(q_k)}, Y^{(q_k)})_{k=1}^n)
+\min_{\hat{w}} \frac{\lambda_1}{2} \hat{w}^T \hat{A}\hat{w} + \lambda_2 ||\hat{w}\oslash\hat{s}||_1 + f(\hat{w}, (x^{(q_k)}, y^{(q_k)})_{k=1}^n)
 \label{eq:fsmrank_optimisation_function}
 \end{equation}
-\noindent The first term in Equation \ref{eq:fsmrank_optimisation_function} applies a penalty on redundancy of large weighted features by using the $\hat{A}$ matrix. The well-known Pearson correlation coefficient is used to calculate similarity matrix $\hat{A}$, based on the values for the features in the training data. $\lambda_1$ is a hyper-parameter of the model and can be used to set the weight of the similarity penalty term.\\
+\noindent The first term in Equation \ref{eq:fsmrank_optimisation_function} applies a penalty on redundancy of large weighted features by using the $\hat{A}$ matrix. The well-known Pearson correlation coefficient is used to calculate similarity matrix $\hat{A}$, based on the values for the features in the training data. $\lambda_1$ is a hyper-parameter of the model and can be used to set the weight of the similarity penalty term. $\hat{w}$ is the weight vector of the features.\\
 
-The second term of Equation \ref{eq:fsmrank_optimisation_function} contains a $\ell_1$-norm regularisation term to select the effective features from the feature set. $\lambda_2$ is a hyper-parameter of the model and can be used to set the weight of the regularisation term.\\
+The second term of Equation \ref{eq:fsmrank_optimisation_function} contains a $\ell_1$-norm regularisation term to select the effective features from the feature set. $\lambda_2$ is a hyper-parameter of the model and can be used to set the weight of the regularisation term. The $\hat{s}$ term is a vector containing importance scores of the features. It is not defined which metric is used to calculate these importance scores, but the range of the importance scores is said to be [0,1].\\
 
 The third and last term of the equation represents the loss function in terms of ranking errors. Loss function $f$ can in theory be any convex loss function, but Lai et al. \cite{Lai2013c} used a squared hinge loss function for their evaluation measurements.\\
 
-Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. As stated, FSMRank uses an  extended version of Nesterov's accelerated gradient method. This optimisation method can handle optimisation problems in the form of $\min_w \l(w) + r(w)$ where $l(w)$ is a convex function with Lipschitz gradient and $r(w)$ is convex, but non-smooth. The optimization function of Equation \ref{eq:fsmrank_optimisation_function} is reformulated to match this form as presented in Equation \ref{eq:fsmrank_optimisation_reformulated}.
+Algorithm \ref{alg:fsmrank} shows the steps of the FSMRank training algorithm. As stated, FSMRank uses an  extended version of Nesterov's accelerated gradient method. This optimisation method can handle optimisation problems in the form of $\min_w l(w) + r(w)$ where $l(w)$ is a convex function with Lipschitz gradient and $r(w)$ is convex, but non-smooth. The optimization function of Equation \ref{eq:fsmrank_optimisation_function} is reformulated to match this form as presented in Equation \ref{eq:fsmrank_optimisation_reformulated}.
 \begin{equation}
 \argmin_{w_t:w_t\in \mathbb{R}} Q(w_t,z_t) = \lambda_2 \sum\nolimits_{i=1}^{2d}\frac{w_i}{s_i}+\langle l^{'}(z_t),w_t-z_t \rangle+\frac{L}{2}||w_t-z_t||^2
 \label{eq:fsmrank_optimisation_reformulated}
 \end{equation}
-\noindent where $Q(w_t,z_t)$ is a combination of the non-smooth part $r(w_t)$ and a quadratic approximation of the smooth part $l(w_t)$. $\lambda_1$, $\lambda_2$ and Lipschitz constant $L_0$ are input parameters of the algorithm and can be optimised through cross-validation or on a validation set.\\
+\noindent where $Q(w_t,z_t)$ is a combination of the non-smooth part $r(w_t)$ and a quadratic approximation of the smooth part $l(w_t)$. The $l(z_t)$ function is defined as $l(z_t) = \lambda_1 / 2z_t^{T}Az_t+f(z_t)$. $\lambda_1$, $\lambda_2$ (both used in function $Q$) and Lipschitz constant $L_0$ are input parameters of the algorithm and can be optimised through cross-validation or on a validation set.\\
 
 \LinesNumbered
 \begin{algorithm}[H]
- \KwData{training set $S = {(q_k,\hat{X}^{(q_k)},Y^(q_k)}_{k=1}^{n}$}
+ \KwData{training set $S = {(q_k,x^{(q_k)},y^(q_k)}_{k=1}^{n}$}
  \KwIn{$\lambda_1, \lambda_2, T \text{ and } L_0$}
  Initialize: $w_0=z_1=0, \alpha_1=1, \gamma=2, L=L_0/\gamma^{10}$\\
  \For{$t\leftarrow 1$ \KwTo $T$}{
