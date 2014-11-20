@@ -66,26 +66,25 @@ Setting the degree of parallelisation is crucial to obtain optimal cluster utili
 The following sections describe the Pig jobs that jointly form the three independent parts of the ListNet ranking model: 1) Preprocessing, 2) Training (this includes evaluation over the validation set) and 3) Testing (evaluation over the test set). 
 \subsection{Preprocessing}
 \label{ssec:preprocessing}
-The preprocessing phase consists of two separate Pig jobs. The first Pig job determines the minimum and the maximum values per feature in the training set. The second Pig job rescales each feature of the train, validation and test data sets using the following formula for rescaling:
+The preprocessing phase consists of two separate Pig jobs. The first Pig job (Algorithm \ref{alg:pig_normalisation_1}) determines the minimum and the maximum values per feature in the training set. The second Pig job (Algorithm \ref{alg:pig_normalisation_2}) rescales each feature of the train, validation and test data sets using the following formula for rescaling:
 \begin{equation}
 x^{'} = \frac{x-min(x)}{max(x)-min(x)}
 \label{eq:rescaling}
 \end{equation}
 This rescaling procedure sets the values of all features to be within range $[0,1]$.\\
 
-The first Pig job:\\
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-REGISTER [path prefix]/lib/*.jar;
-TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');
-TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
-TRAIN_STD_BY_QUERY = GROUP TRAIN_STD BY $1 PARALLEL [available reducers];
-MIN_MAX = FOREACH TRAIN_STD_BY_QUERY GENERATE flatten(udf.util.GetMinMax(*));
-MIN_MAX_GRPD = GROUP MIN_MAX ALL;
-MIN_MAX_FIN = FOREACH MIN_MAX_GRPD GENERATE flatten(udf.util.CombineMinMax(*));
-STORE MIN_MAX_FIN INTO 'minmax[fold number]';
-\end{lstlisting}
-\end{minipage}\\
+\begin{algorithm}
+REGISTER [path prefix]/lib/*.jar;\\
+TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');\\
+TRAIN\_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));\\
+TRAIN\_STD\_BY\_QUERY = GROUP TRAIN\_STD BY \$1 PARALLEL [available reducers];\\
+MIN\_MAX = FOREACH TRAIN\_STD\_BY\_QUERY GENERATE flatten(udf.util.GetMinMax(*));\\
+MIN\_MAX\_GRPD = GROUP MIN\_MAX ALL;\\
+MIN\_MAX\_FIN = FOREACH MIN\_MAX\_GRPD GENERATE flatten(udf.util.CombineMinMax(*));\\
+STORE MIN\_MAX\_FIN INTO 'minmax[fold number]';\\
+\caption{The first Pig job of the normalisation preprocessing procedure}
+\label{alg:pig_normalisation_1}
+\end{algorithm}
 
 All expressions between square brackets in the code snippet above are dynamically set by the framework. The minimum and maximum values per feature stored in MIN\_MAX\_FIN are read from storage by the framework after completion of the MapReduce job. The framework passes these minimum and maximum values to the second Pig job by passing an array of minimum and maximum values to the constructor of the udf.util.ScaleFeatures() \ac{UDF}, that performs the rescaling operation of Equation \ref{eq:rescaling}.\\
 
@@ -103,25 +102,24 @@ udf.util.CombineMinMax() & Combines outputs of the udf.util.GetMinMax() UDF for 
 \label{tbl:preprocessing_udfs_1}
 \end{table}
 
-The second Pig job:\\
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-REGISTER [path prefix]/lib/*.jar;
-TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');
-VALIDATE = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/vali.txt' USING PigStorage(' ');
-TEST = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/test.txt' USING PigStorage(' ');
-TRAIN_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));
-VALIDATE_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));
-TEST_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));
-DEFINE ScaleFeatures udf.util.ScaleFeatures('[array with minimum and maximum feature values]');
-TRAIN_SCA = FOREACH TRAIN_STD GENERATE flatten(ScaleFeatures(*));
-VALIDATE_SCA = FOREACH VALIDATE_STD GENERATE flatten(ScaleFeatures(*));
-TEST_SCA = FOREACH TEST_STD GENERATE flatten(ScaleFeatures(*));
-STORE TRAIN_SCA INTO 'train_sca[fold number]' USING BinStorage();
-STORE VALIDATE_SCA INTO 'validate_sca[fold number]' USING BinStorage();
-STORE TEST_SCA INTO 'test_sca[fold number]' USING BinStorage();
-\end{lstlisting}
-\end{minipage}\\
+\begin{algorithm}
+REGISTER [path prefix]/lib/*.jar;\\
+TRAIN = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/train.txt' USING PigStorage(' ');\\
+VALIDATE = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/vali.txt' USING PigStorage(' ');\\
+TEST = LOAD '[path prefix]/input/[data set name]/Fold[fold number]/test.txt' USING PigStorage(' ');\\
+TRAIN\_STD = FOREACH TRAIN GENERATE flatten(udf.util.ToStandardForm(*));\\
+VALIDATE\_STD = FOREACH VALIDATE GENERATE flatten(udf.util.ToStandardForm(*));\\
+TEST\_STD = FOREACH TEST GENERATE flatten(udf.util.ToStandardForm(*));\\
+DEFINE ScaleFeatures udf.util.ScaleFeatures('[array with minimum and maximum feature values]');\\
+TRAIN\_SCA = FOREACH TRAIN\_STD GENERATE flatten(ScaleFeatures(*));\\
+VALIDATE\_SCA = FOREACH VALIDATE\_STD GENERATE flatten(ScaleFeatures(*));\\
+TEST\_SCA = FOREACH TEST\_STD GENERATE flatten(ScaleFeatures(*));\\
+STORE TRAIN\_SCA INTO 'train\_sca[fold number]' USING BinStorage();\\
+STORE VALIDATE\_SCA INTO 'validate\_sca[fold number]' USING BinStorage();\\
+STORE TEST\_SCA INTO 'test\_sca[fold number]' USING BinStorage();\\
+\caption{The second Pig job of the normalisation preprocessing procedure}
+\label{alg:pig_normalisation_2}
+\end{algorithm}
 
 \begin{table}
 \centering
@@ -137,28 +135,31 @@ udf.util.ScaleFeatures() & Uses the minimum and maximum feature values with whic
 \end{table}
 
 \subsection{Training}
-The Pig jobs that form the ListNet training phase form an implementation of the theoretical description of ListNet as described in section \ref{sec:ltrmethods_listnet}. The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job is an internal validation step that validates the model on the validation set by calculating \ac{NDCG}@k.\\
+The Pig jobs that form the ListNet training phase form an implementation of the theoretical description of ListNet as described in section \ref{sec:ltrmethods_listnet}. The training stage, like the preprocessing stage, consists of two separate Pig jobs. The first Pig job, displayed in Algorithm \ref{alg:pig_listnet_1}, calculates the Cross Entropy loss on training data of the current model and calculates the gradients for the next model update. The second Pig job (Algorithm \ref{alg:pig_listnet_2}) is an internal validation step that validates the model on the validation set by calculating \ac{NDCG}@k.\\
 
-The first Pig job:\\
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-REGISTER [path prefix]/lib/*.jar;
-DEFINE QueryLossGradient udf.listnet.QueryLossGradient('[feature dimensionality of data set]');
-DEFINE ExpRelOurScores udf.listnet.ExpRelOurScores('[neural network weights & iteration number]');
-[FIRST TRAINING ITERATION:]
-	TRAIN_SCA = LOAD 'train_sca[fold number]/*' USING BinStorage();
-	TR_BY_QUERY = GROUP TRAIN_SCA BY $1 PARALLEL [number of avaiable reducers];
-	TR_EXP_REL_SCORES = FOREACH TR_BY_QUERY GENERATE flatten(ExpRelOurScores(TRAIN_SCA));
-	STORE TR_EXP_REL_SCORES INTO 'tr_exp_rel_scores-f[fold number]' USING BinStorage();
-[SUBSEQUENT TRAINING ITERATIONS:]
-	TR_EXP_REL_SCORES = LOAD 'tr_exp_rel_scores-f[fold number]/*' USING BinStorage();
-	TR_EXP_REL_SCORES = FOREACH TR_EXP_REL_SCORES GENERATE flatten(ExpRelOurScores(*)) PARALLEL [number of available reducers];
-TR_QUERY_LOSS_GRADIENT = FOREACH TR_EXP_REL_SCORES GENERATE flatten(QueryLossGradient(*)) PARALLEL [number of available reducers];
-TR_QUERY_LOSS_GRADIENT_GRPD = GROUP TR_QUERY_LOSS_GRADIENT ALL;
-TR_LOSS_GRADIENT = FOREACH TR_QUERY_LOSS_GRADIENT_GRPD GENERATE flatten(udf.listnet.MultiSum(*));
-STORE TR_LOSS_GRADIENT INTO 'tr_loss_gradient-f[fold number]i[iteration number]';
-\end{lstlisting}
-\end{minipage}\\
+\begin{algorithm}
+REGISTER [path prefix]/lib/*.jar;\\
+DEFINE QueryLossGradient udf.listnet.QueryLossGradient('[feature dimensionality of data set]');\\
+DEFINE ExpRelOurScores udf.listnet.ExpRelOurScores('[neural network weights \& iteration number]');\\
+$[$FIRST TRAINING ITERATION:$]$\\
+\Indp
+	TRAIN\_SCA = LOAD 'train\_sca[fold number]/*' USING BinStorage();\\
+	TR\_BY\_QUERY = GROUP TRAIN\_SCA BY \$1 PARALLEL [number of avaiable reducers];\\
+	TR\_EXP\_REL\_SCORES = FOREACH TR\_BY\_QUERY GENERATE flatten(ExpRelOurScores(TRAIN\_SCA));\\
+	STORE TR\_EXP\_REL\_SCORES INTO 'tr\_exp\_rel\_scores-f[fold number]' USING BinStorage();\\
+\Indm 
+$[$SUBSEQUENT TRAINING ITERATIONS:$]$\\
+\Indp
+TR\_EXP\_REL\_SCORES = LOAD 'tr\_exp\_rel\_scores-f[fold number]/*' USING BinStorage();\\
+TR\_EXP\_REL\_SCORES = FOREACH TR\_EXP\_REL\_SCORES GENERATE flatten(ExpRelOurScores(*)) PARALLEL [number of available reducers];\\
+\Indm
+TR\_QUERY\_LOSS\_GRADIENT = FOREACH TR\_EXP\_REL\_SCORES GENERATE flatten(QueryLossGradient(*)) PARALLEL [number of available reducers];\\
+TR\_QUERY\_LOSS\_GRADIENT\_GRPD = GROUP TR\_QUERY\_LOSS\_GRADIENT ALL;\\
+TR\_LOSS\_GRADIENT = FOREACH TR\_QUERY\_LOSS\_GRADIENT\_GRPD GENERATE flatten(udf.listnet.MultiSum(*));\\
+STORE TR\_LOSS\_GRADIENT INTO 'tr\_loss\_gradient-f[fold number]i[iteration number]';\\
+\caption{The second Pig job of the normalisation preprocessing procedure}
+\label{alg:pig_listnet_1}
+\end{algorithm}
 
 The actual neural network weights, passed by the framework as constructor parameter in the script above, are administered in Java code. The per-feature gradients calculated by the Pig job above are read from storage after completion and used to update the neural network by, for each feature, adding the feature gradient multiplied with a step size parameter to the previous feature weight.
 
@@ -176,25 +177,28 @@ udf.listnet.MultiSum() & Calculates aggregated loss and feature gradients by sum
 \label{tbl:training_udfs_1}
 \end{table}
 
-The second Pig job of the training stage validates the performance of the model weights that were trained in the first Pig job on the validation data set.\\
+The second Pig job of the training stage, shown in Algorithm \ref{alg:pig_listnet_2}, validates the performance of the model weights that were trained in the first Pig job on the validation data set.\\
 
-The second Pig job:\\
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-REGISTER [path prefix]/lib/*.jar;
-DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
-[FIRST TRAINING ITERATION:]
-	VALIDATE_SCA = LOAD 'validate_sca[fold number]/*' USING BinStorage();
-	VA_BY_QUERY = GROUP VALIDATE_SCA BY $1 PARALLEL [number of available reducers];
-	STORE VA_BY_QUERY INTO 'va_by_query-f[fold number]' USING BinStorage();
-[SUBSEQUENT TRAINING ITERATIONS:]
-	VA_BY_QUERY = LOAD 'va_by_query-f[fold number]/*' USING BinStorage();
-NDCG = FOREACH VA_BY_QUERY GENERATE Ndcg(*);
-NDCG_GRPD = GROUP NDCG ALL;
-AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
-STORE AVG_NDCG INTO 'avg_ndcg-f[fold number]i[iteration number]';
-\end{lstlisting}
-\end{minipage}\\
+\begin{algorithm}
+REGISTER [path prefix]/lib/*.jar;\\
+DEFINE Ndcg udf.util.Ndcg('[neural network weights \& NDCG cut-off parameter]');\\
+$[$FIRST TRAINING ITERATION:$]$\\
+\Indp
+	VALIDATE\_SCA = LOAD 'validate\_sca[fold number]/*' USING BinStorage();\\
+	VA\_BY\_QUERY = GROUP VALIDATE\_SCA BY \$1 PARALLEL [number of available reducers];\\
+	STORE VA\_BY\_QUERY INTO 'va\_by\_query-f[fold number]' USING BinStorage();\\
+\Indm 
+$[$SUBSEQUENT TRAINING ITERATIONS:$]$\\
+\Indp
+VA\_BY\_QUERY = LOAD 'va\_by\_query-f[fold number]/*' USING BinStorage();\\
+\Indm 
+NDCG = FOREACH VA\_BY\_QUERY GENERATE Ndcg(*);\\
+NDCG\_GRPD = GROUP NDCG ALL;\\
+AVG\_NDCG = FOREACH NDCG\_GRPD GENERATE AVG(NDCG);\\
+STORE AVG\_NDCG INTO 'avg\_ndcg-f[fold number]i[iteration number]';\\
+\caption{The second Pig job of the normalisation preprocessing procedure}
+\label{alg:pig_listnet_2}
+\end{algorithm}
 
 \begin{table}
 \centering
