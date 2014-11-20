@@ -157,7 +157,7 @@ TR\_QUERY\_LOSS\_GRADIENT = FOREACH TR\_EXP\_REL\_SCORES GENERATE flatten(QueryL
 TR\_QUERY\_LOSS\_GRADIENT\_GRPD = GROUP TR\_QUERY\_LOSS\_GRADIENT ALL;\\
 TR\_LOSS\_GRADIENT = FOREACH TR\_QUERY\_LOSS\_GRADIENT\_GRPD GENERATE flatten(udf.listnet.MultiSum(*));\\
 STORE TR\_LOSS\_GRADIENT INTO 'tr\_loss\_gradient-f[fold number]i[iteration number]';\\
-\caption{The second Pig job of the normalisation preprocessing procedure}
+\caption{The first Pig job of the ListNet training procedure}
 \label{alg:pig_listnet_1}
 \end{algorithm}
 
@@ -196,7 +196,7 @@ NDCG = FOREACH VA\_BY\_QUERY GENERATE Ndcg(*);\\
 NDCG\_GRPD = GROUP NDCG ALL;\\
 AVG\_NDCG = FOREACH NDCG\_GRPD GENERATE AVG(NDCG);\\
 STORE AVG\_NDCG INTO 'avg\_ndcg-f[fold number]i[iteration number]';\\
-\caption{The second Pig job of the normalisation preprocessing procedure}
+\caption{The second Pig job of the ListNet training procedure}
 \label{alg:pig_listnet_2}
 \end{algorithm}
 
@@ -213,18 +213,17 @@ udf.util.Ndcg() & Calculates \ac{NDCG}@k for a query.\\
 \end{table}
 
 \subsection{Testing}
-The testing stage tests the best model found in the training iterations, selected on validation set \ac{NDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{NDCG}@k of this model on the test set.\\
+The testing stage tests the best model found in the training iterations, selected on validation set \ac{NDCG}@k (as calculated in the second Pig job of the training stage), by calculating the \ac{NDCG}@k of this model on the test set. Algorithm \ref{alg:pig_test} describes the Pig code for model evaluation on the test data set.\\
 
-Test stage Pig job:\\
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-REGISTER [path prefix]/lib/*.jar;
-TEST_SCA = LOAD 'test_sca[fold number]/*' USING BinStorage();
-TE_BY_QUERY = GROUP TEST_SCA BY $1 PARALLEL [number of available reducers];
-DEFINE Ndcg udf.util.Ndcg('[neural network weights & NDCG cut-off parameter]');
-NDCG = FOREACH TE_BY_QUERY GENERATE Ndcg(*);
-NDCG_GRPD = GROUP NDCG ALL;
-AVG_NDCG = FOREACH NDCG_GRPD GENERATE AVG(NDCG);
-STORE AVG_NDCG INTO 'avg_ndcg';
-\end{lstlisting}
-\end{minipage}\\
+\begin{algorithm}
+REGISTER [path prefix]/lib/*.jar;\\
+TEST\_SCA = LOAD 'test\_sca[fold number]/*' USING BinStorage();\\
+TE\_BY\_QUERY = GROUP TEST\_SCA BY \$1 PARALLEL [number of available reducers];\\
+DEFINE Ndcg udf.util.Ndcg('[neural network weights \& NDCG cut-off parameter]');\\
+NDCG = FOREACH TE\_BY\_QUERY GENERATE Ndcg(*);\\
+NDCG\_GRPD = GROUP NDCG ALL;\\
+AVG\_NDCG = FOREACH NDCG\_GRPD GENERATE AVG(NDCG);\\
+STORE AVG\_NDCG INTO 'avg\_ndcg';
+\caption{The Pig job for model evaluation}
+\label{alg:pig_test}
+\end{algorithm}
