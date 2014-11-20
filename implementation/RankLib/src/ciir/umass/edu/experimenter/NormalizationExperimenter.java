@@ -27,8 +27,8 @@ public class NormalizationExperimenter {
 
         Set<DataSets.DataSet>       datasets            = new HashSet<DataSets.DataSet>();
         // Add all LETOR 3.0 data sets
-        //datasets.add(DataSets.DataSet.MSLR_WEB30K);
-        datasets.add(DataSets.DataSet.MSLR_WEB10K);
+        datasets.add(DataSets.DataSet.MSLR_WEB30K);
+        //datasets.add(DataSets.DataSet.MSLR_WEB10K);
 
         BufferedWriter out = null;
         try {

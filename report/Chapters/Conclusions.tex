@@ -12,7 +12,7 @@ Where the definition of \emph{relative speed-up} is used for speed-up \cite{Sun1
 
 $S_N = \frac{\text{execution time using one core}}{\text{execution time using \emph{N} cores}}$\\
 
-To answer this research question, we took the approach of implementing the list of algorithms found in answering the first research question, starting with the Learning to Rank method with the highest certainty on ranking accuracy, ListNet.\\
+To answer this research question, we implemented the ListNet algorithm that was found to have the highest certainty in ranking accuracy.\\
 
 We found that running ListNet on a Hadoop cluster using the MapReduce computing model comes with its own cost in the form of a job scheduling overhead in the range of 150-200 seconds per training iteration. This makes Hadoop very inefficient for the processing of small data sets, where the Hadoop overhead tends to make up a large share of the total processing time. For small data sets where the constant 150-200 seconds job scheduling overhead is a large fraction of the total processing time, single-machine computation, which does not have this job scheduling overhead, is found to be faster than Hadoop MapReduce computation. For large data sets, where 150-200 seconds overhead per iteration is small compared to the total time that it would take to process the data, Hadoop MapReduce can provide a speed-up to the training process. ListNet on a single machine does not scale well to data sizes larger than the physical memory size. To process large data sets with the ListNet training algorithm, Hadoop MapReduce is a large improvement compared to a single machine.\\
 
