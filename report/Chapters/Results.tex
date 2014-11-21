@@ -4,11 +4,11 @@ This chapter describes and discusses the results of the execution time measureme
 \subsection{Ranking accuracy}
 To validate our ListNet cluster implementation we run experiments on the LETOR 3.0 OHSUMED, the LETOR 4.0 datasets MQ2007 and MQ2008 and compare their performance with the RankLib implementation of ListNet and with the official evaluation results in terms of \ac{NDCG}@10. Hadoop job scheduling overhead is relatively large when processing relatively small datasets (as we will explain in more detail in section \ref{ssec:speedup}), therefore \ac{NDCG}@10 experiments are limited to five training iterations and are run only on one of the five folds. Because of the stochastic nature of the ListNet ranking procedure, which is a result of random weight initialisation prior to the first training iteration, the \ac{NDCG}@10 performance is not guaranteed to be identical between multiple runs on the same input data. To account for this non-determinism in ListNet, we repeat each experiment five times and report the average as well as the standard deviation of the resulting rankings on the testing fold in terms of \ac{NDCG}@10.\\
 
-Table \ref{tbl:accuracy_comparison} shows the mean and the standard deviation of the ranking accuracy in \ac{NDCG}@10 on the first data fold for our own cluster implementation (with and without the preprocessing step described in section \ref{ssec:preprocessing}) of ListNet, the RankLib implementation of ListNet, as well as the official LETOR evaluation results of ListNet as reported on the LETOR 3.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and LETOR 4.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} websites. Note that the official LETOR evaluation results are structurally higher compared to the results obtained with RankLib and our cluster implementation, which can be attributed to the fact that the official evaluation runs use as many ListNet iterations as needed for convergence on the validation fold, while we limited our experiment to five iterations. The official evaluation results of the LETOR benchmarks do not report the standard deviation of their experimental results and it is not mentioned in the LETOR 3.0 and 4.0 papers \cite{Qin2010, Qin2013} how many times their experiments were repeated. For the ListNet step size hyperparameter we choose a value of $0.0001$, which is the default value step size value in RankLib, for both the cluster and the RankLib runs. It is not clear what step size was used in the official evaluation runs. We expect, given that LETOR aims to compare ranking methods in terms of their ranking potential, that the official LETOR benchmark results optimises the step size hyperparameter on the validation set and reported the performance on the optimal step size found with this procedure. Using this procedure one is expected to find a higher ranking accuracy than one would expect to find using a default step size value. Hyperparameter optimisation on the validation set would however not be feasible for our cluster implementation of ListNet given the Hadoop job scheduling overhead of the cluster.\\
+Table \ref{tbl:accuracy_comparison} shows the mean and the standard deviation of the ranking accuracy in \ac{NDCG}@10 on the first data fold for our own cluster implementation (with and without the preprocessing step described in section \ref{ssec:preprocessing}) of ListNet, the RankLib implementation of ListNet, as well as the official LETOR evaluation results of ListNet as reported on the LETOR 3.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor3baseline.aspx} and LETOR 4.0 \footnote{http://research.microsoft.com/en-us/um/beijing/projects/letor/letor4baseline.aspx} websites. Note that the official LETOR evaluation results are structurally higher compared to the results obtained with RankLib and our cluster implementation, which can be attributed to the fact that the official evaluation runs use as many ListNet iterations as needed for convergence on the validation fold, while we limited our experiment to five iterations. The official evaluation results of the LETOR benchmarks do not report the standard deviation of their experimental results and it is not mentioned in the LETOR 3.0 and 4.0 papers \cite{Qin2010, Qin2013} how many times their experiments were repeated. For the ListNet step size hyperparameter we choose a value of $1*10^{-4}$, which is the default value step size value in RankLib, for both the cluster and the RankLib runs. It is not clear what step size was used in the official evaluation runs. We expect, given that LETOR aims to compare ranking methods in terms of their ranking potential, that the official LETOR benchmark results optimises the step size hyperparameter on the validation set and reported the performance on the optimal step size found with this procedure. Using this procedure one is expected to find a higher ranking accuracy than one would expect to find using a default step size value. Hyperparameter optimisation on the validation set would however not be feasible for our cluster implementation of ListNet given the Hadoop job scheduling overhead of the cluster.\\
 
 The ranking accuracy of the ListNet cluster implementation without the normalisation preprocessing step seems very comparable to the ranking accuracy obtained with the RankLib ListNet implementation, which suggests that the ListNet ranking method is indeed implemented correctly. Note however that the standard deviations of the measured ranking accuracies are rather high, which leaves us unable to conclude that the ranking accuracy of RankLib ListNet and our cluster implementation are indeed equivalent in achieved ranking accuracy up to high precision.\\
 
-A remarkable finding is that the cluster implementation with the normalisation preprocessing procedure shows better ranking accuracy than the RankLib version of ListNet after five iterations. It seems to be the case that the normalisation procedure enables ListNet to converge faster. It has been shown in literature, that the gradient descent optimisation procedure, which is also being used in ListNet, converges faster on normalised data \cite{Ng1999}.
+A remarkable finding is that the cluster implementation with the normalisation preprocessing procedure shows better ranking accuracy than the RankLib version of ListNet after five iterations. It seems to be the case that the normalisation procedure enables ListNet to converge faster. It has been shown in literature that some neural network training algorithms converge faster on normalised data \cite{Ng1999}, however, this has not been researched in a Learning to Rank setting.\\
 
 \begin{table}
 \centering
@@ -24,6 +24,36 @@ Official evaluation                 & 0.3793 & 0.4689 & 0.4767 \\
 \caption{\acs{NDCG}@10 performance on the test set of the first fold}
 \label{tbl:accuracy_comparison}
 \end{table}
+
+Based on our own implementation of the normalisation preprocessing step that we added to the RankLib code, we further explored the effects of normalisation on the convergence rate of ListNet. We conducted experiments on the LETOR 3.0 datasets HP2003, NP2003 and TD2003 and on the MSLR-WEB10k data set. The LETOR 3.0 datasets are in published form already normalised on query-level, meaning that the $max(x)$ and $min(x)$ terms in the normalisation formula $x^{'} = \frac{x-min(x)}{max(x)-min(x)}$ are calculated per query instead of on the whole data set. The MSLR-WEB10k data set is not published in a normalised way. Looking at Figures \ref{fig:convergence_hp2003}, \ref{fig:convergence_np2003} and \ref{fig:convergence_td2003} that represent the convergence on HP2003, NP2003 and TD2003 respectively, we see that there is no difference in convergence properties between ListNet applied on globally normalised and query-level normalised data. Figure \ref{fig:convergence_mslrweb10k} shows that the ListNet convergence increases when normalisation preprocessing is applied to the unnormalised data set MSLR-WEB10k.
+
+\begin{figure}
+\centering
+\includegraphics[trim=5cm 5cm 5cm 5cm, scale=0.85]{gfx/convergence_hp2003.pdf}
+\caption{Convergence of ListNet on query-level and globally normalised versions of HP2003}
+\label{fig:convergence_hp2003}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[trim=5cm 5cm 5cm 5cm, scale=0.85]{gfx/convergence_np2003.pdf}
+\caption{Convergence of ListNet on query-level and globally normalised versions of NP2003}
+\label{fig:convergence_np2003}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[trim=5cm 5cm 5cm 5cm, scale=0.85]{gfx/convergence_td2003.pdf}
+\caption{Convergence of ListNet on query-level and globally normalised versions of TD2003}
+\label{fig:convergence_td2003}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[trim=5cm 5cm 5cm 5cm, scale=0.85]{gfx/convergence_mslr_web10k.pdf}
+\caption{Convergence of ListNet on normalised and unnormalised versions of MSLR-WEB10k}
+\label{fig:convergence_mslrweb10k}
+\end{figure}
 
 \subsection{Speedup}
 \label{ssec:speedup}
@@ -80,14 +110,14 @@ Figure \ref{fig:listnet_processing_speed} shows the processing speed in bytes pe
 
 \begin{figure}
 \centering
-\includegraphics[trim=5cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
+\includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.7]{gfx/speedup_faceted.pdf}
 \caption{Processing time of a single ListNet training iteration as a function of the number of data nodes in a cluster}
 \label{fig:speedup_train_time}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[trim=0cm 5cm 0cm 5cm, scale=0.8]{gfx/processing_speed_single_logx.pdf}
+\includegraphics[trim=5cm 5cm 0cm 5cm, scale=0.8]{gfx/processing_speed_single_logx.pdf}
 \caption{Processing speed of a single ListNet training iteration on various data sets}
 \label{fig:listnet_processing_speed}
 \end{figure}
