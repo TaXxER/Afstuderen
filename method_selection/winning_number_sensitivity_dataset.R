@@ -2,9 +2,12 @@ setwd("E:/Git/Afstuderen/method_selection")
 require(ggplot2)
 require(plyr)
 
+lo <- 10
+lo <- lo+1
+
 ### MAP ###
 #read data
-map_data = read.csv("map_results.csv")
+map_data = read.csv("map_results.csv")[-lo]
 
 #data transformations
 map_temp <- map_data[,c(2:(length(map_data)-2))]
@@ -29,7 +32,7 @@ map_output <- map_output[, c(ncol(map_output), 1:(ncol(map_output)-1))]
 
 ### NDCG@3 ###
 # read data
-ndcg3_data = read.csv("ndcg3_results.csv")
+ndcg3_data = read.csv("ndcg3_results.csv")[-lo]
 
 # data transformations
 ndcg3_temp <- ndcg3_data[,c(2:(length(ndcg3_data)-2))]
@@ -50,7 +53,7 @@ ndcg3_output <- data.frame("Method" = ndcg3_data[,1], "Normalised_winning_number
 
 ### NDCG@5 ###
 # read data
-ndcg5_data = read.csv("ndcg5_results.csv")
+ndcg5_data = read.csv("ndcg5_results.csv")[-lo]
 
 # data transformations
 ndcg5_temp <- ndcg5_data[,c(2:(length(ndcg5_data)-2))]
@@ -75,7 +78,7 @@ ndcg5_output <- ndcg5_output[, c(ncol(ndcg5_output), 1:(ncol(ndcg5_output)-1))]
 
 ### NDCG@10 ###
 #read data
-ndcg10_data = read.csv("ndcg10_results.csv")
+ndcg10_data = read.csv("ndcg10_results.csv")[-lo]
 
 # data transformations
 ndcg10_temp <- ndcg10_data[,c(2:(length(ndcg10_data)-2))]
@@ -129,10 +132,12 @@ combined_output <- combined_output[, c(ncol(combined_output), 1:(ncol(combined_o
 #  scale_y_continuous("Normalised Winning Number", expand = c(0,0), breaks=c(0,0.2,0.4,0.6,0.8,1.0)) +
 #  expand_limits(x = c(0,18.03), y = c(0,1.03))
 
-ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +  
-  geom_text(aes(label=Method)) +
-  scale_x_continuous("Ideal Winning Number", expand = c(0,0)) + 
-  scale_y_continuous("Normalized Winning Number", expand=c(0,0)) +
-  expand_limits(x = c(0,1000), y = c(0,1.01)) +
-  theme(axis.title.y = element_text(size = rel(1.8), angle = 90)) +
-  theme(axis.title.x = element_text(size = rel(1.8), angle = 00))
+#ggplot(combined_aggregate, aes(Summed_ideal_winnum,Norm_winnum)) + geom_point(size=2) +  
+#  geom_text(aes(label=Method)) +
+#  scale_x_continuous("Ideal Winning Number", expand = c(0,0)) + 
+#  scale_y_continuous("Normalized Winning Number", expand=c(0,0)) +
+#  expand_limits(x = c(0,1000), y = c(0,1.01)) +
+#  theme(axis.title.y = element_text(size = rel(1.8), angle = 90)) +
+#  theme(axis.title.x = element_text(size = rel(1.8), angle = 00))
+
+combined_aggregate[c(47,78,21,27,49,45),3:4]
