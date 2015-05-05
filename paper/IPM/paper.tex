@@ -228,7 +228,7 @@ In this section we evaluate the stability of the obtained results when one of th
 To analyze the sensitivity of the comparison method in the evaluation measure dimension we repeated the NWN and IWN calculation while leaving one evaluation measure. Table \ref{tab:sensitivity_evaluation_measure} shows the NWN and IWN results when all evaluation measures are included in the computation and when MAP, NDCG@3, NDCG@5 or NDCG@10 are left out respectively. From this table we can infer that FSMRank is not a Pareto optimal ranking method when MAP is left out of the comparison (LRUF scores higher on both NWN and IWN) and FenchelRank is not a Pareto optimal ranking method when either NDCG@3 or NDCG@5 are left out (FSMRank scores higher on both NWN and IWN). All other orderings of ranking methods on NWN and IWN stay intact when one of the evaluation measures is left out of the comparison.\\
 
 Notable is that all Pareto optimal ranking methods have the largest increase in IWN as well as the largest decrease in NWN when the MAP measure is left out of the comparison. The NWN score of FSMRank increased almost $0.1$ when the MAP evaluation measure was left out, which is the highest deviation in NWN score seen in this sensitivity analysis. Note that MAP uses a binary notion of relevance, where NDCG uses graded relevance. The fact that all Pareto optimal rankers obtain an even higher NWN score when the MAP measure is left out shows that apparently the Pareto optimal rankers perform even better on ranking on graded relevance, compared to non-Pareto-optimal rankers.
-\begin{table}[!h]
+\begin{table}
 	\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lll|ll|ll|ll|ll}
 	& \multicolumn{2}{c}{All} & \multicolumn{2}{c}{MAP} & \multicolumn{2}{c}{NDCG@3} & \multicolumn{2}{c}{NDCG@5} & \multicolumn{2}{c}{NDCG@10} \\ 
@@ -246,13 +246,15 @@ Notable is that all Pareto optimal ranking methods have the largest increase in 
 \caption{NWN and IWN scores of the Pareto optimal rankers on all evaluation metrics, and with MAP, NDCG@3, NDCG@5 or NDCG@10 left out of the comparison respectively}
 \end{table}
 
-
 \subsection{Sensitivity in the dataset dimension}
 \label{subsec:sensitivity_data_set}
-In Table \ref{tbl:ltr_benchmark_collections} we showed to include 20 datasets in our comparison, originating from eight data collections. We analyzed the variance in NWN and IWN scores of the Pareto optimal rankers for the situations where one of the 20 datasets is not included in the NWN and IWN computation. The results are visualized in Figure \ref{fig:sensitivity_data_set} in a series of bagplots, which is a bivariate generalization of the boxplot proposed by \cite{Rousseeuw1999}.
-\begin{figure}[!h]
+In Table \ref{tbl:ltr_benchmark_collections} we showed to include 20 datasets in our comparison, originating from eight data collections. We analyzed the variance in NWN and IWN scores of the Pareto optimal rankers for the situations where one of the 20 datasets is not included in the NWN and IWN computation. The results are visualized in Figure \ref{fig:sensitivity_data_set} in a series of bagplots, which is a bivariate generalization of the boxplot proposed by \cite{Rousseeuw1999}. Bagplot extends the univariate concept of rank as used in a boxplot to a halfspace location depth. The \emph{depth median}, shown in orange, is the deepest location. Surrounding it is a \emph{bag}, the dark blue area in Figure \ref{fig:sensitivity_data_set}, containing $\frac{n}{2}$ observations with the largest depth. The light blue area represents the \emph{fence}, which magnifies the bag by a factor $3$.\\
+
+Note that the number of unique observations on which the bagplots are created is equal to the number of dataset on which a ranking method is evaluated (in any of the evaluation measures), as removing a dataset on which a ranking algorithm is not evaluated does not have any effect on the NWN and IWN scores. The difference between the leftmost and the rightmost points of the bags seems to be more or less equal for all ranking methods while the NWN means are decreasing from top-to-bottom and and left-to-right. Therefore, the variance-to-mean ratio increases from top-top-bottom and from left-to-right. On the IWN dimension it is notable that LRUF and LARF has very low variance. It is important to stress that this does not imply high certainty about the level of ranking performance of these ranking methods, it solely shows the low variance in the evaluation results available for the ranking methods. 
+
+\begin{figure}
 	\centering
-	\includegraphics[scale=0.5]{gfx/bagplots}
+	\includegraphics[scale=0.44]{gfx/bagplots}
 	\caption{Bagplots showing the variance in NWN and IWN of the Pareto optimal rankers when a dataset is left out of the comparison}
 	\label{fig:sensitivity_data_set}
 \end{figure}
@@ -269,7 +271,7 @@ Our comparison regarded evaluation results on NDCG@$\{3,5,10\}$ and MAP. By maki
 \section{Contributions}
 We proposed a new way of comparing learning to rank methods based on sparse evaluation results data on a set of benchmark datasets. Our comparison methodology comprises of two components: 1) NWN, which provides insight in the ranking accuracy of the learning to rank method, and 2) IWN, which gives insight in the degree of certainty concerning the performance of the ranking accuracy.\\
 
-Based on our literature search for evaluation results on well-known benchmarks collections, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others. However, no closing arguments can be formulated on which learning to rank methods are most accurate. LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were the learning to rank algorithms for which it holds that no other algorithm produced more accurate rankings with a higher degree of certainty of ranking accuracy. From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases.\\
+Based on our literature search for evaluation results on well-known benchmarks collections, a lot of insight has been gained with the cross-benchmark comparison on which methods tend to perform better than others. However, no closing arguments can be formulated on which learning to rank methods are most accurate. LRUF, FSMRank, FenchelRank, SmoothRank and ListNet were found to be the Pareto optimal learning to rank algorithms in the NWN and IWN dimensions: for these ranking algorithm it holds that no other algorithm produced both more accurate rankings (NWN) and a higher degree of certainty of ranking accuracy (IWN). From left to right, the ranking accuracy of these methods decreases while the certainty of the ranking accuracy increases.\\
 
 More evaluation runs are needed for the methods on the left side of Figure \ref{fig:normalized_winning_number_all}. Our work contributes to this by identifying promising learning to rank methods that researchers could focus on in performing additional evaluation runs.
 

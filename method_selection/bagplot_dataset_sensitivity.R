@@ -8,7 +8,7 @@ lruf        = read.csv("lruf_dataset_sensitivity.csv")
 larf		= read.csv("larf_dataset_sensitivity.csv")
 
 layout(matrix(c(1,2,3,4,5,6),3,2,byrow=TRUE)) 
-bagplot(listnet, show.whiskers=FALSE)
+bagplot(listnet, show.whiskers=FALSE, show.loophull=FALSE)
 title("ListNet")
 bagplot(smoothrank, show.whiskers=FALSE)
 title("SmoothRank")
