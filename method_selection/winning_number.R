@@ -101,13 +101,13 @@ combined_methods <- NULL
 combined_methods <- c(combined_methods, as.character(map_data[,1]))
 combined_methods <- c(combined_methods, as.character(ndcg3_data[,1]))
 combined_methods <- c(combined_methods, as.character(ndcg5_data[,1]))
-combined_methods <- c(combined_methods, as.character(ndcg10_data[,1]))
+#combined_methods <- c(combined_methods, as.character(ndcg10_data[,1]))
 
 combined_data <- NULL
 combined_data <- cbind(map_summed_winnum,map_summed_ideal_winnum)
 combined_data <- rbind(combined_data, cbind(ndcg3_summed_winnum, ndcg3_summed_ideal_winnum))
 combined_data <- rbind(combined_data, cbind(ndcg5_summed_winnum, ndcg5_summed_ideal_winnum))
-combined_data <- rbind(combined_data, cbind(ndcg10_summed_winnum, ndcg10_summed_ideal_winnum))
+#combined_data <- rbind(combined_data, cbind(ndcg10_summed_winnum, ndcg10_summed_ideal_winnum))
 
 combined <- cbind.data.frame(combined_methods,combined_data)
 colnames(combined) <- c("Method", "Summed_winnum", "Summed_ideal_winnum")

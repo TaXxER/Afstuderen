@@ -2,7 +2,7 @@ setwd("E:/Git/Afstuderen/method_selection")
 require(ggplot2)
 require(plyr)
 
-lo <- 10
+lo <- 25
 lo <- lo+1
 
 ### MAP ###

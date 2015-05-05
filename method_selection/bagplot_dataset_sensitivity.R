@@ -1,4 +1,5 @@
 library(aplpack)
+setwd("E:/Git/Afstuderen/method_selection/")
 listnet     = read.csv("listnet_dataset_sensitivity.csv")
 smoothrank  = read.csv("smoothrank_dataset_sensitivity.csv")
 fenchelrank = read.csv("fenchelrank_dataset_sensitivity.csv")
