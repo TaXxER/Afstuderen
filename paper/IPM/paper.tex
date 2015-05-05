@@ -8,6 +8,7 @@
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage{adjustbox}
 \renewcommand{\dblfloatpagefraction}{2.0}
 \usepackage{array}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -33,7 +34,7 @@
 the Netherlands}
 \address[tue]{Eindhoven University of Technology, P.O. Box 513, 5600MB Eindhoven, the Netherlands}
 \begin{abstract}
-Learning to rank is an increasingly important scientific field that comprises the use of machine learning for the ranking task. New learning to rank methods are generally evaluated on benchmark test collections. However, comparison of learning to rank methods based on evaluation results is hindered by non-existence of a standard set of evaluation benchmark collections. In this paper we propose a way to compare learning to rank methods based on a sparse set of evaluation results on a set of benchmark datasets. Our comparison methodology consists of two components: 1) Normalized Winning Number, which gives insight in the ranking accuracy of the learning to rank method, and 2) Ideal Winning Number, which gives insight in the degree of certainty concerning its ranking accuracy. Evaluation results of 87 learning to rank methods on 20 well-known benchmark datasets are collected through a structured literature search. ListNet, SmoothRank, FenchelRank, FSMRank, LRUF and LARF are the best performing learning to rank methods in increasing order of Normalized Winning Number and decreasing order of Ideal Winning Number.
+Learning to rank is an increasingly important scientific field that comprises the use of machine learning for the ranking task. New learning to rank methods are generally evaluated on benchmark test collections. However, comparison of learning to rank methods based on evaluation results is hindered by non-existence of a standard set of evaluation benchmark collections. In this paper we propose a way to compare learning to rank methods based on a sparse set of evaluation results on a set of benchmark datasets. Our comparison methodology consists of two components: 1) Normalized Winning Number, which gives insight in the ranking accuracy of the learning to rank method, and 2) Ideal Winning Number, which gives insight in the degree of certainty concerning its ranking accuracy. Evaluation results of 87 learning to rank methods on 20 well-known benchmark datasets are collected through a structured literature search. ListNet, SmoothRank, FenchelRank, FSMRank, LRUF and LARF are Pareto optimal learning to rank methods in the Normalized Winning Number and Ideal Winning Number dimensions, listed in increasing order of Normalized Winning Number and decreasing order of Ideal Winning Number.
 \end{abstract}
 \begin{keyword}
 Learning to rank \sep Information retrieval \sep Evaluation metric
@@ -43,7 +44,7 @@ Learning to rank \sep Information retrieval \sep Evaluation metric
 \section{Introduction}
 Ranking is a core problem in the field of information retrieval. The ranking task in information retrieval entails the ranking of candidate documents according to their relevance to a given query. Ranking has become a vital part of web search, where commercial search engines help users find their need in the extremely large collection of the World Wide Web. Among useful applications outside web search are automatic text summarisation, machine translation, drug discovery and determining the ideal order of maintenance operations \citep{Rudin2009}. In addition, \cite{McNee2006} found the ranking task to be a better fit for recommender systems than the regression task (continuous scale predictions), which is currently still frequently used within such systems.\\
 
-Research in the field of ranking models has been based on manually designed ranking functions, such as the well-known BM25 model \citep{Robertson1994}. Increased amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective ranking models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
+Research in the field of ranking models has long been based on manually designed ranking functions, such as the well-known BM25 model \citep{Robertson1994}. Increased amounts of potential training data have recently made it possible to leverage machine learning methods to obtain more effective ranking models. Learning to rank is the relatively new research area that covers the use of machine learning models for the ranking task.\\
 
 In recent years, several learning to rank benchmark datasets have been proposed with the aim of enabling comparison of learning to rank methods in terms of ranking accuracy. Well-known benchmark datasets in the learning to rank field include the \emph{Yahoo! Learning to Rank Challenge} datasets \citep{Chapelle2011a}, the \emph{Yandex Internet Mathematics 2009} contest\footnote{http://imat2009.yandex.ru/en}, the LETOR datasets \citep{Qin2010}, and the MSLR (Microsoft Learning to Rank) datasets\footnote{http://research.microsoft.com/en-us/projects/mslr/}. There exists no agreement among authors in the learning to rank field on the benchmark collection(s) to use to evaluate a new model. Comparing ranking accuracy of learning to rank methods is largely hindered by this lack of a standard way of benchmarking.\\
 
@@ -51,7 +52,7 @@ In recent years, several learning to rank benchmark datasets have been proposed 
 
 \section{Collecting Evaluation Results}
 \label{sec:collecting_evaluation_results}
-We collect evaluation results on the datasets of benchmark collections through a structured literature search. Table \ref{tbl:ltr_benchmark_collections} presents an overview of the benchmark collections included in the meta-analysis.
+We collect evaluation results on the datasets of benchmark collections through a structured literature search. Table \ref{tbl:ltr_benchmark_collections} presents an overview of the benchmark collections included in the meta-analysis. Note that all these datasets offer feature set representations of the to-be-ranked documents instead of the documents themselves. Therefore, any difference in ranking performance is due to the ranking algorithm and not the features used.
 
 \begin{table}[!h]
 \centering
@@ -112,7 +113,7 @@ Search Query & Google scholar search results \\
 \subsection{Literature Selection}
 Table \ref{tab:ltr_methods_used} in the appendix gives an overview of the learning to rank methods for which evaluation results were found through the described procedure. Occurrences of L2, L3 and L4 in Table \ref{tab:ltr_methods_used} imply that these algorithms are evaluated as official LETOR 2.0, 3.0 and 4.0 baselines respectively.\\
 
-Some studies with evaluation results found through the literature search procedure were not usable for the meta-analysis. The following enumeration enumerates those properties that made one or more studies unusable for the meta-analysis. Between brackets are the studies that these properties apply to.
+Some studies with evaluation results found through the literature search procedure were not usable for the meta-analysis. The following enumeration enumerates those properties that made one or more studies unusable for the meta-analysis. The references between brackets are the studies to which these properties apply.
 
 \begin{enumerate}[noitemsep,nolistsep]
 \item A different evaluation methodology was used in the study compared to what was used in other studies using the same benchmark \citep{Geng2011, Lin2012}
@@ -125,7 +126,7 @@ Some studies with evaluation results found through the literature search procedu
 \end{enumerate}
 
 \section{A Methodology for Comparing Learning to Rank Methods Cross-Benchmark}
-\cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the multiple datasets in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
+\cite{Qin2010} state that it may differ between datasets what the most accurate ranking methods are. They propose a measure they call \emph{Winning Number} to evaluate the overall performance of learning to rank methods over the datasets included in the LETOR 3.0 collection. Winning Number is defined as the number of other algorithms that an algorithm can beat over the set of datasets, or more formally\\
 
 $\text{WN}_i(M) = \sum\nolimits_{j=1}^n \sum\nolimits_{k=1}^m I_{\{M_i(j)>M_k(j)\}}$\\
 
@@ -136,14 +137,14 @@ $I_{\{M_i(j)>M_k(j)\}} = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$\\
 
-The LETOR 3.0 was a comparison on a \emph{dense} set of evaluation results, in the sense that there were evaluation results available for all learning to rank algorithms on all datasets included in their comparison. The Winning Number evaluation metric relies on the denseness of the evaluation results set. In contrast to the LETOR 3.0 comparison, our set of evaluation results will be sparse. We propose a normalized version of the Winning Number metric to enable comparison of a sparse set of evaluation results. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as\\
+The LETOR 3.0 was a comparison on a \emph{dense} set of evaluation results, in the sense that there were evaluation results available for all learning to rank algorithms on all datasets included in their comparison. The Winning Number evaluation metric relies on the denseness of the evaluation results set. In contrast to the LETOR 3.0 comparison, our evaluation results will be a \emph{sparse} set. We propose a normalized version of the Winning Number metric to enable comparison of a sparse set of evaluation results. This Normalized Winning Number takes only those datasets into account that an algorithm is evaluated on and divides this by the theoretically highest Winning Number that an algorithm would have had in case it would have been the most accurate algorithm on all datasets on which it has been evaluated. We will redefine the indicator function $I$ in order to only take into account those datasets that an algorithm is evaluated on, as\\
 
 $I^{'}_{M_i(j)>M_k(j)} = \begin{cases}
 1 & \parbox[t]{5cm}{if $M_i(j)$ and $M_k(j)$ are both defined and $M_i(j) > M_k(j)$,}\\
 0 & \parbox[t]{5cm}{otherwise}
 \end{cases}$\\
 
-From now on this adjusted version of Winning Number will be references to as \emph{Normalized Winning Number (NWN)}. The mathematical definition of Normalized Winning Number is\\
+From now on this adjusted version of Winning Number will be references to as \emph{Normalized Winning Number (NWN)}. The formal definition of Normalized Winning Number is\\
 
 $\text{NWN}_i(M) = \frac{\text{WN}_i(M)}{\text{IWN}_i(M)}$\\
 
@@ -162,7 +163,7 @@ $D_{\{M_i(j),M_k(j)\}} = \begin{cases}
 NDCG@$\{3,5,10\}$ and MAP are the most frequently used evaluation metrics in the used benchmark collections combined, therefore we will limit our meta-analysis to evaluation results reported in one of these four metrics.
 
 \section{Results of Learning to Rank Comparison}
-The following subsections provide the performance of learning to rank methods in terms of NWN for NDCG@$\{3,5,10\}$ and MAP. Performance of the learning to rank methods is plotted with NWN on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. Moving to the right, certainty on the performance of the method increases. The methods for which it holds that there is no other method that has 1) a higher NWN and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled. Table \ref{tab:raw_data} in the appendix provides raw NWN data for the learning to rank methods at NDCG@$\{3,5,10\}$ and MAP and their cross-metric weighted average.
+The following subsections provide the performance of learning to rank methods in terms of NWN for NDCG@$\{3,5,10\}$ and MAP. Performance of the learning to rank methods is plotted with NWN on the vertical axis and the number of datasets on which the method has been evaluated on the horizontal axis. Moving to the right, certainty on the performance of the method increases. The Pareto optimal learning to rank methods, that is, the learning to rank methods for which it holds that there is no other method that has 1) a higher NWN and 2) a higher number datasets evaluated, are identified as the best performing methods and are labeled. Table \ref{tab:raw_data} in the appendix provides raw NWN data for the learning to rank methods at NDCG@$\{3,5,10\}$ and MAP and their cross-metric weighted average.
 
 \subsection{NDCG@3}
 \begin{figure}
@@ -171,9 +172,9 @@ The following subsections provide the performance of learning to rank methods in
 \caption{NDCG@3 comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_ndcg3}
 \end{figure}
-Figure \ref{fig:normalized_winning_number_ndcg3} shows the NWN of learning to rank methods based on NDCG@3 results. LambdaNeuralRank and CoList both acquired a NWN score of 1.0 by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF scored very high scores of near 1.0 on three of the LETOR 3.0 datasets, which results in more certainty on these methods' performance because they are validated on three datasets that additionally are more relevant than AOL and Yahoo Set 2 (number of evaluation results for LETOR 3.0 are higher than those for AOL and Yahoo set 2). FenchelRank, OWPC, SmoothRank, DCMP and ListNet are ordered decreasingly by NWN and at the same time increasingly in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.\\
+Figure \ref{fig:normalized_winning_number_ndcg3} shows the NWN of learning to rank methods based on NDCG@3 results. LambdaNeuralRank and CoList both acquired a NWN score of $1.0$ by beating all other algorithms on one dataset, with LambdaNeuralRank winning on the AOL dataset and CoList winning on Yahoo Set 2. LARF and LRUF scored very high scores of near $1.0$ on three of the LETOR 3.0 datasets, which results in more certainty on these methods' performance because they are validated on three datasets that additionally are more relevant than AOL and Yahoo Set 2 (number of evaluation results for LETOR 3.0 are higher than those for AOL and Yahoo set 2). FenchelRank, OWPC, SmoothRank, DCMP and ListNet are ordered decreasingly by NWN and at the same time increasingly in number of datasets that they are evaluated on, resulting in a higher degree of certainty on the accuracy of the algorithms.\\
 
-LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all based on one study, therefore are subjected to the risk of one overly optimistic study producing those results. FenchelRank evaluation result are based combined result from two studies, although those studies have overlap in authors. SmoothRank and ListNet have the most reliable evaluation result source, as they were official LETOR baseline runs.  
+LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all based on one study, therefore are subjected to the risk of one overly optimistic study producing those results. FenchelRank evaluation result are the combined result from two studies, although those studies have overlap in authors. SmoothRank and ListNet have the most reliable evaluation result source, as they were official LETOR baseline runs.  
 
 \subsection{NDCG@5}
 \begin{figure}
@@ -182,7 +183,7 @@ LambdaNeuralRank, CoList, LARF, LRUF, OWPC and DCMP evaluation results are all b
 \caption{NDCG@5 comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_ndcg5}
 \end{figure}
-Figure \ref{fig:normalized_winning_number_ndcg5} shows the NWN of learning to rank methods based on NDCG@5 results. LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a NWN of 1.0. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of NWN. These results are highly in agreement with the NDCG@3 comparison. The only modification compared to the NDCG@3 comparison being that OWPC did show to be a method for which there were no methods performing better on both axes in the NDCG@5 comparison, but not in the @3 comparison. Like in the NDCG@3 comparison, SmoothRank and ListNet can be regarded as most reliable results because the evaluation measurements for these methods are based on LETOR official baselines.
+Figure \ref{fig:normalized_winning_number_ndcg5} shows the NWN of learning to rank methods based on NDCG@5 results. LambdaNeuralRank again beat all other methods solely with results on the AOL dataset scoring a NWN of $1.0$. LARF, LRUF, FenchelRank, SmoothRank, DCMP and ListNet are from left to right evaluated on an increasing number of datasets, but score decreasingly well in terms of NWN. These results are highly in agreement with the NDCG@3 comparison. The only modification compared to the NDCG@3 comparison being that OWPC did show to be a method for which there were no methods performing better on both axes in the NDCG@5 comparison, but not in the @3 comparison. Like in the NDCG@3 comparison, SmoothRank and ListNet can be regarded as most reliable results because the evaluation measurements for these methods are based on LETOR official baselines.
 
 \subsection{NDCG@10}
 \begin{figure}
@@ -192,7 +193,7 @@ Figure \ref{fig:normalized_winning_number_ndcg5} shows the NWN of learning to ra
 \label{fig:normalized_winning_number_ndcg10}
 \end{figure}
 
-Figure \ref{fig:normalized_winning_number_ndcg10} shows the NWN of learning to rank methods based on NDCG@10 results. LambdaMART and LambdaNeuralRank score a NWN of 1.0 on the NDCG@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest NDCG@10 performance for the MSLR-WEB10k dataset. The set of algorithms for which there is no other algorithm with both a higher NWN and number of datasets evaluated on is partly in agreement with those for the NDCG@3 and @5 comparisons: {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. In contrast to the NDCG@3 and @5 comparison, DCMP is not among the best algorithms.
+Figure \ref{fig:normalized_winning_number_ndcg10} shows the NWN of learning to rank methods based on NDCG@10 results. LambdaMART and LambdaNeuralRank score a NWN of $1.0$ on the NDCG@10 comparison. For LambdaNeuralRank these results are again based on AOL dataset measurements. LambdaMART showed the highest NDCG@10 performance for the MSLR-WEB10k dataset. The set of Pareto optimal learning to rank algorithms is partly in agreement with the set of Pareto optimal methods for the NDCG@3 and @5 comparisons, both include {LARF, LRUF, FSMRank, SmoothRank, ListNet, RankSVM}. In contrast to the NDCG@3 and @5 comparisons, DCMP is not a Pareto optimal ranking method in the NDCG@10 comparison.
 
 \subsection{MAP}
 \begin{figure}
@@ -201,9 +202,9 @@ Figure \ref{fig:normalized_winning_number_ndcg10} shows the NWN of learning to r
 \caption{MAP comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_map}
 \end{figure}
-Figure \ref{fig:normalized_winning_number_map} shows the NWN of learning to rank methods based on MAP results. Comparisons on the NDCG metrics where highly in agreement on the best performing algorithms, MAP-based NWN results show different results. RankDE scores a NWN of 1.0 on one dataset, which is achieved by obtaining highest MAP-score on the LETOR 2.0 TD2003 which has many evaluation results are evaluated.\\
+Figure \ref{fig:normalized_winning_number_map} shows the NWN of learning to rank methods based on MAP results. Comparisons on the NDCG metrics where highly in agreement on the Pareto optimal algorithms, MAP-based NWN results show different results. RankDE scores a NWN of $1.0$ on one dataset, which is achieved by obtaining highest MAP-score on the LETOR 2.0 TD2003 which has many evaluation results are evaluated.\\
 
-LARF and LRUF score very high NWN scores, but based on only few datasets, just as in the NDCG-based comparisons. Notable is that low performance of SmoothRank and ListNet, given that those methods were top performing methods in the NDCG-based comparisons. Table \ref{tab:raw_data} in the appendix shows that LAC-MR-OR is evaluated on more datasets on MAP than on NDCG, thereby LAC-MR-OR obtained equal certainty to ListNet with a higher NWN. SmoothRank performed a NWN of around 0.53 over 7 datasets, which is still good in both certainty and accuracy, but not among the top methods. RE-QR is one of the best performers in the MAP comparison with a reasonable amount of benchmark evaluations. No reported NDCG performance was found in the literature search for RE-QR. There is a lot of certainty on the accuracy of RankBoost and RankSVM as both models are evaluated on the majority of datasets included in the comparison for the MAP metric, but given their NWN it can said that both methods are not within the top performing learning to rank methods.
+LARF and LRUF score very high NWN scores, but based on only few datasets, just as in the NDCG-based comparisons. Notable is the low performance of SmoothRank and ListNet, given that those methods were top performing methods in the NDCG-based comparisons. Table \ref{tab:raw_data} in the appendix shows that LAC-MR-OR is evaluated on more datasets on MAP than on NDCG, thereby LAC-MR-OR obtained equal certainty to ListNet with a higher NWN. SmoothRank performed a NWN of around $0.53$ on 7 datasets, which is good in both certainty and accuracy, but not a Pareto optimum. RE-QR is one of the best performers in the MAP comparison with a reasonable amount of benchmark evaluations. No reported NDCG performance was found in the literature search for RE-QR. There is a lot of certainty on the accuracy of RankBoost and RankSVM as both models are evaluated on the majority of datasets included in the comparison for the MAP metric, but given their NWN it can said that both methods are not within the top performing learning to rank methods.
 
 \subsection{Cross-Metric}
 \begin{figure}
@@ -212,16 +213,52 @@ LARF and LRUF score very high NWN scores, but based on only few datasets, just a
 \caption{Cross-benchmark comparison of 87 learning to rank methods}
 \label{fig:normalized_winning_number_all}
 \end{figure}
-Figure \ref{fig:normalized_winning_number_all} shows the NWN as function of IWN for the methods described in Table \ref{tab:ltr_methods_used}. The cross-metric comparison is based on the NDCG@$\{3,5,10\}$ and MAP comparisons combined, which justifies analysing the comparison more thoroughly. Figure \ref{fig:normalized_winning_number_all} labels the algorithms with no other algorithm having a higher value on both the horizontal axis and vertical axis, but also labels the algorithms with exactly one algorithm having a higher value on both axes with smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labelled as baselines.\\
+Figure \ref{fig:normalized_winning_number_all} shows NWN as function of IWN for the methods listed in Table \ref{tab:ltr_methods_used}. The cross-metric comparison is based on the NDCG@$\{3,5,10\}$ and MAP comparisons combined. Figure \ref{fig:normalized_winning_number_all} labels the Pareto optimal algorithms, but also the Rank-2 Pareto optima, which are the labels the algorithms with exactly one algorithm having a higher value on both axes. Pareto optimal are labeled in large font while Rank-2 Pareto optima are labeled using a smaller font size. In addition, Linear Regression and the ranking method of simply sorting on the best single feature are labeled as baselines.\\
 
-LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both IWN and NWN. LRUF is the only method that achieved this in all NDCG comparisons, the MAP comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being among the top performing methods in all NDCG comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the NDCG performance as opposed to the MAP performance. This was to be expected, because the cross-metric comparison input data of three NDCG entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the MAP comparison.\\
+LRUF, FSMRank, FenchelRank, SmoothRank and ListNet showed to be the methods that have no other method superior to them in both IWN and NWN. LRUF is the only method that achieved Pareto optimality in all NDCG comparisons, the MAP comparison as well as the cross-metric comparison. With FenchelRank, FSMRank, SmoothRank and ListNet being Pareto optimal in all NDCG comparisons as well as in the cross-metric comparison, it can be concluded that the cross-metric results are highly defined by the NDCG performance as opposed to the MAP performance. This was to be expected, because the cross-metric comparison input data of three NDCG entries (@3, @5, and @10) enables it to have up to three times as many as many weight as the MAP comparison.\\
 
-LARF, IPRank and DCMP and several variants of RankSVM performed very well on the cross-metric comparison, with all having only one method in its top right quadrant. LARF also performed among the top methods on the NDCG and MAP comparisons and DCMP was a top performer in a few of the NDCG comparisons. C-CRF, DirectRank, FP-Rank, RankCSA, LambdaNeuralRank and VFLR all have a near-perfect NWN value, but have a low IWN value. Further evaluation runs of these methods on benchmark datasets that they are not yet evaluated on are desirable. The DirectRank paper \cite{Tan2013} shows that the method  is evaluated on more datasets than the number of datasets that we included evaluation results for in this meta-analysis. Some of the DirectRank measurements could not be used because measurements on some datasets were only available in graphical form and not in raw data.\\
+LARF, IPRank and DCMP and several variants of RankSVM are the Rank-2 Pareto optima of the cross-metric comparison. LARF was also a Pareto optima on the NDCG and MAP comparisons and DCMP was a Pareto optimal ranker in a few of the NDCG comparisons. C-CRF, DirectRank, FP-Rank, RankCSA, LambdaNeuralRank and VFLR all have a near-perfect NWN value, but have a low IWN value. Further evaluation runs of these methods on benchmark datasets that they are not yet evaluated on are desirable. The DirectRank paper (\cite{Tan2013}) shows that the method  is evaluated on more datasets than the number of datasets that we included evaluation results for in this meta-analysis. Some of the DirectRank measurements could not be used because measurements on some datasets were only available in graphical form and not in raw data.\\
 
-LAC-MR-OR and RE-QR showed very good ranking accuracy in the MAP comparison on multiple datasets. Because LAC-MR-OR is only evaluated on two datasets for NDCG@10 and RE-QR is not evaluated for NDCG at all, LAC-MR-OR and RE-QR are not within the top performing methods in the cross-metric comparison. 
+LAC-MR-OR and RE-QR showed very good ranking accuracy in the MAP comparison on multiple datasets. Because LAC-MR-OR is only evaluated on two datasets for NDCG@10 and RE-QR is not evaluated for NDCG at all, LAC-MR-OR and RE-QR are not within the Pareto front of rankers in the cross-metric comparison. 
+
+\section{Sensitivity Analysis}
+In this section we evaluate the stability of the obtained results when one of the evaluation measures (\ref{subsec:sensitivity_evaluation_measure}) or one of the datasets (\ref{subsec:sensitivity_data_set}) are left out of the comparison. We scope this sensitivity analysis to those ranking methods that showed to be Pareto optimal in the trade-off between IWN and NWN: ListNet, SmoothRank, FenchelRank, FSMRank and LRUF.
+\subsection{Sensitivity in the evaluation measure dimension}
+\label{subsec:sensitivity_evaluation_measure}
+To analyze the sensitivity of the comparison method in the evaluation measure dimension we repeated the NWN and IWN calculation while leaving one evaluation measure. Table \ref{tab:sensitivity_evaluation_measure} shows the NWN and IWN results when all evaluation measures are included in the computation and when MAP, NDCG@3, NDCG@5 or NDCG@10 are left out respectively. From this table we can infer that FSMRank is not a Pareto optimal ranking method when MAP is left out of the comparison (LRUF scores higher on both NWN and IWN) and FenchelRank is not a Pareto optimal ranking method when either NDCG@3 or NDCG@5 are left out (FSMRank scores higher on both NWN and IWN). All other orderings of ranking methods on NWN and IWN stay intact when one of the evaluation measures is left out of the comparison.\\
+
+Notable is that all Pareto optimal ranking methods have the largest increase in IWN as well as the largest decrease in NWN when the MAP measure is left out of the comparison. The NWN score of FSMRank increased almost $0.1$ when the MAP evaluation measure was left out, which is the highest deviation in NWN score seen in this sensitivity analysis. Note that MAP uses a binary notion of relevance, where NDCG uses graded relevance. The fact that all Pareto optimal rankers obtain an even higher NWN score when the MAP measure is left out shows that apparently the Pareto optimal rankers perform even better on ranking on graded relevance, compared to non-Pareto-optimal rankers.
+\begin{table}[!h]
+	\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lll|ll|ll|ll|ll}
+	& \multicolumn{2}{c}{All} & \multicolumn{2}{c}{MAP} & \multicolumn{2}{c}{NDCG@3} & \multicolumn{2}{c}{NDCG@5} & \multicolumn{2}{c}{NDCG@10} \\ 
+	& NWN & IWN & NWN & IWN & NWN & IWN & NWN & IWN & NWN & IWN \\
+	\hline
+	ListNet & 0.4952 & 931 & 0.5127 & 669 & 0.5099 & 710 & 0.4965 & 707 & 0.4625 & 707 \\ 
+	SmoothRank & 0.6003 & 653 & 0.6266 & 474 & 0.5988 & 491 & 0.5900 & 500 & 0.5870 & 494 \\ 
+	FenchelRank & 0.7307 & 505 & 0.7628 & 371 & 0.7158 & 380 & 0.7244 & 381 & 0.7206 & 383 \\ 
+	FSMRank & 0.7593 & 482 & 0.8585 & 311 & 0.7403 & 385 & 0.7292 & 384 & 0.7268 & 366 \\ 
+	LRUF & 0.9783 & 460 & 0.9821 & 335 & 0.9767 & 344 & 0.9772 & 351 & 0.9771 & 350 \\ 
+	LARF & 0.9868 & 379 & 0.9891 & 275 & 0.9859 & 283 & 0.9861 & 288 & 0.9863 & 291 \\ 
+\end{tabular}
+\end{adjustbox}
+\label{tab:sensitivity_evaluation_measure}
+\caption{NWN and IWN scores of the Pareto optimal rankers on all evaluation metrics, and with MAP, NDCG@3, NDCG@5 or NDCG@10 left out of the comparison respectively}
+\end{table}
+
+
+\subsection{Sensitivity in the dataset dimension}
+\label{subsec:sensitivity_data_set}
+In Table \ref{tbl:ltr_benchmark_collections} we showed to include 20 datasets in our comparison, originating from eight data collections. We analyzed the variance in NWN and IWN scores of the Pareto optimal rankers for the situations where one of the 20 datasets is not included in the NWN and IWN computation. The results are visualized in Figure \ref{fig:sensitivity_data_set} in a series of bagplots, which is a bivariate generalization of the boxplot proposed by \cite{Rousseeuw1999}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.5]{gfx/bagplots}
+	\caption{Bagplots showing the variance in NWN and IWN of the Pareto optimal rankers when a dataset is left out of the comparison}
+	\label{fig:sensitivity_data_set}
+\end{figure}
 
 \section{Limitations}
-In the NWN calculation, the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the learning to rank methods are (approximately) distributed uniformly over the benchmarks, such that the average learning to rank method tested are approximately equally hard for each data set. It could be the case however that this assumption is false and that the accurateness of the learning to rank methods on a dataset is not dataset independent.\\
+In the NWN calculation, the weight of each benchmark on the total score is determined by the number of evaluation measurements on this benchmark. By calculating it in this way, we implicitly make the assumption that the learning to rank methods are (approximately) distributed uniformly over the benchmarks, such that the average learning to rank method tested are approximately equally hard for each dataset. It could be the case however that this assumption is false and that the accurateness of the learning to rank methods on a dataset is not dataset independent.\\
 
 A second limitation is that the datasets on which learning to rank methods have been evaluated cannot always be regarded a random choice. It might be the case that some researchers chose to publish results for exactly those benchmark datasets that showed the most positive results for their learning to rank method.\\
 
